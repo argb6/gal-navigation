@@ -36,7 +36,7 @@
 
 <table>
   <tr><td><img src="https://raw.githubusercontent.com/argb6/gal-navigation/main/docs/%E8%AF%A6%E6%83%85.png" alt="详情"></td></tr>
-  <tr><td align="center"><em>详情页</em></td></tr>
+  <tr><td align="center"><em>详情页面</em></td></tr>
 </table>
 
 - 文字利落：点击“介绍详情”即可展开该站点的简介介绍。
