@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/argb6/gal-navigation/main/docs/icon/icon.png" width="200" height="200" alt="cover">
+  <img src="https://raw.githubusercontent.com/argb6/gal-navigation/main/assets/icon.png" width="200" height="200" alt="cover">
 
  # GALNAVI
 
