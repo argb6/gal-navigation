@@ -19,14 +19,14 @@
 
 ## 📑内容
 <table>
-  <tr><td><img src="https://github.com/argb6/gal-navigation/blob/main/docs/%E4%B8%BB%E9%A1%B5.png" alt="主站"></td></tr>
+  <tr><td><img src="https://raw.githubusercontent.com/argb6/gal-navigation/blob/main/docs/%E4%B8%BB%E9%A1%B5.png" alt="主站"></td></tr>
   <tr><td align="center"><em>主站页面</em></td></tr>
 </table>
 
 - 极致纯净：告别传统导航站满屏广告的杂乱感，提供极简的沉浸式暗黑主题 UI。
 
 <table>
-  <tr><td><img src="https://github.com/argb6/gal-navigation/blob/main/docs/%E6%90%9C%E7%B4%A2.png" alt="搜索"></td></tr>
+  <tr><td><img src="https://raw.githubusercontent.com/argb6/gal-navigation/blob/main/docs/%E6%90%9C%E7%B4%A2.png" alt="搜索"></td></tr>
   <tr><td align="center"><em>搜索页面</em></td></tr>
 </table>
 
@@ -35,7 +35,7 @@
 - 标签库：直观的 Tag 生态对站点进行二次分类，让站点的网盘类型、资源偏向和准入门槛一目了然。
 
 <table>
-  <tr><td><img src="https://github.com/argb6/gal-navigation/blob/main/docs/%E8%AF%A6%E6%83%85.png" alt="详情"></td></tr>
+  <tr><td><img src="https://raw.githubusercontent.com/argb6/gal-navigation/blob/main/docs/%E8%AF%A6%E6%83%85.png" alt="详情"></td></tr>
   <tr><td align="center"><em>详情页</em></td></tr>
 </table>
 
