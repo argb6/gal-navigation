@@ -25,20 +25,20 @@ GalNavi 希望将这些信息整理到一起。
 
 ## 📑内容
 <table>
-  <tr><td><img src="https://raw.githubusercontent.com/argb6/gal-navigation/main/docs/%E4%B8%BB%E9%A1%B5.png" alt="主站"></td></tr>
+  <tr><td><img src="https://raw.githubusercontent.com/argb6/gal-navigation/main/docs/%E5%85%A5%E5%8F%A3.png" alt="主站"></td></tr>
+  <tr><td align="center"><em>入口页面</em></td></tr>
+</table>
+
+- 干净无广的页面，新增呼吸光和玻璃特效
+
+<table>
+  <tr><td><img src="https://raw.githubusercontent.com/argb6/gal-navigation/main/docs/%E4%B8%BB%E7%AB%99.png" alt="搜索"></td></tr>
   <tr><td align="center"><em>主站页面</em></td></tr>
 </table>
 
-- 极致纯净：告别传统导航站满屏广告的杂乱感，提供极简的沉浸式暗黑主题 UI。
-
-<table>
-  <tr><td><img src="https://raw.githubusercontent.com/argb6/gal-navigation/main/docs/%E6%90%9C%E7%B4%A2.png" alt="搜索"></td></tr>
-  <tr><td align="center"><em>搜索页面</em></td></tr>
-</table>
-
-- 精准分类：将互联网上的 ACG 资源划分为“网站”、“工具”、“模拟器”等清晰板块。
-- 卡片化呈现：每个收录站点均以独立卡片配合鼠标动态光效展示。
-- 标签库：直观的 Tag 生态对站点进行二次分类，让站点的网盘类型、资源偏向和准入门槛一目了然。
+- 新增站长推荐和最近更新，对新手玩家友好
+- 简化内容使卡片更加美观，增加外部链接跳转页面，保证安全
+- 轮播图呈现通知，美化界面
 
 <table>
   <tr><td><img src="https://raw.githubusercontent.com/argb6/gal-navigation/main/docs/%E8%AF%A6%E6%83%85.png" alt="详情"></td></tr>
@@ -49,7 +49,7 @@ GalNavi 希望将这些信息整理到一起。
 - 亮点总结：提炼站点的核心优势，将资源，网盘类型，入站门槛一次性讲清楚。
 - 官方矩阵导航：不仅提供主站链接，还整合了该站点的“帮助文档”、“GitHub 仓库”、“官方论坛”及“外部社群”，有效防止迷路。
 
-## 🌐框架
+## ⚙️框架
 ```html
 [ 主 站 ] (入口) ───► [ 通知模块 ] ───────────(读取公告)─────────► 【 KV 命名空间 】
    ▲
@@ -69,7 +69,7 @@ GalNavi 希望将这些信息整理到一起。
 ``` 
 ## 📤分享
 
-发现好用的工具或优质网站，欢迎提交 [Issue](https://github.com/argb6/gal-navigation/issues) 或提交到[我的邮箱](mailto:shenguang_2025@outlook.com)
+发现好用的工具或优质网站，欢迎提交 [Issue](https://github.com/argb6/gal-navigation/issues) 或提交到[我的邮箱](mailto:galnavifeedback@protonmail.com)
 
 ## ⚖️许可证
 
