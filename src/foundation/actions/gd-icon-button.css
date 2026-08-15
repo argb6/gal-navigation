@@ -1,0 +1,41 @@
+/* gd-icon-button — 图标按钮（仅图标，需 aria-label） */
+
+.gd-icon-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--gd-touch-target);
+  height: var(--gd-touch-target);
+  padding: 0;
+  border-radius: var(--gd-shape-corner-extra-small);
+  border: 1px solid transparent;
+  font-family: var(--gd-font-sans);
+  font-size: var(--gd-type-label-large-size);
+  font-weight: var(--gd-weight-semibold);
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  color: var(--gd-color-on-surface-variant);
+  background: transparent;
+  transition:
+    background var(--gd-motion-duration-short4) var(--gd-motion-easing-standard),
+    color var(--gd-motion-duration-short4) var(--gd-motion-easing-standard),
+    transform var(--gd-motion-duration-short4) var(--gd-motion-easing-standard);
+}
+.gd-icon-button:hover {
+  color: var(--gd-color-on-surface);
+  background: rgba(var(--gd-color-white-rgb), 0.05);
+  filter: brightness(1.06);
+  transform: none;
+}
+.gd-icon-button:focus-visible {
+  outline: 2px solid var(--gd-color-primary);
+  outline-offset: 2px;
+}
+.gd-icon-button:disabled,
+.gd-icon-button[aria-disabled="true"] {
+  opacity: var(--gd-state-disabled);
+  pointer-events: none;
+  cursor: not-allowed;
+}

@@ -1,0 +1,61 @@
+/* gd-a11y — 无障碍基础：跳过链接 + Windows 高对比模式 */
+
+.gd-skip-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 20000;
+  padding: 10px 16px;
+  border-radius: var(--gd-shape-corner-extra-small);
+  background: var(--gd-color-primary);
+  color: var(--gd-color-on-primary);
+  font-size: var(--gd-type-label-large-size);
+  font-weight: var(--gd-weight-semibold);
+  text-decoration: none;
+  transform: translateY(-200%);
+  transition: transform var(--gd-motion-duration-short4) var(--gd-motion-easing-standard);
+}
+.gd-skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 2px solid var(--gd-color-on-primary);
+  outline-offset: 2px;
+}
+
+/* Windows 高对比模式 — 保证边框与图标可见 */
+@media (forced-colors: active) {
+  .gd-card,
+  .gd-navbar,
+  .gd-navbar-drawer,
+  .gd-cat-dock,
+  .gd-modal,
+  .gd-button,
+  .gd-search__input,
+  .gd-search__clear,
+  .gd-tag,
+  .gd-filter-bar,
+  .gd-filter-bar__tag,
+  .gd-toast,
+  .gd-tooltip,
+  .gd-empty-state,
+  .gd-table th,
+  .gd-table td,
+  .gd-card__icon,
+  .gd-card__btn,
+  .gd-card__action {
+    border: 1px solid CanvasText;
+  }
+  .gd-navbar__logo-text,
+  .gd-navbar-drawer__brand,
+  .gd-brand__title,
+  .gd-filter-bar__stat strong {
+    background: none;
+    -webkit-text-fill-color: CanvasText;
+    color: CanvasText;
+  }
+  .gd-card__icon img,
+  .gd-navbar__logo-img,
+  .gd-hero__arrow svg,
+  .gd-search__icon svg {
+    forced-color-adjust: none;
+  }
+}

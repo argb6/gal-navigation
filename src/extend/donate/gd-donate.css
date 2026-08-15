@@ -1,0 +1,137 @@
+/* gd-donate — 页面示例：扫码卡 / 捐献名单 */
+
+.gd-donate-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+  margin: 0;
+}
+
+.gd-donate-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 22px 18px;
+  border-radius: 20px;
+  background: var(--gd-glass-bg);
+  border: 1px solid var(--gd-glass-border);
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  font-family: var(--gd-font-sans);
+  transition: background 0.25s var(--gd-motion-easing-standard), border-color 0.25s var(--gd-motion-easing-standard);
+}
+.gd-donate-card:hover {
+  background: var(--gd-glass-bg-hover);
+  border-color: var(--gd-color-border-hover);
+}
+
+.gd-donate-card__label {
+  font-size: var(--gd-type-title-small-size);
+  font-weight: var(--gd-weight-bold);
+  color: var(--gd-color-on-surface);
+}
+
+.gd-donate-card__qr {
+  width: 180px;
+  height: 180px;
+  object-fit: contain;
+  border-radius: 12px;
+  background: var(--gd-color-on-primary);
+  padding: 8px;
+  display: block;
+}
+
+/* 无真实收款码时的预留方块 */
+.gd-donate-card__slot {
+  width: 180px;
+  height: 180px;
+  border-radius: 12px;
+  background: rgba(var(--gd-color-ink-4-rgb), 0.72);
+  border: 1px dashed rgba(var(--gd-color-grey-rgb), 0.56);
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gd-color-on-surface-subtle);
+  font-size: var(--gd-type-note-size);
+  font-weight: var(--gd-weight-semibold);
+  letter-spacing: var(--gd-type-letter-spacing-wide);
+  box-sizing: border-box;
+}
+
+.gd-donate-card--empty {
+  min-height: 220px;
+  justify-content: center;
+}
+
+.gd-donate-card__hint {
+  margin: 0;
+  color: var(--gd-color-on-surface-variant);
+  font-size: var(--gd-type-label-large-size);
+  line-height: 1.6;
+}
+
+.gd-donate-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.gd-donate-table-wrap::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  background: transparent;
+}
+
+.gd-donate-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 480px;
+  font-size: var(--gd-type-label-large-size);
+  font-family: var(--gd-font-sans);
+}
+
+.gd-donate-table th,
+.gd-donate-table td {
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 1px solid rgba(var(--gd-color-white-rgb), 0.08);
+  vertical-align: top;
+}
+
+.gd-donate-table thead th {
+  font-size: var(--gd-type-note-size);
+  font-weight: var(--gd-weight-bold);
+  color: var(--gd-color-on-surface-variant);
+  letter-spacing: var(--gd-type-letter-spacing-wide);
+  border-bottom-color: rgba(var(--gd-color-white-rgb), 0.14);
+  white-space: nowrap;
+}
+
+.gd-donate-table tbody td {
+  color: var(--gd-color-on-surface-variant);
+  line-height: 1.55;
+}
+
+.gd-donate-table tbody td:first-child {
+  color: var(--gd-color-on-surface);
+  font-weight: var(--gd-weight-bold);
+}
+
+.gd-donate-table tbody tr:hover td {
+  background: rgba(var(--gd-color-white-rgb), 0.03);
+}
+
+.gd-donate-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+@media (max-width: 640px) {
+  .gd-donate-card__qr,
+  .gd-donate-card__slot {
+    width: 160px;
+    height: 160px;
+  }
+}
