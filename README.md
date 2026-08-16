@@ -1,7 +1,7 @@
 <div align="center">
   <img src="https://raw.githubusercontent.com/argb6/gal-navigation/main/assets/logo/icon.png" width="200" height="200" alt="cover">
 
-# GALNAVI
+GALNAVI
 
 <p>
   <a href="https://galnavi.top" target="\_blank"><img src="https://img.shields.io/badge/Web-galnavi.top-brightgreen?style=flat-square\&logo=earth\&logoColor=white" alt="Website"></a> <a href="https://opensource.org/licenses/MIT" target="\_blank"><img src="https://img.shields.io/badge/license-MIT-ef9421?style=flat-square\&logo=mit\&logoColor=white" alt="License: MIT"></a> <a href="https://github.com/argb6/gal-navigation/issues" target="\_blank"><img src="https://img.shields.io/github/issues/argb6/gal-navigation?\&labelColor=black\&style=flat-square\&color=orange\&logo=github" alt="Open Issues"></a> <a href="https://github.com/argb6/gal-navigation/stargazers"><img src="https://img.shields.io/github/stars/argb6/gal-navigation?color=ffcb47\&labelColor=black\&style=flat-square\&logo=github\&label=Stars" /></a>
