@@ -45,7 +45,8 @@
 ## 影响
 
 - 卡片类**禁止** `backdrop-filter` / `box-shadow`
-- 只有浮层/弹窗/导航栏可用 blur
+- 只有浮层/弹窗/导航栏可用 `backdrop-filter` 类 blur
+- 页面/条目卡线条图案用装饰层 `filter: blur(10.8px)`（模糊图案本身，不是背后内容），与上条不冲突
 - 新增组件必须使用 `--gd-glass-bg` + `--gd-glass-border`
 - `--gd-glass-*` 变量不可修改
 

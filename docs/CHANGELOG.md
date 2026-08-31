@@ -1,6 +1,34 @@
 # CHANGELOG
 
-## v1.3.0（当前）
+迁移过程见 [`migration.md`](./migration.md)。
+
+## v1.4.0（当前）
+
+### 新增
+
+- `gd-page` / `gd-page-shell`：短页把页脚顶到视口底，长页跟在内容后；`--gd-vvh` 由 `initGdStickyViewport()` 写入
+- `initGdInverseZoom()`：仅在 Ctrl+/- **缩小**时把 `.gd-detail__scale`（标题+卡片）用 CSS `zoom` 放大（`--gd-inv-zoom`，1～4）；放大页面不反向缩小；页脚不参与 zoom
+- `gd-card-grid`：主站卡片网格，最多 6 列，超宽屏限宽；单列宽度 100%
+- `gd-groundback--bleed`：背景铺满视口（`100vw` × `100dvh`）
+- `gd-groundback--websearch`：主站蓝底 + R2 线条图案平铺（`mix-blend-mode: screen`）；线条层 `filter: blur(10.8px)`。殿堂用 `gd-groundback--gold`（金晕 + 同款线条）
+- `.gd-detail__scale` / `.gd-detail__content`：锁宽 1100px 的正文栏；`.gd-detail__container` 全宽弹性壳，页脚贴底
+
+### 完善
+
+- 条目卡 `gd-card--item`：表面铺与全站同款线条图案（`mix-blend-mode: screen`，`filter: blur(10.8px)`）；必须 `width/height: auto`，勿继承主站卡 420×212
+- 殿堂页背景 `gd-groundback--gold` 同样叠加线条层；除殿堂外各 Worker 用 `--websearch`。详情页 `body` 须透明，背景层 `z-index: 0`，避免旧渐变盖住线条
+- 轮播首屏用 `gd-hero.is-loading` + `gd-skeleton--hero`，不要把整段 `hidden`
+- `gd-filter-bar` 首页两框：窄屏上下叠，宽屏左右分（`--start` 靠左 / `--end` 靠右）；「弹窗」打开欢迎窗
+- 欢迎弹窗：介绍下居中加粗「详情：新手优先看卡片详情」；帮助/关于链接居中；已去掉日本节点提示
+- `gd-footer` 作为 flex 子项：`margin-top: auto`、`flex-shrink: 0`，缩放后空白留在内容和页脚之间
+- `gd-card` 固定 420×212，标签左对齐
+- `gd-filter-bar` 胶囊 75×40（两框布局见组件索引）
+- `gd-overview` 横/竖虚线 2px CSS 渐变（`linear-gradient` + `--ov-dash-period` 平铺，预览演示侧栏与正文横线同一套 `--ov-dash-*`）；侧栏间距 120px；页脚跟在页面底部（`.gd-footer--page`）
+- 详情页锁横向滚动（`overflow-x: hidden`）；返回钮悬停不再左右挪；反向缩放不再监听 `visualViewport.scroll`
+- 去掉 `gd-age-gate` 年龄门；桌面导航栏右侧 NSFW 盾牌（`initGdNsfwToggle`，红=隐藏 / 绿=显示，提示用 `gd-tooltip-wrap`）；抽屉底部 `gd-button--nsfw`（关=暗 / 开=亮，点一下「已开启」、再点「已关闭」后回到盾牌+NSFW）；桌面顶栏元素紧挨并整组居中
+- 预览页演示短页贴底页脚、详情反向缩放；静态资源改为 Cloudflare R2（`assets.galnavi.top`）
+
+## v1.3.0
 
 ### 新增
 
@@ -18,10 +46,9 @@
 
 ### 新增
 
-- `gd-skeleton--item` 变体（殿堂条目卡骨架，尺寸/结构对齐 `gd-card--item`）
-- `gd-search__hl` 搜索词高亮（蓝色普通 / 橙色殿堂，走 token）
+- `gd-skeleton--item` 变体（神魔条目卡骨架，尺寸/结构对齐 `gd-card--item`）
+- `gd-search__hl` 搜索词高亮（蓝色普通 / 橙色神魔，走 token）
 - `gd-brand__title--palace` 发光标题（橙 → 绿 → 红往返循环，殿堂主题）
-- 统一访问记录 `site-verified`（cookie + localStorage 双通道，发布页确认与各页首访检测共用）
 - gd-search group 变体规范（圣器殿堂搜索框：focus 图标金色、48px、原生 × 禁用）
 
 ### 完善
@@ -35,7 +62,7 @@
 ### 去除
 
 - 浏览器原生搜索清除按钮（`::-webkit-search-cancel-button`，避免与 `gd-search__clear` 重复 ×）
-- 沙盒 mock 示例数据（palace 部署用真实 D1）
+- 沙盒 mock 示例数据（palace 部署用真实 group1 D1）
 
 ## v1.1.0
 
@@ -68,26 +95,3 @@
 - `actions` 交互基元（button / link / icon-button）与 `layout` 页面结构层
 - hover 动效统一（无位移、改高亮）
 - 预览页 `src/preview/index.html`（组件总览与交互演示）
-
----
-
-## 重构迁移记录（2026-08-10）
-
-### 已完成
-
-- 组件库结构重构：foundation/navigation/display/feedback/extend + runtime + preview
-- detail 归类：详情页组件移入 `extend/detail/`
-- skeleton 归类：骨架屏移入反馈分支 `skeleton/`
-- 扩展按 Worker 页面归类：`extend/{overview,websearch,home,about,help,donate,palace,detail}/` 全部 ready
-- tokens 统一：新增 `--gd-color-on-surface-subtle` 实色 token，替换透明浅字
-- glass 工具类：`tokens/gd-glass.css`（卡片级/浮层级/顶栏级）
-- badge 泛化：navbar 计数提取为 `gd-badge` 组件
-- 无障碍：跳过链接、forced-colors、弹窗 inert、焦点指示、reduce-motion
-- file:// 兼容：JS 打包为 `gd-preview.js` 普通脚本
-- worker constants 对齐：`DB_CATEGORY_MAP` / `CATEGORY_LABELS` / `ALLOWED_DB_CATEGORIES` 权威源
-- stylelint 移除：未真正生效且无用处
-
-### 进行中
-
-- Worker 页面接入：组件已从 8 个 Worker 页面全部提取，页面主体逐步替换旧 class 接入 gd 体系
-- 安全头统一：各 Worker 仍手写安全头，未接入 `mergeSecurityHeaders`

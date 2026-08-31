@@ -1,18 +1,27 @@
 ---
+title: Worker 架构
+tags:
+  - galnavi/architecture
+  - worker
+  - cloudflare
+  - single-file
+  - ssr
+date: 2026-08-14
+updated: 2026-09-01
 type: architecture
 category: Architecture
-tags: [worker, cloudflare, single-file, ssr]
 status: active
-created: 2026-08-14
-updated: 2026-08-14
-related: [[GD 组件库]], [[数据流]], [[安全头]], [[路由策略]]
+related:
+  - "[[GD 组件库]]"
+  - "[[数据流]]"
+  - "[[安全头]]"
+  - "[[路由策略]]"
 ---
 
 # Worker 架构
 
-## Summary
-
-每个 GALNAVI 页面是一个自包含的单文件 Cloudflare Worker，HTML/CSS/JS 全部字符串内联，零运行期外链资源。
+> [!abstract] Summary
+> 每个 GALNAVI 页面是一个自包含的单文件 Cloudflare Worker，HTML/CSS/JS 全部字符串内联，零运行期外链资源。
 
 ## Definition
 
@@ -43,14 +52,17 @@ Worker 内部：
 | 页面 | Worker 文件 |
 |------|------------|
 | 首页 | `worker/new/index.js` |
-| 主站 | `worker/new/websearch.js`（~6464 行） |
+| 主站 | `worker/new/websearch.js` |
+| 详情 | `worker/new/detail.js` |
 | 殿堂 | `worker/new/palace.js` |
 | 关于 | `worker/new/about.js` |
 | 帮助 | `worker/new/help.js` |
 | 友链 | `worker/new/friend.js` |
 | 捐赠 | `worker/new/donate.js` |
-| 状态 | `sandbox/status-sandbox/status.js` |
+| 状态 | `worker/new/status.js` |
 | 404 | `worker/new/error.js` |
+
+`worker/new/*.js` **零 import**。`SECURITY_HEADERS`、分类常量、SEO 都是页内副本。`worker/shared/` 只作参考。
 
 ## Decision
 
@@ -60,4 +72,4 @@ Worker 内部：
 
 - [[Cloudflare Worker]] — 运行时环境
 - [[安全头]] — CSP 基线
-- [[共享模块]] — worker/shared/ 边界
+- [[Cloudflare Worker#共享模块边界]] — worker/shared/ 边界

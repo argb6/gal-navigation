@@ -8,6 +8,7 @@
 - **禁止**重复定义 token（查过 `tokens.css` 再写）
 - **禁止** `.title`、`.active`、`.card` 这类宽选择器
 - **禁止**卡片类使用 `backdrop-filter` / `box-shadow`
+- 线条图案装饰层允许 `filter: blur(10.8px)`（元素自身模糊，不是背后内容的 `backdrop-filter`）
 - 低对比文字必须实色 token
 - `:focus-visible` 必须有可见指示
 - 玻璃数值冻结：改数值需说明理由

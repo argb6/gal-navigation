@@ -1,18 +1,26 @@
 ---
+title: Layer 分层设计
+tags:
+  - galnavi/architecture
+  - layer
+  - module
+  - separation
+  - worker
+date: 2026-08-14
+updated: 2026-08-31
 type: architecture
 category: Architecture
-tags: [layer, module, separation, worker]
 status: active
-created: 2026-08-14
-updated: 2026-08-14
-related: [[Worker 架构]], [[数据流]], [[Decision-单文件 Worker]]
+related:
+  - "[[Worker 架构]]"
+  - "[[数据流]]"
+  - "[[Decision-单文件 Worker]]"
 ---
 
 # Layer 分层设计
 
-## Summary
-
-Worker 功能层设计：将单文件 Worker 中的可复用逻辑提取为 6 层模块，解决文件过重问题。
+> [!abstract] Summary
+> Worker 功能层设计：将单文件 Worker 中的可复用逻辑提取为 6 层模块，解决文件过重问题。
 
 ## 背景
 
@@ -38,7 +46,7 @@ worker/layer/
 | database | D1 SQL 查询、KV 读写、Repository 模式 | shared/constants |
 | service | 搜索/过滤、SEO 拼装、缓存策略、站点检测 | database |
 | render | safeJson、HTML 文档构建、数据注入 | — |
-| security | CSP 构建、CORS、HTML 转义、首访验证 | shared/config |
+| security | CSP 构建、CORS、HTML 转义 | shared/config |
 | utils | 响应构建（JSON/HTML/重定向/404）、格式化 | — |
 
 ## 设计原则

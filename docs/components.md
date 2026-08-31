@@ -7,10 +7,10 @@
 ## gd-button
 
 - **路径**：`src/foundation/actions/gd-button.css`
-- **用途**：按钮（主要/次要/危险/胶囊/返回）
+- **用途**：按钮（主要/次要/危险/胶囊/返回/NSFW 开关）
 - **依赖**：`tokens.css`（色值/圆角/动效）
-- **API**：纯 CSS class，无 JS
-- **class**：`gd-button`、`gd-button--primary`、`gd-button--secondary`、`gd-button--danger`、`gd-button--pill`、`gd-button--back`
+- **API**：纯 CSS class；NSFW 开关的「已开启/已关闭」闪示由 `initGdNsfwToggle` 驱动
+- **class**：`gd-button`、`gd-button--primary`、`gd-button--secondary`、`gd-button--danger`、`gd-button--pill`、`gd-button--back`、`gd-button--nsfw`
 - **事件**：浏览器原生（click/hover/focus/active）
 - **禁止**：`<div>` 模拟按钮；硬编码颜色；使用 `gd-control` 旧名
 - **示例**：`<button type="button" class="gd-button gd-button--primary">确认</button>`
@@ -43,15 +43,17 @@
 - **用途**：主站卡片 / 友链卡 / 条目卡（殿堂）
 - **依赖**：`tokens.css`（glass 系列）、`gd-tag.css`（标签）
 - **API**：纯 CSS；变体 `gd-card--friend`、`gd-card--item`、`gd-card--item--divine/demonic/immortal`
+- **尺寸**：主站卡 `420×212`；单列（≤640px）宽度 `100%`；网格见 `gd-card-grid`（每行最多 6 张）
+- **条目卡**：必须覆盖 `width: auto; height: auto`（不要继承主站卡固定高，否则游戏名会被按钮挤没）。表面 `::before` 铺与页面同款线条（`screen` + `blur(10.8px)`，不用 `backdrop-filter`）
 - **class**：`gd-card`、`gd-card__header/icon/title-wrap/title/subtitle/tags/actions/btn`、`gd-card__item-main/body/name/num`、`gd-card__action--site/detail/ext`
 - **事件**：无 JS 绑定（预览页按钮不跳转）
-- **禁止**：卡片使用 `backdrop-filter`/`box-shadow`（玻璃约定）
+- **禁止**：卡片使用 `backdrop-filter`/`box-shadow`（玻璃约定）；标签不要居中（须 `justify-content: flex-start`）
 - **示例**：见 `docs/examples/card.md`
 
 ## gd-modal
 
 - **路径**：`src/feedback/modal/gd-modal.css` + `gd-modal.js` + `gd-publish-card.css`
-- **用途**：通用弹窗系统（年龄门/彩蛋/倒计时）；发布卡片弹窗已独立为 `gd-publish-card`
+- **用途**：通用弹窗系统（彩蛋/倒计时）；发布卡片弹窗已独立为 `gd-publish-card`
 - **依赖**：`tokens.css`、`gd-button.css`
 - **API**：`bindGdModal(overlay, trigger)`、`openGdModal`、`closeGdModal`、`startGdRedirectCountdown`
 - **class**：`gd-modal-overlay`（+`--nap/--redirect`）、`gd-modal`、`gd-modal__title/body/actions/close`；发布卡片：`gd-publish-card-overlay` + `gd-publish-card`
@@ -75,9 +77,9 @@
 
 - **路径**：`src/navigation/navbar/gd-navbar.css` + `gd-navbar.js`
 - **用途**：顶栏 / 抽屉 / 分类导航（圣器殿堂）
-- **依赖**：`tokens.css`、`gd-search`、`gd-badge`
-- **API**：`initGdNavLinks`（频道切换）、`initGdNavCounts`（计数）、`initGdCatNav`（分类 tab）
-- **class**：`gd-navbar`、`gd-navbar__inner/logo/links/link/search/hamburger/right`、`gd-navbar-drawer`、`gd-cat-*`
+- **依赖**：`tokens.css`、`gd-search`、`gd-badge`、`gd-button`
+- **API**：`initGdNavLinks`（频道切换）、`initGdNavCounts`（计数）、`initGdCatNav`（分类 tab）、`initGdNsfwToggle`（桌面盾牌 + 抽屉 NSFW）
+- **class**：`gd-navbar`、`gd-navbar__inner/logo/links/link/search/hamburger/right/nsfw`、`gd-navbar-drawer`、`gd-navbar-drawer__footer/nsfw`（叠加 `gd-button gd-button--pill gd-button--nsfw`）、`gd-cat-*`
 - **事件**：抽屉（汉堡点击/Esc/遮罩/链接点击）、频道点击切换 `is-active`
 - **禁止**：`aria-expanded` 不更新；徽章另写样式（须复用 `gd-badge`）
 - **示例**：见 `docs/examples/navbar.md`
@@ -136,8 +138,9 @@
 - **用途**：首页轮播
 - **依赖**：`tokens.css`
 - **API**：`initGdHero(selector)`
-- **class**：`gd-hero`、`gd-hero__track/slide/gradient/arrow/dot`、`gd-hero__slide--demo-1/2/3`
+- **class**：`gd-hero`、`gd-hero.is-loading`、`gd-hero__track/slide/gradient/arrow/dot`、`gd-hero__slide--demo-1/2/3`、`gd-skeleton--hero`
 - **事件**：箭头/圆点点击（重置自动播放）；自动播放 4.5s
+- **加载**：首屏不要 `hidden` 整段；用 `.gd-hero.is-loading` 盖骨架，图预加载完再去掉骨架与 `is-loading`
 - **禁止**：slide 放 `<img>`（须 background-image）
 - **示例**：见 `docs/examples/carousel.md`
 
@@ -145,16 +148,18 @@
 
 | 组件 | 路径 | 用途 | API |
 |---|---|---|---|
-| `gd-age-gate` | `feedback/modal/` | 年龄门 | `initGdAgeGate` |
 | `gd-tooltip` | `feedback/tooltip/` | 提示气泡 | 纯 CSS |
-| `gd-skeleton` | `feedback/skeleton/` | 骨架屏 | 纯 CSS |
+| `gd-skeleton` | `feedback/skeleton/` | 骨架屏（`--card` / `--hero` / `--detail` / `--item`） | 纯 CSS |
 | `gd-empty-state` | `display/empty-state/` | 空状态 | 纯 CSS |
 | `gd-table` | `display/table/` | 表格 | 纯 CSS |
 | `gd-brand` | `foundation/brand/` | 品牌标题 | 纯 CSS |
-| `gd-footer` | `foundation/layout/` | 页脚 | 纯 CSS |
+| `gd-footer` | `foundation/layout/` | 页脚（短页贴底） | `initGdStickyViewport` |
+| `gd-groundback` | `foundation/layout/` | 页面背景层 | `--blue` 点阵；`--websearch` 线条模糊（除殿堂外全站）；`--gold` 殿堂金晕+同款线条；`--bleed` 铺满 |
+| `gd-page` / `gd-page-shell` | `foundation/layout/` + `extend/websearch/` | 页面壳 / 主站限宽 | 纯 CSS + `initGdStickyViewport` |
 | `gd-glass` | `foundation/tokens/` | 玻璃工具类 | 纯 CSS |
 | `gd-skip-link` | `foundation/accessibility/` | 跳过链接 | 纯 CSS |
-| `gd-filter-bar` | `extend/websearch/` | filter-bar | 纯 CSS |
+| `gd-filter-bar` | `extend/websearch/` | 首页快捷栏（75×40 胶囊；`.gd-filter-bar-wrap` 两框） | 窄屏上下叠；≥769px 左右分（`--start` 靠左 / `--end` 靠右） |
+| `gd-card-grid` | `extend/websearch/` | 主站卡片网格（最多 6 列） | 纯 CSS |
 | `gd-nap` | `extend/websearch/` | 纳普彩蛋 | `initGdNap` |
 | `gd-donate-*` | `extend/donate/` | 捐献页 | 纯 CSS |
-| `gd-highlights`/`gd-section-card` | `extend/detail/` | 详情页 | 纯 CSS |
+| `gd-highlights`/`gd-section-card` | `extend/detail/` | 详情页（`.gd-detail__scale` 缩小反向放大） | `initGdInverseZoom` |

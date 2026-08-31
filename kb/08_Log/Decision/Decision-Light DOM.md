@@ -1,11 +1,19 @@
 ---
+title: Decision-Light DOM
+tags:
+  - galnavi/decision
+  - web-component
+  - light-dom
+  - shadow-dom
+  - css
+date: 2026-08-14
+updated: 2026-08-31
 type: decision
 category: Decision
-tags: [web-component, light-dom, shadow-dom, css]
 status: active
-created: 2026-08-14
-updated: 2026-08-14
-related: [[Web Component]], [[GD 组件库]]
+related:
+  - "[[Web Component]]"
+  - "[[GD 组件库]]"
 ---
 
 # Decision-Light DOM
@@ -18,15 +26,13 @@ related: [[Web Component]], [[GD 组件库]]
 
 Web Components 支持 Shadow DOM（样式隔离）和 Light DOM（共享样式树）。Worker 拼 HTML 时需要复用 gd-* class。
 
-## 方案
+> [!info] 方案
+> 使用 Light DOM，自定义元素只处理行为，样式由外部 CSS 控制。
 
-使用 Light DOM，自定义元素只处理行为，样式由外部 CSS 控制。
-
-## 原因
-
-- **Worker 兼容**：Worker 拼 HTML 时直接使用 `gd-*` class，无需模板编译
-- **样式统一**：外部 CSS 可直接控制组件内部样式
-- **简单性**：不需要处理 Shadow DOM 的样式穿透问题
+> [!tip] 原因
+> **Worker 兼容**：Worker 拼 HTML 时直接使用 `gd-*` class，无需模板编译
+> **样式统一**：外部 CSS 可直接控制组件内部样式
+> **简单性**：不需要处理 Shadow DOM 的样式穿透问题
 
 ## 影响
 

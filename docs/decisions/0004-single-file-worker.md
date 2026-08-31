@@ -49,7 +49,7 @@ CSS 从 `src/` 各组件文件拼接，以 `/* ===== src/path/file.css ===== */`
 
 ## 影响
 
-- 文件体积大（websearch.js ~6464 行，~215KB）
+- 文件体积大（websearch.js 约 4300 行）
 - CSS 更新需要重新内联到所有页面 Worker
 - 构建脚本负责从 `src/` 拼接 CSS 到 Worker
 - Worker 有 1MB 体积限制，但当前最大文件 215KB，远未触及

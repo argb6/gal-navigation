@@ -1,18 +1,26 @@
 ---
+title: Problem-shenmo 命名混乱
+tags:
+  - galnavi/problem
+  - naming
+  - shenmo
+  - palace
+  - migration
+date: 2026-08-14
+updated: 2026-08-31
 type: decision
 category: Problem
-tags: [naming, shenmo, palace, migration]
 status: resolved
-created: 2026-08-14
-updated: 2026-08-14
-related: [[GD 组件库]], [[Worker 架构]]
+related:
+  - "[[GD 组件库]]"
+  - "[[Worker 架构]]"
 ---
 
 # Problem-shenmo 命名混乱
 
-## 现象
+> [!bug] 现象
+> 项目中同时存在 `shenmo` 和 `palace` 两种命名：`worker/shenmo.js` → `worker/new/palace.js`；`src/extend/shenmo/` → `extend/palace/`；注释、KV key、Preview 文案混用。
 
-项目中同时存在 `shenmo` 和 `palace` 两种命名：
 - `worker/shenmo.js`（旧）→ `worker/new/palace.js`（新）
 - `src/extend/shenmo/gd-shenmo.css`（旧）→ `src/extend/palace/gd-palace.css`（新）
 - CSS 注释中「神魔」「神魔殿堂」「shenmo」混用

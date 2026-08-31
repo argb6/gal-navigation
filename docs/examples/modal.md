@@ -49,3 +49,6 @@ bindGdModal("#myModal", "#openBtn");
 | 纳普彩蛋 | `gd-modal gd-modal--nap` |
 | 发布卡片 | `gd-publish-card` |
 | 跳转倒计时 | `gd-redirect-ring/text/countdown` |
+| 欢迎弹窗（主站） | `#welcomeModal`：`gd-modal-overlay` + `gd-modal`；「弹窗」按钮可再次打开 |
+
+欢迎窗文案：介绍句下一行居中加粗「✨ 详情：新手优先看卡片详情✨」；帮助/关于链接居中。首访用 `localStorage` 键 `galnavi-welcome-seen`。

@@ -62,3 +62,18 @@ initGdHero("#demoHero");
 - 首张 slide 必须有 `is-active`
 - 图片用 `background-image`，不要放 `<img>`（保持图层结构）
 - 圆点数量必须与 slide 一致
+
+## 加载骨架
+
+轮播区块不要整段 `hidden`。进页先露出骨架，图好了再撤：
+
+```html
+<section class="gd-section" aria-label="轮播图">
+  <div class="gd-hero is-loading" id="heroCarousel">
+    <div class="gd-skeleton gd-skeleton--hero" id="heroSkeleton" aria-hidden="true"></div>
+    <!-- track / arrows / dots -->
+  </div>
+</section>
+```
+
+加载完成后：去掉 `#heroSkeleton`，并 `carousel.classList.remove('is-loading')`。`.is-loading` 会藏起箭头、圆点和渐变。

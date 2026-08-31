@@ -39,5 +39,6 @@
 | [`migration.md`](./migration.md) | 重构迁移记录 |
 | [`coding-style.md`](./coding-style.md) | 编码规范 |
 | [`CHANGELOG.md`](./CHANGELOG.md) | 版本记录（新增/完善/去除） |
-| [`examples/`](./examples/) | 使用示例（正确/错误写法） |
+| [`examples/`](./examples/) | 使用示例（card / modal / navbar / search / carousel / toast / filter-bar / groundback） |
 | [`decisions/`](./decisions/) | 架构决策记录（ADR，为什么这样设计） |
+| [`open-source-prep.md`](./open-source-prep.md) | 开源脱敏清单；`source/` 为 Worker 脱敏副本 |

@@ -1,18 +1,29 @@
 ---
+title: gd-button
+tags:
+  - galnavi/component
+  - button
+  - primary
+  - secondary
+  - danger
+  - ghost
+  - back
+date: 2026-08-14
+updated: 2026-08-31
 type: component
 category: Component
-tags: [button, primary, secondary, danger, ghost, back]
 status: active
-created: 2026-08-14
-updated: 2026-08-14
-related: [[GD 组件库]], [[Design Token]], [[状态层模式]], [[Decision-MD3 对齐口径]]
+related:
+  - "[[GD 组件库]]"
+  - "[[Design Token]]"
+  - "[[状态层模式]]"
+  - "[[Decision-MD3 对齐口径]]"
 ---
 
 # gd-button
 
-## Summary
-
-按钮组件，6 种变体覆盖全部操作场景，触控目标 ≥ 48px。
+> [!abstract] Summary
+> 按钮组件，变体覆盖主操作、卡片、返回和 NSFW 开关，触控目标 ≥ 48px。
 
 ## Definition
 
@@ -22,10 +33,10 @@ related: [[GD 组件库]], [[Design Token]], [[状态层模式]], [[Decision-MD3
 | Secondary | `gd-button--secondary` | 次操作（透明描边） |
 | Danger | `gd-button--danger` | 危险操作（粉红渐变） |
 | Ghost | `gd-button--ghost` | 幽灵按钮（紫描边 + 紫底） |
-| Wide | `gd-button--wide` | 全宽按钮（年龄门） |
+| Wide | `gd-button--wide` | 全宽按钮 |
 | Back | `gd-button--back` | 返回主站按钮 |
 | Detail | `gd-button--detail` | 卡片详情按钮 |
-| Link | `gd-button--link` | 卡片链接按钮 |
+| NSFW | `gd-button--nsfw` | 抽屉 NSFW 开关：关=暗、开=亮；点一下闪「已开启」，再点闪「已关闭」 |
 
 ## Implementation
 

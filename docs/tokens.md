@@ -128,6 +128,7 @@
 
 ## 玻璃边界约定
 
-- 卡片类（card / detail / badge）：**只用** `--gd-glass-bg/border`，**不用** blur 和阴影
-- 遮罩/浮层（modal / age-gate / toast）：可用 `--gd-glass-blur` / nav 系列
+- 卡片类（card / detail / badge）：**只用** `--gd-glass-bg/border`，**不用** `backdrop-filter` 和阴影
+- 遮罩/浮层（modal / toast）：可用 `--gd-glass-blur` / nav 系列
 - 工具类：`gd-glass`（无模糊）、`gd-glass--blur`（浮层）、`gd-glass--strong`（顶栏）
+- 线条图案（页面背景 / 条目卡表面）不是玻璃 token：R2 URL `https://assets.galnavi.top/线条图案.png`，装饰层 `filter: blur(10.8px)` + `mix-blend-mode: screen`。这不是 `backdrop-filter`，卡片红线仍然成立

@@ -1,10 +1,15 @@
 ---
+title: ChangeLog-知识库重组
+tags:
+  - galnavi/changelog
+  - kb
+  - restructure
+  - sanitization
+date: 2026-08-14
+updated: 2026-08-31
 type: decision
 category: ChangeLog
-tags: [kb, restructure, sanitization]
 status: active
-created: 2026-08-14
-updated: 2026-08-14
 ---
 
 # ChangeLog-知识库重组
@@ -22,7 +27,7 @@ updated: 2026-08-14
 - D1 表名：navi_sites → sites，group1 → GROUP_DB
 - KV 绑定：HERO_KV → CAROUSEL_KV，hero_images → carousel_images
 - 域名：galnavi.top → example.com
-- Cookie：galnavi-verified → site-verified
+- 撤下 Cookie 规范（不再维护访问记录 key 表）
 - 中文名：神魔 → 殿堂，shenmo → palace
 
 ### 新增节点
@@ -44,3 +49,8 @@ updated: 2026-08-14
 - gd-card → +Decision-玻璃拟态保留
 - gd-button → +Decision-MD3 对齐口径
 - GD 组件库 → +Decision-MD3 对齐口径 +Decision-玻璃拟态保留
+
+## Related
+
+- [[Obsidian 书写约定]] — 现行写法
+- [[ChangeLog-Obsidian 格式]] — 后续格式迁移

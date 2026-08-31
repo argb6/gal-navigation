@@ -1,11 +1,19 @@
 ---
+title: Decision-MD3 对齐口径
+tags:
+  - galnavi/decision
+  - md3
+  - alignment
+  - design-system
+  - principle
+date: 2026-08-14
+updated: 2026-08-31
 type: decision
 category: Decision
-tags: [md3, alignment, design-system, principle]
 status: active
-created: 2026-08-14
-updated: 2026-08-14
-related: [[Design Token]], [[GD 组件库]]
+related:
+  - "[[Design Token]]"
+  - "[[GD 组件库]]"
 ---
 
 # Decision-MD3 对齐口径
@@ -44,7 +52,8 @@ GALNAVI 需要统一设计系统，但不能丢失品牌视觉 identity。
 
 ## 原因
 
-**MD3 = 规矩与语义；gd = GALNAVI 皮肤与代码壳。** 语义对齐保证无障碍和交互一致性，视觉保留品牌 identity。
+> [!tip] 原因
+> **MD3 = 规矩与语义；gd = GALNAVI 皮肤与代码壳。** 语义对齐保证无障碍和交互一致性，视觉保留品牌 identity。
 
 ## 影响
 

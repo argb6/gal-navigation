@@ -46,7 +46,7 @@ src/extend/<page>/gd-<page>.css      ─┘
 
 - CSS 更新后需要重新构建所有 Worker
 - 每个 Worker 的 CSS 内容相同（除了 extend 样式不同）
-- 构建脚本在 `sandbox/*/build-*.mjs` 或 `临时脚本（内部）` 中
+- 构建脚本在 `sandbox/*/build-*.mjs` 或 `temp/` 中
 - 预览页 `src/preview/gd-preview.js` 使用 esbuild 打包（浏览器端）
 
 ## 替代方案

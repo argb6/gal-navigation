@@ -29,6 +29,7 @@
 ### 玻璃
 
 - 卡片类**不用** `backdrop-filter` / `box-shadow`；遮罩/浮层按现网数值使用（完整约定见 `tokens.md`）
+- 页面/条目卡上的线条图案用装饰层 `filter: blur(10.8px)`（不是 `backdrop-filter`）
 
 ### 交互
 
@@ -71,37 +72,56 @@
 
 - **可访问性**：`aria-label` 必填（如"返回主站"），图标 `aria-hidden="true"`
 
+## 页脚贴底与详情反向缩放
+
+短页（内容不够一屏）把 `gd-footer` 顶到视口底；内容很长时页脚跟在正文后面。浏览器缩小后，空白留在**内容和页脚之间**，不要落到页脚下面。
+
+```html
+<body class="gd-page">
+  <main class="gd-page-shell">…</main>
+  <footer class="gd-footer">…</footer>
+</body>
+<script type="module">
+  import { initGdStickyViewport } from "../src/foundation/layout/gd-layout.js";
+  initGdStickyViewport();
+</script>
+```
+
+详情页在 Ctrl+/- **缩小**时，标题和卡片整栏用 CSS `zoom` 放大，避免 1100px 锁宽缩成一团；**放大**页面不反向缩小。页脚放在 `.gd-detail__scale` 外面，继续贴视口底：
+
+```html
+<div class="gd-detail__container">
+  <div class="gd-detail__scale">
+    <header class="gd-detail__header">…</header>
+    <div class="gd-detail__content">
+      <!-- gd-highlights + gd-section-card-grid -->
+    </div>
+  </div>
+  <footer class="gd-footer">…</footer>
+</div>
+<script type="module">
+  import { initGdInverseZoom } from "../src/extend/detail/gd-detail.js";
+  initGdInverseZoom();
+</script>
+```
+
+页面 Worker 是单文件内联，把上述函数抄进页内脚本即可，不要在运行期外链 `src/`。
+
+## 页面背景（gd-groundback）
+
+- 除殿堂外各 Worker 用 `gd-groundback--websearch`；殿堂用 `gd-groundback--gold`
+- **`body` 必须透明**（不要铺不透明渐变）；背景层 `z-index: 0`，正文更高。`z-index: -1` 会画到 body 底色后面
+- 示例见 `docs/examples/groundback.md`
+
+## 殿堂条目卡
+
+`.gd-card--item` 必须 `width: auto; height: auto`。Worker 内联副本若漏掉，会继承主站卡 420×212，游戏名被挤没，只剩序号和按钮。
+
+## 首页快捷栏
+
+两次 `gd-filter-bar` 外包 `.gd-filter-bar-wrap`：窄屏上下叠，≥769px 左右分（`--start` 靠左 / `--end` 靠右）。示例见 `docs/examples/filter-bar.md`。
+
 ## 打包与预览
 
 - 改 JS 后必须重新打包 `gd-preview.js`（命令见 `src/README.md` 预览章节）
 - 文件一律 UTF-8
-
-## 统一访问记录（site-verified）
-
-全站"已访问过本站"的判定，统一用一个 key（`worker/shared/config.js` 的 `VERIFIED_KEY`）。
-
-- **机制**：cookie + localStorage 双通道，值 `1`，有效期 365 天（`max-age=31536000`）
-- **写入时机**：
-  - 发布页（`worker/index.js`）年龄确认后写入
-  - palace 等页面首访检测：未存在该 key → 写入 + 跳转首页
-- **判定**：任一通道命中 `site-verified=1` 即视为已访问，不再跳转
-- **禁止**：各页自造不同 key
-
-示例（页面 script 首访检测）：
-
-```js
-(function () {
-  var KEY = "site-verified";
-  function get() {
-    var c = false, s = false;
-    try { c = document.cookie.split("; ").some(function (x) { return x.indexOf(KEY + "=1") === 0; }); } catch (e) {}
-    try { s = localStorage.getItem(KEY) === "1"; } catch (e) {}
-    return c || s;
-  }
-  function set() {
-    try { document.cookie = KEY + "=1; max-age=31536000; path=/; SameSite=Lax"; } catch (e) {}
-    try { localStorage.setItem(KEY, "1"); } catch (e) {}
-  }
-  if (!get()) { set(); window.location.replace("/"); }
-})();
-```

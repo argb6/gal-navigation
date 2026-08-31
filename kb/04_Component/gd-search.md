@@ -1,18 +1,25 @@
 ---
+title: gd-search
+tags:
+  - galnavi/component
+  - search
+  - input
+  - filter
+  - toolbar
+date: 2026-08-14
+updated: 2026-08-31
 type: component
 category: Component
-tags: [search, input, filter, toolbar]
 status: active
-created: 2026-08-14
-updated: 2026-08-14
-related: [[GD 组件库]], [[Web Component]]
+related:
+  - "[[GD 组件库]]"
+  - "[[Web Component]]"
 ---
 
 # gd-search
 
-## Summary
-
-搜索框组件，支持 toolbar（主站）和 group（殿堂）两种变体。
+> [!abstract] Summary
+> 搜索框组件，支持 toolbar（主站）和 group（殿堂）两种变体。
 
 ## Definition
 

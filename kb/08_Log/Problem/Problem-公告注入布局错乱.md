@@ -1,18 +1,25 @@
 ---
+title: Problem-公告注入布局错乱
+tags:
+  - galnavi/problem
+  - status
+  - notice
+  - layout
+  - dom
+  - bug
+date: 2026-08-14
+updated: 2026-08-31
 type: decision
 category: Problem
-tags: [status, notice, layout, dom, bug]
 status: resolved
-created: 2026-08-14
-updated: 2026-08-14
-related: [[gd-empty-state]]
+related:
+  - "[[gd-empty-state]]"
 ---
 
 # Problem-公告注入布局错乱
 
-## 现象
-
-状态页写入公告后，桌面端页脚和右侧索引位置互换。移动端正常。
+> [!bug] 现象
+> 状态页写入公告后，桌面端页脚和右侧索引位置互换。移动端正常。
 
 ## 原因
 
@@ -27,6 +34,9 @@ out.replace('<div class="gd-empty-state" id="noticeEmpty">', d.notice)
 移动端正常是因为单列布局不受影响。
 
 ## 修复
+
+> [!success] 修复
+> 不要只替换开头标签。把整个空状态占位块换成公告 HTML。
 
 替换整个空状态占位块：
 

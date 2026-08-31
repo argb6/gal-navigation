@@ -1,18 +1,29 @@
 ---
+title: Design Token
+tags:
+  - galnavi/component
+  - token
+  - css-variable
+  - color
+  - shape
+  - type
+  - motion
+  - glass
+date: 2026-08-14
+updated: 2026-08-31
 type: component
 category: Component
-tags: [token, css-variable, color, shape, type, motion, glass]
 status: active
-created: 2026-08-14
-updated: 2026-08-14
-related: [[GD 组件库]], [[玻璃表面系统]], [[MD3 对齐口径]]
+related:
+  - "[[GD 组件库]]"
+  - "[[玻璃表面系统]]"
+  - "[[Decision-MD3 对齐口径]]"
 ---
 
 # Design Token
 
-## Summary
-
-GALNAVI 设计变量系统，`:root` 下 168+ 变量，覆盖颜色/形状/字号/动效/玻璃/状态/布局，是唯一的换肤入口。
+> [!abstract] Summary
+> GALNAVI 设计变量系统，`:root` 下 168+ 变量，覆盖颜色/形状/字号/动效/玻璃/状态/布局，是唯一的换肤入口。
 
 ## Definition
 
@@ -74,5 +85,5 @@ border-color: rgba(var(--gd-color-white-rgb), 0.14);
 ## Related
 
 - [[GD 组件库]] — 组件体系
-- [[MD3 对齐口径]] — 对齐原则
+- [[Decision-MD3 对齐口径]] — 对齐原则
 - 文件路径：`src/foundation/tokens/tokens.css`

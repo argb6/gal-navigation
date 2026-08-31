@@ -1,18 +1,28 @@
 ---
+title: Web Component
+tags:
+  - galnavi/component
+  - web-component
+  - custom-element
+  - gd-modal
+  - gd-navbar
+  - gd-search
+date: 2026-08-14
+updated: 2026-08-31
 type: component
 category: Component
-tags: [web-component, custom-element, gd-modal, gd-navbar, gd-search]
 status: active
-created: 2026-08-14
-updated: 2026-08-14
-related: [[GD 组件库]], [[gd-modal]], [[gd-navbar]], [[gd-search]]
+related:
+  - "[[GD 组件库]]"
+  - "[[gd-modal]]"
+  - "[[gd-navbar]]"
+  - "[[gd-search]]"
 ---
 
 # Web Component
 
-## Summary
-
-三个自定义元素处理通用交互行为（弹窗/导航/搜索），不包含业务逻辑。注册入口 `src/runtime/gd.js`。
+> [!abstract] Summary
+> 三个自定义元素处理通用交互行为（弹窗/导航/搜索），不包含业务逻辑。注册入口 `src/runtime/gd.js`。
 
 ## Definition
 

@@ -1,18 +1,27 @@
 ---
+title: KV 存储
+tags:
+  - galnavi/technology
+  - kv
+  - key-value
+  - cloudflare
+  - storage
+date: 2026-08-14
+updated: 2026-08-31
 type: concept
 category: Technology
-tags: [kv, key-value, cloudflare, storage]
 status: active
-created: 2026-08-14
-updated: 2026-08-14
-related: [[Cloudflare Worker]], [[D1 数据库]], [[数据流]]
+related:
+  - "[[Cloudflare Worker]]"
+  - "[[D1 数据库]]"
+  - "[[数据流]]"
+  - "[[Cloudflare R2]]"
 ---
 
 # KV 存储
 
-## Summary
-
-Cloudflare KV 存储轮播图、推荐项、捐款名单、状态监控和站点公告。
+> [!abstract] Summary
+> Cloudflare KV 存储轮播图、推荐项、捐款名单、状态监控和站点公告。
 
 ## Definition
 
@@ -49,3 +58,4 @@ Worker 端读取 KV 时有多层容错：
 
 - [[D1 数据库]] — SQL 存储
 - [[数据流]] — 数据路径
+- [[Cloudflare R2]] — 图片文件，不放 KV
