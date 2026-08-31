@@ -1,9 +1,13 @@
-// GALNAVI Worker - Open Source Version
-// Sensitive information has been redacted.
-// See AGENTS.md for project conventions.
+/**
+ * 脱敏页面副本（由 worker/new 提取）。
+ * 已去除：SEO（OG/Twitter/JSON-LD/canonical/robots/sitemap）、D1/KV/API、Cookie 首访、私密地址。
+ * 不含 status。仅供阅读 / 本地预览，不能当生产 Worker 部署。
+ */
 
 const DB_CATEGORY_MAP = { simulators: "simulator", websites: "site", tools: "tool", company: "company", hanhua: "hanhua" };
-const ASSET_ICON = "https://your-cdn.example.com/assets/icon/favicon.png";
+const ASSET_FAVICON = "https://assets.galnavi.top/favicon.png";
+const ASSET_ICON = "https://assets.galnavi.top/icon.png";
+const ASSET_LOGO = "https://assets.galnavi.top/logo.png";
 const SECURITY_HEADERS = {
   "Content-Type": "text/html; charset=utf-8",
   "Cache-Control": "private, no-store",
@@ -13,17 +17,16 @@ const SECURITY_HEADERS = {
   "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; connect-src 'self'; font-src 'self' data: https://fonts.gstatic.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self'",
 };
 export default {
-  async fetch(request, env, ctx) {
-    const url = new URL(request.url);
-    const slashMap = { "/nav/palace": "/nav/palace/", "/nav/about": "/nav/about/", "/nav/help": "/nav/help/", "/nav/detail": "/nav/detail/" };
-    if (slashMap[url.pathname]) { url.pathname = slashMap[url.pathname]; return Response.redirect(url.toString(), 301); }
-    const [navData, heroImages, featuredKeys] = await Promise.all([fetchNavData(env), fetchHeroImages(env), fetchFeaturedKeys(env)]);
-    return new Response(renderPage(navData, heroImages, featuredKeys), { headers: SECURITY_HEADERS });
+  async fetch() {
+    return new Response(renderPage(DEMO_NAV, DEMO_HERO, DEMO_FEAT), { headers: SECURITY_HEADERS });
   },
 };
-async function fetchNavData(env) { try { if (!env.DB) return []; const { results } = await env.DB.prepare("SELECT item_key, title, category, tags, short_desc, url, icon_path, updated_at FROM sites ORDER BY category ASC").all(); return results.map(row => ({ id: row.item_key, cat: DB_CATEGORY_MAP[row.category] || row.category, name: row.title, desc: row.short_desc || "", tags: row.tags ? row.tags.split(",") : [], url: row.url || "", icon: row.icon_path || "", updatedAt: row.updated_at || "" })); } catch (e) { return []; } }
-async function fetchHeroImages(env) { try { if (!env.CAROUSEL_KV) return []; const raw = await env.CAROUSEL_KV.get('carousel_images'); if (!raw) return []; try { const p = JSON.parse(raw); return Array.isArray(p) ? p : (typeof p === 'string' && p ? [p] : []); } catch (e) { const t = raw.trim(); return t.includes(',') ? t.split(',').map(s => s.trim()).filter(Boolean) : (t ? [t] : []); } } catch (e) { return []; } }
-async function fetchFeaturedKeys(env) { try { if (!env.FEATURED_KV) return []; const raw = await env.FEATURED_KV.get('featured_items'); if (!raw) return []; try { return JSON.parse(raw); } catch (e) { const t = raw.trim(); return t ? t.split(',').map(k => k.trim()).filter(Boolean) : []; } } catch (e) { return []; } }
+
+const DEMO_NAV = [
+  { id: "site-alpha", cat: "site", name: "示例站点", desc: "演示用卡片，无真实数据源。", tags: ["演示"], url: "https://example.com", icon: "", updatedAt: "" },
+];
+const DEMO_HERO = [];
+const DEMO_FEAT = [];
 function safeJson(obj) { return JSON.stringify(obj).replace(/<\//g, '<\\/'); }
 function renderPage(navData, heroImages, featuredKeys) {
   const dataJson = safeJson(navData);
@@ -36,8 +39,7 @@ function renderPage(navData, heroImages, featuredKeys) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="dark">
 <title>GALNAVI - ACG 二次元资源聚合导航</title>
-<meta name="robots" content="index, follow">
-<link rel="icon" type="image/png" href="${ASSET_ICON}">
+<link rel="icon" type="image/png" href="${ASSET_FAVICON}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;600;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -358,7 +360,7 @@ html::-webkit-scrollbar-thumb {
     radial-gradient(circle at 50% 110%, rgba(var(--gd-color-blue-rgb), 0.12), transparent 36%);
 }
 
-/* 殿堂金：深色底 + 金色光晕（参考现网 palace 背景） */
+/* 殿堂金：深色底 + 金色光晕（参考现网 shenmo 背景） */
 .gd-groundback--gold {
   background: linear-gradient(145deg, #06070e 0%, #0a0c16 48%, #0e1322 100%);
 }
@@ -462,7 +464,7 @@ html::-webkit-scrollbar-thumb {
 .gd-brand__title--shift {
   animation: gd-brand-glow 3s linear infinite;
 }
-/* 殿堂：橙 → 绿 → 红 循环（殿堂主题色） */
+/* 神魔殿堂：橙 → 绿 → 红 循环（殿堂主题色） */
 .gd-brand__title--palace {
   animation: gd-brand-glow-palace 2.25s linear infinite alternate;
 }
@@ -1586,7 +1588,7 @@ gd-search { display: contents; }
 }
 .gd-search--group .gd-search__clear:hover { background: rgba(var(--gd-color-error-rgb), 0.25); color: var(--gd-color-error-light); }
 
-/* 搜索词高亮：蓝色（普通）/ 橙色（殿堂），走 token */
+/* 搜索词高亮：蓝色（普通）/ 橙色（神魔殿堂），走 token */
 .gd-search__hl,
 .gd-search mark,
 .gd-search .mark {
@@ -1604,7 +1606,7 @@ gd-search { display: contents; }
 }
 
 /* ===== src/display/card/gd-card.css ===== */
-/* gd-card — 玻璃数值冻结；主站 / 友链 / 殿堂变体 */
+/* gd-card — 玻璃数值冻结；主站 / 友链 / 神魔变体 */
 
 .gd-card {
   position: relative;
@@ -1747,7 +1749,7 @@ gd-search { display: contents; }
   justify-content: start;
 }
 
-/* 殿堂 / 圣器殿堂 item-card */
+/* 神魔 / 圣器殿堂 item-card */
 .gd-card--item {
   --gd-comp-item-color: #fbbf24;
   --gd-comp-item-color-light: #fcd34d;
@@ -1984,7 +1986,7 @@ gd-search { display: contents; }
 .gd-tag--blue { background: var(--gd-tag-2-bg); color: var(--gd-tag-2-fg); border-color: var(--gd-tag-2-border); }
 .gd-tag--pink { background: var(--gd-tag-3-bg); color: var(--gd-tag-3-fg); border-color: var(--gd-tag-3-border); }
 
-/* 标签索引页（example.com/nav/#tags tag-item） */
+/* 标签索引页（galnavi.top/nav/#tags tag-item） */
 .gd-tag-list {
   display: flex;
   flex-wrap: wrap;
@@ -2715,7 +2717,7 @@ gd-search { display: contents; }
   }
 }
 
-/* 殿堂条目卡变体 — 尺寸/结构同 gd-card--item（序号 + 名称长条 + 操作按钮长条） */
+/* 神魔条目卡变体 — 尺寸/结构同 gd-card--item（序号 + 名称长条 + 操作按钮长条） */
 .gd-skeleton--item {
   gap: 10px;
   padding: 14px 16px;
@@ -3061,7 +3063,7 @@ html::-webkit-scrollbar-thumb {
 /* gd-groundback：页面背景层
    用法：<div class="gd-groundback gd-groundback--blue" aria-hidden="true"></div>
    变体：--blue（默认，主站） / --gold（殿堂）
-   蓝色参考原版发布页（index.js）背景：三层光斑 + 对角渐变 + 点阵网格 + 底部光带。 */
+   蓝色参考原版发布页（galnavi.js）背景：三层光斑 + 对角渐变 + 点阵网格 + 底部光带。 */
 .gd-groundback {
   position: fixed;
   inset: 0;
@@ -3101,7 +3103,7 @@ html::-webkit-scrollbar-thumb {
     radial-gradient(circle at 50% 110%, rgba(var(--gd-color-blue-rgb), 0.12), transparent 36%);
 }
 
-/* 殿堂金：深色底 + 金色光晕（参考现网 palace 背景） */
+/* 殿堂金：深色底 + 金色光晕（参考现网 shenmo 背景） */
 .gd-groundback--gold {
   background: linear-gradient(145deg, #06070e 0%, #0a0c16 48%, #0e1322 100%);
 }
@@ -3205,7 +3207,7 @@ html::-webkit-scrollbar-thumb {
 .gd-brand__title--shift {
   animation: gd-brand-glow 3s linear infinite;
 }
-/* 殿堂：橙 → 绿 → 红 循环（殿堂主题色） */
+/* 神魔殿堂：橙 → 绿 → 红 循环（殿堂主题色） */
 .gd-brand__title--palace {
   animation: gd-brand-glow-palace 2.25s linear infinite alternate;
 }
@@ -4329,7 +4331,7 @@ gd-search { display: contents; }
 }
 .gd-search--group .gd-search__clear:hover { background: rgba(var(--gd-color-error-rgb), 0.25); color: var(--gd-color-error-light); }
 
-/* 搜索词高亮：蓝色（普通）/ 橙色（殿堂），走 token */
+/* 搜索词高亮：蓝色（普通）/ 橙色（神魔殿堂），走 token */
 .gd-search__hl,
 .gd-search mark,
 .gd-search .mark {
@@ -4347,7 +4349,7 @@ gd-search { display: contents; }
 }
 
 /* ===== src/display/card/gd-card.css ===== */
-/* gd-card — 玻璃数值冻结；主站 / 友链 / 殿堂变体 */
+/* gd-card — 玻璃数值冻结；主站 / 友链 / 神魔变体 */
 
 .gd-card {
   position: relative;
@@ -4497,7 +4499,7 @@ gd-search { display: contents; }
   justify-content: start;
 }
 
-/* 殿堂 / 圣器殿堂 item-card */
+/* 神魔 / 圣器殿堂 item-card */
 .gd-card--item {
   --gd-comp-item-color: #fbbf24;
   --gd-comp-item-color-light: #fcd34d;
@@ -4734,7 +4736,7 @@ gd-search { display: contents; }
 .gd-tag--blue { background: var(--gd-tag-2-bg); color: var(--gd-tag-2-fg); border-color: var(--gd-tag-2-border); }
 .gd-tag--pink { background: var(--gd-tag-3-bg); color: var(--gd-tag-3-fg); border-color: var(--gd-tag-3-border); }
 
-/* 标签索引页（example.com/nav/#tags tag-item） */
+/* 标签索引页（galnavi.top/nav/#tags tag-item） */
 .gd-tag-list {
   display: flex;
   flex-wrap: wrap;
@@ -5401,7 +5403,7 @@ gd-search { display: contents; }
   }
 }
 
-/* 殿堂条目卡变体 — 尺寸/结构同 gd-card--item（序号 + 名称长条 + 操作按钮长条） */
+/* 神魔条目卡变体 — 尺寸/结构同 gd-card--item（序号 + 名称长条 + 操作按钮长条） */
 .gd-skeleton--item {
   gap: 10px;
   padding: 14px 16px;
@@ -5649,7 +5651,7 @@ a{color:var(--gd-color-link);text-decoration:none}a:hover{color:var(--gd-color-l
 <nav class="gd-navbar" id="mainNav" role="navigation" aria-label="主导航">
   <div class="gd-navbar__inner">
     <a class="gd-navbar__logo" href="#" id="navLogo" aria-label="GALNAVI 首页">
-      <img class="gd-navbar__logo-img" src="${ASSET_ICON}" alt="GALNAVI" width="28" height="28">
+      <img class="gd-navbar__logo-img" src="${ASSET_LOGO}" alt="GALNAVI" width="28" height="28">
       <span class="gd-brand__title gd-brand__title--shift">GALNAVI</span>
     </a>
     <div class="gd-navbar__links" id="navLinks" data-gd-nav-links>
@@ -5713,12 +5715,12 @@ a{color:var(--gd-color-link);text-decoration:none}a:hover{color:var(--gd-color-l
     <div class="gd-filter-bar-wrap" id="homeFilter">
       <div class="gd-filter-bar" role="toolbar" aria-label="快速导航">
         <button class="gd-filter-bar__tag gd-filter-bar__tag--tag" id="filterTagBtn">标签</button>
-        <a class="gd-filter-bar__tag gd-filter-bar__tag--friend" href="https://example.com/nav/friend/" target="_blank" rel="noopener noreferrer">友链</a>
-        <a class="gd-filter-bar__tag" href="https://example.com/nav/about/" target="_blank" rel="noopener noreferrer">关于</a>
-        <a class="gd-filter-bar__tag" href="https://example.com/nav/help/" target="_blank" rel="noopener noreferrer">帮助</a>
+        <a class="gd-filter-bar__tag gd-filter-bar__tag--friend" href="https://galnavi.top/nav/friend/" target="_blank" rel="noopener noreferrer">友链</a>
+        <a class="gd-filter-bar__tag" href="https://galnavi.top/nav/about/" target="_blank" rel="noopener noreferrer">关于</a>
+        <a class="gd-filter-bar__tag" href="https://galnavi.top/nav/help/" target="_blank" rel="noopener noreferrer">帮助</a>
         <button class="gd-filter-bar__tag gd-filter-bar__tag--tavern" id="filterTavernBtn">酒馆</button>
-        <a class="gd-filter-bar__tag gd-filter-bar__tag--relic" href="https://example.com/nav/palace/" target="_blank" rel="noopener noreferrer">殿堂</a>
-        <a class="gd-filter-bar__tag" href="https://github.com/argb6/gal-navigation" target="_blank" rel="noopener noreferrer">仓库</a>
+        <a class="gd-filter-bar__tag gd-filter-bar__tag--relic" href="https://galnavi.top/nav/palace/" target="_blank" rel="noopener noreferrer">殿堂</a>
+        <a class="gd-filter-bar__tag" href="#" target="_blank" rel="noopener noreferrer">仓库</a>
       </div>
     </div>
 
@@ -5837,12 +5839,12 @@ a{color:var(--gd-color-link);text-decoration:none}a:hover{color:var(--gd-color-l
 <!-- ===== gd-footer ===== -->
 <footer class="gd-footer" role="contentinfo">
   <nav class="gd-footer__nav" aria-label="页脚导航">
-    <a href="https://example.com/sitemap.xml">sitemap.xml</a><span class="gd-footer__sep" aria-hidden="true">|</span>
-    <a href="https://example.com/robots.txt">robots.txt</a><span class="gd-footer__sep" aria-hidden="true">|</span>
-    <a href="mailto:contact@example.com">联系站长</a><span class="gd-footer__sep" aria-hidden="true">|</span>
-    <a href="https://example.com/nav/donate/">赞助本站</a><span class="gd-footer__sep" aria-hidden="true">|</span>
-    <a href="https://example.com/nav/friend/">申请友链</a><span class="gd-footer__sep" aria-hidden="true">|</span>
-    <a href="https://example.com/status/" target="_blank" rel="noopener noreferrer">站点状态</a>
+    
+    
+    <a href="mailto:feedback@example.com">联系站长</a><span class="gd-footer__sep" aria-hidden="true">|</span>
+    <a href="https://galnavi.top/nav/donate/">赞助本站</a><span class="gd-footer__sep" aria-hidden="true">|</span>
+    <a href="https://galnavi.top/nav/friend/">申请友链</a><span class="gd-footer__sep" aria-hidden="true">|</span>
+    <a href="https://galnavi.top/status/" target="_blank" rel="noopener noreferrer">站点状态</a>
   </nav>
   <p class="gd-footer__copy">&copy; 2026 GALNAVI · 愿每一次探索都有新的收获</p>
 </footer>
@@ -5862,7 +5864,7 @@ a{color:var(--gd-color-link);text-decoration:none}a:hover{color:var(--gd-color-l
         <li>🚫 <strong>访问提示</strong>：请勿使用日本节点访问本站</li>
       </ul>
       <p style="margin-bottom:16px">
-        <a href="https://example.com/nav/help/" class="gd-link" target="_blank" rel="noopener noreferrer">帮助文档 → 点击这里</a>　｜　<a href="https://example.com/nav/about/" class="gd-link" target="_blank" rel="noopener noreferrer">了解本站 → 点击这里</a>
+        <a href="https://galnavi.top/nav/help/" class="gd-link" target="_blank" rel="noopener noreferrer">帮助文档 → 点击这里</a>　｜　<a href="https://galnavi.top/nav/about/" class="gd-link" target="_blank" rel="noopener noreferrer">了解本站 → 点击这里</a>
       </p>
       <div style="text-align:center">
         <button type="button" class="gd-button gd-button--primary" data-gd-close id="welcomeStart">开始探索</button>
@@ -5881,7 +5883,7 @@ a{color:var(--gd-color-link);text-decoration:none}a:hover{color:var(--gd-color-l
 
 <script>
 var allData = ${dataJson};
-var CAROUSEL_IMAGES = ${heroJson};
+var HERO_IMAGES = ${heroJson};
 var FEATURED_KEYS = ${featJson};
 let currentPage = 'home';
 
@@ -5930,7 +5932,7 @@ function buildCard(item, keyword) {
   var nameDisp = hl(item.name || '');
   var descDisp = hl(item.desc || '');
   var hasUrl = item.url && item.url !== 'https://...' && isSafeHttpUrl(item.url);
-  var detailBtn = '<a href="https://example.com/nav/detail/?item_key=' + encodeURIComponent(item.id) + '" class="gd-button gd-button--detail">介绍详情</a>';
+  var detailBtn = '<a href="https://galnavi.top/nav/detail/?item_key=' + encodeURIComponent(item.id) + '" class="gd-button gd-button--detail">介绍详情</a>';
   var linkBtn = hasUrl
     ? '<a href="' + escapeHtml(item.url) + '" target="_blank" rel="noopener noreferrer" class="gd-button gd-button--link">链接直达</a>'
     : '<span class="gd-button gd-button--link is-disabled" aria-disabled="true">链接直达</span>';
@@ -6196,7 +6198,7 @@ async function initHeroCarousel() {
   var gradient = carousel.querySelector('.gd-hero__gradient');
   var dotsC = document.getElementById('heroDots');
   var heroSkel = document.getElementById('heroSkeleton');
-  var images = CAROUSEL_IMAGES.filter(function(u){ return isSafeHttpUrl(u); });
+  var images = HERO_IMAGES.filter(function(u){ return isSafeHttpUrl(u); });
   if (!images.length) return;
   if (heroSection) heroSection.hidden = false;
   // 预加载图片后再移除骨架屏
@@ -6356,7 +6358,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!href) return;
     var lower = href.trim().toLowerCase();
     if (lower.startsWith('javascript:') || lower.startsWith('data:')) { e.preventDefault(); e.stopPropagation(); return; }
-    if (href.startsWith('https://example.com/nav/') || href.startsWith('/nav/')) return;
+    if (href.startsWith('https://galnavi.top/nav/') || href.startsWith('/nav/')) return;
     if (href.startsWith('#')) return;
     if (href.startsWith('mailto:')) return;
     if (anchor.closest('.gd-footer')) return;
@@ -6369,71 +6371,56 @@ document.addEventListener('DOMContentLoaded', function() {
   setupDrawer();
   setupNavSearch();
 
-  // 首访校验：VERIFIED_KEY（cookie + localStorage 双通道，365天）
-  var VKEY = 'site-verified';
-  var verified = false;
-  try { verified = localStorage.getItem(VKEY) === '1'; } catch(e) {}
-  if (!verified) { try { verified = document.cookie.indexOf(VKEY + '=1') !== -1; } catch(e) {} }
-
-  if (!verified) {
-    location.replace('https://example.com/');
-  } else {
-    // 弹窗独立 cookie，有效期 30 天
-    var WKEY = 'site-welcome-seen';
-    var welcomeSeen = false;
-    try { welcomeSeen = document.cookie.indexOf(WKEY + '=1') !== -1; } catch(e) {}
-    var welcomeModal = document.getElementById('welcomeModal');
-    if (welcomeModal && !welcomeSeen) {
-      welcomeModal.classList.add('is-open');
-      welcomeModal.setAttribute('aria-hidden', 'false');
-      document.body.style.overflow = 'hidden';
-      var closeWelcome = function() {
-        welcomeModal.classList.remove('is-open');
-        welcomeModal.setAttribute('aria-hidden', 'true');
-        document.body.style.overflow = '';
-        try { document.cookie = WKEY + '=1;max-age=' + (30*24*60*60) + ';path=/;samesite=lax'; } catch(e) {}
-      };
-      welcomeModal.querySelectorAll('[data-gd-close]').forEach(function(n){ n.addEventListener('click', closeWelcome); });
-      welcomeModal.addEventListener('click', function(e){ if (e.target === welcomeModal) closeWelcome(); });
-      document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && welcomeModal.classList.contains('is-open')) closeWelcome(); });
-    }
-
-    // 骨架屏 + 异步渲染（独立并行）
-    showCardSkeletons('featuredGrid', 2);
-    showCardSkeletons('recentGrid', 2);
-    initHeroCarousel().catch(function(e){ console.warn('hero init failed', e); });
-    // 延迟渲染卡片，让浏览器先绘制骨架屏
-    setTimeout(function() {
-      renderHomePage();
-      updateAllCounts();
-    }, 600);
-
-    var initialPage = getPageFromUrl();
-    var initialQ = getSearchQueryFromUrl();
+  var WKEY = 'galnavi-welcome-seen';
+  var welcomeSeen = false;
+  try { welcomeSeen = localStorage.getItem(WKEY) === '1'; } catch (e) {}
+  var welcomeModal = document.getElementById('welcomeModal');
+  if (welcomeModal && !welcomeSeen) {
+    welcomeModal.classList.add('is-open');
+    welcomeModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    var closeWelcome = function () {
+      welcomeModal.classList.remove('is-open');
+      welcomeModal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      try { localStorage.setItem(WKEY, '1'); } catch (e) {}
+    };
+    welcomeModal.querySelectorAll('[data-gd-close]').forEach(function (n) { n.addEventListener('click', closeWelcome); });
+    welcomeModal.addEventListener('click', function (e) { if (e.target === welcomeModal) closeWelcome(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && welcomeModal.classList.contains('is-open')) closeWelcome(); });
+  }
+  showCardSkeletons('featuredGrid', 2);
+  showCardSkeletons('recentGrid', 2);
+  initHeroCarousel().catch(function (e) { console.warn('hero init failed', e); });
+  setTimeout(function () {
+    renderHomePage();
+    updateAllCounts();
+  }, 600);
+  var initialPage = getPageFromUrl();
+  var initialQ = getSearchQueryFromUrl();
+  if (initialQ) {
+    var navSearchInit = document.getElementById('navSearch');
+    if (navSearchInit) navSearchInit.value = initialQ;
+  }
+  if (initialPage === 'home') {
     if (initialQ) {
-      var navSearchInit = document.getElementById('navSearch');
-      if (navSearchInit) navSearchInit.value = initialQ;
+      setTimeout(function () { doHomeSearch(initialQ.trim().toLowerCase()); }, 600);
+      var clearInit = document.getElementById('navSearchClear');
+      if (clearInit) clearInit.classList.add('is-visible');
     }
-    if (initialPage === 'home') {
-      if (initialQ) {
-        setTimeout(function(){ doHomeSearch(initialQ.trim().toLowerCase()); }, 600);
-        var clearInit = document.getElementById('navSearchClear');
-        if (clearInit) clearInit.classList.add('is-visible');
-      }
-    } else {
-      navigateTo(initialPage, false);
-    }
+  } else {
+    navigateTo(initialPage, false);
   }
 
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
   // 保存滚动位置（跳转返回后恢复）
   window.addEventListener('beforeunload', function() {
-    try { sessionStorage.setItem('site-scroll', String(window.scrollY)); } catch(e) {}
+    try { sessionStorage.setItem('galnavi-scroll', String(window.scrollY)); } catch(e) {}
   });
   window.addEventListener('pageshow', function(e) {
     if (e.persisted) {
       var sy = 0;
-      try { sy = parseInt(sessionStorage.getItem('site-scroll') || '0', 10); } catch(e) {}
+      try { sy = parseInt(sessionStorage.getItem('galnavi-scroll') || '0', 10); } catch(e) {}
       window.scrollTo({ top: sy, behavior: 'instant' });
     }
   });

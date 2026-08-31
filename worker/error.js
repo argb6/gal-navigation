@@ -1,17 +1,8 @@
-// GALNAVI Worker - Open Source Version
-// Sensitive information has been redacted.
-// See AGENTS.md for project conventions.
 /**
- * Cloudflare Worker - error（路由兜底分发）
- * 路由: *example.com/* 的未匹配路径（由路由配置兜底到此 Worker）
- *
- * 行为：
- *  - 运行时拉取 index 的 sitemap.xml 生成白名单 → service binding 转发到对应 Worker，原样返回。
- *  - 未命中 → 返回 404 错误页。本页不设置任何 cookie，无首访检测，无外链跳转层。
- *
- * 构建：由 temp/build-error.mjs 生成（内联组件 tokens/groundback/gd-publish-card）。
+ * 脱敏页面副本（由 worker/new 提取）。
+ * 已去除：SEO（OG/Twitter/JSON-LD/canonical/robots/sitemap）、D1/KV/API、Cookie 首访、私密地址。
+ * 不含 status。仅供阅读 / 本地预览，不能当生产 Worker 部署。
  */
-
 const SECURITY_HEADERS = {
   "Content-Type": "text/html; charset=utf-8",
   "Cache-Control": "private, no-store",
@@ -19,7 +10,7 @@ const SECURITY_HEADERS = {
   "X-Frame-Options": "SAMEORIGIN",
   "Referrer-Policy": "strict-origin-when-cross-origin",
   "Content-Security-Policy":
-    "default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; connect-src 'self' https://example.com; font-src 'self' data: https://fonts.gstatic.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self'",
+    "default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; connect-src 'self' https://galnavi.top; font-src 'self' data: https://fonts.gstatic.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self'",
 };
 const fallbackHtml = `<!DOCTYPE html>
 <html lang="zh-CN">
@@ -28,9 +19,8 @@ const fallbackHtml = `<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#1c2a48">
 <title>页面不存在 · GALNAVI</title>
-<meta name="robots" content="noindex, nofollow">
-<link rel="icon" href="https://your-cdn.example.com/assets/icon/favicon.png" type="image/png">
-<link rel="apple-touch-icon" href="https://your-cdn.example.com/assets/icon/favicon.png">
+<link rel="icon" href="https://assets.galnavi.top/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="https://assets.galnavi.top/icon.png">
 <style>
 /* ===== src/foundation/tokens/tokens.css ===== */
 /* gd tokens — 色值/玻璃为现网取值；字号/圆角/状态透明度语义对齐 MD3 */
@@ -312,7 +302,7 @@ const fallbackHtml = `<!DOCTYPE html>
 /* gd-groundback：页面背景层
    用法：<div class="gd-groundback gd-groundback--blue" aria-hidden="true"></div>
    变体：--blue（默认，主站） / --gold（殿堂）
-   蓝色参考原版发布页（index.js）背景：三层光斑 + 对角渐变 + 点阵网格 + 底部光带。 */
+   蓝色参考原版发布页（galnavi.js）背景：三层光斑 + 对角渐变 + 点阵网格 + 底部光带。 */
 .gd-groundback {
   position: fixed;
   inset: 0;
@@ -352,7 +342,7 @@ const fallbackHtml = `<!DOCTYPE html>
     radial-gradient(circle at 50% 110%, rgba(var(--gd-color-blue-rgb), 0.12), transparent 36%);
 }
 
-/* 殿堂金：深色底 + 金色光晕（参考现网 palace 背景） */
+/* 殿堂金：深色底 + 金色光晕（参考现网 shenmo 背景） */
 .gd-groundback--gold {
   background: linear-gradient(145deg, #06070e 0%, #0a0c16 48%, #0e1322 100%);
 }
@@ -676,122 +666,17 @@ body {
 <p class="gd-publish-card__lead gd-publish-card__path">你要访问的网址不存在或已被移除。\${path}</p>
 </header>
 <footer class="gd-publish-card__footer">
-<a class="gd-publish-card__action" href="https://example.com/nav/" aria-label="返回主站">进入主站</a>
+<a class="gd-publish-card__action" href="https://galnavi.top/nav/" aria-label="返回主站">进入主站</a>
 </footer>
 </div>
 </main>
 </body>
 </html>`;
 
-/* 动态路由：路径 -> service
-   规则（与线上 actual Worker 命名一致）：
-     /                    -> index
-     /nav/                -> websearch
-     /nav/<name>/         -> <name>（同 slug 的 service binding，缺绑定则 404）
-     /robots.txt|/sitemap.xml|/favicon.ico -> index
-     /nav/api/*           -> websearch
-   sitemap.xml 由 index Worker 动态生成，本页运行时通过 index binding 拉取，
-   白名单随 sitemap 变更自动更新；拉取失败或未部署时回退静态默认表。 */
-const SITEMAP_TTL_MS = 300_000;
-const SITEMAP_URL = "https://example.com/sitemap.xml";
-
-const DEFAULT_ROUTES = {
-  "/": "index",
-  "/robots.txt": "index",
-  "/sitemap.xml": "index",
-  "/favicon.ico": "index",
-  "/nav/": "websearch",
-  "/nav/detail/": "detail",
-  "/nav/about/": "about",
-  "/nav/help/": "help",
-  "/nav/palace/": "palace",
-  "/nav/donate/": "donate",
-  "/nav/friend/": "friend",
-};
-const API_PREFIX = "/nav/api/";
-
-let sitemapCache = { routes: null, ts: 0 };
-
-function deriveRoutes(xml) {
-  const routes = {};
-  const re = /<loc[^>]*>([^<]+)<\/loc>/g;
-  let m;
-  while ((m = re.exec(xml)) !== null) {
-    let path;
-    try {
-      path = new URL(m[1].trim()).pathname;
-    } catch {
-      continue;
-    }
-    if (path === "/") {
-      routes[path] = "index";
-      continue;
-    }
-    if (path === "/robots.txt" || path === "/sitemap.xml" || path === "/favicon.ico") {
-      routes[path] = "index";
-      continue;
-    }
-    const parts = path.split("/").filter(Boolean);
-    if (parts[0] === "nav" && parts.length === 2) {
-      routes[path] = parts[1];
-    }
-  }
-  return routes;
-}
-
-async function loadRoutes(env) {
-  const now = Date.now();
-  if (sitemapCache.routes && now - sitemapCache.ts < SITEMAP_TTL_MS) {
-    return sitemapCache.routes;
-  }
-  const fallbackRoutes = { ...DEFAULT_ROUTES };
-  if (env && env.index) {
-    try {
-      const resp = await env.index.fetch(new Request(SITEMAP_URL));
-      if (resp.ok) {
-        const xml = await resp.text();
-        const derived = deriveRoutes(xml);
-        if (Object.keys(derived).length > 0) {
-          const routes = { ...DEFAULT_ROUTES, ...derived };
-          sitemapCache = { routes, ts: now };
-          return routes;
-        }
-      }
-    } catch {}
-  }
-  sitemapCache = { routes: fallbackRoutes, ts: now };
-  return fallbackRoutes;
-}
-
-async function resolveService(path, env) {
-  const routes = await loadRoutes(env);
-  if (routes[path]) return routes[path];
-  if (path.startsWith(API_PREFIX)) return "websearch";
-  return null;
-}
-
-function render404(path) {
-  return fallbackHtml.replace("${path}", path);
-}
-
 export default {
-  async fetch(request, env, ctx) {
+  async fetch(request) {
     const url = new URL(request.url);
-    const path = url.pathname;
-
-    const service = await resolveService(path, env);
-    if (service) {
-      const target = env[service];
-      if (!target) {
-        return new Response(render404(path), {
-          status: 404,
-          headers: SECURITY_HEADERS,
-        });
-      }
-      return target.fetch(request);
-    }
-
-    return new Response(render404(path), {
+    return new Response(render404(url.pathname), {
       status: 404,
       headers: SECURITY_HEADERS,
     });

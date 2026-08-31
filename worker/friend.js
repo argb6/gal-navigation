@@ -1,56 +1,27 @@
-// GALNAVI Worker - Open Source Version
-// Sensitive information has been redacted.
+/**
+ * 脱敏页面副本（由 worker/new 提取）。
+ * 已去除：SEO（OG/Twitter/JSON-LD/canonical/robots/sitemap）、D1/KV/API、Cookie 首访、私密地址。
+ * 不含 status。仅供阅读 / 本地预览，不能当生产 Worker 部署。
+ */
 const SECURITY_HEADERS = {
   "Content-Type": "text/html; charset=utf-8",
   "Cache-Control": "private, no-store",
   "X-Content-Type-Options": "nosniff",
   "X-Frame-Options": "SAMEORIGIN",
   "Referrer-Policy": "strict-origin-when-cross-origin",
-  "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; connect-src 'self' https://example.com; font-src 'self' data: https://fonts.gstatic.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self'",
+  "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; connect-src 'self' https://galnavi.top; font-src 'self' data: https://fonts.gstatic.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self'",
 };
 
+const DEMO_LINKS_HTML = '<div class="card"><ul><li>暂无友链，欢迎申请！</li></ul></div>';
 export default {
-  async fetch(request, env) {
-    if (request.method === "POST") {
-      const formData = await request.formData();
-      const name = (formData.get("name") || "").toString().trim();
-      const url = (formData.get("url") || "").toString().trim();
-      const description = (formData.get("description") || "").toString().trim();
-      const catalog = (formData.get("catalog") || "").toString().trim();
-      if (!name || !url) {
-        return new Response(JSON.stringify({ error: "名称和网址为必填项" }), { status: 400, headers: { "Content-Type": "application/json" } });
-      }
-      try {
-        await env.DB.prepare("INSERT INTO sites (name, url, des, favicon_url, catalog, update_tm) VALUES (?, ?, ?, ?, ?, datetime('now'))").bind(name, url, description || "", "", catalog || "其他").run();
-        return new Response(JSON.stringify({ success: true }), { status: 200, headers: { "Content-Type": "application/json" } });
-      } catch (e) {
-        return new Response(JSON.stringify({ error: e.message }), { status: 500, headers: { "Content-Type": "application/json" } });
-      }
-    }
-    let linksHtml = await renderLinks(env);
-    return new Response(renderPage(linksHtml), { headers: SECURITY_HEADERS });
+  async fetch() {
+    return new Response(renderPage(DEMO_LINKS_HTML), { headers: SECURITY_HEADERS });
   },
 };
 
 function escapeHtml(s) { return String(s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
 function escapeAttr(s) { return escapeHtml(s).replace(/'/g, "&#39;"); }
 function isSafeUrl(url) { if (!url || typeof url !== "string") return false; try { const u = new URL(url); return u.protocol === "http:" || u.protocol === "https:"; } catch { return false; } }
-
-async function renderLinks(env) {
-  try {
-    const { results } = await env.DB.prepare("SELECT id, name, url, des, favicon_url, catalog FROM sites").all();
-    const sortedSites = (results || []).filter(f => isSafeUrl(f.url)).sort((a, b) => a.id - b.id);
-    if (sortedSites.length === 0) return '<div class="card"><ul><li>暂无友链，欢迎申请！</li></ul></div>';
-    const groups = {};
-    sortedSites.forEach(f => { const cat = f.catalog || "其他"; if (!groups[cat]) groups[cat] = []; groups[cat].push(f); });
-    const sortedCats = Object.keys(groups).sort((a, b) => {
-      const minIdA = groups[a].reduce((min, f) => Math.min(min, f.id), Infinity);
-      const minIdB = groups[b].reduce((min, f) => Math.min(min, f.id), Infinity);
-      return minIdA - minIdB;
-    });
-    return sortedCats.map(cat => { const sortedCards = groups[cat].sort((a, b) => a.id - b.id); const cardHtml = sortedCards.map(renderCard).join(""); return '<section class="gd-section" id="cat-' + escapeAttr(cat) + '"><h3 class="gd-section__subtitle">' + escapeHtml(cat) + '</h3><div class="gd-friend-grid">' + cardHtml + '</div></section>'; }).join("\n");
-  } catch (e) { return '<div class="card"><ul><li>友链数据暂时不可用。</li></ul></div>'; }
-}
 
 function renderCard(f) {
   const name = escapeHtml(f.name || "未命名");
@@ -67,8 +38,8 @@ function renderPage(linksHtml) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>友情链接 · GALNAVI</title>
-<link rel="apple-touch-icon" href="https://your-cdn.example.com/assets/icon/favicon.png">
-<link rel="icon" href="https://your-cdn.example.com/assets/icon/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="https://assets.galnavi.top/icon.png">
+<link rel="icon" href="https://assets.galnavi.top/favicon.png" type="image/png">
 <style>
 /* ===== 组件库（构建期内联） ===== */
 /* ===== src/foundation/tokens/tokens.css ===== */
@@ -340,7 +311,7 @@ function renderPage(linksHtml) {
 .gd-brand__title--shift {
   animation: gd-brand-glow 3s linear infinite;
 }
-/* 殿堂：橙 → 绿 → 红 循环（殿堂主题色） */
+/* 神魔殿堂：橙 → 绿 → 红 循环（殿堂主题色） */
 .gd-brand__title--palace {
   animation: gd-brand-glow-palace 2.25s linear infinite alternate;
 }
@@ -377,7 +348,7 @@ function renderPage(linksHtml) {
 /* gd-groundback：页面背景层
    用法：<div class="gd-groundback gd-groundback--blue" aria-hidden="true"></div>
    变体：--blue（默认，主站） / --gold（殿堂）
-   蓝色参考原版发布页（index.js）背景：三层光斑 + 对角渐变 + 点阵网格 + 底部光带。 */
+   蓝色参考原版发布页（galnavi.js）背景：三层光斑 + 对角渐变 + 点阵网格 + 底部光带。 */
 .gd-groundback {
   position: fixed;
   inset: 0;
@@ -417,7 +388,7 @@ function renderPage(linksHtml) {
     radial-gradient(circle at 50% 110%, rgba(var(--gd-color-blue-rgb), 0.12), transparent 36%);
 }
 
-/* 殿堂金：深色底 + 金色光晕（参考现网 palace 背景） */
+/* 殿堂金：深色底 + 金色光晕（参考现网 shenmo 背景） */
 .gd-groundback--gold {
   background: linear-gradient(145deg, #06070e 0%, #0a0c16 48%, #0e1322 100%);
 }
@@ -1323,7 +1294,7 @@ body.gd-overview {
 .gd-tag--blue { background: var(--gd-tag-2-bg); color: var(--gd-tag-2-fg); border-color: var(--gd-tag-2-border); }
 .gd-tag--pink { background: var(--gd-tag-3-bg); color: var(--gd-tag-3-fg); border-color: var(--gd-tag-3-border); }
 
-/* 标签索引页（example.com/nav/#tags tag-item） */
+/* 标签索引页（galnavi.top/nav/#tags tag-item） */
 .gd-tag-list {
   display: flex;
   flex-wrap: wrap;
@@ -1386,7 +1357,7 @@ body.gd-overview {
 }
 
 /* ===== src/display/card/gd-card.css ===== */
-/* gd-card — 玻璃数值冻结；主站 / 友链 / 殿堂变体 */
+/* gd-card — 玻璃数值冻结；主站 / 友链 / 神魔变体 */
 
 .gd-card {
   position: relative;
@@ -1529,7 +1500,7 @@ body.gd-overview {
   justify-content: start;
 }
 
-/* 殿堂 / 圣器殿堂 item-card */
+/* 神魔 / 圣器殿堂 item-card */
 .gd-card--item {
   --gd-comp-item-color: #fbbf24;
   --gd-comp-item-color-light: #fcd34d;
@@ -1808,7 +1779,7 @@ body.gd-overview {
 </head>
 <body class="gd-overview">
 <div class="gd-groundback gd-groundback--blue" aria-hidden="true"></div>
-<a class="gd-button gd-button--back gd-back-fab" href="https://example.com/nav/" aria-label="返回主站">
+<a class="gd-button gd-button--back gd-back-fab" href="https://galnavi.top/nav/" aria-label="返回主站">
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
   返回主站
 </a>
@@ -1843,9 +1814,9 @@ body.gd-overview {
           <ul>
             <li>本站名称：GALNAVI</li>
             <li>本站描述：ACG 二次元资源导航网站</li>
-            <li>本站链接：<a class="gd-link" href="https://example.com/">https://example.com/</a></li>
-            <li>本站图标：<a class="gd-link" href="https://your-cdn.example.com/assets/icon/favicon.png">https://your-cdn.example.com/assets/icon/favicon.png</a></li>
-            <li>联系方式：<a class="gd-link" href="mailto:contact@example.com">contact@example.com</a></li>
+            <li>本站链接：<a class="gd-link" href="https://galnavi.top/">https://galnavi.top/</a></li>
+            <li>本站图标：<a class="gd-link" href="https://assets.galnavi.top/icon.png">https://assets.galnavi.top/icon.png</a></li>
+            <li>联系方式：<a class="gd-link" href="mailto:admin@galnavi.top">admin@galnavi.top</a></li>
           </ul>
         </div>
       </section>
@@ -1858,18 +1829,14 @@ body.gd-overview {
       <div class="gd-overview__rule" aria-hidden="true"></div>
 
       <footer class="gd-footer">
-        <nav class="gd-footer__nav" aria-label="页脚链接">
-          <a href="https://example.com/sitemap.xml">sitemap.xml</a>
+        <nav class="gd-footer__nav" aria-label="页脚链接"><span class="gd-footer__sep" aria-hidden="true">|</span><span class="gd-footer__sep" aria-hidden="true">|</span>
+          <a href="mailto:feedback@galnavi.top">联系站长</a>
           <span class="gd-footer__sep" aria-hidden="true">|</span>
-          <a href="https://example.com/robots.txt">robots.txt</a>
+          <a href="https://galnavi.top/nav/donate/">赞助本站</a>
           <span class="gd-footer__sep" aria-hidden="true">|</span>
-          <a href="mailto:contact@example.com">联系站长</a>
+          <a href="https://galnavi.top/nav/friend/">申请友链</a>
           <span class="gd-footer__sep" aria-hidden="true">|</span>
-          <a href="https://example.com/nav/donate/">赞助本站</a>
-          <span class="gd-footer__sep" aria-hidden="true">|</span>
-          <a href="https://example.com/nav/friend/">申请友链</a>
-          <span class="gd-footer__sep" aria-hidden="true">|</span>
-          <a href="https://example.com/status/">站点状态</a>
+          <a href="https://galnavi.top/status/">站点状态</a>
         </nav>
         <p class="gd-footer__copy">© 2026 GALNAVI · 愿每一次探索都有新的收获</p>
       </footer>
@@ -1886,13 +1853,6 @@ body.gd-overview {
   </div>
 </div>
 <script>
-
-(function(){
-var KEY="site-verified";
-function getV(){var c=false,s=false;try{c=document.cookie.split("; ").some(function(x){return x.indexOf(KEY+"=1")===0;});}catch(e){}try{s=localStorage.getItem(KEY)==="1";}catch(e){}return c||s;}
-function setV(){try{document.cookie=KEY+"=1; max-age=31536000; path=/; SameSite=Lax";}catch(e){}try{localStorage.setItem(KEY,"1");}catch(e){}}
-if(!getV()){setV();window.location.replace("https://example.com/");}
-})();
 (function() {
 var root = document.querySelector('.gd-overview-toc-mobile');
 var btn = root && root.querySelector('[data-extend-ui-toc-toggle]');

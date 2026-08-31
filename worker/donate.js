@@ -1,9 +1,13 @@
-// GALNAVI Worker - Open Source Version
-// Sensitive information has been redacted.
-const ASSET_ICON = "https://your-cdn.example.com/assets/icon/favicon.png";
-const CONTACT_EMAIL = "contact@example.com";
-const CONTACT_MAILTO = "mailto:contact@example.com";
-const GITHUB_URL = "https://github.com/argb6/gal-navigation";
+/**
+ * 脱敏页面副本（由 worker/new 提取）。
+ * 已去除：SEO（OG/Twitter/JSON-LD/canonical/robots/sitemap）、D1/KV/API、Cookie 首访、私密地址。
+ * 不含 status。仅供阅读 / 本地预览，不能当生产 Worker 部署。
+ */
+const ASSET_FAVICON = "https://assets.galnavi.top/favicon.png";
+const ASSET_ICON = "https://assets.galnavi.top/icon.png";
+const CONTACT_EMAIL = "feedback@example.com";
+const CONTACT_MAILTO = "mailto:feedback@example.com";
+const GITHUB_URL = "#";
 const QR_ALIPAY = "";
 const QR_WECHAT = "";
 
@@ -13,34 +17,19 @@ const SECURITY_HEADERS = {
   "X-Content-Type-Options": "nosniff",
   "X-Frame-Options": "SAMEORIGIN",
   "Referrer-Policy": "strict-origin-when-cross-origin",
-  "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; connect-src 'self' https://example.com; font-src 'self' data: https://fonts.gstatic.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self'",
+  "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; connect-src 'self' https://galnavi.top; font-src 'self' data: https://fonts.gstatic.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self'",
 };
 
-const DONORS_KV_KEY = "donors";
 const NAME_MAX = 40;
 const NOTE_MAX = 80;
 const AMOUNT_MAX = 24;
 const DATE_MAX = 32;
 
 export default {
-  async fetch(request, env) {
-    const donors = await loadDonors(env);
-    return new Response(renderPage(donors), { headers: SECURITY_HEADERS });
+  async fetch() {
+    return new Response(renderPage([]), { headers: SECURITY_HEADERS });
   },
 };
-
-async function loadDonors(env) {
-  if (!env?.DONATE_KV) return [];
-  try {
-    const raw = await env.DONATE_KV.get(DONORS_KV_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw);
-    if (!Array.isArray(parsed)) return [];
-    return parsed.map(normalizeDonor).filter(Boolean);
-  } catch {
-    return [];
-  }
-}
 
 function normalizeDonor(row) {
   if (!row || typeof row !== "object") return null;
@@ -105,8 +94,9 @@ function renderPage(donors) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>捐献 · GALNAVI</title>
-<link rel="icon" href="${ASSET_ICON}" type="image/png">
-<link rel="apple-touch-icon" href="${ASSET_ICON}"><style>
+<link rel="icon" href="${ASSET_FAVICON}" type="image/png">
+<link rel="apple-touch-icon" href="${ASSET_ICON}">
+<style>
 /* ===== 组件库（构建期内联） ===== */
 /* ===== src/foundation/tokens/tokens.css ===== */
 /* gd tokens — 色值/玻璃为现网取值；字号/圆角/状态透明度语义对齐 MD3 */
@@ -377,7 +367,7 @@ function renderPage(donors) {
 .gd-brand__title--shift {
   animation: gd-brand-glow 3s linear infinite;
 }
-/* 殿堂：橙 → 绿 → 红 循环（殿堂主题色） */
+/* 神魔殿堂：橙 → 绿 → 红 循环（殿堂主题色） */
 .gd-brand__title--palace {
   animation: gd-brand-glow-palace 2.25s linear infinite alternate;
 }
@@ -414,7 +404,7 @@ function renderPage(donors) {
 /* gd-groundback：页面背景层
    用法：<div class="gd-groundback gd-groundback--blue" aria-hidden="true"></div>
    变体：--blue（默认，主站） / --gold（殿堂）
-   蓝色参考原版发布页（index.js）背景：三层光斑 + 对角渐变 + 点阵网格 + 底部光带。 */
+   蓝色参考原版发布页（galnavi.js）背景：三层光斑 + 对角渐变 + 点阵网格 + 底部光带。 */
 .gd-groundback {
   position: fixed;
   inset: 0;
@@ -454,7 +444,7 @@ function renderPage(donors) {
     radial-gradient(circle at 50% 110%, rgba(var(--gd-color-blue-rgb), 0.12), transparent 36%);
 }
 
-/* 殿堂金：深色底 + 金色光晕（参考现网 palace 背景） */
+/* 殿堂金：深色底 + 金色光晕（参考现网 shenmo 背景） */
 .gd-groundback--gold {
   background: linear-gradient(145deg, #06070e 0%, #0a0c16 48%, #0e1322 100%);
 }
@@ -1361,7 +1351,7 @@ body.gd-overview {
 .gd-tag--blue { background: var(--gd-tag-2-bg); color: var(--gd-tag-2-fg); border-color: var(--gd-tag-2-border); }
 .gd-tag--pink { background: var(--gd-tag-3-bg); color: var(--gd-tag-3-fg); border-color: var(--gd-tag-3-border); }
 
-/* 标签索引页（example.com/nav/#tags tag-item） */
+/* 标签索引页（galnavi.top/nav/#tags tag-item） */
 .gd-tag-list {
   display: flex;
   flex-wrap: wrap;
@@ -1424,7 +1414,7 @@ body.gd-overview {
 }
 
 /* ===== src/display/card/gd-card.css ===== */
-/* gd-card — 玻璃数值冻结；主站 / 友链 / 殿堂变体 */
+/* gd-card — 玻璃数值冻结；主站 / 友链 / 神魔变体 */
 
 .gd-card {
   position: relative;
@@ -1567,7 +1557,7 @@ body.gd-overview {
   justify-content: start;
 }
 
-/* 殿堂 / 圣器殿堂 item-card */
+/* 神魔 / 圣器殿堂 item-card */
 .gd-card--item {
   --gd-comp-item-color: #fbbf24;
   --gd-comp-item-color-light: #fcd34d;
@@ -2038,7 +2028,7 @@ body.gd-overview {
 <body class="gd-overview">
 <a class="gd-skip-link" href="#main-content">跳到主内容</a>
 <div class="gd-groundback gd-groundback--blue" aria-hidden="true"></div>
-<a class="gd-button gd-button--back gd-back-fab" href="https://example.com/nav/" aria-label="返回主站">
+<a class="gd-button gd-button--back gd-back-fab" href="https://galnavi.top/nav/" aria-label="返回主站">
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
   返回主站
 </a>
@@ -2100,12 +2090,12 @@ ${renderDonorsSection(donors)}
 <section class="gd-section" id="note">
   <h2 class="gd-section__title">说明</h2>
   <div class="card">
-    <p>请确认你正在官方域名 example.com 上操作。本页不会通过弹窗、私信或不明链接索要转账。未成年人请在监护人同意下再考虑支持。感谢每一位愿意支持 GALNAVI 的朋友。</p>
+    <p>请确认你正在官方域名 galnavi.top 上操作。本页不会通过弹窗、私信或不明链接索要转账。未成年人请在监护人同意下再考虑支持。感谢每一位愿意支持 GALNAVI 的朋友。</p>
   </div>
 </section>
 
 <div class="gd-overview__rule" aria-hidden="true"></div>
-<footer class="gd-footer"><nav class="gd-footer__nav" aria-label="页脚链接"><a href="https://example.com/sitemap.xml">sitemap.xml</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://example.com/robots.txt">robots.txt</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="mailto:contact@example.com">联系站长</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://example.com/nav/donate/">赞助本站</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://example.com/nav/friend/">申请友链</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://example.com/status/">站点状态</a></nav><p class="gd-footer__copy">© 2026 GALNAVI · 愿每一次探索都有新的收获</p></footer>
+<footer class="gd-footer"><nav class="gd-footer__nav" aria-label="页脚链接"><a href="mailto:feedback@galnavi.top">联系站长</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/donate/">赞助本站</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/friend/">申请友链</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/status/">站点状态</a></nav><p class="gd-footer__copy">© 2026 GALNAVI · 愿每一次探索都有新的收获</p></footer>
     </main>
 <aside class="gd-overview__toc" aria-label="本页内容">
   <nav class="gd-otp" aria-label="本页索引">
@@ -2122,24 +2112,6 @@ ${renderDonorsSection(donors)}
   </div>
 </div>
 <script>
-/* 首访检测（与 friend/palace 同款）：未访问过 GALNAVI 的用户跳转主站（cookie+localStorage） */
-(function(){
-var KEY = "site-verified";
-function getV(){
-var c=false,s=false;
-try{ c=document.cookie.split("; ").some(function(x){return x.indexOf(KEY+"=1")===0;}); }catch(e){}
-try{ s=localStorage.getItem(KEY)==="1"; }catch(e){}
-return c||s;
-}
-function setV(){
-try{ document.cookie=KEY+"=1; max-age=31536000; path=/; SameSite=Lax"; }catch(e){}
-try{ localStorage.setItem(KEY,"1"); }catch(e){}
-}
-if(!getV()){
-setV();
-window.location.replace("https://example.com/");
-}
-})();
 (function() {
 var root = document.querySelector('.gd-overview-toc-mobile');
 var btn = root && root.querySelector('[data-extend-ui-toc-toggle]');

@@ -1,14 +1,17 @@
-// GALNAVI Worker - Open Source Version
-// Sensitive information has been redacted.
-
-const ASSET_ICON = "https://your-cdn.example.com/assets/icon/favicon.png";
+/**
+ * 脱敏页面副本（由 worker/new 提取）。
+ * 已去除：SEO（OG/Twitter/JSON-LD/canonical/robots/sitemap）、D1/KV/API、Cookie 首访、私密地址。
+ * 不含 status。仅供阅读 / 本地预览，不能当生产 Worker 部署。
+ */
+const ASSET_FAVICON = "https://assets.galnavi.top/favicon.png";
+const ASSET_ICON = "https://assets.galnavi.top/icon.png";
 const SECURITY_HEADERS = {
   "Content-Type": "text/html; charset=utf-8",
   "Cache-Control": "private, no-store",
   "X-Content-Type-Options": "nosniff",
   "X-Frame-Options": "SAMEORIGIN",
   "Referrer-Policy": "strict-origin-when-cross-origin",
-  "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; connect-src 'self' https://example.com; font-src 'self' data: https://fonts.gstatic.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self'",
+  "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; connect-src 'self' https://galnavi.top; font-src 'self' data: https://fonts.gstatic.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self'",
 };
 
 export default {
@@ -24,9 +27,7 @@ function renderPage() {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>关于 GALNAVI · 站点声明</title>
-<meta name="author" content="GALNAVI">
-<meta name="robots" content="index, follow">
-<link rel="icon" href="${ASSET_ICON}" type="image/png">
+<link rel="icon" href="${ASSET_FAVICON}" type="image/png">
 <link rel="apple-touch-icon" href="${ASSET_ICON}">
 <style>
 /* ===== 组件库（构建期内联） ===== */
@@ -299,7 +300,7 @@ function renderPage() {
 .gd-brand__title--shift {
   animation: gd-brand-glow 3s linear infinite;
 }
-/* 殿堂：橙 → 绿 → 红 循环（殿堂主题色） */
+/* 神魔殿堂：橙 → 绿 → 红 循环（殿堂主题色） */
 .gd-brand__title--palace {
   animation: gd-brand-glow-palace 2.25s linear infinite alternate;
 }
@@ -336,7 +337,7 @@ function renderPage() {
 /* gd-groundback：页面背景层
    用法：<div class="gd-groundback gd-groundback--blue" aria-hidden="true"></div>
    变体：--blue（默认，主站） / --gold（殿堂）
-   蓝色参考原版发布页（index.js）背景：三层光斑 + 对角渐变 + 点阵网格 + 底部光带。 */
+   蓝色参考原版发布页（galnavi.js）背景：三层光斑 + 对角渐变 + 点阵网格 + 底部光带。 */
 .gd-groundback {
   position: fixed;
   inset: 0;
@@ -376,7 +377,7 @@ function renderPage() {
     radial-gradient(circle at 50% 110%, rgba(var(--gd-color-blue-rgb), 0.12), transparent 36%);
 }
 
-/* 殿堂金：深色底 + 金色光晕（参考现网 palace 背景） */
+/* 殿堂金：深色底 + 金色光晕（参考现网 shenmo 背景） */
 .gd-groundback--gold {
   background: linear-gradient(145deg, #06070e 0%, #0a0c16 48%, #0e1322 100%);
 }
@@ -967,6 +968,14 @@ body.gd-overview {
   .gd-overview-toc-mobile.is-open .gd-overview-mobile-list__link:nth-child(5) { transition-delay: 130ms; }
   .gd-overview-toc-mobile.is-open .gd-overview-mobile-list__link:nth-child(6) { transition-delay: 150ms; }
   .gd-overview-toc-mobile.is-open .gd-overview-mobile-list__link:nth-child(7) { transition-delay: 170ms; }
+  .gd-overview-toc-mobile.is-open .gd-overview-mobile-list__link:nth-child(8) { transition-delay: 190ms; }
+  .gd-overview-toc-mobile.is-open .gd-overview-mobile-list__link:nth-child(9) { transition-delay: 210ms; }
+  .gd-overview-toc-mobile.is-open .gd-overview-mobile-list__link:nth-child(10) { transition-delay: 230ms; }
+  .gd-overview-toc-mobile.is-open .gd-overview-mobile-list__link:nth-child(11) { transition-delay: 250ms; }
+  .gd-overview-toc-mobile.is-open .gd-overview-mobile-list__link:nth-child(12) { transition-delay: 270ms; }
+  .gd-overview-toc-mobile.is-open .gd-overview-mobile-list__link:nth-child(13) { transition-delay: 290ms; }
+  .gd-overview-toc-mobile.is-open .gd-overview-mobile-list__link:nth-child(14) { transition-delay: 310ms; }
+  .gd-overview-toc-mobile.is-open .gd-overview-mobile-list__link:nth-child(15) { transition-delay: 330ms; }
 
   .gd-overview-mobile-list__link:hover {
     color: var(--gd-color-on-surface);
@@ -1273,7 +1282,7 @@ body.gd-overview {
 .gd-tag--blue { background: var(--gd-tag-2-bg); color: var(--gd-tag-2-fg); border-color: var(--gd-tag-2-border); }
 .gd-tag--pink { background: var(--gd-tag-3-bg); color: var(--gd-tag-3-fg); border-color: var(--gd-tag-3-border); }
 
-/* 标签索引页 */
+/* 标签索引页（galnavi.top/nav/#tags tag-item） */
 .gd-tag-list {
   display: flex;
   flex-wrap: wrap;
@@ -1336,7 +1345,7 @@ body.gd-overview {
 }
 
 /* ===== src/display/card/gd-card.css ===== */
-/* gd-card — 玻璃数值冻结；主站 / 友链 / 殿堂变体 */
+/* gd-card — 玻璃数值冻结；主站 / 友链 / 神魔变体 */
 
 .gd-card {
   position: relative;
@@ -1479,7 +1488,7 @@ body.gd-overview {
   justify-content: start;
 }
 
-/* 殿堂 / 圣器殿堂 item-card */
+/* 神魔 / 圣器殿堂 item-card */
 .gd-card--item {
   --gd-comp-item-color: #fbbf24;
   --gd-comp-item-color-light: #fcd34d;
@@ -1807,7 +1816,7 @@ body.gd-overview {
 </head>
 <body class="gd-overview">
 <div class="gd-groundback gd-groundback--blue" aria-hidden="true"></div>
-<a class="gd-button gd-button--back gd-back-fab" href="/nav/" aria-label="返回主站">
+<a class="gd-button gd-button--back gd-back-fab" href="https://galnavi.top/nav/" aria-label="返回主站">
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
   返回主站
 </a>
@@ -1848,7 +1857,7 @@ body.gd-overview {
 <p>这是一个科技与魔法的世界，在其中一个角落坐落着一个边缘小镇，很不幸，它正在遭遇一场史无前例的资源匮乏，通往各个幻想乡的道路连接中断，记录着爱与冒险的精神卷轴纷纷遗失。 就在居民们陷入水深火热时，一位披斗篷的猫耳娘站了出来。为了拯救小镇，她在荒野中日夜吟唱魔法，凭一己之力建立起了一座宏伟的灯塔——Galnavi 资源中枢。 此后，小镇的生活也是一天比一天好。人们为了纪念这位猫耳娘，在中央广场建立了荣誉雕像，并取名为猫耳娘纳普。</p>
 </section>
 <section class="gd-section" id="history">  <h2 class="gd-section__title">发展史</h2><table class="gd-table"><tbody>
-<tr><th scope="row">2026.05.23</th><td>GALNAVI 的项目正式启动</td></tr>
+<tr><th scope="row">2026.05.23</th><td>galnavi 的项目正式启动</td></tr>
 <tr><th scope="row">2026.05.24</th><td>正式注册域名</td></tr>
 <tr><th scope="row">2026.05.26</th><td>网页成功部署，开始构建 UI</td></tr>
 <tr><th scope="row">2026.05.31</th><td>开始试运营</td></tr>
@@ -1862,9 +1871,9 @@ body.gd-overview {
 <section class="gd-section" id="copyright">  <h2 class="gd-section__title">版权声明</h2><div class="card"><ul><li>本站尊重知识产权。本站展示的游戏名称、图片、简介等内容，其版权归原著作权人、开发商或发行商所有。</li><li>本站主要提供信息整理、站点导航及相关链接索引，不主张拥有第三方内容的版权。</li><li>如您认为本站展示的内容侵犯了您的合法权益，请联系我们并提供相关权利证明及具体内容。经核实后，本站将及时处理相关内容或链接。</li><li>本站不鼓励、不支持任何侵犯版权及其他违法行为。</li></ul></div></section>
 <section class="gd-section" id="disclaimer">  <h2 class="gd-section__title">站点声明</h2><div class="card"><ul><li>GALNAVI 是一个 ACG、Galgame 相关的信息导航与站点聚合平台，主要提供站点收录、信息整理、标签分类及搜索服务。</li><li>本站收录的第三方网站、链接及其内容均由相应网站运营者负责，本站无法保证其内容的准确性、合法性、安全性或持续有效性。</li><li>访问第三方网站或使用其提供的内容前，请自行判断相关风险，并遵守所在地区的法律法规。</li><li>用户不得利用本站从事违法、侵权或其他不当活动。因用户访问或使用第三方网站及内容产生的相关责任，由用户自行承担。</li><li>本站有权根据实际情况调整收录内容及相关服务。</li></ul></div></section>
 <section class="gd-section" id="community">  <h2 class="gd-section__title">本站社群</h2><div class="card"><ul><li>QQ群：416074347。</li><li>本群用于 GALNAVI 相关交流、反馈与 ACG/Galgame 内容讨论。</li><li>请文明交流，禁止广告、刷屏、引战及违法违规内容；分享第三方资源或链接时请注意版权与安全。</li><li>如有网站问题、收录建议或功能反馈，欢迎在群内提出。</li></ul></div></section>
-<section class="gd-section" id="feedback">  <h2 class="gd-section__title">站点反馈</h2><div class="card"><p>如果你在使用 GALNAVI 时发现问题，欢迎向我们反馈。</p><ul><li><strong>网站问题</strong> — 页面异常、链接失效、显示错误等。</li><li><strong>收录建议</strong> — 推荐新的站点、工具或资源。</li><li><strong>内容问题</strong> — 信息错误、分类不当、描述需要修改。</li><li><strong>功能建议</strong> — 对网站功能或使用体验的建议。</li></ul><p>反馈时请尽量说明具体问题，并附上相关页面链接或截图，方便我们处理。</p><p>反馈邮箱：<a class="gd-link" href="mailto:contact@example.com">contact@example.com</a></p></div></section>
+<section class="gd-section" id="feedback">  <h2 class="gd-section__title">站点反馈</h2><div class="card"><p>如果你在使用 GALNAVI 时发现问题，欢迎向我们反馈。</p><ul><li><strong>网站问题</strong> — 页面异常、链接失效、显示错误等。</li><li><strong>收录建议</strong> — 推荐新的站点、工具或资源。</li><li><strong>内容问题</strong> — 信息错误、分类不当、描述需要修改。</li><li><strong>功能建议</strong> — 对网站功能或使用体验的建议。</li></ul><p>反馈时请尽量说明具体问题，并附上相关页面链接或截图，方便我们处理。</p><p>反馈邮箱：<a class="gd-link" href="mailto:feedback@galnavi.top">feedback@galnavi.top</a></p></div></section>
 <div class="gd-overview__rule" aria-hidden="true"></div>
-<footer class="gd-footer"><nav class="gd-footer__nav" aria-label="页脚链接"><a href="/sitemap.xml">sitemap.xml</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="/robots.txt">robots.txt</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="mailto:contact@example.com">联系站长</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="/nav/donate/">赞助本站</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="/nav/friend/">申请友链</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="/status/">站点状态</a></nav><p class="gd-footer__copy">&copy; 2026 GALNAVI &middot; 愿每一次探索都有新的收获</p></footer>
+<footer class="gd-footer"><nav class="gd-footer__nav" aria-label="页脚链接"><a href="mailto:feedback@galnavi.top">联系站长</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/donate/">赞助本站</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/friend/">申请友链</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/status/">站点状态</a></nav><p class="gd-footer__copy">© 2026 GALNAVI · 愿每一次探索都有新的收获</p></footer>
     </div>
 <aside class="gd-overview__toc" aria-label="本页内容">
   <nav class="gd-otp" aria-label="本页索引">
@@ -1884,13 +1893,6 @@ body.gd-overview {
 </div>
 <div id="redirectOverlay" class="gd-overview__redirect-overlay" aria-live="polite" aria-atomic="true"><div class="gd-overview__redirect-ring" aria-hidden="true"></div><div class="gd-overview__redirect-text">即将跳转</div><div id="redirectCountdown" class="gd-overview__redirect-countdown">3</div><button type="button" id="redirectCancel" class="gd-overview__redirect-cancel">取消跳转</button></div>
 <script>
-/* 首访检测 */
-(function(){
-var KEY = "site-verified";
-function getV(){var c=false,s=false;try{c=document.cookie.split("; ").some(function(x){return x.indexOf(KEY+"=1")===0;});}catch(e){}try{s=localStorage.getItem(KEY)==="1";}catch(e){}return c||s;}
-function setV(){try{document.cookie=KEY+"=1; max-age=31536000; path=/; SameSite=Lax";}catch(e){}try{localStorage.setItem(KEY,"1");}catch(e){}}
-if(!getV()){setV();window.location.replace("/");}
-})();
 (function() {
 var root = document.querySelector('.gd-overview-toc-mobile');
 var btn = root && root.querySelector('[data-extend-ui-toc-toggle]');
@@ -1975,7 +1977,7 @@ function isSafeHttpUrl(url){if(!url||typeof url!=="string")return false;try{var 
 var timerId=null,onCancel=null;
 function clearRedirect(){if(timerId){clearInterval(timerId);timerId=null}var overlay=document.getElementById("redirectOverlay"),cancelBtn=document.getElementById("redirectCancel");if(overlay){overlay.classList.remove("active");overlay.setAttribute("aria-hidden","true")}if(onCancel&&cancelBtn){cancelBtn.removeEventListener("click",onCancel);onCancel=null}}
 function startRedirect(targetUrl){var overlay=document.getElementById("redirectOverlay"),countdownEl=document.getElementById("redirectCountdown"),cancelBtn=document.getElementById("redirectCancel");if(!overlay||!countdownEl){window.open(targetUrl,"_blank","noopener,noreferrer");return}clearRedirect();var seconds=3;overlay.classList.add("active");overlay.setAttribute("aria-hidden","false");countdownEl.textContent=String(seconds);timerId=setInterval(function(){seconds-=1;if(seconds<=0){clearRedirect();window.open(targetUrl,"_blank","noopener,noreferrer");return}countdownEl.textContent=String(seconds);},1000);onCancel=function(){clearRedirect()};if(cancelBtn)cancelBtn.addEventListener("click",onCancel);}
-document.addEventListener("click",function(e){var anchor=e.target.closest("a");if(!anchor)return;var href=anchor.getAttribute("href");if(!href)return;var lower=href.trim().toLowerCase();if(lower.indexOf("javascript:")===0||lower.indexOf("data:")===0){e.preventDefault();return}if(href.charAt(0)==="#")return;if(href.indexOf("/nav/")===0)return;if(!isSafeHttpUrl(href))return;try{if(new URL(href,window.location.origin).hostname===window.location.hostname)return}catch(err){return}e.preventDefault();startRedirect(href);});
+document.addEventListener("click",function(e){var anchor=e.target.closest("a");if(!anchor)return;var href=anchor.getAttribute("href");if(!href)return;var lower=href.trim().toLowerCase();if(lower.indexOf("javascript:")===0||lower.indexOf("data:")===0){e.preventDefault();return}if(href.charAt(0)==="#")return;if(href.indexOf("https://galnavi.top/nav/")===0||href.indexOf("/nav/")===0)return;if(!isSafeHttpUrl(href))return;try{if(new URL(href,window.location.origin).hostname===window.location.hostname)return}catch(err){return}e.preventDefault();startRedirect(href);});
 })();
 <\/script>
 </body>

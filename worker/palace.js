@@ -1,47 +1,20 @@
-// GALNAVI Worker - Open Source Version
-// Sensitive information has been redacted.
 /**
- * Cloudflare Worker - palace.js
- * 路由: /nav/palace/
- * 圣器殿堂 —— 神器、魔器、仙器总览
- *
- * 数据来源: Cloudflare D1（GROUP_DB），纯查询，无硬编码 fallback。
- * 原版备份: palace.js.bak
+ * 脱敏页面副本（由 worker/new 提取）。
+ * 已去除：SEO（OG/Twitter/JSON-LD/canonical/robots/sitemap）、D1/KV/API、Cookie 首访、私密地址。
+ * 不含 status。仅供阅读 / 本地预览，不能当生产 Worker 部署。
  */
 export default {
-  async fetch(request, env, ctx) {
-    const url = new URL(request.url);
-    // 若路由同时绑了无尾斜杠，统一到 /nav/palace/
-    if (url.pathname === "/nav/palace") {
-      url.pathname = "/nav/palace/";
-      return Response.redirect(url.toString(), 301);
-    }
-
-    let data = [];
-    let fetchFailed = false;
-
-    if (env && env.GROUP_DB) {
-      try {
-        const { results } = await env.GROUP_DB.prepare(
-          "SELECT * FROM resources ORDER BY category, id"
-        ).all();
-        data = results || [];
-      } catch (e) {
-        data = [];
-        fetchFailed = true;
-      }
-    }
-
-    const html = renderPage(data, fetchFailed);
+  async fetch() {
+    const html = renderPage([], false);
     return new Response(html, {
-      status: fetchFailed ? 503 : 200,
+      status: 200,
       headers: {
         "Content-Type": "text/html; charset=utf-8",
         "Cache-Control": "private, no-store",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
         "Referrer-Policy": "strict-origin-when-cross-origin",
-        "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; connect-src 'self' https://example.com; font-src 'self' data: https://fonts.gstatic.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self'",
+        "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; connect-src 'self'; font-src 'self' data: https://fonts.gstatic.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self'",
       },
     });
   },
@@ -55,8 +28,9 @@ function renderPage(data, fetchFailed) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>圣器殿堂</title>
-<link rel="icon" href="https://your-cdn.example.com/assets/icon/favicon.png" type="image/png">
-<link rel="apple-touch-icon" href="https://your-cdn.example.com/assets/icon/favicon.png"><link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="icon" href="https://assets.galnavi.top/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="https://assets.galnavi.top/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;600;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -496,7 +470,7 @@ function renderPage(data, fetchFailed) {
 /* gd-groundback：页面背景层
    用法：<div class="gd-groundback gd-groundback--blue" aria-hidden="true"></div>
    变体：--blue（默认，主站） / --gold（殿堂）
-   蓝色参考原版发布页（index.js）背景：三层光斑 + 对角渐变 + 点阵网格 + 底部光带。 */
+   蓝色参考原版发布页（galnavi.js）背景：三层光斑 + 对角渐变 + 点阵网格 + 底部光带。 */
 .gd-groundback {
   position: fixed;
   inset: 0;
@@ -536,7 +510,7 @@ function renderPage(data, fetchFailed) {
     radial-gradient(circle at 50% 110%, rgba(var(--gd-color-blue-rgb), 0.12), transparent 36%);
 }
 
-/* 殿堂金：深色底 + 金色光晕（参考现网 palace 背景） */
+/* 殿堂金：深色底 + 金色光晕（参考现网 shenmo 背景） */
 .gd-groundback--gold {
   background: linear-gradient(145deg, #06070e 0%, #0a0c16 48%, #0e1322 100%);
 }
@@ -605,7 +579,7 @@ function renderPage(data, fetchFailed) {
 .gd-brand__title--shift {
   animation: gd-brand-glow 3s linear infinite;
 }
-/* 殿堂：橙 → 绿 → 红 循环（殿堂主题色） */
+/* 神魔殿堂：橙 → 绿 → 红 循环（殿堂主题色） */
 .gd-brand__title--palace {
   animation: gd-brand-glow-palace 2.25s linear infinite alternate;
 }
@@ -1122,7 +1096,7 @@ gd-search { display: contents; }
 
 
 /* ===== 组件库内联: gd-card.css ===== */
-/* gd-card — 玻璃数值冻结；主站 / 友链 / 殿堂变体 */
+/* gd-card — 玻璃数值冻结；主站 / 友链 / 神魔变体 */
 
 .gd-card {
   position: relative;
@@ -1265,7 +1239,7 @@ gd-search { display: contents; }
   justify-content: start;
 }
 
-/* 殿堂 / 圣器殿堂 item-card */
+/* 神魔 / 圣器殿堂 item-card */
 .gd-card--item {
   --gd-comp-item-color: #fbbf24;
   --gd-comp-item-color-light: #fcd34d;
@@ -1705,7 +1679,7 @@ gd-search { display: contents; }
   }
 }
 
-/* 殿堂条目卡变体 — 尺寸/结构同 gd-card--item（序号 + 名称长条 + 操作按钮长条） */
+/* 神魔条目卡变体 — 尺寸/结构同 gd-card--item（序号 + 名称长条 + 操作按钮长条） */
 .gd-skeleton--item {
   gap: 10px;
   padding: 14px 16px;
@@ -1776,7 +1750,7 @@ gd-search { display: contents; }
 </head>
 <body>
   <div class="gd-groundback gd-groundback--gold" aria-hidden="true"></div>
-  <a class="gd-button gd-button--back gd-button--back--orange gd-back-fab" href="https://example.com/nav/" aria-label="返回主站">
+  <a class="gd-button gd-button--back gd-button--back--orange gd-back-fab" href="https://galnavi.top/nav/" aria-label="返回主站">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
     返回主站
   </a>
@@ -1803,7 +1777,7 @@ gd-search { display: contents; }
       <p class="search-meta" id="searchMeta" aria-live="polite"></p>
     </div>
     <div class="gd-cat-nav-bar" id="catNavBar" style="display:none">
-      <a class="gd-cat-nav-back" href="https://example.com/nav/" aria-label="返回主站">
+      <a class="gd-cat-nav-back" href="https://galnavi.top/nav/" aria-label="返回主站">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
       </a>
       <div class="gd-cat-dock">
@@ -1850,12 +1824,12 @@ gd-search { display: contents; }
 
     <footer class="gd-footer">
       <nav class="gd-footer__nav" aria-label="页脚链接">
-        <a href="https://example.com/sitemap.xml">sitemap.xml</a><span class="gd-footer__sep" aria-hidden="true">|</span>
-        <a href="https://example.com/robots.txt">robots.txt</a><span class="gd-footer__sep" aria-hidden="true">|</span>
-        <a href="mailto:contact@example.com">联系站长</a><span class="gd-footer__sep" aria-hidden="true">|</span>
-        <a href="https://example.com/nav/donate/">赞助本站</a><span class="gd-footer__sep" aria-hidden="true">|</span>
-        <a href="https://example.com/nav/friend/">申请友链</a><span class="gd-footer__sep" aria-hidden="true">|</span>
-        <a href="https://example.com/status/">站点状态</a>
+        
+        
+        <a href="mailto:feedback@galnavi.top">联系站长</a><span class="gd-footer__sep" aria-hidden="true">|</span>
+        <a href="https://galnavi.top/nav/donate/">赞助本站</a><span class="gd-footer__sep" aria-hidden="true">|</span>
+        <a href="https://galnavi.top/nav/friend/">申请友链</a><span class="gd-footer__sep" aria-hidden="true">|</span>
+        <a href="https://galnavi.top/status/">站点状态</a>
       </nav>
       <p class="gd-footer__copy">© 2026 GALNAVI · 愿每一次探索都有新的收获</p>
     </footer>
@@ -1915,26 +1889,6 @@ function initGdSearch(root) {
   });
   sync();
 }
-
-
-/* 首访检测：未访问过 GALNAVI 的用户跳转主站（cookie+localStorage） */
-(function(){
-  var KEY="site-verified";
-  function getV(){
-    var c=false,s=false;
-    try{ c=document.cookie.split("; ").some(function(x){return x.indexOf(KEY+"=1")===0;}); }catch(e){}
-    try{ s=localStorage.getItem(KEY)==="1"; }catch(e){}
-    return c||s;
-  }
-  function setV(){
-    try{ document.cookie=KEY+"=1; max-age=31536000; path=/; SameSite=Lax"; }catch(e){}
-    try{ localStorage.setItem(KEY,"1"); }catch(e){}
-  }
-  if(!getV()){
-    setV();
-    window.location.replace("https://example.com/");
-  }
-})();
 var BOOT = JSON.parse(document.getElementById("boot-data").textContent);
 var SAMPLE = Array.isArray(BOOT.data) ? BOOT.data : [];
 var FETCH_FAILED = !!BOOT.failed;
@@ -1947,7 +1901,7 @@ const CAT={
 };
 const CATS=Object.keys(CAT);
 const ID_CAT=Object.fromEntries(Object.entries(CAT).map(([k,v])=>[v.id,k]));
-const LEGEND_KEY="palace_legend_seen_v1";
+const LEGEND_KEY="shenmo_legend_seen_v1";
 let currentCat="神器", query="";
 
 function escHtml(str){
@@ -2172,7 +2126,7 @@ document.addEventListener("click",function(e){
   if(!href) return;
   const lower=href.trim().toLowerCase();
   if(lower.startsWith("javascript:")||lower.startsWith("data:")){ e.preventDefault(); e.stopPropagation(); return; }
-  if(href.startsWith("https://example.com/nav/")||href.startsWith("/nav/")||href.startsWith("#")) return;
+  if(href.startsWith("https://galnavi.top/nav/")||href.startsWith("/nav/")||href.startsWith("#")) return;
   if(!isSafeHttpUrl(href)) return;
   try{ if(new URL(href).hostname===window.location.hostname) return; }catch(_){ return; }
   e.preventDefault(); e.stopPropagation(); startRedirect(href);

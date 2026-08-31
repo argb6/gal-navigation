@@ -1,17 +1,18 @@
-// GALNAVI Worker - Open Source Version
-// Sensitive information has been redacted.
-// See AGENTS.md for project conventions.
+/**
+ * 脱敏页面副本（由 worker/new 提取）。
+ * 已去除：SEO（OG/Twitter/JSON-LD/canonical/robots/sitemap）、D1/KV/API、Cookie 首访、私密地址。
+ * 不含 status。仅供阅读 / 本地预览，不能当生产 Worker 部署。
+ */
 // @ts-nocheck
-// Cloudflare Worker
+// Cloudflare Worker - galnavi
 const html = `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GALNAVI 永久发布页 · ACG 二次元资源导航入口</title>
-<meta name="robots" content="index, follow">
-<link rel="icon" href="https://your-cdn.example.com/assets/icon/favicon.png" type="image/png">
-<link rel="apple-touch-icon" href="https://your-cdn.example.com/assets/icon/favicon.png">
+<link rel="icon" href="https://assets.galnavi.top/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="https://assets.galnavi.top/icon.png">
 <style>/* src/foundation/tokens/tokens.css */
 /* gd tokens — 色值/玻璃为现网取值；字号/圆角/状态透明度语义对齐 MD3 */
 :root {
@@ -329,7 +330,7 @@ const html = `<!DOCTYPE html>
 /* gd-groundback：页面背景层
    用法：<div class="gd-groundback gd-groundback--blue" aria-hidden="true"></div>
    变体：--blue（默认，主站） / --gold（殿堂）
-   蓝色参考原版发布页（index.js）背景：三层光斑 + 对角渐变 + 点阵网格 + 底部光带。 */
+   蓝色参考原版发布页（galnavi.js）背景：三层光斑 + 对角渐变 + 点阵网格 + 底部光带。 */
 .gd-groundback {
   position: fixed;
   inset: 0;
@@ -369,7 +370,7 @@ const html = `<!DOCTYPE html>
     radial-gradient(circle at 50% 110%, rgba(var(--gd-color-blue-rgb), 0.12), transparent 36%);
 }
 
-/* 殿堂金：深色底 + 金色光晕（参考现网 palace 背景） */
+/* 殿堂金：深色底 + 金色光晕（参考现网 shenmo 背景） */
 .gd-groundback--gold {
   background: linear-gradient(145deg, #06070e 0%, #0a0c16 48%, #0e1322 100%);
 }
@@ -440,7 +441,7 @@ const html = `<!DOCTYPE html>
 .gd-brand__title--shift {
   animation: gd-brand-glow 3s linear infinite;
 }
-/* 殿堂：橙 → 绿 → 红 循环（殿堂主题色） */
+/* 神魔殿堂：橙 → 绿 → 红 循环（殿堂主题色） */
 .gd-brand__title--palace {
   animation: gd-brand-glow-palace 2.25s linear infinite alternate;
 }
@@ -933,104 +934,6 @@ const html = `<!DOCTYPE html>
 
 </style>
 
-<style>/* src/feedback/modal/gd-age-gate.css */
-/* gd-age-gate — 年龄门 */
-
-.gd-age-gate {
-  position: fixed;
-  inset: 0;
-  z-index: 10050;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  background: var(--gd-color-overlay);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.28s ease;
-}
-.gd-age-gate.is-active {
-  opacity: 1;
-  pointer-events: auto;
-}
-.gd-age-gate__card {
-  width: min(92vw, 400px);
-  padding: 28px 24px 22px;
-  border-radius: 18px;
-  border: 1px solid rgba(var(--gd-color-white-rgb), 0.14);
-  background: linear-gradient(180deg, var(--gd-color-card-gradient-a), var(--gd-color-card-gradient-b));
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
-  text-align: center;
-}
-.gd-age-gate__title {
-  margin: 0 0 12px;
-  font-size: var(--gd-type-title-large-size);
-  font-weight: var(--gd-weight-extrabold);
-  color: var(--gd-color-on-surface);
-  font-family: var(--gd-font-sans);
-}
-.gd-age-gate__desc {
-  margin: 0 0 22px;
-  font-size: var(--gd-type-label-large-size);
-  line-height: 1.75;
-  color: var(--gd-color-on-surface-variant);
-  font-family: var(--gd-font-sans);
-}
-.gd-age-gate__actions {
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-}
-.gd-age-gate__btn {
-  width: 195px;
-  height: 48px;
-  padding: 0 16px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 12px;
-  border: 1px solid transparent;
-  font-size: var(--gd-type-title-small-size);
-  font-weight: var(--gd-weight-bold);
-  font-family: var(--gd-font-sans);
-  cursor: pointer;
-  transition: background 0.2s, border-color 0.2s, transform 0.2s;
-}
-.gd-age-gate__btn:focus-visible {
-  outline: 2px solid var(--gd-color-primary);
-  outline-offset: 2px;
-}
-.gd-age-gate__btn--yes {
-  background: linear-gradient(135deg, var(--gd-color-primary), var(--gd-color-secondary));
-  color: var(--gd-color-on-primary);
-  box-shadow: 0 4px 18px rgba(var(--gd-color-primary-rgb), 0.28);
-}
-.gd-age-gate__btn--yes:hover {
-  filter: brightness(1.06);
-  transform: none;
-}
-.gd-age-gate__btn--no {
-  background: rgba(var(--gd-color-white-rgb), 0.04);
-  color: var(--gd-color-on-surface-variant);
-  border-color: rgba(var(--gd-color-white-rgb), 0.12);
-}
-.gd-age-gate__btn--no:hover {
-  color: var(--gd-color-on-surface);
-  background: rgba(var(--gd-color-white-rgb), 0.07);
-}
-
-body.gd-age-gate-open {
-  overflow: hidden;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .gd-age-gate { transition: none; }
-}
-
-</style>
-
 <style>
 /* 沙盒发布页基础样式：组件外观一律来自组件库（/src/ 引用） */
 *{box-sizing:border-box;margin:0;padding:0}
@@ -1050,7 +953,7 @@ body.modal-open{overflow:hidden}
 <div class="gd-publish-card is-demo">
 <header class="gd-publish-card__header">
 <div class="gd-publish-card__brand">
-<img class="gd-publish-card__logo" alt="GALNAVI 品牌标" src="https://your-cdn.example.com/assets/icon/logo.webp">
+<img class="gd-publish-card__logo" alt="GALNAVI 品牌标" src="https://assets.galnavi.top/logo.png">
 </div>
 <h1 class="gd-brand__title gd-brand__title--demo gd-publish-card__wordmark">GALNAVI</h1>
 <p class="gd-publish-card__lead">一个专注于 ACG 二次元资源网站聚合与收录的纯净导航站点。纯净无广，秒速响应，一站直达。</p>
@@ -1060,70 +963,13 @@ body.modal-open{overflow:hidden}
 <p class="gd-publish-card__note">按 <strong>Ctrl + D</strong> 保存收藏</p>
 </div>
 <footer class="gd-publish-card__footer">
-<a class="gd-button gd-button--primary" href="https://example.com/nav/" target="_blank" rel="noopener noreferrer" style="min-width:160px;min-height:48px">进入主站</a>
+<a class="gd-button gd-button--primary" href="https://galnavi.top/nav/" target="_blank" rel="noopener noreferrer" style="min-width:160px;min-height:48px">进入主站</a>
 </footer>
 </div>
 </main>
 
-<div class="gd-age-gate" id="age-gate-modal" role="dialog" aria-modal="true" aria-labelledby="age-gate-title" aria-hidden="true">
-<div class="gd-age-gate__card">
-<h2 class="gd-age-gate__title" id="age-gate-title">年龄确认</h2>
-<p class="gd-age-gate__desc">本站为 ACG / Galgame 相关导航，可能包含不适合未成年人的内容。请确认您已年满 18 周岁。</p>
-<div class="gd-age-gate__actions">
-<button type="button" class="gd-age-gate__btn gd-age-gate__btn--no" data-age-no>未满18</button>
-<button type="button" class="gd-age-gate__btn gd-age-gate__btn--yes" data-age-yes>已满18</button>
-</div>
-</div>
-</div>
 <script>
 (function() {
-  var ageGate=document.getElementById("age-gate-modal");
-
-  /* 年龄墙：cookie（http 部署）+ localStorage（file:// 兜底），仅首次弹出 */
-  var AGE_KEY="site-age-verified";
-  function getAgeVerified() {
-    var c=false, s=false;
-    try { c = document.cookie.split("; ").some(function(x) { return x.indexOf(AGE_KEY+"=1")===0; }); } catch(error) {}
-    try { s = localStorage.getItem(AGE_KEY)==="1"; } catch(error) {}
-    return c || s;
-  }
-  function setAgeVerified() {
-    try { document.cookie=AGE_KEY+"=1; max-age=31536000; path=/; SameSite=Lax"; } catch(error) {}
-    try { localStorage.setItem(AGE_KEY,"1"); } catch(error) {}
-    /* 统一访问记录：palace 等页面首访检测只查此 key */
-    try { document.cookie="site-verified=1; max-age=31536000; path=/; SameSite=Lax"; } catch(error) {}
-    try { localStorage.setItem("site-verified","1"); } catch(error) {}
-  }
-  function openAgeGate() {
-    if(!ageGate || ageGate.classList.contains("is-active")) return;
-    ageGate.classList.add("is-active");
-    ageGate.setAttribute("aria-hidden","false");
-    document.body.classList.add("modal-open");
-    document.getElementById("main").setAttribute("inert","");
-    var yesBtn=ageGate.querySelector("[data-age-yes]");
-    if(yesBtn) yesBtn.focus();
-  }
-  function closeAgeGate() {
-    if(!ageGate) return;
-    ageGate.classList.remove("is-active");
-    ageGate.setAttribute("aria-hidden","true");
-    document.body.classList.remove("modal-open");
-    var main=document.getElementById("main"); if(main) main.removeAttribute("inert");
-  }
-  if(ageGate) {
-    ageGate.querySelector("[data-age-yes]").addEventListener("click", function() {
-      setAgeVerified();
-      closeAgeGate();
-    });
-    function onAgeKey(e){ if(e.key==="Escape") closeAgeGate(); }
-    document.addEventListener("keydown", onAgeKey);
-    ageGate.querySelector("[data-age-no]").addEventListener("click", function() {
-      window.location.replace("https://cn.bing.com/");
-    });
-  }
-  if(!getAgeVerified()) {
-    setTimeout(openAgeGate, 600);
-  }  (function() {
     var logo=document.querySelector(".publish-card__logo");
     if(!logo)return;
     var clickCount=0;
@@ -1133,7 +979,7 @@ body.modal-open{overflow:hidden}
       if(clickCount >=5) {
         clickCount=0;
         clearTimeout(resetTimer);
-        window.location.href="https://example.com/hidden/";
+        window.location.href="#";
         return;
 
       }clearTimeout(resetTimer);
@@ -1144,77 +990,15 @@ body.modal-open{overflow:hidden}
 
     });
 
-  })();
-
 })();
 </script>
   <div id="gd-live-region" aria-live="polite" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)"></div>
 </body>
 </html>`;
 
-const robotsTxt = `User-agent: *
-Allow: /
-Sitemap: https://example.com/sitemap.xml
-`;
-
-const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://example.com/</loc>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://example.com/nav/</loc>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://example.com/nav/detail/</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://example.com/nav/about/</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://example.com/nav/help/</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://example.com/nav/palace/</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://example.com/nav/donate/</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://example.com/nav/friend/</loc>
-    <priority>0.8</priority>
-  </url>
-</urlset>
-`;
 
 export default {
-  async fetch(request, env, ctx) {
-    const url = new URL(request.url);
-    const path = url.pathname;
-
-    if (path === "/robots.txt") {
-      return new Response(robotsTxt, {
-        headers: { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "private, no-store" }
-      });
-    }
-
-    if (path === "/sitemap.xml") {
-      return new Response(sitemapXml, {
-        headers: { "Content-Type": "application/xml; charset=utf-8", "Cache-Control": "private, no-store" }
-      });
-    }
-
-    if (path === "/favicon.ico") {
-      return Response.redirect("https://your-cdn.example.com/assets/icon/favicon.png", 302);
-    }
-
+  async fetch() {
     return new Response(html, {
       headers: {
         "Content-Type": "text/html; charset=utf-8",
@@ -1222,7 +1006,7 @@ export default {
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
         "Referrer-Policy": "strict-origin-when-cross-origin",
-        "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; connect-src 'self' https://example.com; font-src 'self' data: https://fonts.gstatic.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self'",
+        "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; connect-src 'self' https://galnavi.top; font-src 'self' data: https://fonts.gstatic.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self'",
       }
     });
   }
