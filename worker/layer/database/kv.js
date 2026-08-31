@@ -1,34 +1,33 @@
 /**
  * 数据访问层 — KV
- * Cloudflare KV 读写封装
- * 
- * 实际 KV 命名空间：
- * - CAROUSEL_KV: carousel_images (轮播图)
- * - FEATURED_KV: featured_items (推荐项)
- * - DONATE_KV: donors (捐款名单)
- * - STATUS_KV: api_cache, state (状态监控)
- * - NOTICE_KV: notice (公告)
+ * 对照 worker/new 与 AGENTS.md
+ *
+ * - HERO_KV: hero_images
+ * - FEATURED_KV: featured_items
+ * - DONATE_KV: donors
+ * - STATUS_KV: state, api_cache
+ * - NOTICE_KV: notice
  */
 
-/** 读取轮播图 URL 列表（CAROUSEL_KV key: carousel_images） */
+/** 读取轮播图 URL 列表 */
 export async function fetchHeroImages(env) {
   try {
-    if (!env.CAROUSEL_KV) return [];
-    const raw = await env.CAROUSEL_KV.get("carousel_images");
+    if (!env.HERO_KV) return [];
+    const raw = await env.HERO_KV.get("hero_images");
     if (!raw) return [];
     try {
       const p = JSON.parse(raw);
       return Array.isArray(p) ? p : (typeof p === "string" && p ? [p] : []);
-    } catch (e) {
+    } catch {
       const t = raw.trim();
-      return t.includes(",") ? t.split(",").map(s => s.trim()).filter(Boolean) : (t ? [t] : []);
+      return t.includes(",") ? t.split(",").map((s) => s.trim()).filter(Boolean) : (t ? [t] : []);
     }
-  } catch (e) {
+  } catch {
     return [];
   }
 }
 
-/** 读取推荐项 key 列表（FEATURED_KV key: featured_items） */
+/** 读取推荐项 key 列表 */
 export async function fetchFeaturedKeys(env) {
   try {
     if (!env.FEATURED_KV) return [];
@@ -36,16 +35,16 @@ export async function fetchFeaturedKeys(env) {
     if (!raw) return [];
     try {
       return JSON.parse(raw);
-    } catch (e) {
+    } catch {
       const t = raw.trim();
-      return t ? t.split(",").map(k => k.trim()).filter(Boolean) : [];
+      return t ? t.split(",").map((k) => k.trim()).filter(Boolean) : [];
     }
-  } catch (e) {
+  } catch {
     return [];
   }
 }
 
-/** 读取捐款名单（DONATE_KV key: donors） */
+/** 读取捐款名单 */
 export async function fetchDonors(env) {
   try {
     if (!env.DONATE_KV) return [];
@@ -53,35 +52,35 @@ export async function fetchDonors(env) {
     if (!raw) return [];
     try {
       return JSON.parse(raw);
-    } catch (e) {
+    } catch {
       return [];
     }
-  } catch (e) {
+  } catch {
     return [];
   }
 }
 
-/** 读取站点公告（NOTICE_KV key: notice，纯文本） */
+/** 读取站点公告（纯文本） */
 export async function fetchNotice(env) {
   try {
     if (!env.NOTICE_KV) return "";
     return (await env.NOTICE_KV.get("notice")) || "";
-  } catch (e) {
+  } catch {
     return "";
   }
 }
 
-/** 读取状态监控数据（STATUS_KV key: state，JSON） */
+/** 读取状态监控数据 */
 export async function fetchStatusState(env) {
   try {
     if (!env.STATUS_KV) return null;
     return await env.STATUS_KV.get("state", "json");
-  } catch (e) {
+  } catch {
     return null;
   }
 }
 
-/** 保存状态监控数据（STATUS_KV key: state） */
+/** 保存状态监控数据 */
 export async function saveStatusState(env, state) {
   try {
     if (env.STATUS_KV) {
@@ -92,24 +91,24 @@ export async function saveStatusState(env, state) {
         events: state.events || [],
       }));
     }
-  } catch (e) {}
+  } catch { /* KV 失败时忽略 */ }
 }
 
-/** 读取 CF API 缓存（STATUS_KV key: api_cache，JSON） */
+/** 读取 CF API 缓存 */
 export async function fetchApiCache(env) {
   try {
     if (!env.STATUS_KV) return null;
     return await env.STATUS_KV.get("api_cache", "json");
-  } catch (e) {
+  } catch {
     return null;
   }
 }
 
-/** 保存 CF API 缓存（STATUS_KV key: api_cache） */
+/** 保存 CF API 缓存 */
 export async function saveApiCache(env, data) {
   try {
     if (env.STATUS_KV) {
       await env.STATUS_KV.put("api_cache", JSON.stringify(data));
     }
-  } catch (e) {}
+  } catch { /* KV 失败时忽略 */ }
 }

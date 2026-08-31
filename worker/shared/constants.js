@@ -1,9 +1,9 @@
 /**
- * 全局共享常量
- * 分类映射、标签、允许列表等业务常量权威源
+ * 业务常量权威源（分类等）。各页应 import 此处，禁止再维护第二份。
+ * 按主站实际 category 键逐步补全。
  */
 
-/** D1 原始 category 键 → 前端 cat 键 */
+/** D1 原始 category 键 → 前端 cat 键（对照 websearch.js 数据转换） */
 export const DB_CATEGORY_MAP = {
   simulators: "simulator",
   websites: "site",
@@ -12,7 +12,7 @@ export const DB_CATEGORY_MAP = {
   hanhua: "hanhua",
 };
 
-/** 前端 cat 键 → 中文标签 */
+/** 前端 cat 键 → 中文标签（对照 websearch.js CATEGORY_LABELS） */
 export const CATEGORY_LABELS = {
   home: "全部",
   site: "站点",
@@ -31,8 +31,13 @@ export const CAT_MAP = {
   hanhua: { id: "hanhua", label: "汉化组" },
 };
 
-/** D1 sites.category 允许的原始键 */
+/** D1 navi_sites.category 允许的原始键（detail.js 校验用）：即 DB_CATEGORY_MAP 的键，禁止手写 */
 export const ALLOWED_DB_CATEGORIES = Object.keys(DB_CATEGORY_MAP);
 
-/** 前端 cat 键允许列表 */
 export const ALLOWED_CATEGORIES = Object.keys(CAT_MAP);
+
+/** navi_sites.is_active：1 正常展示，2 NSFW（盾牌打开后才显示），0 下架 */
+export const NAVI_IS_ACTIVE = 1;
+export const NAVI_IS_NSFW = 2;
+/** NSFW 开关 cookie 有效期（秒） */
+export const NSFW_COOKIE_MAX_AGE = 24 * 60 * 60;

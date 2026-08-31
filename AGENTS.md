@@ -18,7 +18,7 @@ ACG 二次元资源聚合导航站，运行在 Cloudflare Workers + D1 + KV 上�
 
 | 页面 | Worker | 说明 |
 |------|--------|------|
-| 首页 | `worker/index.js` | 发布页 + 年龄门 |
+| 首页 | `worker/index.js` | 发布页 |
 | 主站导航 | `worker/websearch.js` | 站点列表 + 搜索 + 轮播图 |
 | 圣器殿堂 | `worker/palace.js` | 分组资源浏览 |
 | 关于 | `worker/about.js` | 起源 / 发展史 / 声明 |
@@ -51,7 +51,7 @@ ACG 二次元资源聚合导航站，运行在 Cloudflare Workers + D1 + KV 上�
 
 - 单文件 Worker：HTML/CSS/JS 全内联，无运行期外链
 - 安全头基线见 `ARCHITECTURE.md`；各页只可收紧
-- `worker/shared/` 只给 Worker import，不打包进浏览器
+- `worker/shared/` 只给 Worker / layer import，不打包进浏览器（constants / security / seo）
 - `src/` 只在浏览器运行，不 import Worker 模块
 
 ### Worker 功能层

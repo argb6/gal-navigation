@@ -1,19 +1,11 @@
 /**
  * 安全层 — 安全头
- * CSP 基线与安全头合并工具
+ * 基线来自 shared/security.js；CSP 默认值对照 worker/new 页内副本
  */
 
-/** 默认安全头基线；页面只可补充或收紧，不可放宽 */
-export const SECURITY_HEADERS_BASE = {
-  "X-Content-Type-Options": "nosniff",
-  "X-Frame-Options": "SAMEORIGIN",
-  "Referrer-Policy": "strict-origin-when-cross-origin",
-};
+import { SECURITY_HEADERS_BASE } from "../../shared/security.js";
 
-/** 合并页面安全头与基线 */
-export function mergeSecurityHeaders(pageHeaders = {}) {
-  return { ...SECURITY_HEADERS_BASE, ...pageHeaders };
-}
+export { SECURITY_HEADERS_BASE, mergeSecurityHeaders } from "../../shared/security.js";
 
 /** 构建完整安全头（含 Content-Type + Cache-Control + CSP） */
 export function buildSecurityHeaders(cspDirectives = {}) {
@@ -26,7 +18,7 @@ export function buildSecurityHeaders(cspDirectives = {}) {
   };
 }
 
-/** 构建 CSP 字符串 */
+/** 构建 CSP 字符串。页面只可收紧，不要把 fonts / insights 以外的源放进来 */
 export function buildCSP(directives = {}) {
   const defaults = {
     "default-src": "'self'",

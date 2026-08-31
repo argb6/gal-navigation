@@ -1,27 +1,43 @@
 /**
  * API 接口层 — 状态页数据
- * CF API 集成 + 站点健康检测 + 事件记录
- * 
- * 实际来源：worker/status.js
+ * 对照 worker/new/status.js。Token 只读 env.CF_API_TOKEN，不硬编码。
  */
 
 import { fetchApiCache, saveApiCache, fetchStatusState, saveStatusState, fetchNotice } from "../database/kv.js";
 import { fetchAllSiteUrls } from "../database/d1.js";
 import { checkAllSites, recordEvents, summarizeStatus, calcUptimeDays } from "../service/site.service.js";
-import { beijingNow, currentSlot, needsApiRefresh } from "../service/cache.service.js";
+import { beijingNow, currentSlot } from "../service/cache.service.js";
 import { escapeHtml } from "../security/escape.js";
-import { UPTIME_BASE } from "../../shared/config.js";
 
-/**
- * CF API 抓取：获取 zone 信息
- * GET https://api.cloudflare.com/client/v4/zones?name=<domain>&per_page=1
- */
+const ZONE_NAME = "galnavi.top";
+const UPTIME_BASE = "2026-06-26";
+const CF_API_BASE = "https://api.cloudflare.com/client/v4";
+const CF_GRAPHQL = "https://api.cloudflare.com/client/v4/graphql";
+
+const DEFAULT_SERVICES = [
+  { name: "发布页", url: "https://galnavi.top/" },
+  { name: "主站导航", url: "https://galnavi.top/nav/" },
+  { name: "站点帮助", url: "https://galnavi.top/nav/help/" },
+  { name: "关于本站", url: "https://galnavi.top/nav/about/" },
+  { name: "圣器殿堂", url: "https://galnavi.top/nav/palace/" },
+  { name: "友情链接", url: "https://galnavi.top/nav/friend/" },
+  { name: "赞助本站", url: "https://galnavi.top/nav/donate/" },
+  { name: "站点状态", url: "https://galnavi.top/status/" },
+];
+
+function cfToken(env) {
+  return env && env.CF_API_TOKEN;
+}
+
 async function fetchZone(env) {
+  const token = cfToken(env);
+  if (!token) throw new Error("CF_API_TOKEN missing");
+  const zoneName = env.ZONE_NAME || ZONE_NAME;
   const resp = await fetch(
-    `https://api.cloudflare.com/client/v4/zones?name=${encodeURIComponent(env.ZONE_NAME)}&per_page=1`,
+    `${CF_API_BASE}/zones?name=${encodeURIComponent(zoneName)}&per_page=1`,
     {
       headers: {
-        Authorization: `Bearer ${env.CF_API_TOKEN}`,
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     }
@@ -34,11 +50,9 @@ async function fetchZone(env) {
   return { id: zone.id, createdOn: zone.created_on || null };
 }
 
-/**
- * CF GraphQL 抓取：累计请求量
- * 按天分组求和，统计区间从 UPTIME_BASE 到今天
- */
 async function fetchTotalRequests(env, zoneId) {
+  const token = cfToken(env);
+  if (!token) throw new Error("CF_API_TOKEN missing");
   const today = new Date().toISOString().slice(0, 10);
   const query = `query {
     viewer {
@@ -50,10 +64,10 @@ async function fetchTotalRequests(env, zoneId) {
     }
   }`;
 
-  const resp = await fetch("https://api.cloudflare.com/client/v4/graphql", {
+  const resp = await fetch(CF_GRAPHQL, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${env.CF_API_TOKEN}`,
+      Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ query }),
@@ -66,28 +80,18 @@ async function fetchTotalRequests(env, zoneId) {
   return groups.reduce((acc, g) => acc + ((g.sum && g.sum.requests) || 0), 0);
 }
 
-/**
- * 刷新 CF API 数据（到点时触发，其余时间用缓存）
- */
 export async function refreshApiData(env) {
   let zone = null;
-  try { zone = await fetchZone(env); } catch (e) {}
+  try { zone = await fetchZone(env); } catch { /* 无 token 或 API 失败时用缓存 */ }
   let visits = null;
-  try { if (zone) visits = await fetchTotalRequests(env, zone.id); } catch (e) {}
+  try { if (zone) visits = await fetchTotalRequests(env, zone.id); } catch { /* 同上 */ }
   const now = beijingNow();
   const fresh = { date: now.date, slot: currentSlot(now.hour), visits, fetchedAt: Date.now() };
   await saveApiCache(env, fresh);
   return fresh;
 }
 
-/**
- * 获取状态页完整数据
- * @param {Object} env - Worker env（含 STATUS_KV, NOTICE_KV, DB, CF_API_TOKEN, ZONE_NAME）
- * @param {Object} ctx - Worker ctx（用于 waitUntil）
- * @returns {Object} { uptimeDays, visits, stateLabel, stateClass, checked, events, notice }
- */
 export async function fetchStatusPageData(env, ctx) {
-  // 加载状态内存
   const state = (await fetchStatusState(env)) || {
     failCounts: {},
     lastEventAt: {},
@@ -95,7 +99,6 @@ export async function fetchStatusPageData(env, ctx) {
     events: [],
   };
 
-  // CF API 缓存判断
   const apiCache = await fetchApiCache(env);
   const now = beijingNow();
   const slot = currentSlot(now.hour);
@@ -104,30 +107,24 @@ export async function fetchStatusPageData(env, ctx) {
 
   if (needsFetch) {
     if (apiCache) {
-      // 已有旧缓存：后台刷新，不阻塞
       if (ctx && typeof ctx.waitUntil === "function") {
         ctx.waitUntil(refreshApiData(env).catch(() => {}));
       }
     } else {
-      // 首次无缓存：阻塞抓取
       const fresh = await refreshApiData(env);
       totalRequests = fresh.visits;
     }
   }
 
-  // 站点健康检测
-  const services = await fetchAllSiteUrls(env);
+  let services = await fetchAllSiteUrls(env);
+  if (!services.length) services = DEFAULT_SERVICES;
   const results = await checkAllSites(services);
   const checked = services.map((s, i) => ({ ...s, ...results[i] }));
 
-  // 记录事件
   recordEvents(checked, state);
   await saveStatusState(env, state);
 
-  // 公告
   const notice = await fetchNotice(env);
-
-  // 汇总
   const uptimeDays = calcUptimeDays(UPTIME_BASE);
   const status = summarizeStatus(checked);
 
