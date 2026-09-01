@@ -25,7 +25,7 @@ related:
 
 | | 号 | 改哪 |
 |--|----|------|
-| 知识库 | **1.2.0** | 改目录/口径时升 `docs/gd.config.json` 的 `kbVersion`，并改本表 |
+| 知识库 | **1.3.0** | 改目录/口径时升 `docs/gd.config.json` 的 `kbVersion`，并改本表 |
 | 组件库 gd | **1.5.2** | 改 `version` + `docs/CHANGELOG.md` |
 
 ## 查什么去哪
@@ -38,11 +38,18 @@ related:
 | 哪页读 D1/KV | [[数据流]] |
 | 表名、绑定名、R2 | [[存储]] |
 | 部署 / 沙盒 / CSP | [[部署流程]] · [[沙盒开发]] · [[安全头]] |
+| 阅读副本 | `source/`（从 `worker/new` 抽出） |
 | 组件红线 | [[GD 组件库]] → `体系/`、`组件/` |
 | 决策、示例、版本日志 | [[记录索引]]（路径在 `docs/`） |
 | 踩过的坑 | [[Problem-公告注入布局错乱]] · [[Problem-shenmo 命名混乱]] |
 
 本库文件夹（连续编号）：`01_Project` `02_Component` `03_Architecture` `04_Internal` `05_Log`。入口就是本 README。
+
+## 能写什么
+
+现网口径尽量写全：Worker 名、路由、绑定名、库名、表字段、KV key、R2 公开域、toml 里的 **database_id / KV namespace id**。
+
+**禁止写入：** 接口密钥、账号密码、API token / `CF_API_TOKEN` 明文、`.wrangler` 登录凭证。密钥只写「走 Secret / 环境变量」。
 
 ## 怎么写一篇
 

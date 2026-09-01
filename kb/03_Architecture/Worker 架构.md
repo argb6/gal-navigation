@@ -32,7 +32,7 @@ related:
 
 ## Definition
 
-入口是模块 Worker：`export default { async fetch(request, env, ctx) }`。现网 `worker/new/*.js` **零 import**；查 D1/KV、拼页面、安全头都在同一文件。GitHub 的 `worker/*.js` 目前同样是单文件脱敏/阅读副本，没有 `import` layer。
+入口是模块 Worker：`export default { async fetch(request, env, ctx) }`。现网 `worker/new/*.js` **零 import**；查 D1/KV、拼页面、安全头都在同一文件。GitHub 的 `worker/*.js` 目前同样是单文件阅读副本，没有 `import` layer。本仓库阅读副本在 `source/`（从 `worker/new` 抽出，去掉密钥）。
 
 选择单文件内联：[[Decision-单文件 Worker]]。运行时口径：[[Cloudflare Worker]]。
 
