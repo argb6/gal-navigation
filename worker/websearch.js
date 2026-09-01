@@ -3100,7 +3100,7 @@ gd-search { display: contents; }
 
 *{margin:0;padding:0;box-sizing:border-box}
 html{height:auto;min-height:100%;min-height:100vh;min-height:100dvh;min-height:var(--gd-vvh,100dvh);font-size:16px;-webkit-text-size-adjust:100%;text-size-adjust:100%;background:var(--gd-color-background);scroll-padding-top:calc(var(--gd-nav-height) + var(--gd-below-nav-h,80px) + 8px)}
-body{font-family:var(--gd-font-sans);color:var(--gd-color-on-surface);line-height:1.65;letter-spacing:0.01em;min-height:100vh;min-height:100dvh;min-height:var(--gd-vvh,100dvh);display:flex;flex-direction:column;overflow-x:hidden;padding-top:calc(var(--gd-nav-height) + var(--gd-below-nav-h,80px));text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+body{font-family:var(--gd-font-sans);color:var(--gd-color-on-surface);line-height:1.65;letter-spacing:0.01em;min-height:100vh;min-height:100dvh;min-height:var(--gd-vvh,100dvh);display:flex;flex-direction:column;overflow-x:hidden;overflow-x:clip;padding-top:calc(var(--gd-nav-height) + var(--gd-below-nav-h,80px));text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 a{color:var(--gd-color-link);text-decoration:none}a:hover{color:var(--gd-color-link-hover)}
 ::selection{background:rgba(var(--gd-color-primary-rgb),0.38);color:#fff}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
@@ -3121,8 +3121,8 @@ a{color:var(--gd-color-link);text-decoration:none}a:hover{color:var(--gd-color-l
   box-sizing:border-box;
   max-width:calc(var(--gd-card-cols) * var(--gd-card-w) + (var(--gd-card-cols) - 1) * var(--gd-card-gap) + 2 * var(--gd-page-gutter));
 }
-.gd-groundback{position:fixed!important;top:0!important;left:0!important;width:100vw!important;height:100dvh!important;min-width:100%!important;min-height:100%!important;z-index:0}
-html{overflow-x:hidden}
+.gd-groundback{position:fixed!important;inset:0!important;width:auto!important;height:auto!important;z-index:0}
+html{overflow-x:hidden;overflow-x:clip}
 .gd-footer{position:relative;z-index:1;flex-shrink:0;margin-top:auto;width:100%;box-sizing:border-box}
 .gd-footer--page{padding-top:24px}
 

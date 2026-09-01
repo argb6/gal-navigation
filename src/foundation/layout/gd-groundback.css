@@ -10,14 +10,12 @@
   background: var(--gd-color-background);
 }
 
-/* 整屏铺满（主站/详情等页面背景）；预览盒内演示不要加这个 */
+/* 整屏铺满：用 inset，不要 100vw。100vw 含滚动条宽度，会撑出横向溢出，
+   全屏刷新时把右下 gd-orb 裁掉。预览盒内不要加这个。 */
 .gd-groundback--bleed {
-  top: 0;
-  left: 0;
-  right: auto;
-  bottom: auto;
-  width: 100vw;
-  height: 100dvh;
+  inset: 0;
+  width: auto;
+  height: auto;
   min-width: 100%;
   min-height: 100%;
 }
