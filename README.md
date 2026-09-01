@@ -103,7 +103,7 @@ GALNAVI 是面向 ACG 的导航与信息聚合站（[galnavi.top](https://galnav
 | Runtime | Cloudflare Workers |
 | Database | Cloudflare D1 |
 | Storage | Cloudflare KV、R2 |
-| UI | gd |
+| UI | GD（GALNAVI Design） |
 | Frontend | HTML / CSS / JavaScript |
 
 ## License
