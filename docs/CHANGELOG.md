@@ -11,6 +11,8 @@
 - `usage.md` / `tokens.md` / `open-source-prep.md` 挪到 `docs/standard/`
 - 根目录去掉重复稿 `gd-architecture.md`、`worker-component-report.md`；项目地图改在根 `README.md`，AI 规矩在 `AGENTS.md`
 - 知识库文件夹改成连续编号 `01`–`05`（`kbVersion` 1.2.0）；`worker/share` 与现网 index 的 robots/sitemap 对齐（含 `/status/`）
+- 知识库 1.3.0：写入现网 D1/KV UUID 与部署表；禁止写 token。`source/` 是从 `worker/new` 抽出的发布用源代码（**不含** β 版 status）
+- 删除未被现网页引用的 `src/extend/about`、`help`、`palace` CSS（关于用 `gd-table`，帮助用 overview 目录，殿堂样式在 `palace.js` 内联）
 
 ## v1.5.1
 

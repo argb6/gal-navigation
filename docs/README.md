@@ -40,4 +40,4 @@
 | [`standard/open-source-prep.md`](./standard/open-source-prep.md) | 开源脱敏清单 |
 | [`examples/`](./examples/) | 短示例 |
 | [`decisions/`](./decisions/) | ADR |
-| [`../kb/GALNAVI-KB/README.md`](../kb/GALNAVI-KB/README.md) | 知识库入口与版本 |
+| [`../kb/README.md`](../kb/README.md) | 知识库入口与版本 |
