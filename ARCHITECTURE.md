@@ -1,79 +1,71 @@
-# ARCHITECTURE
+# 架构说明
 
-> gd = GalNavi Design — GALNAVI 自研设计体系。  
-> 对齐 Material Design 3 语义，保留玻璃拟态皮肤。
-
-## 设计原则
-
-| MD3 维度 | 落地方式 |
-|----------|----------|
-| Color roles | token 角色名对齐 MD3（primary / on-surface / error），色值用自有调色板 |
-| Shape | `--gd-shape-corner-*` 对应 MD3 corner scale，数值映射自现网 |
-| Typography | `--gd-type-*` 档位对齐 Display/Headline/Title/Label/Body |
-| Motion | `--gd-motion-duration-*` / `--gd-motion-easing-*` 参考 MD3 short/medium |
-| State layers | hover/focus/pressed 透明度叠加，disabled 0.38 |
-| Touch / a11y | 触控目标 ≥ 48px，`:focus-visible` 可见焦点，`prefers-reduced-motion` |
-
-## 禁止项
-
-- 不引入 Material 默认紫色主题
-- 不引入 MDC Web 组件库
-- 不改玻璃透明度和 backdrop-filter
-- 不做 MD3 五种 Button 变体硬套
-
-**一句话：MD3 = 规矩与语义；gd = 皮肤与代码壳。**
-
-## 组件体系
-
-```
-gd — GalNavi Design
-├── foundation/     基础（tokens / glass / button / link / brand / layout / footer / a11y）
-├── navigation/     导航（navbar / search）
-├── display/        展示（card / tag / badge / table / empty-state / hero-carousel）
-├── feedback/       反馈（modal / toast / tooltip / skeleton）
-├── extend/         扩展（按 Worker 页面归类）
-├── runtime/        注册入口（gd.js）
-└── preview/        预览页
-```
-
-14 核心组件 + 168+ 设计变量。
-
-## Worker 架构
-
-每个页面是单文件 Worker（HTML/CSS/JS 全内联），通过 Service Binding 互联。
-
-```
-请求 → error.js（catch-all 路由）
-  ├─ /          → index Worker
-  ├─ /nav/      → websearch Worker
-  ├─ /nav/palace/ → palace Worker
-  └─ *          → 404 页面
-```
+本文档说明各层职责与数据流向。
 
 ## 数据流
 
 ```
-D1/KV → Worker → safeJson() → HTML（CSS 内联 + JS 内联 + 数据注入）→ 浏览器
+D1 / KV（nav 数据库）
+   ↓ 查询
+Worker（worker/*.js）
+   ↓ 拼 HTML + 内联样式
+HTML（页面返回给浏览器）
+   ↓ class 匹配
+gd 组件（src/ 组件库，浏览器侧 CSS/JS）
+   ↓ 渲染
+浏览器
 ```
 
-三条路径：
-- **B-SSR**：Worker 直连 D1/KV，拼 HTML 返回
-- **B-JSON**：Worker 注入 JSON 到 `<script>`，客户端渲染
-- **B-REST**：独立 API Worker，D1 CRUD
+## 各层职责
 
-## 安全基线
+### src/ —— 浏览器组件
 
-- CSP：`default-src 'self'; script-src 'self' 'unsafe-inline'`（各页只可收紧）
-- `X-Content-Type-Options: nosniff`
-- `X-Frame-Options: SAMEORIGIN`
-- `Referrer-Policy: strict-origin-when-cross-origin`
-- `Cache-Control: private, no-store`
+| 内容 | 说明 |
+|---|---|
+| `foundation/tokens/` | `--gd-*` 设计变量 + 玻璃工具类 |
+| `*/*.css` | 组件外观（gd- 前缀 class） |
+| `*/*.js` | 通用行为（弹窗开闭、抽屉、搜索、页脚贴底、详情反向缩放等） |
+| `preview/index.html` | 组件总览预览页 |
+| `preview/gd-preview.js` | esbuild 打包产物（入口在 `temp/gd-preview-entry.js`） |
 
-## 相关文档
+### worker/ —— 服务端逻辑
 
-| 文档 | 内容 |
-|------|------|
-| `docs/tokens.md` | 设计变量参考 |
-| `docs/components.md` | 组件索引 |
-| `docs/decisions/` | 架构决策记录（ADR） |
-| `src/README.md` | 组件库详细说明 |
+| 内容 | 说明 |
+|---|---|
+| `worker/new/*.js` | 部署版页面 Worker：查 D1/KV、拼 HTML、页内 `SECURITY_HEADERS`（零 `import`） |
+| `source/*.js` | `worker/new` 阅读副本（含 status；密钥已掏空） |
+| `worker/shared/constants.js` | 分类常量参考源（DB 键 / 前端键 / 标签）；现网页已抄入，不 import |
+| `worker/shared/security.js` | 安全头基线 + 转义工具（参考）；现网页用页内副本 |
+| `worker/shared/seo.js` | 生产用 meta / OG 参考（现网页内联副本） |
+
+**关键边界**：`src/` 只在浏览器运行。Worker 页把 gd CSS 内联进单文件；`worker/shared/` 不再被 `worker/new/*.js` import。
+
+### 页面背景
+
+| 变体 | Worker |
+|---|---|
+| `gd-groundback--websearch` | index / websearch / detail / about / help / friend / donate / status / error |
+| `gd-groundback--gold` | palace |
+
+详情等页：`body` 透明，`.gd-groundback { z-index: 0 }`，正文更高，否则旧渐变会盖住线条。
+
+### extend/ —— 业务页面组件
+
+按来源 Worker 页面归类：
+
+| 目录 | 来源页面 |
+|---|---|
+| `extend/overview/` | 组件总览页自身壳层（虚线分割、索引） |
+| `extend/websearch/` | websearch.js（右下 gd-orb 快捷入口、卡片网格、纳普彩蛋、欢迎弹窗、通知跑马灯） |
+| `extend/donate/` | donate.js（扫码卡、名单） |
+| `extend/detail/` | detail.js（亮点横幅、三列详情卡） |
+| `extend/home/` | index.js（发布页） |
+| `extend/about/` | about.js（关于页） |
+| `extend/help/` | help.js（帮助页） |
+| `extend/palace/` | palace.js（圣器殿堂页） |
+
+## 分层原则
+
+- **核心组件**：跨页面复用 → 放基础/导航/展示/反馈
+- **页面组件**：单页面使用 → 放 `extend/<页面名>/`
+- **不要**把页面业务（跳转地址、查询逻辑）写进组件
