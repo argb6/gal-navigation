@@ -1,0 +1,51 @@
+/* layout — 后置轻量分区，仅展示用 */
+
+/* 全局隐藏滚动条（桌面 + 移动） */
+html {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+html::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  background: transparent;
+}
+html::-webkit-scrollbar-track,
+html::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
+/* 短页把页脚顶到视口底；长页随内容走。--gd-vvh 由 initGdStickyViewport 写入 */
+.gd-page {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  min-height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  min-height: var(--gd-vvh, 100dvh);
+}
+.gd-page--demo {
+  min-height: 240px;
+  height: 240px;
+  overflow: hidden;
+}
+
+.gd-section { margin-bottom: 40px; }
+.gd-section__title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: var(--gd-type-title-xxl-size);
+  font-weight: var(--gd-weight-bold);
+  color: var(--gd-color-on-surface);
+  margin: 0 0 18px;
+}
+.gd-section__title::before {
+  content: "";
+  display: block;
+  width: 4px;
+  height: 22px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--gd-color-primary), var(--gd-color-secondary));
+}

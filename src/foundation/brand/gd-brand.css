@@ -1,0 +1,97 @@
+.gd-brand {
+  margin-bottom: var(--gd-space-6);
+  overflow: visible;
+  padding-bottom: 8px;
+}
+/* 不用 background-clip:text，避免 g / y 下行被裁 */
+.gd-brand__title {
+  display: inline-block;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: var(--gd-font-sans);
+  font-size: clamp(var(--gd-type-display-small-size), 6vw, 52px);
+  line-height: 1.35;
+  font-weight: var(--gd-weight-black);
+  letter-spacing: var(--gd-type-letter-spacing-wide);
+  color: var(--gd-color-primary);
+  text-shadow: 0 0 20px rgba(var(--gd-color-primary-rgb), 0.45);
+  /* linear：全程匀速，避免 ease 在关键帧处顿挫 */
+  animation: gd-brand-glow 3s linear infinite;
+}
+/* 蓝 → 青 → 紫 → 蓝，等距关键帧 + 中间过渡色，连续丝滑 */
+@keyframes gd-brand-glow {
+  0% {
+    color: var(--gd-color-primary);
+    text-shadow: 0 0 18px rgba(var(--gd-color-primary-rgb), 0.48);
+  }
+  16.67% {
+    color: rgba(var(--gd-color-sky-rgb), 0.78);
+    text-shadow: 0 0 18px rgba(var(--gd-color-sky-rgb), 0.4);
+  }
+  33.33% {
+    color: var(--gd-color-cyan);
+    text-shadow: 0 0 16px rgba(var(--gd-color-cyan-rgb), 0.36);
+  }
+  50% {
+    color: var(--gd-color-cyan-light);
+    text-shadow: 0 0 14px rgba(var(--gd-color-cyan-light-rgb), 0.28);
+  }
+  66.67% {
+    color: rgba(var(--gd-color-sky-blue-rgb), 0.7);
+    text-shadow: 0 0 16px rgba(var(--gd-color-sky-blue-rgb), 0.38);
+  }
+  83.33% {
+  color: var(--gd-color-secondary);
+  text-shadow: 0 0 20px rgba(var(--gd-color-secondary-rgb), 0.48);
+  }
+  100% {
+    color: var(--gd-color-primary);
+    text-shadow: 0 0 18px rgba(var(--gd-color-primary-rgb), 0.48);
+  }
+}
+.gd-brand__title--shift {
+  animation: gd-brand-glow 3s linear infinite;
+}
+/* 殿堂：橙 → 绿 → 红 循环（殿堂主题色） */
+.gd-brand__title--palace {
+  animation: gd-brand-glow-palace 2.25s linear infinite alternate;
+}
+@keyframes gd-brand-glow-palace {
+  0% {
+    color: rgba(var(--gd-color-green-rgb), 1);
+    text-shadow: 0 0 18px rgba(var(--gd-color-green-rgb), 0.4);
+  }
+  33.33% {
+    color: rgba(var(--gd-color-error-rgb), 1);
+    text-shadow: 0 0 18px rgba(var(--gd-color-error-rgb), 0.45);
+  }
+  66.67% {
+    color: rgba(var(--gd-color-gold-deep-rgb), 1);
+    text-shadow: 0 0 18px rgba(var(--gd-color-gold-deep-rgb), 0.45);
+  }
+  100% {
+    color: rgba(var(--gd-color-gold-deep-rgb), 1);
+    text-shadow: 0 0 18px rgba(var(--gd-color-gold-deep-rgb), 0.45);
+  }
+}
+/* 导航栏内使用：缩小到导航栏标题级别，保留发光动效 */
+.gd-navbar .gd-brand__title,
+.gd-navbar .gd-brand__title--shift,
+.gd-navbar .gd-brand__title--palace {
+  font-size: var(--gd-type-title-large-size);
+  line-height: 28px;
+  letter-spacing: var(--gd-type-letter-spacing-tight);
+  text-shadow: 0 0 14px rgba(var(--gd-color-primary-rgb), 0.35);
+  cursor: pointer;
+}
+/* 预览用中等尺寸（组件库总览页） */
+.gd-brand__title--demo {
+  font-size: clamp(28px, 5vw, 40px);
+  margin: 8px 0 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .gd-brand__title,
+  .gd-brand__title--shift,
+  .gd-brand__title--palace { animation: none; }
+}

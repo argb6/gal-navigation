@@ -1,0 +1,41 @@
+/* gd-a11y — Windows 高对比模式：边框与图标可见 */
+
+@media (forced-colors: active) {
+  .gd-card,
+  .gd-navbar,
+  .gd-navbar-drawer,
+  .gd-cat-dock,
+  .gd-modal,
+  .gd-button,
+  .gd-search__input,
+  .gd-search__clear,
+  .gd-search__help,
+  .gd-tag,
+  .gd-orb__toggle,
+  .gd-orb__item,
+  .gd-toast,
+  .gd-tooltip,
+  .gd-empty-state,
+  .gd-table th,
+  .gd-table td,
+  .gd-card__icon,
+  .gd-card__btn,
+  .gd-card__action {
+    border: 1px solid CanvasText;
+  }
+  .gd-navbar__logo-text,
+  .gd-navbar-drawer__brand,
+  .gd-brand__title {
+    background: none;
+    -webkit-text-fill-color: CanvasText;
+    color: CanvasText;
+  }
+  .gd-card__icon img,
+  .gd-navbar__logo-img,
+  .gd-hero__arrow svg,
+  .gd-search__icon svg,
+  .gd-navbar__nsfw svg,
+  .gd-navbar-drawer__nsfw svg {
+    forced-color-adjust: none;
+  }
+}

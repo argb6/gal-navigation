@@ -1,0 +1,30 @@
+/* gd-palace — 圣器殿堂页（palace.js）组件：高亮 / 图例按钮 */
+
+.gd-name-hl {
+  background: rgba(251, 191, 36, 0.28);
+  color: #fef3c7;
+  border-radius: 3px;
+  padding: 0 2px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+mark.gd-name-hl { font: inherit; }
+
+.gd-brand-legend {
+  margin-top: 2px;
+  border: none;
+  background: transparent;
+  color: var(--gd-color-primary);
+  font-family: var(--gd-font-sans);
+  font-size: var(--gd-type-label-medium-size);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  opacity: 0.85;
+}
+.gd-brand-legend:hover { opacity: 1; color: #22d3ee; }
+.gd-brand-legend:focus-visible {
+  outline: 2px solid var(--gd-color-primary);
+  outline-offset: 3px;
+  border-radius: 4px;
+}

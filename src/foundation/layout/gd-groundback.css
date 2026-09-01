@@ -1,0 +1,99 @@
+/* gd-groundback：页面背景层
+   用法：<div class="gd-groundback gd-groundback--blue" aria-hidden="true"></div>
+   变体：--blue（点阵） / --websearch（线条图案 + 高斯模糊） / --gold（殿堂金晕 + 同款线条模糊）
+   蓝色参考原版发布页（index.js）背景：三层光斑 + 对角渐变 + 点阵网格 + 底部光带。 */
+.gd-groundback {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: var(--gd-color-background);
+}
+
+/* 整屏铺满（主站/详情等页面背景）；预览盒内演示不要加这个 */
+.gd-groundback--bleed {
+  top: 0;
+  left: 0;
+  right: auto;
+  bottom: auto;
+  width: 100vw;
+  height: 100dvh;
+  min-width: 100%;
+  min-height: 100%;
+}
+
+.gd-groundback::before,
+.gd-groundback::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+/* 蓝色（默认）：三层光斑 + 深蓝对角渐变；websearch 共用底 */
+.gd-groundback--blue,
+.gd-groundback--websearch {
+  background:
+    radial-gradient(circle at 22% 18%, rgba(var(--gd-color-blue-rgb), 0.2), transparent 34%),
+    radial-gradient(circle at 78% 76%, rgba(var(--gd-color-cyan-rgb), 0.14), transparent 32%),
+    radial-gradient(circle at 50% 50%, rgba(var(--gd-color-secondary-rgb), 0.06), transparent 52%),
+    linear-gradient(145deg, var(--gd-color-background) 0%, var(--gd-color-surface) 45%, var(--gd-color-surface-variant) 100%);
+}
+
+/* 点阵网格（原版 body::before，渐隐 mask） */
+.gd-groundback--blue::before {
+  background-image: radial-gradient(circle at 1px 1px, rgba(var(--gd-color-white-rgb), 0.04) 1px, transparent 0);
+  background-size: 40px 40px;
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.34));
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.34));
+}
+
+/* 底部光带 + 底部蓝光晕（原版 body::after） */
+.gd-groundback--blue::after,
+.gd-groundback--websearch::after {
+  background:
+    linear-gradient(90deg, transparent, rgba(var(--gd-color-white-rgb), 0.028), transparent),
+    radial-gradient(circle at 50% 110%, rgba(var(--gd-color-blue-rgb), 0.12), transparent 36%);
+}
+
+/* websearch：线条图案平铺；screen 去掉 PNG 黑底，露出蓝渐变 */
+.gd-groundback--websearch {
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.gd-groundback--websearch::before {
+  inset: -24px;
+  background-image: url("https://assets.galnavi.top/%E7%BA%BF%E6%9D%A1%E5%9B%BE%E6%A1%88.png");
+  background-repeat: repeat;
+  background-position: 0 0;
+  background-size: auto;
+  opacity: 0.16;
+  mix-blend-mode: screen;
+  filter: blur(10.8px);
+}
+
+/* 殿堂金：深色底 + 金色光晕 + 与全站同款线条模糊 */
+.gd-groundback--gold {
+  isolation: isolate;
+  overflow: hidden;
+  background: linear-gradient(145deg, #06070e 0%, #0a0c16 48%, #0e1322 100%);
+}
+
+.gd-groundback--gold::before {
+  background:
+    radial-gradient(40% 35% at 18% 14%, rgba(var(--gd-color-gold-rgb), 0.12), transparent 70%),
+    radial-gradient(36% 32% at 86% 82%, rgba(var(--gd-color-error-rgb), 0.10), transparent 70%);
+}
+
+.gd-groundback--gold::after {
+  inset: -24px;
+  background-image: url("https://assets.galnavi.top/%E7%BA%BF%E6%9D%A1%E5%9B%BE%E6%A1%88.png");
+  background-repeat: repeat;
+  background-position: 0 0;
+  background-size: auto;
+  opacity: 0.16;
+  mix-blend-mode: screen;
+  filter: blur(10.8px);
+}
+
+/* prefers-reduced-motion：背景静态无动画，无额外处理 */

@@ -1,0 +1,31 @@
+/* gd-link — 文字链接（导航型操作，非按钮） */
+
+.gd-link {
+  display: inline;
+  background: transparent;
+  border: none;
+  font-family: var(--gd-font-sans);
+  font-size: var(--gd-type-body-medium-size);
+  font-weight: var(--gd-weight-semibold);
+  line-height: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  color: var(--gd-color-link);
+  transition: color var(--gd-motion-duration-short4) var(--gd-motion-easing-standard);
+}
+.gd-link:hover {
+  color: var(--gd-color-link-hover);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.gd-link:focus-visible {
+  outline: 2px solid var(--gd-color-primary);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+.gd-link:disabled,
+.gd-link[aria-disabled="true"] {
+  opacity: var(--gd-state-disabled);
+  pointer-events: none;
+  cursor: not-allowed;
+}

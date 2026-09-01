@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GALNAVI gd 组件库预览</title>
+  <link rel="stylesheet" href="../foundation/tokens/tokens.css">
+  <link rel="stylesheet" href="../foundation/tokens/gd-glass.css">
+  <link rel="stylesheet" href="../display/badge/gd-badge.css">
+  <link rel="stylesheet" href="../feedback/skeleton/gd-skeleton.css">
+  <link rel="stylesheet" href="../foundation/layout/gd-layout.css">
+  <link rel="stylesheet" href="../foundation/layout/gd-groundback.css">
+  <link rel="stylesheet" href="../foundation/accessibility/gd-a11y.css">
+  <link rel="stylesheet" href="../extend/overview/gd-overview.css">
+  <link rel="stylesheet" href="../foundation/actions/gd-button.css">
+  <link rel="stylesheet" href="../foundation/actions/gd-link.css">
+  <link rel="stylesheet" href="../display/card/gd-card.css">
+  <link rel="stylesheet" href="../display/tag/gd-tag.css">
+  <link rel="stylesheet" href="../extend/websearch/gd-orb.css">
+  <link rel="stylesheet" href="../extend/websearch/gd-websearch.css">
+  <link rel="stylesheet" href="../foundation/layout/gd-footer.css">
+  <link rel="stylesheet" href="../foundation/brand/gd-brand.css">
+  <link rel="stylesheet" href="../display/empty-state/gd-empty-state.css">
+  <link rel="stylesheet" href="../display/table/gd-table.css">
+  <link rel="stylesheet" href="../feedback/toast/gd-toast.css">
+  <link rel="stylesheet" href="../feedback/tooltip/gd-tooltip.css">
+  <link rel="stylesheet" href="../display/hero-carousel/gd-hero-carousel.css">
+  <link rel="stylesheet" href="../navigation/search/gd-search.css">
+  <link rel="stylesheet" href="../navigation/navbar/gd-navbar.css">
+  <link rel="stylesheet" href="../feedback/modal/gd-modal.css">
+  <link rel="stylesheet" href="../feedback/modal/gd-publish-card.css">
+  <link rel="stylesheet" href="../extend/detail/gd-detail.css">
+  <link rel="stylesheet" href="../extend/donate/gd-donate.css">
+</head>
+<body class="gd-overview">
+  <div class="gd-overview__chrome" aria-hidden="true"></div>
+
+  <div class="gd-overview-toc-mobile" data-gd-mobile-toc>
+    <button
+      type="button"
+      class="gd-overview-toc-mobile__btn gd-hamburger-motion"
+      data-gd-mobile-toc-toggle
+      aria-expanded="false"
+      aria-controls="mobileTocPanel"
+      aria-label="打开本页索引"
+    >
+      <svg class="gd-hamburger-motion__menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      <svg class="gd-hamburger-motion__close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="gd-overview-toc-mobile__panel" id="mobileTocPanel" data-gd-mobile-toc-panel aria-hidden="true" hidden>
+      <p class="gd-overview-mobile-list__label">本页内容</p>
+      <nav class="gd-overview-mobile-list" aria-label="本页索引">
+        <a class="gd-overview-mobile-list__link" href="#title-color">brand 标题变色</a>
+        <a class="gd-overview-mobile-list__link" href="#navbar">navbar 导航栏</a>
+        <a class="gd-overview-mobile-list__link" href="#gd-button">button 按钮</a>
+        <a class="gd-overview-mobile-list__link" href="#card">card 主站卡片</a>
+        <a class="gd-overview-mobile-list__link" href="#publish-card">card · 发布卡</a>
+        <a class="gd-overview-mobile-list__link" href="#item">card · item 殿堂卡</a>
+        <a class="gd-overview-mobile-list__link" href="#friend">card · friend 友链</a>
+        <a class="gd-overview-mobile-list__link" href="#tag">tag 标签</a>
+        <a class="gd-overview-mobile-list__link" href="#badge">badge 徽标</a>
+        <a class="gd-overview-mobile-list__link" href="#skeleton">skeleton 骨架屏</a>
+          <a class="gd-overview-mobile-list__link" href="#filter-bar">gd-orb__toggle 右下扩展按钮</a>
+        <a class="gd-overview-mobile-list__link" href="#search">search 搜索</a>
+        <a class="gd-overview-mobile-list__link" href="#hero">hero-carousel 轮播</a>
+        <a class="gd-overview-mobile-list__link" href="#empty">empty-state 空状态</a>
+        <a class="gd-overview-mobile-list__link" href="#table">table 表格</a>
+        <a class="gd-overview-mobile-list__link" href="#tooltip">tooltip 提示</a>
+        <a class="gd-overview-mobile-list__link" href="#toast">toast 吐司</a>
+        <a class="gd-overview-mobile-list__link" href="#modal">modal 弹窗</a>
+        <a class="gd-overview-mobile-list__link" href="#donate">donate 页面示例</a>
+        <a class="gd-overview-mobile-list__link" href="#detail">detail 详情页示例</a>
+        <a class="gd-overview-mobile-list__link" href="#footer">footer 页脚</a>
+        <a class="gd-overview-mobile-list__link" href="#extend-ui">extend 扩展页 UI</a>
+        <a class="gd-overview-mobile-list__link" href="#groundback">groundback 背景层</a>
+      </nav>
+    </div>
+  </div>
+
+  <main class="gd-overview__shell">
+    <article class="gd-overview__layout">
+      <div class="gd-overview__content">
+        <header>
+          <time class="gd-overview__date" datetime="2026-09-01">2026年9月1日 · v1.5.2</time>
+          <h1 class="gd-overview__title" id="brand">gd 组件库</h1>
+          <p class="gd-overview__lede">
+            对照 galnavi 现有样式抽取；MD3 只对齐字号 / 圆角语义 / 状态透明度 / 动效时长。保留玻璃配色与层级，导航、抽屉和卡片不使用高斯模糊或阴影。短页页脚贴底；详情卡片在浏览器缩放时反向缩放。
+          <div class="gd-overview__meta">
+            <span class="gd-overview__tag">组件</span>
+            <span class="gd-overview__tag">GALNAVI</span>
+            <span class="gd-overview__tag">预览</span>
+          </div>
+        </header>
+        <div class="gd-overview__rule" aria-hidden="true"></div>
+
+        <section class="gd-section" id="title-color">
+          <h2 class="gd-section__title">brand 标题变色</h2>
+          <p class="demo-note">品牌大标题按蓝 → 青 → 紫循环变色，周期 3s。</p>
+          <div class="demo-preview">
+            <header class="gd-brand" style="margin-bottom:0">
+              <h3 class="gd-brand__title">GALNAVI</h3>
+            </header>
+            <p class="demo-note demo-note--top">同款变色</p>
+            <p class="gd-brand__title gd-brand__title--shift gd-brand__title--demo">gd 组件库</p>
+            <p class="demo-note demo-note--top">殿堂（橙 → 绿 → 红）</p>
+            <p class="gd-brand__title gd-brand__title--palace gd-brand__title--demo">殿堂</p>
+          </div>
+        </section>
+
+        <section class="gd-section" id="navbar">
+      <h2 class="gd-section__title">navbar 导航栏</h2>
+      <p class="demo-note">对齐主站顶栏：Logo、频道、搜索、盾牌紧挨并整组居中；桌面右侧红/绿盾牌切换 NSFW；汉堡仅手机端显示（左侧）。</p>
+
+      <div class="demo-preview demo-preview--pad-bottom">
+        <div class="demo-preview__label">桌面端</div>
+        <div class="demo-navbar-stage">
+          <gd-navbar>
+          <nav class="gd-navbar" role="navigation" aria-label="主导航">
+            <div class="gd-navbar__inner">
+              <a class="gd-navbar__logo" href="#navbar" aria-label="GALNAVI 首页">
+                <img class="gd-navbar__logo-img" src="https://assets.galnavi.top/logo.png" alt="GALNAVI" width="28" height="28">
+                <span class="gd-brand__title gd-brand__title--shift">GALNAVI</span>
+              </a>
+              <div class="gd-navbar__links" data-gd-nav-links>
+                <button type="button" class="gd-navbar__link is-active" data-nav="home" data-nav-cat="home" aria-current="page">首页<span class="gd-badge gd-badge--blue" data-gd-nav-count data-count-home></span></button>
+                <button type="button" class="gd-navbar__link" data-nav="site" data-nav-cat="site">站点<span class="gd-badge gd-badge--blue" data-gd-nav-count></span></button>
+                <button type="button" class="gd-navbar__link" data-nav="tool" data-nav-cat="tool">工具<span class="gd-badge gd-badge--blue" data-gd-nav-count></span></button>
+                <button type="button" class="gd-navbar__link" data-nav="simulator" data-nav-cat="simulator">模拟器<span class="gd-badge gd-badge--blue" data-gd-nav-count></span></button>
+                <button type="button" class="gd-navbar__link" data-nav="company" data-nav-cat="company">会社<span class="gd-badge gd-badge--blue" data-gd-nav-count></span></button>
+                <button type="button" class="gd-navbar__link" data-nav="hanhua" data-nav-cat="hanhua">汉化组<span class="gd-badge gd-badge--blue" data-gd-nav-count></span></button>
+              </div>
+              <div class="gd-navbar__search">
+                <gd-search help placeholder="你要搜什么呢" aria-label="搜索资源"></gd-search>
+              </div>
+              <div class="gd-navbar__right">
+                <span class="gd-tooltip-wrap">
+                  <button type="button" class="gd-navbar__nsfw" data-gd-nsfw aria-pressed="false" aria-label="NSFW 内容已隐藏">
+                    <span class="gd-navbar__nsfw-face" data-gd-nsfw-face>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    </span>
+                    <span class="gd-navbar__nsfw-msg" data-gd-nsfw-msg hidden>开</span>
+                  </button>
+                  <span class="gd-tooltip" data-gd-nsfw-tip role="tooltip" aria-hidden="true">NSFW 内容已隐藏</span>
+                </span>
+              </div>
+              <button type="button" class="gd-navbar__hamburger" aria-label="菜单" aria-expanded="false">
+                <svg class="gd-navbar__icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                <svg class="gd-navbar__icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+              </button>
+            </div>
+          </nav>
+          </gd-navbar>
+          <div class="gd-below-nav" style="position:relative">
+            <div class="gd-notice-led" id="previewNoticeLed" tabindex="0" aria-label="站点通知演示">
+              <div class="gd-notice-led__track">
+                <span class="gd-notice-led__item">GALNAVI 2正式上线，本站特色是卡片的介绍详情和后续持续更新的教程体系</span>
+              </div>
+            </div>
+            <div class="gd-rec-tags" aria-label="推荐标签">
+              <span class="gd-rec-tags__label">推荐标签：</span>
+              <button type="button" class="gd-tag">音乐</button>
+              <button type="button" class="gd-tag">小说</button>
+              <button type="button" class="gd-tag">漫画</button>
+              <a class="gd-link gd-rec-tags__more" href="#search" aria-label="更多标签">更多</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-preview">
+        <div class="demo-preview__label">手机端（汉堡 + 抽屉预览，点汉堡打开）</div>
+        <div class="gd-navbar-stage--mobile" id="mobileNavStage">
+          <gd-navbar>
+          <nav class="gd-navbar" role="navigation" aria-label="主导航">
+            <div class="gd-navbar__inner">
+              <a class="gd-navbar__logo" href="#navbar" aria-label="GALNAVI 首页">
+                <img class="gd-navbar__logo-img" src="https://assets.galnavi.top/logo.png" alt="GALNAVI" width="28" height="28">
+                <span class="gd-brand__title gd-brand__title--shift">GALNAVI</span>
+              </a>
+              <div class="gd-navbar__links" data-gd-nav-links>
+                <button type="button" class="gd-navbar__link is-active" data-nav="home" data-nav-cat="home" aria-current="page">首页<span class="gd-badge gd-badge--blue" data-gd-nav-count data-count-home></span></button>
+              </div>
+              <div class="gd-navbar__search">
+                <gd-search help placeholder="你要搜什么呢" aria-label="搜索资源"></gd-search>
+              </div>
+              <div class="gd-navbar__right">
+                <span class="gd-tooltip-wrap">
+                  <button type="button" class="gd-navbar__nsfw" data-gd-nsfw aria-pressed="false" aria-label="NSFW 内容已隐藏">
+                    <span class="gd-navbar__nsfw-face" data-gd-nsfw-face>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    </span>
+                    <span class="gd-navbar__nsfw-msg" data-gd-nsfw-msg hidden>开</span>
+                  </button>
+                  <span class="gd-tooltip" data-gd-nsfw-tip role="tooltip" aria-hidden="true">NSFW 内容已隐藏</span>
+                </span>
+              </div>
+              <button type="button" class="gd-navbar__hamburger" data-gd-nav-toggle aria-expanded="false" aria-controls="demoDrawerMobile" aria-label="菜单">
+                <svg class="gd-navbar__icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                <svg class="gd-navbar__icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+              </button>
+            </div>
+          </nav>
+          </gd-navbar>
+          <div class="gd-navbar-drawer-overlay" aria-hidden="true"></div>
+          <aside class="gd-navbar-drawer" id="demoDrawerMobile" aria-label="移动端导航" data-gd-nav-links>
+            <button type="button" class="gd-navbar__link" data-nav="home" data-nav-cat="home">首页<span class="gd-badge gd-badge--blue" data-gd-nav-count data-count-home></span></button>
+            <button type="button" class="gd-navbar__link" data-nav="site" data-nav-cat="site">站点<span class="gd-badge gd-badge--blue" data-gd-nav-count></span></button>
+            <button type="button" class="gd-navbar__link" data-nav="tool" data-nav-cat="tool">工具<span class="gd-badge gd-badge--blue" data-gd-nav-count></span></button>
+            <button type="button" class="gd-navbar__link" data-nav="simulator" data-nav-cat="simulator">模拟器<span class="gd-badge gd-badge--blue" data-gd-nav-count></span></button>
+            <button type="button" class="gd-navbar__link" data-nav="company" data-nav-cat="company">会社<span class="gd-badge gd-badge--blue" data-gd-nav-count></span></button>
+            <button type="button" class="gd-navbar__link" data-nav="hanhua" data-nav-cat="hanhua">汉化组<span class="gd-badge gd-badge--blue" data-gd-nav-count></span></button>
+            <div class="gd-navbar-drawer__footer">
+              <button type="button" class="gd-button gd-button--pill gd-button--nsfw gd-navbar-drawer__nsfw" data-gd-nsfw aria-pressed="false" aria-label="NSFW 内容已隐藏">
+                <span class="gd-button__nsfw-face" data-gd-nsfw-face>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  NSFW
+                </span>
+                <span class="gd-button__nsfw-msg" data-gd-nsfw-msg hidden>已开启</span>
+              </button>
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      <div class="demo-preview">
+        <div class="demo-preview__label">圣器殿堂分类导航</div>
+        <div class="gd-cat-nav-bar">
+          <div class="gd-cat-dock">
+            <button type="button" class="gd-cat-nav-back" aria-label="返回主站">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            </button>
+            <span class="gd-cat-nav-sep" aria-hidden="true"></span>
+            <nav class="gd-cat-nav" aria-label="分类切换" data-gd-cat-nav>
+              <button type="button" class="gd-cat-tab gd-cat-tab--divine is-active" aria-pressed="true">
+                <span>神器</span>
+                <span class="gd-cat-count">14</span>
+              </button>
+              <button type="button" class="gd-cat-tab gd-cat-tab--demonic" aria-pressed="false">
+                <span>魔器</span>
+                <span class="gd-cat-count">20</span>
+              </button>
+              <button type="button" class="gd-cat-tab gd-cat-tab--immortal" aria-pressed="false">
+                <span>仙器</span>
+                <span class="gd-cat-count">33</span>
+              </button>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="gd-section" id="gd-button">
+      <h2 class="gd-section__title">button 按钮</h2>
+      <div class="demo-preview demo-preview--pad-bottom">
+        <div class="demo-row demo-row--no-margin">
+          <button type="button" class="gd-button gd-button--detail">介绍详情</button>
+          <button type="button" class="gd-button gd-button--link">链接直达</button>
+          <button type="button" class="gd-button gd-button--detail is-disabled">介绍详情</button>
+          <button type="button" class="gd-button gd-button--link is-disabled">链接直达</button>
+          <button type="button" class="gd-button gd-button--primary">我知道了</button>
+          <button type="button" class="gd-button gd-button--ghost">复制</button>
+          <button type="button" class="gd-button gd-button--back">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            返回主站
+          </button>
+          <button type="button" class="gd-button gd-button--back gd-button--back--orange">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            返回主站
+          </button>
+        </div>
+        <p class="demo-note demo-note--top">桌面盾牌与抽屉 NSFW 均为红底隐藏 / 绿底显示。点一下闪「开 / 已开启」，再点闪「关 / 已关闭」，随后回到盾牌。</p>
+        <div class="demo-row">
+          <span class="gd-tooltip-wrap">
+            <button type="button" class="gd-navbar__nsfw" data-gd-nsfw aria-pressed="false" aria-label="NSFW 内容已隐藏">
+              <span class="gd-navbar__nsfw-face" data-gd-nsfw-face>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </span>
+              <span class="gd-navbar__nsfw-msg" data-gd-nsfw-msg hidden>开</span>
+            </button>
+            <span class="gd-tooltip" data-gd-nsfw-tip role="tooltip" aria-hidden="true">NSFW 内容已隐藏</span>
+          </span>
+          <button type="button" class="gd-button gd-button--pill gd-button--nsfw" data-gd-nsfw aria-pressed="false" aria-label="NSFW 内容已隐藏">
+            <span class="gd-button__nsfw-face" data-gd-nsfw-face>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              NSFW
+            </span>
+            <span class="gd-button__nsfw-msg" data-gd-nsfw-msg hidden>已开启</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="gd-section" id="card">
+      <h2 class="gd-section__title">card 主站卡片</h2>
+      <p class="demo-note">尺寸 420×212；单列宽度 100%；主站网格每行最多 6 张（<code>gd-card-grid</code>）。标签靠左。</p>
+      <div class="demo-preview">
+        <article class="gd-card">
+            <div class="gd-card__header">
+              <div class="gd-card__icon" aria-hidden="true">霊</div>
+              <div class="gd-card__title-wrap">
+                <div class="gd-card__title">卡片名称</div>
+                <div class="gd-card__subtitle">这里展示卡片的简要描述，让访客一眼了解内容方向。</div>
+              </div>
+            </div>
+            <div class="gd-card__tags">
+              <span class="gd-tag">ACG论坛</span>
+              <span class="gd-tag gd-tag--blue">galgame</span>
+              <span class="gd-tag gd-tag--pink">漫画</span>
+              <span class="gd-tag">ASMR</span>
+            </div>
+            <div class="gd-card__actions">
+              <button type="button" class="gd-card__btn gd-card__btn--detail">介绍详情</button>
+              <button type="button" class="gd-card__btn gd-card__btn--link">链接直达</button>
+            </div>
+          </article>
+      </div>
+    </section>
+
+    <section class="gd-section" id="publish-card">
+      <h2 class="gd-section__title">card · 发布卡</h2>
+      <p class="demo-note">品牌标 + 发光字 + 站点说明，确认后进入主站。</p>
+      <div class="demo-preview">
+        <div class="demo-preview__bar">
+          <span class="demo-preview__label">发布卡片</span>
+          <button type="button" class="gd-button gd-button--primary" id="btnRelease">打开发布卡</button>
+        </div>
+        <div class="gd-publish-card is-demo" aria-hidden="true" data-gd-demo-inert>
+          <header class="gd-publish-card__header">
+            <div class="gd-publish-card__brand">
+              <img class="gd-publish-card__logo" src="https://assets.galnavi.top/logo.png" alt="GALNAVI 品牌标">
+            </div>
+            <h2 class="gd-brand__title gd-brand__title--demo gd-publish-card__wordmark">GALNAVI</h2>
+            <p class="gd-publish-card__lead">一个专注于 ACG 二次元资源网站聚合与收录的纯净导航站点。纯净无广，秒速响应，一站直达。</p>
+          </header>
+          <div class="gd-publish-card__body">
+            <p class="gd-publish-card__note">建议使用 <strong>Firefox</strong>、<strong>Edge</strong>、<strong>Chrome</strong> 等浏览器访问。</p>
+            <p class="gd-publish-card__note">按 <strong>Ctrl + D</strong> 保存收藏</p>
+          </div>
+          <footer class="gd-publish-card__footer">
+            <button type="button" class="gd-publish-card__action" tabindex="-1">进入主站</button>
+          </footer>
+        </div>
+      </div>
+    </section>
+
+    <section class="gd-section" id="item">
+      <h2 class="gd-section__title">card · item 殿堂条目卡</h2>
+      <p class="demo-note">序号、中日标题、官网/详情与金色外链。</p>
+      <div class="demo-preview">
+        <div class="gd-item-list">
+          <article class="gd-card gd-card--item">
+            <div class="gd-card__item-main">
+              <span class="gd-card__num">1</span>
+              <div class="gd-card__item-body">
+                <div class="gd-card__item-name">
+                  <span class="gd-card__name-main">卡片1</span>
+                  <span class="gd-card__name-sub">这是卡片一的示例描述。这里展示两行以内的中文说明文字。</span>
+                </div>
+                <div class="gd-card__item-actions">
+                  <div class="gd-card__action-group gd-card__action-group--primary">
+                    <button type="button" class="gd-card__action gd-card__action--site">官网</button>
+                    <button type="button" class="gd-card__action gd-card__action--detail">详情</button>
+                  </div>
+                  <div class="gd-card__action-group gd-card__action-group--ext">
+                    <button type="button" class="gd-card__action gd-card__action--ext">外链1</button>
+                    <button type="button" class="gd-card__action gd-card__action--ext">外链2</button>
+                    <button type="button" class="gd-card__action gd-card__action--ext">外链3</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+          <article class="gd-card gd-card--item">
+            <div class="gd-card__item-main">
+              <span class="gd-card__num">2</span>
+              <div class="gd-card__item-body">
+                <div class="gd-card__item-name">
+                  <span class="gd-card__name-main">卡片2</span>
+                  <span class="gd-card__name-sub">这是卡片二的示例描述。第二行继续补充一段演示用文字。</span>
+                </div>
+                <div class="gd-card__item-actions">
+                  <div class="gd-card__action-group gd-card__action-group--primary">
+                    <button type="button" class="gd-card__action gd-card__action--site">官网</button>
+                    <button type="button" class="gd-card__action gd-card__action--detail">详情</button>
+                  </div>
+                  <div class="gd-card__action-group gd-card__action-group--ext">
+                    <button type="button" class="gd-card__action gd-card__action--ext">外链1</button>
+                    <button type="button" class="gd-card__action gd-card__action--ext">外链2</button>
+                    <button type="button" class="gd-card__action gd-card__action--ext">外链3</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="gd-section" id="friend">
+      <h2 class="gd-section__title">card · friend 友链卡片</h2>
+      <div class="demo-preview">
+        <div class="gd-friend-grid">
+          <article class="gd-card gd-card--link gd-card--friend">
+            <div class="gd-card__header">
+              <div class="gd-card__icon">友</div>
+              <div class="gd-card__title-wrap">
+                <div class="gd-card__title">示例友链</div>
+                <div class="gd-card__subtitle">整卡可点；无底部双按钮。</div>
+              </div>
+            </div>
+          </article>
+          <article class="gd-card gd-card--link gd-card--friend">
+            <div class="gd-card__header">
+              <div class="gd-card__icon">N</div>
+              <div class="gd-card__title-wrap">
+                <div class="gd-card__title">另一条友链</div>
+                  <div class="gd-card__subtitle">背景与边框保持一致；不使用 backdrop-filter 或 box-shadow。</div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="gd-section" id="tag">
+      <h2 class="gd-section__title">tag 标签</h2>
+      <div class="demo-preview">
+        <p class="demo-preview__label">卡片标签</p>
+        <div class="demo-row demo-row--no-margin">
+          <span class="gd-tag">ACG论坛</span>
+          <span class="gd-tag gd-tag--blue">galgame</span>
+          <span class="gd-tag gd-tag--pink">漫画</span>
+        </div>
+      </div>
+
+      <div class="demo-preview">
+        <p class="demo-preview__label">标签索引</p>
+        <div class="gd-tag-list">
+          <button type="button" class="gd-tag gd-tag--item">
+            <span class="gd-tag__name">galgame</span>
+            <span class="gd-tag__count">128</span>
+          </button>
+          <button type="button" class="gd-tag gd-tag--item">
+            <span class="gd-tag__name">ACG论坛</span>
+            <span class="gd-tag__count">36</span>
+          </button>
+          <button type="button" class="gd-tag gd-tag--item">
+            <span class="gd-tag__name">漫画</span>
+            <span class="gd-tag__count">14</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="gd-section" id="badge">
+      <h2 class="gd-section__title">badge 徽标</h2>
+      <p class="demo-note">由 navbar 计数泛化的通用徽标组件；navbar 徽章即复用此类。</p>
+      <div class="demo-preview">
+        <div class="demo-row demo-row--no-margin">
+          <span class="gd-badge">128</span>
+          <span class="gd-badge gd-badge--blue">36</span>
+          <span class="gd-badge gd-badge--gold">14</span>
+          <span class="gd-badge gd-badge--pill">22</span>
+          <span class="gd-badge gd-badge--blue gd-badge--pill">26</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="gd-section" id="skeleton">
+      <h2 class="gd-section__title">skeleton 骨架屏</h2>
+      <p class="demo-note">数据加载占位：主站卡片 / 轮播原尺寸 / 详情页三列卡片 / 殿堂条目卡（尺寸与真实卡片一致）。</p>
+
+      <div class="demo-preview">
+        <div class="demo-preview__label" style="margin-bottom:10px">主站卡片轮廓</div>
+        <div class="gd-skeleton gd-skeleton--card" aria-hidden="true">
+          <div class="gd-skeleton__header">
+            <div class="gd-skeleton__block gd-skeleton__icon"></div>
+            <div class="gd-skeleton__title-wrap">
+              <div class="gd-skeleton__block gd-skeleton__line gd-skeleton__line--title"></div>
+              <div class="gd-skeleton__block gd-skeleton__line gd-skeleton__line--sub"></div>
+            </div>
+          </div>
+          <div class="gd-skeleton__tags">
+            <div class="gd-skeleton__block gd-skeleton__tag"></div>
+            <div class="gd-skeleton__block gd-skeleton__tag"></div>
+            <div class="gd-skeleton__block gd-skeleton__tag"></div>
+          </div>
+          <div class="gd-skeleton__actions">
+            <div class="gd-skeleton__block gd-skeleton__btn"></div>
+            <div class="gd-skeleton__block gd-skeleton__btn"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-preview">
+        <div class="demo-preview__label" style="margin-bottom:10px">轮播原尺寸</div>
+        <div class="gd-skeleton gd-skeleton--hero" aria-hidden="true"></div>
+      </div>
+
+      <div class="demo-preview">
+        <div class="demo-preview__label" style="margin-bottom:10px">详情页</div>
+        <div class="gd-skeleton gd-skeleton--detail" aria-hidden="true">
+          <div class="gd-skeleton__header">
+            <div class="gd-skeleton__block gd-skeleton__title"></div>
+            <div class="gd-skeleton__block gd-skeleton__desc"></div>
+            <div class="gd-skeleton__tags">
+              <div class="gd-skeleton__block gd-skeleton__tag"></div>
+              <div class="gd-skeleton__block gd-skeleton__tag"></div>
+              <div class="gd-skeleton__block gd-skeleton__tag"></div>
+            </div>
+          </div>
+          <div class="gd-skeleton__banner">
+            <div class="gd-skeleton__banner-head">
+              <div class="gd-skeleton__block gd-skeleton__banner-icon"></div>
+              <div class="gd-skeleton__block gd-skeleton__banner-label"></div>
+            </div>
+            <div class="gd-skeleton__block gd-skeleton__banner-item"></div>
+            <div class="gd-skeleton__block gd-skeleton__banner-item"></div>
+            <div class="gd-skeleton__block gd-skeleton__banner-item"></div>
+          </div>
+          <div class="gd-skeleton__grid">
+            <div class="gd-skeleton__card">
+              <div class="gd-skeleton__card-head">
+                <div class="gd-skeleton__block gd-skeleton__card-icon"></div>
+                <div class="gd-skeleton__block gd-skeleton__card-size"></div>
+              </div>
+              <div class="gd-skeleton__block gd-skeleton__card-line"></div>
+              <div class="gd-skeleton__block gd-skeleton__card-line gd-skeleton__card-line--sm"></div>
+            </div>
+            <div class="gd-skeleton__card">
+              <div class="gd-skeleton__card-head">
+                <div class="gd-skeleton__block gd-skeleton__card-icon"></div>
+                <div class="gd-skeleton__block gd-skeleton__card-size"></div>
+              </div>
+              <div class="gd-skeleton__block gd-skeleton__card-line"></div>
+              <div class="gd-skeleton__block gd-skeleton__card-line gd-skeleton__card-line--sm"></div>
+            </div>
+            <div class="gd-skeleton__card">
+              <div class="gd-skeleton__card-head">
+                <div class="gd-skeleton__block gd-skeleton__card-icon"></div>
+                <div class="gd-skeleton__block gd-skeleton__card-size"></div>
+              </div>
+              <div class="gd-skeleton__block gd-skeleton__card-line"></div>
+              <div class="gd-skeleton__block gd-skeleton__card-line gd-skeleton__card-line--sm"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-preview">
+        <div class="demo-preview__label" style="margin-bottom:10px">殿堂条目卡</div>
+        <div class="gd-skeleton gd-skeleton--item" aria-hidden="true">
+          <div class="gd-skeleton__main">
+            <div class="gd-skeleton__block gd-skeleton__num"></div>
+            <div class="gd-skeleton__body">
+              <div class="gd-skeleton__name">
+                <div class="gd-skeleton__block gd-skeleton__line gd-skeleton__line--title"></div>
+                <div class="gd-skeleton__block gd-skeleton__line gd-skeleton__line--sub"></div>
+                <div class="gd-skeleton__block gd-skeleton__line gd-skeleton__line--sub2"></div>
+              </div>
+              <div class="gd-skeleton__actions">
+                <div class="gd-skeleton__block gd-skeleton__btn"></div>
+                <div class="gd-skeleton__block gd-skeleton__btn"></div>
+                <div class="gd-skeleton__block gd-skeleton__btn"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-preview">
+        <div class="demo-preview__bar">
+          <span class="demo-preview__label">运行时演示：点击后渲染占位，数据到达按真实数量替换</span>
+          <button type="button" class="gd-button gd-button--primary" id="btnSkeleton">运行演示</button>
+        </div>
+        <div id="skeletonGrid" aria-hidden="false"></div>
+      </div>
+    </section>
+
+    <section class="gd-section" id="filter-bar">
+      <h2 class="gd-section__title">gd-orb__toggle 右下扩展按钮</h2>
+      <p class="demo-note">首页快捷入口改为右下角按钮，点开后展开两列：站内入口 / 站点页面。真实按钮，Esc 关闭。</p>
+      <div class="demo-preview demo-preview--orb">
+        <div class="gd-orb gd-orb--demo" id="previewOrb">
+          <div class="gd-orb__menu" id="previewOrbMenu" role="region" aria-label="快捷入口">
+            <div class="gd-orb__col" role="group" aria-label="站内入口">
+              <button type="button" class="gd-orb__item" data-gd-orb="tags">标签</button>
+              <button type="button" class="gd-orb__item" data-gd-orb="tavern">酒馆</button>
+              <button type="button" class="gd-orb__item" data-gd-orb="repo">仓库</button>
+              <button type="button" class="gd-orb__item" data-gd-orb="popup">弹窗</button>
+            </div>
+            <div class="gd-orb__col" role="group" aria-label="站点页面">
+              <button type="button" class="gd-orb__item" data-gd-orb="about">关于</button>
+              <button type="button" class="gd-orb__item" data-gd-orb="help">帮助</button>
+              <button type="button" class="gd-orb__item" data-gd-orb="friend">友链</button>
+              <button type="button" class="gd-orb__item" data-gd-orb="palace">殿堂</button>
+            </div>
+          </div>
+          <button type="button" class="gd-orb__toggle" aria-expanded="false" aria-controls="previewOrbMenu" aria-label="打开快捷入口">
+            <svg class="gd-orb__icon gd-orb__icon--grid" viewBox="0 0 24 24" focusable="false" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="1.6" fill="currentColor"/><rect x="13" y="3" width="8" height="8" rx="1.6" fill="currentColor"/><rect x="3" y="13" width="8" height="8" rx="1.6" fill="currentColor"/><rect x="13" y="13" width="8" height="8" rx="1.6" fill="currentColor"/></svg>
+            <svg class="gd-orb__icon gd-orb__icon--close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" focusable="false" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="gd-section" id="search">
+      <h2 class="gd-section__title">search 搜索</h2>
+      <div class="demo-preview">
+        <p class="demo-preview__label">主站搜索框（带规则问号）</p>
+        <gd-search id="pageSearch" variant="toolbar" help placeholder="页内搜索…"></gd-search>
+      </div>
+      <div class="demo-preview">
+        <p class="demo-preview__label">圣器殿堂搜索框</p>
+        <gd-search class="gd-search--group" placeholder="搜索游戏名（中文 / 日文）"></gd-search>
+      </div>
+      <div class="demo-preview">
+        <p class="demo-preview__label" style="margin-bottom:8px">搜索词高亮</p>
+        <p style="font-size:15px;line-height:1.9">
+          example1 · <mark class="gd-search__hl">example2</mark> · <mark class="gd-search__hl">example3</mark>
+        </p>
+        <p style="font-size:15px;line-height:1.9;margin-top:6px">
+          example1 · <mark class="gd-search__hl gd-search__hl--orange">example2</mark> · <mark class="gd-search__hl gd-search__hl--orange">example3</mark>
+        </p>
+      </div>
+    </section>
+
+    <section class="gd-section" id="hero">
+      <h2 class="gd-section__title">hero-carousel 轮播</h2>
+      <div class="demo-preview">
+        <div class="gd-hero" id="demoHero" aria-roledescription="carousel">
+          <div class="gd-hero__track">
+            <div class="gd-hero__slide is-active gd-hero__slide--demo-1"></div>
+            <div class="gd-hero__slide gd-hero__slide--demo-2"></div>
+            <div class="gd-hero__slide gd-hero__slide--demo-3"></div>
+            <div class="gd-hero__gradient"></div>
+            <button type="button" class="gd-hero__arrow gd-hero__arrow--prev" aria-label="上一张">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <button type="button" class="gd-hero__arrow gd-hero__arrow--next" aria-label="下一张">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+            <div class="gd-hero__dots">
+              <button type="button" class="gd-hero__dot is-active" aria-label="第 1 张"></button>
+              <button type="button" class="gd-hero__dot" aria-label="第 2 张"></button>
+              <button type="button" class="gd-hero__dot" aria-label="第 3 张"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="gd-section" id="empty">
+      <h2 class="gd-section__title">empty-state 空状态</h2>
+      <div class="demo-preview">
+        <div class="gd-empty-state">
+          <h3 class="gd-empty-state__title">暂无结果</h3>
+          <p class="gd-empty-state__desc">换个关键词试试，或清空筛选条件。</p>
+          <div class="gd-empty-state__actions">
+            <button type="button" class="gd-button gd-button--primary">重新加载</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="gd-section" id="table">
+      <h2 class="gd-section__title">table 表格</h2>
+      <div class="demo-preview">
+        <table class="gd-table">
+          <tbody>
+            <tr><th scope="row">2026.05</th><td>项目启动</td></tr>
+            <tr><th scope="row">2026.06</th><td>转向 Cloudflare Workers</td></tr>
+            <tr><th scope="row">2026.08</th><td>建立 gd 组件库预览</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="gd-section" id="tooltip">
+      <h2 class="gd-section__title">tooltip 提示</h2>
+      <div class="demo-preview">
+        <span class="gd-tooltip-wrap">
+          <button type="button" class="gd-button gd-button--secondary">悬停我</button>
+          <span class="gd-tooltip" role="tooltip">这是 gd-tooltip</span>
+        </span>
+      </div>
+    </section>
+
+    <section class="gd-section" id="toast">
+      <h2 class="gd-section__title">toast 吐司</h2>
+      <div class="demo-preview">
+        <div class="demo-preview__bar">
+          <span class="demo-preview__label">虚线框内为预览；点按钮会在页面底部再弹出真实 Toast。</span>
+          <button type="button" class="gd-button gd-button--primary" id="btnToast">显示 Toast</button>
+        </div>
+        <div class="gd-toast is-demo" role="status">已复制到剪贴板（预览）</div>
+      </div>
+    </section>
+
+    <section class="gd-section" id="modal">
+      <h2 class="gd-section__title">modal 弹窗</h2>
+      <p class="demo-note">弹窗默认不自动出现；虚线框内是静态预览，右侧按钮打开真实遮罩层。</p>
+
+      <div class="demo-preview">
+        <div class="demo-preview__bar">
+          <span class="demo-preview__label">纳普彩蛋弹窗</span>
+          <button type="button" class="gd-button gd-button--primary" id="btnNap">打开纳普弹窗</button>
+        </div>
+        <div class="gd-modal gd-modal--nap is-demo" aria-hidden="true">
+          <h2 class="gd-modal__title">纳普出没</h2>
+          <div class="gd-modal__media" role="img" aria-label="纳普图片预留位"></div>
+          <p class="gd-modal__body">彩蛋弹窗静态预览。</p>
+        </div>
+      </div>
+
+      <div class="demo-preview">
+        <div class="demo-preview__bar">
+          <span class="demo-preview__label">跳转倒计时遮罩</span>
+          <button type="button" class="gd-button gd-button--primary" id="btnRedirect">打开跳转倒计时</button>
+        </div>
+        <div style="text-align:center;padding:16px 0 8px">
+          <div class="gd-redirect-ring" aria-hidden="true" style="margin:0 auto 16px"></div>
+          <div class="gd-redirect-text">即将跳转（预览）</div>
+          <div class="gd-redirect-countdown">3</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="gd-section" id="donate">
+      <h2 class="gd-section__title">donate 页面示例</h2>
+      <p class="demo-note">扫码卡、捐献名单。收款码用预留位，不上真实二维码。</p>
+
+      <div class="demo-preview">
+        <div class="demo-preview__label" style="margin-bottom:12px">扫码支持</div>
+        <div class="gd-donate-grid">
+          <div class="gd-donate-card">
+            <div class="gd-donate-card__label">支付宝</div>
+            <div class="gd-donate-card__slot" role="img" aria-label="支付宝收款码预留位">收款码预留位</div>
+          </div>
+          <div class="gd-donate-card gd-donate-card--empty">
+            <div class="gd-donate-card__label">微信</div>
+            <p class="gd-donate-card__hint">收款码筹备中</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-preview">
+        <div class="demo-preview__label" style="margin-bottom:12px">捐献名单</div>
+        <div class="gd-donate-table-wrap">
+          <table class="gd-donate-table">
+            <thead>
+              <tr>
+                <th scope="col">昵称</th>
+                <th scope="col">金额</th>
+                <th scope="col">备注</th>
+                <th scope="col">日期</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>旅人 A</td>
+                <td>¥6.00</td>
+                <td>灯塔加油</td>
+                <td>2026-07</td>
+              </tr>
+              <tr>
+                <td>旅人 B</td>
+                <td>¥16.80</td>
+                <td>—</td>
+                <td>2026-08</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="gd-section" id="detail">
+      <h2 class="gd-section__title">detail 详情页示例</h2>
+      <p class="demo-note">仿站点详情页：亮点横幅 + 三列玻璃卡。Ctrl+/- 缩小时 <code>.gd-detail__content</code> 用 CSS zoom 放大，避免锁宽缩成一团；放大页面不反向缩小。</p>
+
+      <div class="demo-preview demo-preview--pad-bottom">
+        <div class="gd-detail__content">
+        <div class="gd-highlights">
+          <div class="gd-highlights__label">
+            <span class="gd-highlights__icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </span>
+            <span>网站亮点</span>
+          </div>
+          <div class="gd-highlights__list">
+            <div class="gd-highlights__item">
+              <span class="gd-highlights__dot" aria-hidden="true"></span>
+              <span class="gd-highlights__text">资源：有丰富的移动端、电脑端及模拟器资源，也有相应的游戏补丁，大多数游戏会提供官网链接。</span>
+            </div>
+            <div class="gd-highlights__item">
+              <span class="gd-highlights__dot" aria-hidden="true"></span>
+              <span class="gd-highlights__text">网盘：以网站自建云盘为主，速度快，网友也会在引进第三方的网盘。</span>
+            </div>
+            <div class="gd-highlights__item">
+              <span class="gd-highlights__dot" aria-hidden="true"></span>
+              <span class="gd-highlights__text">门槛：下载资源无需登录。</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="gd-section-card-grid">
+          <div class="gd-section-card">
+            <div class="gd-section-card__header">
+              <span class="gd-section-card__icon" aria-hidden="true">
+                <svg width="18" height="18" viewBox="-1 0 19 19" fill="currentColor" stroke="currentColor" stroke-width="0.6" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M16.417 9.57a7.917 7.917 0 1 1-8.144-7.908 1.758 1.758 0 0 1 .451 0 7.913 7.913 0 0 1 7.693 7.907zM5.85 15.838q.254.107.515.193a11.772 11.772 0 0 1-1.572-5.92h-3.08a6.816 6.816 0 0 0 4.137 5.727zM2.226 6.922a6.727 6.727 0 0 0-.511 2.082h3.078a11.83 11.83 0 0 1 1.55-5.89q-.249.083-.493.186a6.834 6.834 0 0 0-3.624 3.622zm8.87 2.082a14.405 14.405 0 0 0-.261-2.31 9.847 9.847 0 0 0-.713-2.26c-.447-.952-1.009-1.573-1.497-1.667a8.468 8.468 0 0 0-.253 0c-.488.094-1.05.715-1.497 1.668a9.847 9.847 0 0 0-.712 2.26 14.404 14.404 0 0 0-.261 2.309zm-.974 5.676a9.844 9.844 0 0 0 .713-2.26 14.413 14.413 0 0 0 .26-2.309H5.903a14.412 14.412 0 0 0 .261 2.31 9.844 9.844 0 0 0 .712 2.259c.487 1.036 1.109 1.68 1.624 1.68s1.137-.644 1.623-1.68zm4.652-2.462a6.737 6.737 0 0 0 .513-2.107h-3.082a11.77 11.77 0 0 1-1.572 5.922q.261-.086.517-.194a6.834 6.834 0 0 0 3.624-3.621zM11.15 3.3a6.82 6.82 0 0 0-.496-.187 11.828 11.828 0 0 1 1.55 5.89h3.081A6.815 6.815 0 0 0 11.15 3.3z"/></svg>
+              </span>
+              <span class="gd-section-card__title">官网</span>
+            </div>
+            <div class="gd-section-card__links">
+              <button type="button" class="gd-section-card__link">
+                <span class="gd-section-card__label">官网</span>
+                <span class="gd-section-card__url">www.example.com</span>
+              </button>
+              <button type="button" class="gd-section-card__link">
+                <span class="gd-section-card__label">资源盘</span>
+                <span class="gd-section-card__url">pan.example.net</span>
+              </button>
+              <button type="button" class="gd-section-card__link">
+                <span class="gd-section-card__label">帮助文档</span>
+                <span class="gd-section-card__url">www.example.com</span>
+              </button>
+              <button type="button" class="gd-section-card__link">
+                <span class="gd-section-card__label">GitHub</span>
+                <span class="gd-section-card__url">github.com</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="gd-section-card">
+            <div class="gd-section-card__header">
+              <span class="gd-section-card__icon" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              </span>
+              <span class="gd-section-card__title">论坛</span>
+            </div>
+            <div class="gd-section-card__links">
+              <button type="button" class="gd-section-card__link">
+                <span class="gd-section-card__label">论坛</span>
+                <span class="gd-section-card__url">bbs.example.co</span>
+              </button>
+              <div class="gd-section-card__entry">
+                <span class="gd-section-card__label">类别：综合吹水,游戏讨论,求物,问题反馈,论坛公告</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="gd-section-card">
+            <div class="gd-section-card__header">
+              <span class="gd-section-card__icon" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </span>
+              <span class="gd-section-card__title">社群</span>
+            </div>
+            <div class="gd-section-card__links">
+              <button type="button" class="gd-section-card__link">
+                <span class="gd-section-card__label">telegram</span>
+                <span class="gd-section-card__url">t.me</span>
+              </button>
+              <button type="button" class="gd-section-card__link">
+                <span class="gd-section-card__label">开发小组</span>
+                <span class="gd-section-card__url">t.me</span>
+              </button>
+              <button type="button" class="gd-section-card__link">
+                <span class="gd-section-card__label">Discord</span>
+                <span class="gd-section-card__url">discord.gg</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+
+      <div class="demo-preview">
+        <p class="demo-preview__label">详情页图标</p>
+        <div class="demo-row demo-row--no-margin">
+          <span class="gd-icon-demo">
+            <span class="gd-icon-demo__name">官网</span>
+            <span class="gd-icon-demo__sep">-</span>
+            <svg width="18" height="18" viewBox="-1 0 19 19" fill="currentColor" stroke="currentColor" stroke-width="0.6" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M16.417 9.57a7.917 7.917 0 1 1-8.144-7.908 1.758 1.758 0 0 1 .451 0 7.913 7.913 0 0 1 7.693 7.907zM5.85 15.838q.254.107.515.193a11.772 11.772 0 0 1-1.572-5.92h-3.08a6.816 6.816 0 0 0 4.137 5.727zM2.226 6.922a6.727 6.727 0 0 0-.511 2.082h3.078a11.83 11.83 0 0 1 1.55-5.89q-.249.083-.493.186a6.834 6.834 0 0 0-3.624 3.622zm8.87 2.082a14.405 14.405 0 0 0-.261-2.31 9.847 9.847 0 0 0-.713-2.26c-.447-.952-1.009-1.573-1.497-1.667a8.468 8.468 0 0 0-.253 0c-.488.094-1.05.715-1.497 1.668a9.847 9.847 0 0 0-.712 2.26 14.404 14.404 0 0 0-.261 2.309zm-.974 5.676a9.844 9.844 0 0 0 .713-2.26 14.413 14.413 0 0 0 .26-2.309H5.903a14.412 14.412 0 0 0 .261 2.31 9.844 9.844 0 0 0 .712 2.259c.487 1.036 1.109 1.68 1.624 1.68s1.137-.644 1.623-1.68zm4.652-2.462a6.737 6.737 0 0 0 .513-2.107h-3.082a11.77 11.77 0 0 1-1.572 5.922q.261-.086.517-.194a6.834 6.834 0 0 0 3.624-3.621zM11.15 3.3a6.82 6.82 0 0 0-.496-.187 11.828 11.828 0 0 1 1.55 5.89h3.081A6.815 6.815 0 0 0 11.15 3.3z"/></svg>
+          </span>
+          <span class="gd-icon-demo">
+            <span class="gd-icon-demo__name">论坛</span>
+            <span class="gd-icon-demo__sep">-</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </span>
+          <span class="gd-icon-demo">
+            <span class="gd-icon-demo__name">社群</span>
+            <span class="gd-icon-demo__sep">-</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </span>
+          <span class="gd-icon-demo">
+            <span class="gd-icon-demo__name">教程</span>
+            <span class="gd-icon-demo__sep">-</span>
+            <svg width="18" height="18" viewBox="0 0 31.725 31.725" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M30.611,18.54v-3.817c0.708-0.605,1.113-1.479,1.113-2.415c0-1.323-0.832-2.521-2.071-2.982L18.212,5.068c-1.55-0.577-3.276-0.574-4.822,0.007L2.063,9.328C0.83,9.791,0,10.988,0,12.307c0,1.317,0.83,2.514,2.063,2.976L6.3,16.875l0.009,5.655c0.197,2.99,4.928,4.557,9.499,4.557s9.302-1.564,9.5-4.571l0.008-5.612l3.679-1.371v3.009c-0.545,0.395-0.892,1.165-0.892,2.015c0,1.123,0,2.284,1.699,2.284c1.698,0,1.698-1.161,1.698-2.284C31.503,19.706,31.157,18.935,30.611,18.54z M8.778,17.806l4.612,1.732c1.545,0.582,3.274,0.584,4.825,0.009l4.627-1.725v4.521c0,0.773-2.738,2.257-7.032,2.257c-4.292,0-7.031-1.481-7.031-2.257L8.778,17.806L8.778,17.806z M14.625,16.98L5.168,13.43c-0.085-0.032-0.19-0.068-0.308-0.107c-0.542-0.181-1.552-0.518-1.552-1.014c0-0.506,0.964-0.822,1.539-1.012c0.123-0.04,0.232-0.077,0.321-0.109l9.455-3.553c0.381-0.144,0.78-0.215,1.185-0.215c0.404,0,0.799,0.07,1.177,0.211l9.551,3.556c0.077,0.029,0.172,0.062,0.278,0.096c0.52,0.179,1.603,0.544,1.603,1.026c0,0.194-0.317,0.543-1.882,1.122l-9.549,3.554C16.229,17.267,15.384,17.265,14.625,16.98z"/></svg>
+          </span>
+          <span class="gd-icon-demo">
+            <span class="gd-icon-demo__name">作品</span>
+            <span class="gd-icon-demo__sep">-</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M8 7h8"/><path d="M8 11h5"/></svg>
+          </span>
+          <span class="gd-icon-demo">
+            <span class="gd-icon-demo__name">亮点</span>
+            <span class="gd-icon-demo__sep">-</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </span>
+          <span class="gd-icon-demo">
+            <span class="gd-icon-demo__name">扩展</span>
+            <span class="gd-icon-demo__sep">-</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M13.3636 5.25C12.2716 5.25 11.3864 6.13525 11.3864 7.22727V7.97727L7.97727 7.97727L7.97727 11.3864H7.22727C6.13526 11.3864 5.25 12.2716 5.25 13.3636C5.25 14.4557 6.13526 15.3409 7.22727 15.3409H7.97727L7.97727 18.75L18.75 18.75V16.7598C17.1901 16.4169 16.0227 15.0266 16.0227 13.3636C16.0227 11.7007 17.1901 10.3104 18.75 9.96745V7.97727L15.3409 7.97727V7.22727C15.3409 6.13526 14.4557 5.25 13.3636 5.25ZM9.96745 6.47727C10.3104 4.91733 11.7007 3.75 13.3636 3.75C15.0266 3.75 16.4169 4.91733 16.7598 6.47727L20.25 6.47727V11.3864L19.5 11.3864C18.408 11.3864 17.5227 12.2716 17.5227 13.3636C17.5227 14.4557 18.408 15.3409 19.5 15.3409H20.25V20.25L6.47727 20.25L6.47727 16.7598C4.91733 16.4169 3.75 15.0266 3.75 13.3636C3.75 11.7007 4.91733 10.3104 6.47727 9.96745L6.47727 6.47727L9.96745 6.47727Z"/></svg>
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <section class="gd-section" id="extend-ui">
+      <h2 class="gd-section__title">extend 扩展页 UI</h2>
+      <p class="demo-note">预览页自身壳层：内容区 + 竖向虚线 + 右侧索引；窄屏（&lt;768px）索引切换为汉堡标。</p>
+      <div class="demo-preview demo-preview--pad-bottom">
+        <div class="extend-ui-demo">
+          <div class="extend-ui-demo__main">
+            <div class="gd-overview-toc-mobile extend-ui-demo__toc-mobile" data-extend-ui-toc>
+              <button type="button" class="gd-overview-toc-mobile__btn gd-hamburger-motion" data-extend-ui-toc-toggle aria-expanded="false" aria-controls="extendUiTocPanel" aria-label="打开本页索引">
+                <svg class="gd-hamburger-motion__menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+                <svg class="gd-hamburger-motion__close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+              </button>
+              <div class="gd-overview-toc-mobile__panel" id="extendUiTocPanel" data-extend-ui-toc-panel aria-hidden="true" hidden>
+                <p class="gd-overview-mobile-list__label">本页内容</p>
+                <nav class="gd-overview-mobile-list" aria-label="本页索引">
+                  <a class="gd-overview-mobile-list__link is-active" href="#extend-ui">分区一</a>
+                  <a class="gd-overview-mobile-list__link" href="#extend-ui">分区二</a>
+                  <a class="gd-overview-mobile-list__link" href="#extend-ui">分区三</a>
+                </nav>
+              </div>
+            </div>
+            <p class="gd-overview__date">2026年8月11日</p>
+            <h3 class="gd-overview__title" style="margin:4px 0 0">扩展页标题</h3>
+            <p class="gd-overview__lede">页面引导语，说明本页内容与方向。</p>
+            <div class="gd-overview__meta">
+              <span class="gd-overview__tag">标签一</span>
+              <span class="gd-overview__tag">标签二</span>
+            </div>
+            <div class="gd-overview__rule" aria-hidden="true"></div>
+            <div class="gd-section" style="margin-top:16px">
+              <h4 class="gd-section__title">分区标题</h4>
+              <div class="demo-preview">
+                <p class="demo-note" style="margin:0">分区内容区，虚线框为演示容器。</p>
+              </div>
+            </div>
+          </div>
+          <aside class="extend-ui-demo__toc" aria-label="演示索引">
+            <nav class="gd-otp" aria-label="本页索引">
+              <p class="gd-otp__label">本页内容</p>
+              <div class="gd-otp__list">
+                <a class="gd-otp__link is-active" href="#extend-ui">分区一</a>
+                <a class="gd-otp__link" href="#extend-ui">分区二</a>
+                <a class="gd-otp__link" href="#extend-ui">分区三</a>
+              </div>
+            </nav>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="gd-section" id="footer">
+      <h2 class="gd-section__title">footer 页脚</h2>
+      <p class="demo-note">短页贴容器底（<code>gd-page</code> + <code>margin-top: auto</code>）；长页跟在内容后面。缩放后空白留在内容和页脚之间，不落到页脚下面。</p>
+      <div class="demo-preview gd-page gd-page--demo">
+        <p class="demo-note" style="margin:0">短内容区</p>
+        <footer class="gd-footer">
+          <nav class="gd-footer__nav" aria-label="页脚链接">
+            <a href="#footer">sitemap.xml</a><span class="gd-footer__sep" aria-hidden="true">|</span>
+            <a href="#footer">robots.txt</a><span class="gd-footer__sep" aria-hidden="true">|</span>
+            <a href="#footer">联系站长</a><span class="gd-footer__sep" aria-hidden="true">|</span>
+            <a href="#footer">赞助本站</a><span class="gd-footer__sep" aria-hidden="true">|</span>
+            <a href="#footer">申请友链</a><span class="gd-footer__sep" aria-hidden="true">|</span>
+            <a href="#footer">站点状态</a>
+          </nav>
+          <p class="gd-footer__copy">© 2026 GALNAVI · 愿每一次探索都有新的收获</p>
+        </footer>
+      </div>
+    </section>
+
+    <section class="gd-section" id="groundback">
+      <h2 class="gd-section__title">groundback 背景层</h2>
+      <p class="demo-note">页面级背景层（fixed，位于内容之下）：<code>gd-groundback--websearch</code> 为线条模糊底（除殿堂外全站，预览标为蓝底默认），金色为圣器殿堂。整页铺满时再加 <code>gd-groundback--bleed</code>。预览盒内不要加 bleed。</p>
+      <div class="demo-preview demo-preview--groundback">
+        <div class="gd-groundback gd-groundback--websearch" aria-hidden="true"></div>
+        <p class="groundback-demo-label">gd-groundback--blue · 主站默认</p>
+      </div>
+      <div class="demo-preview demo-preview--groundback">
+        <div class="gd-groundback gd-groundback--gold" aria-hidden="true"></div>
+        <p class="groundback-demo-label">gd-groundback--gold · 圣器殿堂（金晕 + 线条）</p>
+      </div>
+    </section>
+
+    <footer class="gd-footer gd-footer--page">
+      <p class="gd-footer__copy">GALNAVI · Design</p>
+    </footer>
+      </div>
+
+      <aside class="gd-overview__toc" aria-label="本页内容">
+        <nav class="gd-otp" id="on-this-page" data-gd-overview-toc aria-label="本页索引">
+          <p class="gd-otp__label">本页内容</p>
+          <div class="gd-otp__list">
+            <a class="gd-otp__link" href="#title-color">brand 标题变色</a>
+            <a class="gd-otp__link" href="#navbar">navbar 导航栏</a>
+            <a class="gd-otp__link" href="#gd-button">button 按钮</a>
+            <a class="gd-otp__link" href="#card">card 主站卡片</a>
+            <a class="gd-otp__link" href="#publish-card">card · 发布卡</a>
+            <a class="gd-otp__link" href="#item">card · item 殿堂卡</a>
+            <a class="gd-otp__link" href="#friend">card · friend 友链</a>
+            <a class="gd-otp__link" href="#tag">tag 标签</a>
+            <a class="gd-otp__link" href="#badge">badge 徽标</a>
+            <a class="gd-otp__link" href="#skeleton">skeleton 骨架屏</a>
+            <a class="gd-otp__link" href="#filter-bar">gd-orb__toggle 右下扩展按钮</a>
+            <a class="gd-otp__link" href="#search">search 搜索</a>
+            <a class="gd-otp__link" href="#hero">hero-carousel 轮播</a>
+            <a class="gd-otp__link" href="#empty">empty-state 空状态</a>
+            <a class="gd-otp__link" href="#table">table 表格</a>
+            <a class="gd-otp__link" href="#tooltip">tooltip 提示</a>
+            <a class="gd-otp__link" href="#toast">toast 吐司</a>
+            <a class="gd-otp__link" href="#modal">modal 弹窗</a>
+            <a class="gd-otp__link" href="#donate">donate 页面示例</a>
+            <a class="gd-otp__link" href="#detail">detail 详情页示例</a>
+            <a class="gd-otp__link" href="#footer">footer 页脚</a>
+            <a class="gd-otp__link" href="#extend-ui">extend 扩展页 UI</a>
+            <a class="gd-otp__link" href="#groundback">groundback 背景层</a>
+          </div>
+        </nav>
+      </aside>
+    </article>
+  </main>
+
+  <gd-modal class="gd-modal-overlay gd-modal-overlay--redirect" id="redirectModal" role="dialog" aria-modal="true" aria-labelledby="redirectModalTitle" aria-hidden="true">
+    <div class="gd-redirect-ring" aria-hidden="true"></div>
+    <div class="gd-redirect-text" id="redirectModalTitle">即将跳转</div>
+    <div class="gd-redirect-countdown" data-gd-countdown>3</div>
+    <button type="button" class="gd-button gd-button--secondary gd-button--pill" data-gd-close style="margin-top:28px">取消跳转</button>
+  </gd-modal>
+
+  <div class="gd-publish-card-overlay" id="releaseModal" role="dialog" aria-modal="true" aria-labelledby="releaseTitle" aria-hidden="true" data-close-on-backdrop>
+    <div class="gd-publish-card">
+      <header class="gd-publish-card__header">
+        <button type="button" class="gd-publish-card__close" data-gd-close aria-label="关闭">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+        <div class="gd-publish-card__brand">
+          <img class="gd-publish-card__logo" src="https://assets.galnavi.top/logo.png" alt="GALNAVI 品牌标">
+        </div>
+        <h2 class="gd-brand__title gd-brand__title--demo gd-publish-card__wordmark" id="releaseTitle">GALNAVI</h2>
+        <p class="gd-publish-card__lead">一个专注于 ACG 二次元资源网站聚合与收录的纯净导航站点。纯净无广，秒速响应，一站直达。</p>
+      </header>
+      <div class="gd-publish-card__body">
+        <p class="gd-publish-card__note">建议使用 <strong>Firefox</strong>、<strong>Edge</strong>、<strong>Chrome</strong> 等浏览器访问。</p>
+        <p class="gd-publish-card__note">按 <strong>Ctrl + D</strong> 保存收藏</p>
+      </div>
+      <footer class="gd-publish-card__footer">
+        <button type="button" class="gd-publish-card__action" data-gd-publish-go>进入主站</button>
+      </footer>
+    </div>
+  </div>
+
+  <gd-modal class="gd-modal-overlay gd-modal-overlay--nap" id="napModal" role="dialog" aria-modal="true" aria-labelledby="napModalTitle" aria-hidden="true">
+    <div class="gd-modal gd-modal--nap">
+      <button type="button" class="gd-modal__close" data-gd-nap-close aria-label="关闭">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+      <div class="gd-modal__media" role="img">
+        <img class="gd-nap__image" data-gd-nap-image src="" alt="纳普">
+      </div>
+      <h2 class="gd-modal__title" id="napModalTitle" data-gd-nap-title></h2>
+      <p class="gd-modal__body" data-gd-nap-content></p>
+    </div>
+  </gd-modal>
+
+  <script src="./gd-preview.js"></script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+/* gd-home — 发布页（index.js）组件：联系条 / 探索按钮 */
+
+.gd-contact-strip {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--gd-color-outline);
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgba(var(--gd-color-white-rgb), 0.085), rgba(var(--gd-color-white-rgb), 0.028)), rgba(var(--gd-color-navy-card-deep-rgb), 0.42);
+  box-shadow: none;
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  transition: border-color 0.28s var(--gd-motion-easing-standard);
+}
+.gd-contact-strip:hover {
+  border-color: rgba(var(--gd-color-sky-rgb), 0.22);
+}
+
+.gd-contact-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  color: rgba(var(--gd-color-white-rgb), 0.78);
+  border: 1px solid rgba(var(--gd-color-white-rgb), 0.09);
+  border-radius: 16px;
+  background: rgba(var(--gd-color-white-rgb), 0.045);
+  font-family: var(--gd-font-sans);
+  font-size: 0;
+  cursor: pointer;
+  transition: background 0.24s var(--gd-motion-easing-standard), border-color 0.24s var(--gd-motion-easing-standard), transform 0.24s var(--gd-motion-easing-standard), color 0.24s var(--gd-motion-easing-standard);
+}
+.gd-contact-btn svg {
+  width: 24px;
+  height: 24px;
+  flex: 0 0 auto;
+  transition: transform 0.28s var(--gd-motion-easing-standard);
+}
+.gd-contact-btn:hover {
+  color: var(--gd-color-on-primary);
+  border-color: rgba(var(--gd-color-white-rgb), 0.2);
+  background: rgba(var(--gd-color-sky-blue-rgb), 0.13);
+  filter: brightness(1.06);
+  transform: none;
+}
+.gd-contact-btn:hover svg { transform: scale(1.08); }
+.gd-contact-btn:active { transform: none; }
+.gd-contact-btn:focus-visible {
+  outline: 2px solid var(--gd-color-primary);
+  outline-offset: 2px;
+}
+
+.gd-explore-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 54px;
+  min-width: 188px;
+  padding: 0 30px;
+  border-radius: 15px;
+  font-size: var(--gd-type-title-small-size);
+  font-weight: var(--gd-weight-bold);
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  font-family: var(--gd-font-sans);
+  transition: transform 0.24s var(--gd-motion-easing-standard), border-color 0.24s var(--gd-motion-easing-standard), background 0.24s var(--gd-motion-easing-standard), color 0.24s var(--gd-motion-easing-standard);
+}
+.gd-explore-btn:hover { filter: brightness(1.06); transform: none; }
+.gd-explore-btn:focus-visible {
+  outline: 2px solid var(--gd-color-primary);
+  outline-offset: 2px;
+}

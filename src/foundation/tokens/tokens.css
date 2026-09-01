@@ -1,0 +1,178 @@
+/* gd tokens — 色值/玻璃为现网取值；字号/圆角/状态透明度语义对齐 MD3 */
+:root {
+  /* Color roles（值 = GALNAVI，禁止紫板） */
+  --gd-color-background: #1c2a48;
+  --gd-color-surface: #18253f;
+  --gd-color-surface-variant: #223456;
+  --gd-color-surface-back: #1c2a45;
+  --gd-color-primary: #4f7cff;
+  --gd-color-on-primary: #ffffff;
+  --gd-color-primary-container: rgba(79, 124, 255, 0.12);
+  --gd-color-secondary: #a855f7;
+  --gd-color-on-surface: #f4f7ff;
+  --gd-color-on-surface-variant: #93a4c8;
+  --gd-color-on-surface-subtle: #aeb9d6;
+  --gd-color-outline: #1e2a45;
+  --gd-color-error: #f87171;
+
+  /* 链接色：静止蓝 #7aa2f7 → hover 深蓝 #9ec0ff */
+  --gd-color-link: #7aa2f7;
+  --gd-color-link-hover: #9ec0ff;
+
+  /* 强调色（图标/装饰用浅紫） */
+  --gd-color-accent-light: #a78bfa;
+
+  /* RGB 通道（供 rgba(var(--gd-x-rgb), a) 组合透明度层级） */
+  --gd-color-primary-rgb: 79, 124, 255;
+  --gd-color-secondary-rgb: 168, 85, 247;
+  --gd-color-accent-rgb: 139, 92, 246;
+  --gd-color-sky-rgb: 56, 189, 248;
+  --gd-color-sky-blue-rgb: 96, 165, 250;
+  --gd-color-blue-rgb: 59, 130, 246;
+  --gd-color-blue-deep-rgb: 37, 99, 235;
+  --gd-color-indigo-rgb: 91, 141, 239;
+  --gd-color-gold-rgb: 251, 191, 36;
+  --gd-color-gold-deep-rgb: 245, 158, 11;
+  --gd-color-error-rgb: 239, 68, 68;
+  --gd-color-green-rgb: 34, 197, 94;
+  --gd-color-green-light-rgb: 134, 239, 172;
+  --gd-color-white-rgb: 255, 255, 255;
+  --gd-color-muted-white-rgb: 232, 238, 255;
+  --gd-color-grey-rgb: 139, 156, 192;
+
+  /* 深色层级（遮罩/浮层/卡片渐变底） */
+  --gd-color-navy-rgb: 8, 12, 24;
+  --gd-color-navy-deep-rgb: 6, 10, 20;
+  --gd-color-navy-panel-rgb: 8, 10, 20;
+  --gd-color-navy-card-rgb: 22, 28, 48;
+  --gd-color-navy-card-deep-rgb: 12, 16, 28;
+  --gd-color-ink-rgb: 20, 30, 56;
+  --gd-color-ink-2-rgb: 38, 54, 94;
+  --gd-color-ink-3-rgb: 12, 18, 36;
+  --gd-color-ink-4-rgb: 24, 34, 65;
+  --gd-color-outline-blue-rgb: 126, 153, 255;
+
+  /* 语义层级便捷变量 */
+  --gd-color-overlay: rgba(var(--gd-color-navy-deep-rgb), 0.88);
+  --gd-color-overlay-strong: rgba(var(--gd-color-navy-panel-rgb), 0.92);
+  --gd-color-overlay-float: rgba(var(--gd-color-navy-rgb), 0.95);
+  --gd-color-card-gradient-a: rgba(var(--gd-color-navy-card-rgb), 0.96);
+  --gd-color-card-gradient-b: rgba(var(--gd-color-navy-card-deep-rgb), 0.98);
+  --gd-color-border-hover: rgba(var(--gd-color-sky-rgb), 0.28);
+  --gd-color-border-accent: rgba(var(--gd-color-accent-rgb), 0.22);
+  --gd-color-demo-dash: rgba(var(--gd-color-grey-rgb), 0.45);
+
+  /* 补充语义色 */
+  --gd-color-success: #86efac;
+  --gd-color-error-light: #fca5a5;
+  --gd-color-sky: #38bdf8;
+  --gd-color-blue: #3b82f6;
+  --gd-color-blue-deep: #2563eb;
+  --gd-color-cyan: #22d3ee;
+  --gd-color-cyan-light: #67e8f9;
+  --gd-color-cyan-rgb: 34, 211, 238;
+  --gd-color-cyan-light-rgb: 103, 232, 249;
+
+  /* 渐变专用色（按钮/标题渐变端点） */
+  --gd-gradient-primary-a: #7c3aed;
+  --gd-gradient-primary-b: #6d28d9;
+  --gd-gradient-primary-hover-a: #8b5cf6;
+  --gd-gradient-primary-hover-b: #7c3aed;
+  --gd-gradient-pink-a: #ec4899;
+  --gd-gradient-pink-b: #db2777;
+  --gd-gradient-pink-hover-a: #f472b6;
+  --gd-gradient-pink-hover-b: #ec4899;
+  --gd-gradient-title-a: #c4b5fd;
+  --gd-gradient-title-b: #e9d5ff;
+  --gd-gradient-title-c: #a78bfa;
+  --gd-gradient-title-d: #8b5cf6;
+
+  /* 标签色（卡片标签三色循环） */
+  --gd-tag-1-bg: rgba(168, 85, 247, 0.12);
+  --gd-tag-1-fg: #c4b5fd;
+  --gd-tag-1-border: rgba(168, 85, 247, 0.2);
+  --gd-tag-2-bg: rgba(59, 130, 246, 0.12);
+  --gd-tag-2-fg: #93c5fd;
+  --gd-tag-2-border: rgba(59, 130, 246, 0.2);
+  --gd-tag-3-bg: rgba(236, 72, 153, 0.12);
+  --gd-tag-3-fg: #f9a8d4;
+  --gd-tag-3-border: rgba(236, 72, 153, 0.2);
+
+  /* 徽标色 */
+  --gd-badge-bg: var(--gd-glass-border);
+  --gd-badge-fg: #d7e2ff;
+  --gd-badge-blue-bg: rgba(79, 124, 255, 0.28);
+  --gd-badge-blue-fg: #eaf0ff;
+  --gd-badge-gold-bg: rgba(251, 191, 36, 0.14);
+  --gd-badge-gold-fg: #fcd34d;
+
+  /* Shape — 语义 MD3 scale；数值贴现网 */
+  --gd-shape-corner-extra-small: 8px;
+  --gd-shape-corner-small: 14px;
+  --gd-shape-corner-medium: 18px;
+  --gd-shape-corner-large: 20px;
+  --gd-shape-corner-full: 9999px;
+
+  /* Type — 角色名 MD3；字号贴近现网 */
+  --gd-type-display-small-size: 36px;
+  --gd-type-display-medium-size: 48px;
+  --gd-type-headline-small-size: 24px;
+  --gd-type-title-large-size: 22px;
+  --gd-type-title-medium-size: 16px;
+  --gd-type-title-medium-line: 1.4;
+  --gd-type-title-small-size: 15px;
+  --gd-type-label-large-size: 14px;
+  --gd-type-label-large-line: 1.4;
+  --gd-type-label-medium-size: 12px;
+  --gd-type-label-small-size: 11px;
+  --gd-type-body-large-size: 16px;
+  --gd-type-body-medium-size: 14px;
+  --gd-type-body-small-size: 12px;
+  --gd-type-note-size: 13px;
+  --gd-type-title-xxl-size: 18px;
+
+  /* 字距 */
+  --gd-type-letter-spacing-tight: -0.5px;
+  --gd-type-letter-spacing-normal: 0.01em;
+  --gd-type-letter-spacing-wide: 0.1em;
+
+  /* 字重（语义档位） */
+  --gd-weight-regular: 400;
+  --gd-weight-medium: 500;
+  --gd-weight-semibold: 600;
+  --gd-weight-bold: 700;
+  --gd-weight-extrabold: 800;
+  --gd-weight-black: 900;
+
+  --gd-font-sans: "Microsoft YaHei", "PingFang SC", "Noto Sans SC", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  /* State layer opacities（MD3） */
+  --gd-state-hover: 0.08;
+  --gd-state-focus: 0.12;
+  --gd-state-pressed: 0.12;
+  --gd-state-disabled: 0.38;
+
+  /* Motion（MD3 short/medium + easing） */
+  --gd-motion-duration-short4: 200ms;
+  --gd-motion-duration-medium1: 250ms;
+  --gd-motion-duration-medium2: 300ms;
+  --gd-motion-duration-medium4: 400ms;
+  --gd-motion-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+  --gd-motion-easing-emphasized: cubic-bezier(0.2, 0, 0, 1);
+
+  /* Layout */
+  --gd-nav-height: 64px;
+  --gd-layout-max-width: 1200px;
+  --gd-space-2: 8px;
+  --gd-space-6: 24px;
+  --gd-touch-target: 48px;
+
+  /* 玻璃 — 冻结现网数值，禁止借「整理」改 blur/透明度 */
+  --gd-glass-bg: rgba(18, 22, 40, 0.42);
+  --gd-glass-bg-hover: rgba(22, 28, 48, 0.52);
+  --gd-glass-blur: blur(18px) saturate(165%);
+  --gd-glass-border: rgba(255, 255, 255, 0.14);
+  --gd-glass-nav-bg: rgba(8, 12, 24, 0.75);
+  --gd-glass-nav-blur: blur(20px) saturate(180%);
+  --gd-chrome-bar-bg: rgba(18, 22, 40, 0.92);
+}

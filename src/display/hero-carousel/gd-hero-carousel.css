@@ -1,0 +1,112 @@
+.gd-hero {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  border-radius: var(--gd-shape-corner-medium);
+  overflow: hidden;
+  position: relative;
+  aspect-ratio: 2 / 1;
+  max-height: 400px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5), 0 0 60px rgba(var(--gd-color-primary-rgb), 0.08);
+  border: 1px solid rgba(var(--gd-color-primary-rgb), 0.08);
+}
+.gd-hero__track { width: 100%; height: 100%; position: relative; }
+.gd-hero__slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity var(--gd-motion-duration-medium4) var(--gd-motion-easing-standard);
+  background-size: cover;
+  background-position: center;
+}
+.gd-hero__slide.is-active { opacity: 1; }
+/* 预览用渐变占位（组件库总览页） */
+.gd-hero__slide--demo-1 { background-image: linear-gradient(135deg, #1e3a5f, #4f7cff); }
+.gd-hero__slide--demo-2 { background-image: linear-gradient(135deg, #3b0764, #a855f7); }
+.gd-hero__slide--demo-3 { background-image: linear-gradient(135deg, #831843, #ec4899); }
+.gd-hero__gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(var(--gd-color-navy-rgb), 0.8) 0%, rgba(var(--gd-color-navy-rgb), 0.2) 40%, transparent 60%, rgba(var(--gd-color-navy-rgb), 0.3) 100%);
+  pointer-events: none;
+}
+.gd-hero__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  border-radius: 50%;
+  background: rgba(var(--gd-color-navy-rgb), 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(var(--gd-color-primary-rgb), 0.15);
+  color: var(--gd-color-on-surface);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: background var(--gd-motion-duration-medium1) var(--gd-motion-easing-standard), border-color var(--gd-motion-duration-medium1) var(--gd-motion-easing-standard), box-shadow var(--gd-motion-duration-medium1) var(--gd-motion-easing-standard);
+}
+.gd-hero__arrow svg {
+  display: block;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+.gd-hero__arrow:hover {
+  background: rgba(var(--gd-color-primary-rgb), 0.25);
+  border-color: rgba(var(--gd-color-primary-rgb), 0.4);
+  box-shadow: 0 0 20px rgba(var(--gd-color-primary-rgb), 0.2);
+}
+.gd-hero__arrow:focus-visible { outline: 2px solid var(--gd-color-primary); outline-offset: 2px; }
+.gd-hero__arrow--prev { left: 16px; }
+.gd-hero__arrow--next { right: 16px; }
+.gd-hero__dots {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+.gd-hero__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  background: rgba(var(--gd-color-white-rgb), 0.3);
+  cursor: pointer;
+  transition: all var(--gd-motion-duration-medium2) var(--gd-motion-easing-standard);
+}
+.gd-hero__dot.is-active {
+  background: var(--gd-color-primary);
+  width: 32px;
+  border-radius: 5px;
+  box-shadow: 0 0 12px rgba(var(--gd-color-primary-rgb), 0.4);
+}
+
+.gd-hero.is-loading .gd-hero__arrow,
+.gd-hero.is-loading .gd-hero__dots,
+.gd-hero.is-loading .gd-hero__gradient {
+  visibility: hidden;
+}
+.gd-hero .gd-skeleton--hero {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  aspect-ratio: auto;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+}
