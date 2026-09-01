@@ -1,8 +1,3 @@
-/**
- * 脱敏页面副本（由 worker/new 提取）。
- * 已去除：SEO（OG/Twitter/JSON-LD/canonical/robots/sitemap）、D1/KV/API、Cookie 首访、私密地址。
- * 不含 status。仅供阅读 / 本地预览，不能当生产 Worker 部署。
- */
 const ASSET_FAVICON = "https://assets.galnavi.top/favicon.png";
 const ASSET_ICON = "https://assets.galnavi.top/icon.png";
 const SECURITY_HEADERS = {
@@ -15,7 +10,7 @@ const SECURITY_HEADERS = {
 };
 
 export default {
-  async fetch(request, env, ctx) {
+  async fetch() {
     return new Response(renderPage(), { headers: SECURITY_HEADERS });
   },
 };
@@ -27,8 +22,31 @@ function renderPage() {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>关于 GALNAVI · 站点声明</title>
+<meta name="description" content="了解 GALNAVI 资源中枢的起源传说——猫耳娘纳普如何点亮灯塔拯救小镇。包含纳普形象声明、版权声明、站点声明与友情链接。">
+<meta name="keywords" content="GALNAVI, 关于GALNAVI, 猫耳娘纳普, 纳普传说, 资源中枢, ACG导航, 版权声明, 站点声明, 二次元导航, 友情链接">
+<meta name="author" content="GALNAVI">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://galnavi.top/nav/about/">
 <link rel="icon" href="${ASSET_FAVICON}" type="image/png">
 <link rel="apple-touch-icon" href="${ASSET_ICON}">
+<link rel="sitemap" type="application/xml" title="Sitemap" href="https://galnavi.top/sitemap.xml">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="GALNAVI">
+<meta property="og:title" content="关于 GALNAVI · 猫耳娘传说">
+<meta property="og:description" content="了解 GALNAVI 资源中枢的起源传说、版权声明、站点声明与友情链接。">
+<meta property="og:url" content="https://galnavi.top/nav/about/">
+<meta property="og:image" content="${ASSET_ICON}">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="关于 GALNAVI · 猫耳娘传说">
+<meta name="twitter:description" content="了解 GALNAVI 资源中枢的起源传说、版权声明、站点声明与友情链接。">
+<meta name="twitter:image" content="${ASSET_ICON}">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","name":"关于 GALNAVI · 猫耳娘传说","url":"https://galnavi.top/nav/about/","description":"了解 GALNAVI 资源中枢的起源传说、版权声明、站点声明与友情链接。","isPartOf":{"@type":"WebSite","name":"GALNAVI","url":"https://galnavi.top/"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://galnavi.top/nav/"},{"@type":"ListItem","position":2,"name":"关于","item":"https://galnavi.top/nav/about/"}]}
+</script>
 <style>
 /* ===== 组件库（构建期内联） ===== */
 /* ===== src/foundation/tokens/tokens.css ===== */
@@ -43,14 +61,11 @@ function renderPage() {
   --gd-color-on-primary: #ffffff;
   --gd-color-primary-container: rgba(79, 124, 255, 0.12);
   --gd-color-secondary: #a855f7;
-  --gd-color-tertiary: #ec4899;
   --gd-color-on-surface: #f4f7ff;
   --gd-color-on-surface-variant: #93a4c8;
   --gd-color-on-surface-subtle: #aeb9d6;
   --gd-color-outline: #1e2a45;
-  --gd-color-outline-variant: rgba(30, 42, 69, 0.8);
   --gd-color-error: #f87171;
-  --gd-color-on-error: #ffffff;
 
   /* 链接色：静止蓝 #7aa2f7 → hover 深蓝 #9ec0ff */
   --gd-color-link: #7aa2f7;
@@ -62,14 +77,12 @@ function renderPage() {
   /* RGB 通道（供 rgba(var(--gd-x-rgb), a) 组合透明度层级） */
   --gd-color-primary-rgb: 79, 124, 255;
   --gd-color-secondary-rgb: 168, 85, 247;
-  --gd-color-tertiary-rgb: 236, 72, 153;
   --gd-color-accent-rgb: 139, 92, 246;
   --gd-color-sky-rgb: 56, 189, 248;
   --gd-color-sky-blue-rgb: 96, 165, 250;
   --gd-color-blue-rgb: 59, 130, 246;
   --gd-color-blue-deep-rgb: 37, 99, 235;
   --gd-color-indigo-rgb: 91, 141, 239;
-  --gd-color-link-rgb: 122, 162, 247;
   --gd-color-gold-rgb: 251, 191, 36;
   --gd-color-gold-deep-rgb: 245, 158, 11;
   --gd-color-error-rgb: 239, 68, 68;
@@ -78,7 +91,6 @@ function renderPage() {
   --gd-color-white-rgb: 255, 255, 255;
   --gd-color-muted-white-rgb: 232, 238, 255;
   --gd-color-grey-rgb: 139, 156, 192;
-  --gd-color-text-rgb: 244, 247, 255;
 
   /* 深色层级（遮罩/浮层/卡片渐变底） */
   --gd-color-navy-rgb: 8, 12, 24;
@@ -86,13 +98,11 @@ function renderPage() {
   --gd-color-navy-panel-rgb: 8, 10, 20;
   --gd-color-navy-card-rgb: 22, 28, 48;
   --gd-color-navy-card-deep-rgb: 12, 16, 28;
-  --gd-color-navy-modal-rgb: 14, 21, 37;
   --gd-color-ink-rgb: 20, 30, 56;
   --gd-color-ink-2-rgb: 38, 54, 94;
   --gd-color-ink-3-rgb: 12, 18, 36;
   --gd-color-ink-4-rgb: 24, 34, 65;
   --gd-color-outline-blue-rgb: 126, 153, 255;
-  --gd-color-blue-soft-rgb: 191, 219, 254;
 
   /* 语义层级便捷变量 */
   --gd-color-overlay: rgba(var(--gd-color-navy-deep-rgb), 0.88);
@@ -100,19 +110,16 @@ function renderPage() {
   --gd-color-overlay-float: rgba(var(--gd-color-navy-rgb), 0.95);
   --gd-color-card-gradient-a: rgba(var(--gd-color-navy-card-rgb), 0.96);
   --gd-color-card-gradient-b: rgba(var(--gd-color-navy-card-deep-rgb), 0.98);
-  --gd-color-modal-gradient-a: rgba(var(--gd-color-navy-modal-rgb), 0.96);
-  --gd-color-modal-gradient-b: rgba(var(--gd-color-navy-rgb), 0.98);
   --gd-color-border-hover: rgba(var(--gd-color-sky-rgb), 0.28);
   --gd-color-border-accent: rgba(var(--gd-color-accent-rgb), 0.22);
   --gd-color-demo-dash: rgba(var(--gd-color-grey-rgb), 0.45);
 
-  /* 补充语义色（release-modal 等引用） */
+  /* 补充语义色 */
   --gd-color-success: #86efac;
   --gd-color-error-light: #fca5a5;
   --gd-color-sky: #38bdf8;
   --gd-color-blue: #3b82f6;
   --gd-color-blue-deep: #2563eb;
-  --gd-color-accent-pink: #ff85c0;
   --gd-color-cyan: #22d3ee;
   --gd-color-cyan-light: #67e8f9;
   --gd-color-cyan-rgb: 34, 211, 238;
@@ -131,12 +138,6 @@ function renderPage() {
   --gd-gradient-title-b: #e9d5ff;
   --gd-gradient-title-c: #a78bfa;
   --gd-gradient-title-d: #8b5cf6;
-
-  /* 彩点色（filter-bar 等胶囊按钮的圆点循环色：三色循环 + 中性兜底） */
-  --gd-dot-1: var(--gd-color-primary);
-  --gd-dot-2: var(--gd-color-secondary);
-  --gd-dot-3: var(--gd-color-tertiary);
-  --gd-dot-neutral: #5a6a8a;
 
   /* 标签色（卡片标签三色循环） */
   --gd-tag-1-bg: rgba(168, 85, 247, 0.12);
@@ -158,49 +159,42 @@ function renderPage() {
   --gd-badge-gold-fg: #fcd34d;
 
   /* Shape — 语义 MD3 scale；数值贴现网 */
-  --gd-shape-corner-none: 0;
   --gd-shape-corner-extra-small: 8px;
   --gd-shape-corner-small: 14px;
   --gd-shape-corner-medium: 18px;
   --gd-shape-corner-large: 20px;
-  --gd-shape-corner-extra-large: 28px;
   --gd-shape-corner-full: 9999px;
 
   /* Type — 角色名 MD3；字号贴近现网 */
---gd-type-display-small-size: 36px;
---gd-type-display-small-line: 1.1;
---gd-type-display-medium-size: 48px;
---gd-type-headline-small-size: 24px;
---gd-type-headline-small-line: 1.3;
---gd-type-title-large-size: 22px;
---gd-type-title-large-line: 1.3;
---gd-type-title-medium-size: 16px;
---gd-type-title-medium-line: 1.4;
---gd-type-title-small-size: 15px;
---gd-type-title-small-line: 1.4;
---gd-type-label-large-size: 14px;
---gd-type-label-large-line: 1.4;
---gd-type-label-medium-size: 12px;
---gd-type-label-small-size: 11px;
---gd-type-body-large-size: 16px;
---gd-type-body-medium-size: 14px;
---gd-type-body-small-size: 12px;
---gd-type-note-size: 13px;
---gd-type-title-xxl-size: 18px;
+  --gd-type-display-small-size: 36px;
+  --gd-type-display-medium-size: 48px;
+  --gd-type-headline-small-size: 24px;
+  --gd-type-title-large-size: 22px;
+  --gd-type-title-medium-size: 16px;
+  --gd-type-title-medium-line: 1.4;
+  --gd-type-title-small-size: 15px;
+  --gd-type-label-large-size: 14px;
+  --gd-type-label-large-line: 1.4;
+  --gd-type-label-medium-size: 12px;
+  --gd-type-label-small-size: 11px;
+  --gd-type-body-large-size: 16px;
+  --gd-type-body-medium-size: 14px;
+  --gd-type-body-small-size: 12px;
+  --gd-type-note-size: 13px;
+  --gd-type-title-xxl-size: 18px;
 
-/* 字距 */
---gd-type-letter-spacing-tight: -0.5px;
---gd-type-letter-spacing-normal: 0.01em;
---gd-type-letter-spacing-wide: 0.1em;
---gd-type-letter-spacing-extra-wide: 0.24em;
+  /* 字距 */
+  --gd-type-letter-spacing-tight: -0.5px;
+  --gd-type-letter-spacing-normal: 0.01em;
+  --gd-type-letter-spacing-wide: 0.1em;
 
-/* 字重（语义档位） */
---gd-weight-regular: 400;
---gd-weight-medium: 500;
---gd-weight-semibold: 600;
---gd-weight-bold: 700;
---gd-weight-extrabold: 800;
---gd-weight-black: 900;
+  /* 字重（语义档位） */
+  --gd-weight-regular: 400;
+  --gd-weight-medium: 500;
+  --gd-weight-semibold: 600;
+  --gd-weight-bold: 700;
+  --gd-weight-extrabold: 800;
+  --gd-weight-black: 900;
 
   --gd-font-sans: "Microsoft YaHei", "PingFang SC", "Noto Sans SC", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
@@ -208,11 +202,9 @@ function renderPage() {
   --gd-state-hover: 0.08;
   --gd-state-focus: 0.12;
   --gd-state-pressed: 0.12;
-  --gd-state-dragged: 0.16;
   --gd-state-disabled: 0.38;
 
   /* Motion（MD3 short/medium + easing） */
-  --gd-motion-duration-short2: 100ms;
   --gd-motion-duration-short4: 200ms;
   --gd-motion-duration-medium1: 250ms;
   --gd-motion-duration-medium2: 300ms;
@@ -223,17 +215,9 @@ function renderPage() {
   /* Layout */
   --gd-nav-height: 64px;
   --gd-layout-max-width: 1200px;
-  --gd-space-1: 4px;
   --gd-space-2: 8px;
-  --gd-space-3: 12px;
-  --gd-space-4: 16px;
-  --gd-space-5: 20px;
   --gd-space-6: 24px;
   --gd-touch-target: 48px;
-
-  /* Elevation 别名（不替代玻璃） */
-  --gd-elevation-level2: 0 4px 24px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.3);
-  --gd-elevation-glow: 0 0 40px rgba(79, 124, 255, 0.2), 0 0 80px rgba(168, 85, 247, 0.08);
 
   /* 玻璃 — 冻结现网数值，禁止借「整理」改 blur/透明度 */
   --gd-glass-bg: rgba(18, 22, 40, 0.42);
@@ -242,6 +226,7 @@ function renderPage() {
   --gd-glass-border: rgba(255, 255, 255, 0.14);
   --gd-glass-nav-bg: rgba(8, 12, 24, 0.75);
   --gd-glass-nav-blur: blur(20px) saturate(180%);
+  --gd-chrome-bar-bg: rgba(18, 22, 40, 0.92);
 }
 
 /* ===== src/foundation/brand/gd-brand.css ===== */
@@ -335,8 +320,8 @@ function renderPage() {
 
 /* ===== src/foundation/layout/gd-groundback.css ===== */
 /* gd-groundback：页面背景层
-   用法：<div class="gd-groundback gd-groundback--blue" aria-hidden="true"></div>
-   变体：--blue（默认，主站） / --gold（殿堂）
+   用法：<div class="gd-groundback gd-groundback--websearch" aria-hidden="true"></div>
+   变体：--blue（点阵） / --websearch（线条模糊，除殿堂外全站） / --gold（殿堂）
    蓝色参考原版发布页（galnavi.js）背景：三层光斑 + 对角渐变 + 点阵网格 + 底部光带。 */
 .gd-groundback {
   position: fixed;
@@ -377,8 +362,10 @@ function renderPage() {
     radial-gradient(circle at 50% 110%, rgba(var(--gd-color-blue-rgb), 0.12), transparent 36%);
 }
 
-/* 殿堂金：深色底 + 金色光晕（参考现网 shenmo 背景） */
+/* 殿堂金：深色底 + 金色光晕 + 与全站同款线条模糊 */
 .gd-groundback--gold {
+  isolation: isolate;
+  overflow: hidden;
   background: linear-gradient(145deg, #06070e 0%, #0a0c16 48%, #0e1322 100%);
 }
 
@@ -386,6 +373,47 @@ function renderPage() {
   background:
     radial-gradient(40% 35% at 18% 14%, rgba(var(--gd-color-gold-rgb), 0.12), transparent 70%),
     radial-gradient(36% 32% at 86% 82%, rgba(var(--gd-color-error-rgb), 0.10), transparent 70%);
+}
+
+.gd-groundback--gold::after {
+  inset: -24px;
+  background-image: url("https://assets.galnavi.top/%E7%BA%BF%E6%9D%A1%E5%9B%BE%E6%A1%88.png");
+  background-repeat: repeat;
+  background-position: 0 0;
+  background-size: auto;
+  opacity: 0.16;
+  mix-blend-mode: screen;
+  filter: blur(10.8px);
+}
+
+/* websearch：主站蓝底 + 线条图案平铺；screen 去掉 PNG 黑底 */
+.gd-groundback--websearch {
+  isolation: isolate;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 22% 18%, rgba(var(--gd-color-blue-rgb), 0.2), transparent 34%),
+    radial-gradient(circle at 78% 76%, rgba(var(--gd-color-cyan-rgb), 0.14), transparent 32%),
+    radial-gradient(circle at 50% 50%, rgba(var(--gd-color-secondary-rgb), 0.06), transparent 52%),
+    linear-gradient(145deg, var(--gd-color-background) 0%, var(--gd-color-surface) 45%, var(--gd-color-surface-variant) 100%);
+}
+
+.gd-groundback--websearch::before {
+  inset: -24px;
+  background-image: url("https://assets.galnavi.top/%E7%BA%BF%E6%9D%A1%E5%9B%BE%E6%A1%88.png");
+  background-repeat: repeat;
+  background-position: 0 0;
+  background-size: auto;
+  opacity: 0.16;
+  mix-blend-mode: screen;
+  filter: blur(10.8px);
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+.gd-groundback--websearch::after {
+  background:
+    linear-gradient(90deg, transparent, rgba(var(--gd-color-white-rgb), 0.028), transparent),
+    radial-gradient(circle at 50% 110%, rgba(var(--gd-color-blue-rgb), 0.12), transparent 36%);
 }
 
 /* prefers-reduced-motion：背景静态无动画，无额外处理 */
@@ -411,11 +439,17 @@ function renderPage() {
 html {
   scroll-behavior: smooth;
   background: var(--gd-color-background);
+  min-height: 100%;
 }
 
 body.gd-overview {
   margin: 0;
   min-height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  min-height: var(--gd-vvh, 100dvh);
+  display: flex;
+  flex-direction: column;
   color: var(--gd-color-on-surface);
   font-family: var(--gd-font-sans);
   text-rendering: optimizeLegibility;
@@ -441,6 +475,7 @@ body.gd-overview {
   max-width: none;
   margin: 0;
   box-sizing: border-box;
+  flex: 1 1 auto;
 }
 
 .gd-overview__layout {
@@ -716,16 +751,15 @@ body.gd-overview {
   position: relative;
 }
 
-.gd-overview .gd-footer {
-  margin-top: 56px;
+.gd-overview .gd-footer--page {
+  margin-top: auto;
   padding-top: 24px;
   border-top: none;
-}
-/* 尾页 footer：仅页面底部的 GALNAVI · Design 加顶部虚线分隔 */
-.gd-overview .gd-footer--page {
-  background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMSIgdmlld0JveD0iMCAwIDMyIDEiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxnIGNsaXAtcGF0aD0idXJsKCNjbGlwMF9oKSI+CjxwYXRoIGQ9Ik0xNiAwTDE2IDFMMCAxTDAgMEwxNiAwWiIgZmlsbD0iIzhiOWNjMCIgZmlsbC1vcGFjaXR5PSIwLjU1Ii8+CjwvZz4KPGRlZnM+CjxjbGlwUGF0aCBpZD0iY2xpcDBfaCI+CjxyZWN0IHdpZHRoPSIxIiBoZWlnaHQ9IjMyIiBmaWxsPSJ3aGl0ZSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAxKSByb3RhdGUoLTkwKSIvPgo8L2NsaXBQYXRoPgo8L2RlZnM+Cjwvc3ZnPgo=");
-  background-repeat: repeat-x;
-  background-position: 0 0;
+  flex-shrink: 0;
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 1;
 }
 
 /* —— 右侧「本页内容」 —— */
@@ -1507,9 +1541,28 @@ body.gd-overview {
   min-width: 0;
   max-width: 100%;
   overflow: hidden;
+  isolation: isolate;
   transition:
     background 0.2s var(--gd-motion-easing-standard),
     border-color 0.2s var(--gd-motion-easing-standard);
+}
+.gd-card--item::before {
+  content: "";
+  position: absolute;
+  inset: -24px;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url("https://assets.galnavi.top/%E7%BA%BF%E6%9D%A1%E5%9B%BE%E6%A1%88.png");
+  background-repeat: repeat;
+  background-position: 0 0;
+  background-size: auto;
+  opacity: 0.16;
+  mix-blend-mode: screen;
+  filter: blur(10.8px);
+}
+.gd-card--item > * {
+  position: relative;
+  z-index: 1;
 }
 .gd-card--item--demonic {
   --gd-comp-item-color: #ef4444;
@@ -1732,9 +1785,15 @@ body.gd-overview {
 
 /* ===== src/foundation/layout/gd-footer.css ===== */
 .gd-footer {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  margin-top: auto;
+  width: 100%;
+  box-sizing: border-box;
   text-align: center;
   padding: 28px 16px 40px;
-  color: rgba(var(--gd-color-muted-white-rgb), 0.45);
+  color: rgba(var(--gd-color-muted-white-rgb), 0.62);
   font-size: var(--gd-type-note-size);
   font-weight: var(--gd-weight-regular);
   line-height: 1.7;
@@ -1767,7 +1826,7 @@ body.gd-overview {
 /* ===== about 页面特有样式 ===== */
 
 .gd-groundback { z-index: 0; }
-.gd-overview__shell { position: relative; z-index: 1; }
+.gd-overview__shell { position: relative; z-index: 1; flex: 1 0 auto; }
 .gd-back-fab {
   position: fixed;
   top: max(12px, env(safe-area-inset-top, 0px));
@@ -1786,6 +1845,15 @@ body.gd-overview {
 }
 .gd-overview__content h2 { scroll-margin-top: 90px; }
 .gd-overview__content .card { background: transparent; border: none; border-radius: 0; padding: 4px 0 8px; margin-bottom: 12px; }
+.gd-overview__content .card h3 {
+  margin: 20px 0 8px;
+  font-family: var(--gd-font-sans);
+  font-size: var(--gd-type-title-medium-size);
+  font-weight: var(--gd-weight-semibold);
+  line-height: var(--gd-type-title-medium-line);
+  color: var(--gd-color-on-surface);
+}
+.gd-overview__content .card h3:first-child { margin-top: 0; }
 .gd-overview__content .card p { color: var(--gd-color-on-surface-variant); font-size: var(--gd-type-body-large-size); margin-top: 6px; line-height: 1.85; }
 .gd-overview__content .card p.no-indent { text-indent: 0; }
 .gd-overview__content .card a { word-break: break-all; }
@@ -1815,7 +1883,7 @@ body.gd-overview {
 </style>
 </head>
 <body class="gd-overview">
-<div class="gd-groundback gd-groundback--blue" aria-hidden="true"></div>
+<div class="gd-groundback gd-groundback--websearch" aria-hidden="true"></div>
 <a class="gd-button gd-button--back gd-back-fab" href="https://galnavi.top/nav/" aria-label="返回主站">
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
   返回主站
@@ -1870,10 +1938,20 @@ body.gd-overview {
 <section class="gd-section" id="nap">  <h2 class="gd-section__title">纳普图片声明</h2><div class="card"><ul><li>本站吉祥物及相关视觉形象为 GALNAVI 的品牌形象，仅限本站及经授权的用途使用。</li><li>未经许可，请勿擅自转载、修改、商用或用于其他项目。</li></ul></div></section>
 <section class="gd-section" id="copyright">  <h2 class="gd-section__title">版权声明</h2><div class="card"><ul><li>本站尊重知识产权。本站展示的游戏名称、图片、简介等内容，其版权归原著作权人、开发商或发行商所有。</li><li>本站主要提供信息整理、站点导航及相关链接索引，不主张拥有第三方内容的版权。</li><li>如您认为本站展示的内容侵犯了您的合法权益，请联系我们并提供相关权利证明及具体内容。经核实后，本站将及时处理相关内容或链接。</li><li>本站不鼓励、不支持任何侵犯版权及其他违法行为。</li></ul></div></section>
 <section class="gd-section" id="disclaimer">  <h2 class="gd-section__title">站点声明</h2><div class="card"><ul><li>GALNAVI 是一个 ACG、Galgame 相关的信息导航与站点聚合平台，主要提供站点收录、信息整理、标签分类及搜索服务。</li><li>本站收录的第三方网站、链接及其内容均由相应网站运营者负责，本站无法保证其内容的准确性、合法性、安全性或持续有效性。</li><li>访问第三方网站或使用其提供的内容前，请自行判断相关风险，并遵守所在地区的法律法规。</li><li>用户不得利用本站从事违法、侵权或其他不当活动。因用户访问或使用第三方网站及内容产生的相关责任，由用户自行承担。</li><li>本站有权根据实际情况调整收录内容及相关服务。</li></ul></div></section>
-<section class="gd-section" id="community">  <h2 class="gd-section__title">本站社群</h2><div class="card"><ul><li>QQ群：416074347。</li><li>本群用于 GALNAVI 相关交流、反馈与 ACG/Galgame 内容讨论。</li><li>请文明交流，禁止广告、刷屏、引战及违法违规内容；分享第三方资源或链接时请注意版权与安全。</li><li>如有网站问题、收录建议或功能反馈，欢迎在群内提出。</li></ul></div></section>
+<section class="gd-section" id="community">  <h2 class="gd-section__title">本站社群</h2><div class="card">
+<h3>交流群</h3>
+<ul>
+<li>QQ群：416074347。</li>
+<li>本群用于 GALNAVI 相关交流、反馈与 ACG/Galgame 内容讨论。</li>
+<li>请文明交流，禁止广告、刷屏、引战及违法违规内容；分享第三方资源或链接时请注意版权与安全。</li>
+<li>如有网站问题、收录建议或功能反馈，欢迎在群内提出。</li>
+</ul>
+<h3>B站</h3>
+<ul>
+<li>账号：<a class="gd-link" href="https://space.bilibili.com/3744946343382123" rel="noopener noreferrer">@纳普小镇</a></li>
+</ul>
+</div></section>
 <section class="gd-section" id="feedback">  <h2 class="gd-section__title">站点反馈</h2><div class="card"><p>如果你在使用 GALNAVI 时发现问题，欢迎向我们反馈。</p><ul><li><strong>网站问题</strong> — 页面异常、链接失效、显示错误等。</li><li><strong>收录建议</strong> — 推荐新的站点、工具或资源。</li><li><strong>内容问题</strong> — 信息错误、分类不当、描述需要修改。</li><li><strong>功能建议</strong> — 对网站功能或使用体验的建议。</li></ul><p>反馈时请尽量说明具体问题，并附上相关页面链接或截图，方便我们处理。</p><p>反馈邮箱：<a class="gd-link" href="mailto:feedback@galnavi.top">feedback@galnavi.top</a></p></div></section>
-<div class="gd-overview__rule" aria-hidden="true"></div>
-<footer class="gd-footer"><nav class="gd-footer__nav" aria-label="页脚链接"><a href="mailto:feedback@galnavi.top">联系站长</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/donate/">赞助本站</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/friend/">申请友链</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/status/">站点状态</a></nav><p class="gd-footer__copy">© 2026 GALNAVI · 愿每一次探索都有新的收获</p></footer>
     </div>
 <aside class="gd-overview__toc" aria-label="本页内容">
   <nav class="gd-otp" aria-label="本页索引">
@@ -1891,8 +1969,10 @@ body.gd-overview {
 </aside>
   </div>
 </div>
+<footer class="gd-footer gd-footer--page"><nav class="gd-footer__nav" aria-label="页脚链接"><a href="https://galnavi.top/sitemap.xml">sitemap.xml</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/robots.txt">robots.txt</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="mailto:feedback@galnavi.top">联系站长</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/donate/">赞助本站</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/friend/">申请友链</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/status/">站点状态</a></nav><p class="gd-footer__copy">© 2026 GALNAVI · 愿每一次探索都有新的收获</p></footer>
 <div id="redirectOverlay" class="gd-overview__redirect-overlay" aria-live="polite" aria-atomic="true"><div class="gd-overview__redirect-ring" aria-hidden="true"></div><div class="gd-overview__redirect-text">即将跳转</div><div id="redirectCountdown" class="gd-overview__redirect-countdown">3</div><button type="button" id="redirectCancel" class="gd-overview__redirect-cancel">取消跳转</button></div>
 <script>
+(function(){function a(){var h=(window.visualViewport&&window.visualViewport.height)||window.innerHeight;document.documentElement.style.setProperty("--gd-vvh",h+"px");}a();window.addEventListener("resize",a);if(window.visualViewport)window.visualViewport.addEventListener("resize",a);})();
 (function() {
 var root = document.querySelector('.gd-overview-toc-mobile');
 var btn = root && root.querySelector('[data-extend-ui-toc-toggle]');
@@ -1979,7 +2059,7 @@ function clearRedirect(){if(timerId){clearInterval(timerId);timerId=null}var ove
 function startRedirect(targetUrl){var overlay=document.getElementById("redirectOverlay"),countdownEl=document.getElementById("redirectCountdown"),cancelBtn=document.getElementById("redirectCancel");if(!overlay||!countdownEl){window.open(targetUrl,"_blank","noopener,noreferrer");return}clearRedirect();var seconds=3;overlay.classList.add("active");overlay.setAttribute("aria-hidden","false");countdownEl.textContent=String(seconds);timerId=setInterval(function(){seconds-=1;if(seconds<=0){clearRedirect();window.open(targetUrl,"_blank","noopener,noreferrer");return}countdownEl.textContent=String(seconds);},1000);onCancel=function(){clearRedirect()};if(cancelBtn)cancelBtn.addEventListener("click",onCancel);}
 document.addEventListener("click",function(e){var anchor=e.target.closest("a");if(!anchor)return;var href=anchor.getAttribute("href");if(!href)return;var lower=href.trim().toLowerCase();if(lower.indexOf("javascript:")===0||lower.indexOf("data:")===0){e.preventDefault();return}if(href.charAt(0)==="#")return;if(href.indexOf("https://galnavi.top/nav/")===0||href.indexOf("/nav/")===0)return;if(!isSafeHttpUrl(href))return;try{if(new URL(href,window.location.origin).hostname===window.location.hostname)return}catch(err){return}e.preventDefault();startRedirect(href);});
 })();
-<\/script>
+</script>
 </body>
 </html>`;
 }

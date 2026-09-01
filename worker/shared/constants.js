@@ -1,6 +1,6 @@
 /**
- * 业务常量权威源（分类等）。各页应 import 此处，禁止再维护第二份。
- * 按主站实际 category 键逐步补全。
+ * 业务常量对照源（分类等）。
+ * 沙盒可以 import。现网 `worker/new` 零 import，改完这里要把同样值抄进 websearch / detail。
  */
 
 /** D1 原始 category 键 → 前端 cat 键（对照 websearch.js 数据转换） */

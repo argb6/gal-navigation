@@ -1,31 +1,92 @@
-/**
- * 脱敏页面副本（由 worker/new 提取）。
- * 已去除：SEO（OG/Twitter/JSON-LD/canonical/robots/sitemap）、D1/KV/API、Cookie 首访、私密地址。
- * 不含 status。仅供阅读 / 本地预览，不能当生产 Worker 部署。
- */
-const DEMO_ROW = {
-  title: "示例站点",
-  short_desc: "演示用详情页，无真实数据源。",
-  tags: "演示,示例",
-  md_content: "## 简介\n\n## 官网\n- 官网: https://example.com/alpha\n\n## 资源\n- 网盘",
-  category: "websites",
+const NAVI_IS_ACTIVE = 1;
+const NAVI_IS_NSFW = 2;
+const NSFW_COOKIE = "gd-nsfw";
+const NSFW_COOKIE_MAX_AGE = 24 * 60 * 60;
+
+function readNsfwFlag(request) {
+  const raw = request.headers.get("Cookie") || "";
+  const m = raw.match(/(?:^|;\s*)gd-nsfw=(\d+)/);
+  return m && Number(m[1]) === NAVI_IS_NSFW ? NAVI_IS_NSFW : NAVI_IS_ACTIVE;
+}
+
+function nsfwSetCookie(flag) {
+  const v = flag === NAVI_IS_NSFW ? NAVI_IS_NSFW : NAVI_IS_ACTIVE;
+  return `${NSFW_COOKIE}=${v}; Path=/; Max-Age=${NSFW_COOKIE_MAX_AGE}; SameSite=Lax`;
+}
+
+const SECURITY_HEADERS = {
+  "Content-Type": "text/html; charset=utf-8",
+  "Cache-Control": "private, no-store",
+  "X-Content-Type-Options": "nosniff",
+  "X-Frame-Options": "SAMEORIGIN",
+  "Referrer-Policy": "strict-origin-when-cross-origin",
+  "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; connect-src 'self' https://galnavi.top; font-src 'self' data: https://fonts.gstatic.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self'",
 };
+
+function notFound(nsfwFlag) {
+  return new Response("页面不存在", {
+    status: 404,
+    headers: {
+      ...SECURITY_HEADERS,
+      "Content-Type": "text/plain; charset=utf-8",
+      "Set-Cookie": nsfwSetCookie(nsfwFlag),
+    },
+  });
+}
+
 export default {
-  async fetch() {
-    const branches = parseMdContent(DEMO_ROW.md_content);
-    const tagList = DEMO_ROW.tags.split(",").map((t) => t.trim()).filter(Boolean);
-    const html = renderPage(DEMO_ROW.title, DEMO_ROW.short_desc, tagList, branches, "site-alpha", DEMO_ROW.category);
-    return new Response(html, {
-      headers: {
-        "Content-Type": "text/html; charset=utf-8",
-        "Cache-Control": "private, no-store",
-        "X-Content-Type-Options": "nosniff",
-        "X-Frame-Options": "SAMEORIGIN",
-        "Referrer-Policy": "strict-origin-when-cross-origin",
-        "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; connect-src 'self'; font-src 'self' data: https://fonts.gstatic.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self'",
-      },
-    });
-  },
+async fetch(request, env) {
+const url = new URL(request.url);
+const nsfwFlag = readNsfwFlag(request);
+let itemKey = url.searchParams.get("item_key");
+if (!itemKey) {
+itemKey = url.searchParams.get("");
+}
+if (!itemKey) {
+const parts = url.pathname.replace(/\/+$/, "").split("/");
+const last = parts[parts.length - 1];
+if (last && last !== "detail" && last !== "nav") {
+itemKey = last;
+}
+}
+if (!itemKey) {
+return new Response("Missing item_key", {
+  status: 400,
+  headers: { ...SECURITY_HEADERS, "Content-Type": "text/plain; charset=utf-8" },
+});
+}
+const stmt = env.DB.prepare(
+"SELECT title, short_desc, tags, md_content, category, is_active FROM navi_sites WHERE item_key = ?"
+);
+const row = await stmt.bind(itemKey).first();
+if (!row) {
+return notFound(nsfwFlag);
+}
+const isActive = Number(row.is_active);
+if (isActive === 0) {
+return notFound(nsfwFlag);
+}
+if (isActive === NAVI_IS_NSFW && nsfwFlag !== NAVI_IS_NSFW) {
+return notFound(nsfwFlag);
+}
+const ALLOWED_CATEGORIES = new Set([
+  "websites", "tools", "simulators", "site", "tool", "simulator",
+  "company", "hanhua",
+]);
+const category = String(row.category || "").toLowerCase();
+if (!ALLOWED_CATEGORIES.has(category)) {
+return notFound(nsfwFlag);
+}
+const { title, short_desc, tags, md_content } = row;
+const branches = parseMdContent(md_content || "");
+const tagList = tags
+? tags.split(",").map(t => t.trim()).filter(Boolean)
+: [];
+const html = renderPage(title || "", short_desc || "", tagList, branches, itemKey, category);
+return new Response(html, {
+headers: { ...SECURITY_HEADERS, "Set-Cookie": nsfwSetCookie(nsfwFlag) },
+});
+},
 };
 function parseMdContent(md) {
 const branches = [];
@@ -108,14 +169,35 @@ return body;
 }
 function renderPage(title, shortDesc, tags, branches, itemKey, category) {
 const typeLabel = pageTypeLabel(category);
+const canonical = itemKey
+? `https://galnavi.top/nav/detail/?item_key=${encodeURIComponent(itemKey)}`
+: "https://galnavi.top/nav/detail/";
 return `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${escapeHtml(title)} - ${escapeHtml(typeLabel)}</title>
+<meta name="description" content="${escapeAttr(shortDesc || title + ' - GALNAVI ' + typeLabel)}">
+<meta name="keywords" content="GALNAVI, ${escapeAttr(title)}, ${escapeAttr(typeLabel)}, ACG, 二次元, Galgame, 导航">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="${escapeAttr(canonical)}">
 <link rel="icon" href="https://assets.galnavi.top/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="https://assets.galnavi.top/icon.png">
+<link rel="sitemap" type="application/xml" title="Sitemap" href="https://galnavi.top/sitemap.xml">
+<meta property="og:type" content="website">
+<meta property="og:title" content="${escapeAttr(title)} - ${escapeAttr(typeLabel)}">
+<meta property="og:description" content="${escapeAttr(shortDesc || title + ' - GALNAVI ' + typeLabel)}">
+<meta property="og:url" content="${escapeAttr(canonical)}">
+<meta property="og:site_name" content="GALNAVI">
+<meta property="og:image" content="https://assets.galnavi.top/icon.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="${escapeAttr(title)} - ${escapeAttr(typeLabel)}">
+<meta name="twitter:description" content="${escapeAttr(shortDesc || title + ' - GALNAVI ' + typeLabel)}">
+<meta name="twitter:image" content="https://assets.galnavi.top/icon.png">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","name":"${escapeAttr(title)} - ${escapeAttr(typeLabel)}","url":"${escapeAttr(canonical)}","description":"${escapeAttr(shortDesc || title + ' - GALNAVI ' + typeLabel)}","isPartOf":{"@type":"WebSite","name":"GALNAVI","url":"https://galnavi.top/"}}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
@@ -133,14 +215,11 @@ return `<!DOCTYPE html>
   --gd-color-on-primary: #ffffff;
   --gd-color-primary-container: rgba(79, 124, 255, 0.12);
   --gd-color-secondary: #a855f7;
-  --gd-color-tertiary: #ec4899;
   --gd-color-on-surface: #f4f7ff;
   --gd-color-on-surface-variant: #93a4c8;
   --gd-color-on-surface-subtle: #aeb9d6;
   --gd-color-outline: #1e2a45;
-  --gd-color-outline-variant: rgba(30, 42, 69, 0.8);
   --gd-color-error: #f87171;
-  --gd-color-on-error: #ffffff;
 
   /* 链接色：静止蓝 #7aa2f7 → hover 深蓝 #9ec0ff */
   --gd-color-link: #7aa2f7;
@@ -152,14 +231,12 @@ return `<!DOCTYPE html>
   /* RGB 通道（供 rgba(var(--gd-x-rgb), a) 组合透明度层级） */
   --gd-color-primary-rgb: 79, 124, 255;
   --gd-color-secondary-rgb: 168, 85, 247;
-  --gd-color-tertiary-rgb: 236, 72, 153;
   --gd-color-accent-rgb: 139, 92, 246;
   --gd-color-sky-rgb: 56, 189, 248;
   --gd-color-sky-blue-rgb: 96, 165, 250;
   --gd-color-blue-rgb: 59, 130, 246;
   --gd-color-blue-deep-rgb: 37, 99, 235;
   --gd-color-indigo-rgb: 91, 141, 239;
-  --gd-color-link-rgb: 122, 162, 247;
   --gd-color-gold-rgb: 251, 191, 36;
   --gd-color-gold-deep-rgb: 245, 158, 11;
   --gd-color-error-rgb: 239, 68, 68;
@@ -168,7 +245,6 @@ return `<!DOCTYPE html>
   --gd-color-white-rgb: 255, 255, 255;
   --gd-color-muted-white-rgb: 232, 238, 255;
   --gd-color-grey-rgb: 139, 156, 192;
-  --gd-color-text-rgb: 244, 247, 255;
 
   /* 深色层级（遮罩/浮层/卡片渐变底） */
   --gd-color-navy-rgb: 8, 12, 24;
@@ -176,13 +252,11 @@ return `<!DOCTYPE html>
   --gd-color-navy-panel-rgb: 8, 10, 20;
   --gd-color-navy-card-rgb: 22, 28, 48;
   --gd-color-navy-card-deep-rgb: 12, 16, 28;
-  --gd-color-navy-modal-rgb: 14, 21, 37;
   --gd-color-ink-rgb: 20, 30, 56;
   --gd-color-ink-2-rgb: 38, 54, 94;
   --gd-color-ink-3-rgb: 12, 18, 36;
   --gd-color-ink-4-rgb: 24, 34, 65;
   --gd-color-outline-blue-rgb: 126, 153, 255;
-  --gd-color-blue-soft-rgb: 191, 219, 254;
 
   /* 语义层级便捷变量 */
   --gd-color-overlay: rgba(var(--gd-color-navy-deep-rgb), 0.88);
@@ -190,19 +264,16 @@ return `<!DOCTYPE html>
   --gd-color-overlay-float: rgba(var(--gd-color-navy-rgb), 0.95);
   --gd-color-card-gradient-a: rgba(var(--gd-color-navy-card-rgb), 0.96);
   --gd-color-card-gradient-b: rgba(var(--gd-color-navy-card-deep-rgb), 0.98);
-  --gd-color-modal-gradient-a: rgba(var(--gd-color-navy-modal-rgb), 0.96);
-  --gd-color-modal-gradient-b: rgba(var(--gd-color-navy-rgb), 0.98);
   --gd-color-border-hover: rgba(var(--gd-color-sky-rgb), 0.28);
   --gd-color-border-accent: rgba(var(--gd-color-accent-rgb), 0.22);
   --gd-color-demo-dash: rgba(var(--gd-color-grey-rgb), 0.45);
 
-  /* 补充语义色（release-modal 等引用） */
+  /* 补充语义色 */
   --gd-color-success: #86efac;
   --gd-color-error-light: #fca5a5;
   --gd-color-sky: #38bdf8;
   --gd-color-blue: #3b82f6;
   --gd-color-blue-deep: #2563eb;
-  --gd-color-accent-pink: #ff85c0;
   --gd-color-cyan: #22d3ee;
   --gd-color-cyan-light: #67e8f9;
   --gd-color-cyan-rgb: 34, 211, 238;
@@ -221,12 +292,6 @@ return `<!DOCTYPE html>
   --gd-gradient-title-b: #e9d5ff;
   --gd-gradient-title-c: #a78bfa;
   --gd-gradient-title-d: #8b5cf6;
-
-  /* 彩点色（filter-bar 等胶囊按钮的圆点循环色：三色循环 + 中性兜底） */
-  --gd-dot-1: var(--gd-color-primary);
-  --gd-dot-2: var(--gd-color-secondary);
-  --gd-dot-3: var(--gd-color-tertiary);
-  --gd-dot-neutral: #5a6a8a;
 
   /* 标签色（卡片标签三色循环） */
   --gd-tag-1-bg: rgba(168, 85, 247, 0.12);
@@ -248,49 +313,42 @@ return `<!DOCTYPE html>
   --gd-badge-gold-fg: #fcd34d;
 
   /* Shape — 语义 MD3 scale；数值贴现网 */
-  --gd-shape-corner-none: 0;
   --gd-shape-corner-extra-small: 8px;
   --gd-shape-corner-small: 14px;
   --gd-shape-corner-medium: 18px;
   --gd-shape-corner-large: 20px;
-  --gd-shape-corner-extra-large: 28px;
   --gd-shape-corner-full: 9999px;
 
   /* Type — 角色名 MD3；字号贴近现网 */
---gd-type-display-small-size: 36px;
---gd-type-display-small-line: 1.1;
---gd-type-display-medium-size: 48px;
---gd-type-headline-small-size: 24px;
---gd-type-headline-small-line: 1.3;
---gd-type-title-large-size: 22px;
---gd-type-title-large-line: 1.3;
---gd-type-title-medium-size: 16px;
---gd-type-title-medium-line: 1.4;
---gd-type-title-small-size: 15px;
---gd-type-title-small-line: 1.4;
---gd-type-label-large-size: 14px;
---gd-type-label-large-line: 1.4;
---gd-type-label-medium-size: 12px;
---gd-type-label-small-size: 11px;
---gd-type-body-large-size: 16px;
---gd-type-body-medium-size: 14px;
---gd-type-body-small-size: 12px;
---gd-type-note-size: 13px;
---gd-type-title-xxl-size: 18px;
+  --gd-type-display-small-size: 36px;
+  --gd-type-display-medium-size: 48px;
+  --gd-type-headline-small-size: 24px;
+  --gd-type-title-large-size: 22px;
+  --gd-type-title-medium-size: 16px;
+  --gd-type-title-medium-line: 1.4;
+  --gd-type-title-small-size: 15px;
+  --gd-type-label-large-size: 14px;
+  --gd-type-label-large-line: 1.4;
+  --gd-type-label-medium-size: 12px;
+  --gd-type-label-small-size: 11px;
+  --gd-type-body-large-size: 16px;
+  --gd-type-body-medium-size: 14px;
+  --gd-type-body-small-size: 12px;
+  --gd-type-note-size: 13px;
+  --gd-type-title-xxl-size: 18px;
 
-/* 字距 */
---gd-type-letter-spacing-tight: -0.5px;
---gd-type-letter-spacing-normal: 0.01em;
---gd-type-letter-spacing-wide: 0.1em;
---gd-type-letter-spacing-extra-wide: 0.24em;
+  /* 字距 */
+  --gd-type-letter-spacing-tight: -0.5px;
+  --gd-type-letter-spacing-normal: 0.01em;
+  --gd-type-letter-spacing-wide: 0.1em;
 
-/* 字重（语义档位） */
---gd-weight-regular: 400;
---gd-weight-medium: 500;
---gd-weight-semibold: 600;
---gd-weight-bold: 700;
---gd-weight-extrabold: 800;
---gd-weight-black: 900;
+  /* 字重（语义档位） */
+  --gd-weight-regular: 400;
+  --gd-weight-medium: 500;
+  --gd-weight-semibold: 600;
+  --gd-weight-bold: 700;
+  --gd-weight-extrabold: 800;
+  --gd-weight-black: 900;
 
   --gd-font-sans: "Microsoft YaHei", "PingFang SC", "Noto Sans SC", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
@@ -298,11 +356,9 @@ return `<!DOCTYPE html>
   --gd-state-hover: 0.08;
   --gd-state-focus: 0.12;
   --gd-state-pressed: 0.12;
-  --gd-state-dragged: 0.16;
   --gd-state-disabled: 0.38;
 
   /* Motion（MD3 short/medium + easing） */
-  --gd-motion-duration-short2: 100ms;
   --gd-motion-duration-short4: 200ms;
   --gd-motion-duration-medium1: 250ms;
   --gd-motion-duration-medium2: 300ms;
@@ -313,17 +369,9 @@ return `<!DOCTYPE html>
   /* Layout */
   --gd-nav-height: 64px;
   --gd-layout-max-width: 1200px;
-  --gd-space-1: 4px;
   --gd-space-2: 8px;
-  --gd-space-3: 12px;
-  --gd-space-4: 16px;
-  --gd-space-5: 20px;
   --gd-space-6: 24px;
   --gd-touch-target: 48px;
-
-  /* Elevation 别名（不替代玻璃） */
-  --gd-elevation-level2: 0 4px 24px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.3);
-  --gd-elevation-glow: 0 0 40px rgba(79, 124, 255, 0.2), 0 0 80px rgba(168, 85, 247, 0.08);
 
   /* 玻璃 — 冻结现网数值，禁止借「整理」改 blur/透明度 */
   --gd-glass-bg: rgba(18, 22, 40, 0.42);
@@ -332,6 +380,7 @@ return `<!DOCTYPE html>
   --gd-glass-border: rgba(255, 255, 255, 0.14);
   --gd-glass-nav-bg: rgba(8, 12, 24, 0.75);
   --gd-glass-nav-blur: blur(20px) saturate(180%);
+  --gd-chrome-bar-bg: rgba(18, 22, 40, 0.92);
 }
 
 /* ===== src/foundation/brand/gd-brand.css ===== */
@@ -425,8 +474,8 @@ return `<!DOCTYPE html>
 
 /* ===== src/foundation/layout/gd-groundback.css ===== */
 /* gd-groundback：页面背景层
-   用法：<div class="gd-groundback gd-groundback--blue" aria-hidden="true"></div>
-   变体：--blue（默认，主站） / --gold（殿堂）
+   用法：<div class="gd-groundback gd-groundback--websearch" aria-hidden="true"></div>
+   变体：--blue（点阵） / --websearch（线条模糊，除殿堂外全站） / --gold（殿堂）
    蓝色参考原版发布页（galnavi.js）背景：三层光斑 + 对角渐变 + 点阵网格 + 底部光带。 */
 .gd-groundback {
   position: fixed;
@@ -467,8 +516,10 @@ return `<!DOCTYPE html>
     radial-gradient(circle at 50% 110%, rgba(var(--gd-color-blue-rgb), 0.12), transparent 36%);
 }
 
-/* 殿堂金：深色底 + 金色光晕（参考现网 shenmo 背景） */
+/* 殿堂金：深色底 + 金色光晕 + 与全站同款线条模糊 */
 .gd-groundback--gold {
+  isolation: isolate;
+  overflow: hidden;
   background: linear-gradient(145deg, #06070e 0%, #0a0c16 48%, #0e1322 100%);
 }
 
@@ -476,6 +527,47 @@ return `<!DOCTYPE html>
   background:
     radial-gradient(40% 35% at 18% 14%, rgba(var(--gd-color-gold-rgb), 0.12), transparent 70%),
     radial-gradient(36% 32% at 86% 82%, rgba(var(--gd-color-error-rgb), 0.10), transparent 70%);
+}
+
+.gd-groundback--gold::after {
+  inset: -24px;
+  background-image: url("https://assets.galnavi.top/%E7%BA%BF%E6%9D%A1%E5%9B%BE%E6%A1%88.png");
+  background-repeat: repeat;
+  background-position: 0 0;
+  background-size: auto;
+  opacity: 0.16;
+  mix-blend-mode: screen;
+  filter: blur(10.8px);
+}
+
+/* websearch：主站蓝底 + 线条图案平铺；screen 去掉 PNG 黑底 */
+.gd-groundback--websearch {
+  isolation: isolate;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 22% 18%, rgba(var(--gd-color-blue-rgb), 0.2), transparent 34%),
+    radial-gradient(circle at 78% 76%, rgba(var(--gd-color-cyan-rgb), 0.14), transparent 32%),
+    radial-gradient(circle at 50% 50%, rgba(var(--gd-color-secondary-rgb), 0.06), transparent 52%),
+    linear-gradient(145deg, var(--gd-color-background) 0%, var(--gd-color-surface) 45%, var(--gd-color-surface-variant) 100%);
+}
+
+.gd-groundback--websearch::before {
+  inset: -24px;
+  background-image: url("https://assets.galnavi.top/%E7%BA%BF%E6%9D%A1%E5%9B%BE%E6%A1%88.png");
+  background-repeat: repeat;
+  background-position: 0 0;
+  background-size: auto;
+  opacity: 0.16;
+  mix-blend-mode: screen;
+  filter: blur(10.8px);
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+.gd-groundback--websearch::after {
+  background:
+    linear-gradient(90deg, transparent, rgba(var(--gd-color-white-rgb), 0.028), transparent),
+    radial-gradient(circle at 50% 110%, rgba(var(--gd-color-blue-rgb), 0.12), transparent 36%);
 }
 
 /* prefers-reduced-motion：背景静态无动画，无额外处理 */
@@ -1025,17 +1117,21 @@ html {
 body.gd-detail {
   margin: 0;
   min-height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  min-height: var(--gd-vvh, 100dvh);
+  display: flex;
+  flex-direction: column;
   color: var(--gd-color-on-surface);
   font-family: var(--gd-font-sans);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
-  background:
-    radial-gradient(40% 35% at 18% 12%, rgba(var(--gd-color-indigo-rgb), 0.3), transparent 70%),
-    radial-gradient(35% 30% at 88% 78%, rgba(var(--gd-color-blue-deep-rgb), 0.22), transparent 70%),
-    var(--gd-color-background);
-  background-attachment: fixed;
+  background: transparent;
   padding: 64px 28px 40px;
+}
+.gd-groundback {
+  z-index: 0;
 }
 .gd-detail__container {
   position: relative;
@@ -1045,6 +1141,7 @@ body.gd-detail {
   margin: 0 auto;
   display: flex;
   flex-direction: column;
+  flex: 1 1 auto;
   min-width: 0;
 }
 .gd-back-fab { position: fixed; top: max(12px, env(safe-area-inset-top, 0px)); left: max(12px, env(safe-area-inset-left, 0px)); z-index: 50; }
@@ -1275,7 +1372,7 @@ body.gd-loading .gd-detail__header { display: none; }
 @media (max-width: 768px) {
   #detailSkeleton .gd-skeleton__grid { grid-template-columns: 1fr; }
 }
-.gd-footer { margin-top: 28px; }
+.gd-footer { margin-top: auto; padding-top: 24px; }
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
@@ -1298,14 +1395,14 @@ body.gd-loading .gd-detail__header { display: none; }
 }
 @media (max-width: 768px) {
   body.gd-detail { padding: 58px 16px 40px; font-size: var(--gd-type-body-large-size); line-height: 1.7; }
-  .gd-detail__container { display: block; }
+  .gd-detail__container { display: flex; flex-direction: column; }
   .gd-detail__header { text-align: center; margin-bottom: 18px; }
   .gd-detail__header-top { flex-direction: column; align-items: center; gap: 8px; }
   .gd-detail__header-top .gd-brand__title { font-size: 32px; }
   .gd-detail__intro { font-size: var(--gd-type-body-large-size); text-align: center; max-width: none; line-height: 1.65; }
   .tags-row { justify-content: center; margin-top: 12px; gap: 8px; }
   .tag { font-size: var(--gd-type-label-large-size); padding: 6px 12px; }
-  .gd-footer { margin-top: 18px; }
+  .gd-footer { margin-top: auto; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -1317,7 +1414,7 @@ body.gd-loading .gd-detail__header { display: none; }
 </head>
 <body class="gd-detail gd-loading">
 <noscript><style>#detailSkeleton{display:none!important}#detailContent[hidden]{display:block!important}body.gd-loading .gd-button--back,body.gd-loading .gd-detail__header{display:block!important}</style></noscript>
-<div class="gd-groundback gd-groundback--blue" aria-hidden="true"></div>
+<div class="gd-groundback gd-groundback--websearch" aria-hidden="true"></div>
 <a class="gd-button gd-button--back gd-back-fab" href="https://galnavi.top/nav/" aria-label="返回主站">
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
   返回主站
@@ -1361,9 +1458,9 @@ ${branches.length > 0 ? renderHighlights(branches[0]) : ""}
 ${branches.slice(1).map(b => renderSection(b)).join("\n")}
 </div>
 </div>
-<footer class="gd-footer">
+<footer class="gd-footer gd-footer--page">
 <nav class="gd-footer__nav" aria-label="页脚链接">
-<a href="mailto:feedback@galnavi.top">联系站长</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/donate/">赞助本站</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/friend/">申请友链</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/status/">站点状态</a>
+<a href="https://galnavi.top/sitemap.xml">sitemap.xml</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/robots.txt">robots.txt</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="mailto:feedback@galnavi.top">联系站长</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/donate/">赞助本站</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/friend/">申请友链</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/status/">站点状态</a>
 </nav>
 <p class="gd-footer__copy">© 2026 GALNAVI · 愿每一次探索都有新的收获</p>
 </footer>
@@ -1385,10 +1482,11 @@ function isSafeHttpUrl(url) {
   }
 }
 document.addEventListener('DOMContentLoaded', function() {
+  (function(){function a(){var h=(window.visualViewport&&window.visualViewport.height)||window.innerHeight;document.documentElement.style.setProperty("--gd-vvh",h+"px");}a();window.addEventListener("resize",a);if(window.visualViewport)window.visualViewport.addEventListener("resize",a);})();
   var redirectTimerId = null;
   var redirectCancelHandler = null;
 
-  /* 骨架屏 → 真实内容：cookie 通过后放骨架屏动效，数据就绪后展示完整卡片（palace 同款） */
+  /* 骨架屏 → 真实内容：放骨架屏动效，数据就绪后展示完整卡片（palace 同款） */
   (function() {
     var sk = document.getElementById('detailSkeleton');
     var content = document.getElementById('detailContent');
@@ -1476,7 +1574,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (cancelBtn) cancelBtn.addEventListener('click', redirectCancelHandler);
   }
 });
-<\/script>
+</script>
 </body></html>`;
 }
 const TAG_COLORS = ["green", "orange", "sky"];
@@ -1519,7 +1617,7 @@ display = l.url.replace(/^mailto:/i, "") || l.linkText || "";
 } else {
 try {
 display = new URL(l.url).hostname;
-} catch (e) {
+} catch {
 return `<div class="gd-section-card__entry"><span class="gd-section-card__label">${escapeHtml(l.label || l.linkText || l.url)}</span></div>`;
 }
 }

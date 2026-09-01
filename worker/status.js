@@ -1,5 +1,5 @@
 // GALNAVI Worker - Open Source Version
-// Sensitive information has been redacted.
+// status 仍是 β，未用现网完整版覆盖。密钥用占位符，不要填入真实 token。
 // See AGENTS.md for project conventions.
 /**
  * Cloudflare Worker - status（站点状态页）

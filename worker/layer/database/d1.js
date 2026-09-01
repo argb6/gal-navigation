@@ -1,6 +1,6 @@
 /**
  * 数据访问层 — D1
- * 对照 worker/new：主站 navi_sites，友链 sites，殿堂 env.group1.resources
+ * 对照 worker/*.js：主站 navi_sites，友链 sites，殿堂 env.group1.resources
  */
 
 import { DB_CATEGORY_MAP, NAVI_IS_NSFW } from "../../shared/constants.js";

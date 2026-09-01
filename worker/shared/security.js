@@ -1,7 +1,5 @@
 /**
- * Worker 服务端共享：HTML/属性转义与安全相关工具。
- * 仅供 Worker import，不要放到浏览器。
- * 用法：import { escapeHtml } from "./shared/security.js";
+ * HTML/属性转义与 NSFW cookie。沙盒 import；现网页把函数抄进文件，不要放到浏览器脚本里。
  */
 
 import { NAVI_IS_ACTIVE, NAVI_IS_NSFW, NSFW_COOKIE_MAX_AGE } from "./constants.js";

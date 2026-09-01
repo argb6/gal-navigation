@@ -1,21 +1,47 @@
 /**
- * 脱敏页面副本（由 worker/new 提取）。
- * 已去除：SEO（OG/Twitter/JSON-LD/canonical/robots/sitemap）、D1/KV/API、Cookie 首访、私密地址。
- * 不含 status。仅供阅读 / 本地预览，不能当生产 Worker 部署。
+ * Cloudflare Worker - palace.js
+ * 路由: /nav/palace/
+ * 圣器殿堂 —— 神器、魔器、仙器总览
+ *
+ * 数据来源: Cloudflare D1（绑定名 group1），纯查询，无硬编码 fallback。
+ * 原版备份: shenmo.js.bak
  */
+const SECURITY_HEADERS = {
+  "Content-Type": "text/html; charset=utf-8",
+  "Cache-Control": "private, no-store",
+  "X-Content-Type-Options": "nosniff",
+  "X-Frame-Options": "SAMEORIGIN",
+  "Referrer-Policy": "strict-origin-when-cross-origin",
+  "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; connect-src 'self' https://galnavi.top; font-src 'self' data: https://fonts.gstatic.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self'",
+};
 export default {
-  async fetch() {
-    const html = renderPage([], false);
+  async fetch(request, env) {
+    const url = new URL(request.url);
+    // 若路由同时绑了无尾斜杠，统一到 /nav/palace/
+    if (url.pathname === "/nav/palace") {
+      url.pathname = "/nav/palace/";
+      return Response.redirect(url.toString(), 301);
+    }
+
+    let data = [];
+    let fetchFailed = false;
+
+    if (env && env.group1) {
+      try {
+        const { results } = await env.group1.prepare(
+          "SELECT * FROM resources ORDER BY category, id"
+        ).all();
+        data = results || [];
+      } catch {
+        data = [];
+        fetchFailed = true;
+      }
+    }
+
+    const html = renderPage(data, fetchFailed);
     return new Response(html, {
-      status: 200,
-      headers: {
-        "Content-Type": "text/html; charset=utf-8",
-        "Cache-Control": "private, no-store",
-        "X-Content-Type-Options": "nosniff",
-        "X-Frame-Options": "SAMEORIGIN",
-        "Referrer-Policy": "strict-origin-when-cross-origin",
-        "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; connect-src 'self'; font-src 'self' data: https://fonts.gstatic.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self'",
-      },
+      status: fetchFailed ? 503 : 200,
+      headers: SECURITY_HEADERS,
     });
   },
 };
@@ -28,8 +54,26 @@ function renderPage(data, fetchFailed) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>圣器殿堂</title>
+<meta name="description" content="GALNAVI 圣器殿堂 —— 神器、魔器、仙器总览。">
+<meta name="keywords" content="GALNAVI, 圣器殿堂, 神器, 魔器, 仙器, ACG, Galgame, 导航">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://galnavi.top/nav/palace/">
 <link rel="icon" href="https://assets.galnavi.top/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="https://assets.galnavi.top/icon.png">
+<link rel="sitemap" type="application/xml" title="Sitemap" href="https://galnavi.top/sitemap.xml">
+<meta property="og:type" content="website">
+<meta property="og:title" content="圣器殿堂 · GALNAVI">
+<meta property="og:description" content="GALNAVI 圣器殿堂 —— 神器、魔器、仙器总览。">
+<meta property="og:url" content="https://galnavi.top/nav/palace/">
+<meta property="og:site_name" content="GALNAVI">
+<meta property="og:image" content="https://assets.galnavi.top/icon.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="圣器殿堂 · GALNAVI">
+<meta name="twitter:description" content="GALNAVI 圣器殿堂 —— 神器、魔器、仙器总览。">
+<meta name="twitter:image" content="https://assets.galnavi.top/icon.png">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","name":"圣器殿堂 · GALNAVI","url":"https://galnavi.top/nav/palace/","description":"GALNAVI 圣器殿堂 —— 神器、魔器、仙器总览。","isPartOf":{"@type":"WebSite","name":"GALNAVI","url":"https://galnavi.top/"}}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;600;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -46,14 +90,11 @@ function renderPage(data, fetchFailed) {
   --gd-color-on-primary: #ffffff;
   --gd-color-primary-container: rgba(79, 124, 255, 0.12);
   --gd-color-secondary: #a855f7;
-  --gd-color-tertiary: #ec4899;
   --gd-color-on-surface: #f4f7ff;
-  --gd-color-on-surface-variant: #8b9cc0;
+  --gd-color-on-surface-variant: #93a4c8;
   --gd-color-on-surface-subtle: #aeb9d6;
   --gd-color-outline: #1e2a45;
-  --gd-color-outline-variant: rgba(30, 42, 69, 0.8);
   --gd-color-error: #f87171;
-  --gd-color-on-error: #ffffff;
 
   /* 链接色：静止蓝 #7aa2f7 → hover 深蓝 #9ec0ff */
   --gd-color-link: #7aa2f7;
@@ -65,14 +106,12 @@ function renderPage(data, fetchFailed) {
   /* RGB 通道（供 rgba(var(--gd-x-rgb), a) 组合透明度层级） */
   --gd-color-primary-rgb: 79, 124, 255;
   --gd-color-secondary-rgb: 168, 85, 247;
-  --gd-color-tertiary-rgb: 236, 72, 153;
   --gd-color-accent-rgb: 139, 92, 246;
   --gd-color-sky-rgb: 56, 189, 248;
   --gd-color-sky-blue-rgb: 96, 165, 250;
   --gd-color-blue-rgb: 59, 130, 246;
   --gd-color-blue-deep-rgb: 37, 99, 235;
   --gd-color-indigo-rgb: 91, 141, 239;
-  --gd-color-link-rgb: 122, 162, 247;
   --gd-color-gold-rgb: 251, 191, 36;
   --gd-color-gold-deep-rgb: 245, 158, 11;
   --gd-color-error-rgb: 239, 68, 68;
@@ -81,7 +120,6 @@ function renderPage(data, fetchFailed) {
   --gd-color-white-rgb: 255, 255, 255;
   --gd-color-muted-white-rgb: 232, 238, 255;
   --gd-color-grey-rgb: 139, 156, 192;
-  --gd-color-text-rgb: 244, 247, 255;
 
   /* 深色层级（遮罩/浮层/卡片渐变底） */
   --gd-color-navy-rgb: 8, 12, 24;
@@ -89,13 +127,11 @@ function renderPage(data, fetchFailed) {
   --gd-color-navy-panel-rgb: 8, 10, 20;
   --gd-color-navy-card-rgb: 22, 28, 48;
   --gd-color-navy-card-deep-rgb: 12, 16, 28;
-  --gd-color-navy-modal-rgb: 14, 21, 37;
   --gd-color-ink-rgb: 20, 30, 56;
   --gd-color-ink-2-rgb: 38, 54, 94;
   --gd-color-ink-3-rgb: 12, 18, 36;
   --gd-color-ink-4-rgb: 24, 34, 65;
   --gd-color-outline-blue-rgb: 126, 153, 255;
-  --gd-color-blue-soft-rgb: 191, 219, 254;
 
   /* 语义层级便捷变量 */
   --gd-color-overlay: rgba(var(--gd-color-navy-deep-rgb), 0.88);
@@ -103,19 +139,16 @@ function renderPage(data, fetchFailed) {
   --gd-color-overlay-float: rgba(var(--gd-color-navy-rgb), 0.95);
   --gd-color-card-gradient-a: rgba(var(--gd-color-navy-card-rgb), 0.96);
   --gd-color-card-gradient-b: rgba(var(--gd-color-navy-card-deep-rgb), 0.98);
-  --gd-color-modal-gradient-a: rgba(var(--gd-color-navy-modal-rgb), 0.96);
-  --gd-color-modal-gradient-b: rgba(var(--gd-color-navy-rgb), 0.98);
   --gd-color-border-hover: rgba(var(--gd-color-sky-rgb), 0.28);
   --gd-color-border-accent: rgba(var(--gd-color-accent-rgb), 0.22);
   --gd-color-demo-dash: rgba(var(--gd-color-grey-rgb), 0.45);
 
-  /* 补充语义色（release-modal 等引用） */
+  /* 补充语义色 */
   --gd-color-success: #86efac;
   --gd-color-error-light: #fca5a5;
   --gd-color-sky: #38bdf8;
   --gd-color-blue: #3b82f6;
   --gd-color-blue-deep: #2563eb;
-  --gd-color-accent-pink: #ff85c0;
   --gd-color-cyan: #22d3ee;
   --gd-color-cyan-light: #67e8f9;
   --gd-color-cyan-rgb: 34, 211, 238;
@@ -134,12 +167,6 @@ function renderPage(data, fetchFailed) {
   --gd-gradient-title-b: #e9d5ff;
   --gd-gradient-title-c: #a78bfa;
   --gd-gradient-title-d: #8b5cf6;
-
-  /* 彩点色（filter-bar 等胶囊按钮的圆点循环色：三色循环 + 中性兜底） */
-  --gd-dot-1: var(--gd-color-primary);
-  --gd-dot-2: var(--gd-color-secondary);
-  --gd-dot-3: var(--gd-color-tertiary);
-  --gd-dot-neutral: #5a6a8a;
 
   /* 标签色（卡片标签三色循环） */
   --gd-tag-1-bg: rgba(168, 85, 247, 0.12);
@@ -161,49 +188,42 @@ function renderPage(data, fetchFailed) {
   --gd-badge-gold-fg: #fcd34d;
 
   /* Shape — 语义 MD3 scale；数值贴现网 */
-  --gd-shape-corner-none: 0;
   --gd-shape-corner-extra-small: 8px;
   --gd-shape-corner-small: 14px;
   --gd-shape-corner-medium: 18px;
   --gd-shape-corner-large: 20px;
-  --gd-shape-corner-extra-large: 28px;
   --gd-shape-corner-full: 9999px;
 
   /* Type — 角色名 MD3；字号贴近现网 */
---gd-type-display-small-size: 36px;
---gd-type-display-small-line: 1.1;
---gd-type-display-medium-size: 48px;
---gd-type-headline-small-size: 24px;
---gd-type-headline-small-line: 1.3;
---gd-type-title-large-size: 22px;
---gd-type-title-large-line: 1.3;
---gd-type-title-medium-size: 16px;
---gd-type-title-medium-line: 1.4;
---gd-type-title-small-size: 15px;
---gd-type-title-small-line: 1.4;
---gd-type-label-large-size: 14px;
---gd-type-label-large-line: 1.4;
---gd-type-label-medium-size: 12px;
---gd-type-label-small-size: 11px;
---gd-type-body-large-size: 16px;
---gd-type-body-medium-size: 14px;
---gd-type-body-small-size: 12px;
---gd-type-note-size: 13px;
---gd-type-title-xxl-size: 18px;
+  --gd-type-display-small-size: 36px;
+  --gd-type-display-medium-size: 48px;
+  --gd-type-headline-small-size: 24px;
+  --gd-type-title-large-size: 22px;
+  --gd-type-title-medium-size: 16px;
+  --gd-type-title-medium-line: 1.4;
+  --gd-type-title-small-size: 15px;
+  --gd-type-label-large-size: 14px;
+  --gd-type-label-large-line: 1.4;
+  --gd-type-label-medium-size: 12px;
+  --gd-type-label-small-size: 11px;
+  --gd-type-body-large-size: 16px;
+  --gd-type-body-medium-size: 14px;
+  --gd-type-body-small-size: 12px;
+  --gd-type-note-size: 13px;
+  --gd-type-title-xxl-size: 18px;
 
-/* 字距 */
---gd-type-letter-spacing-tight: -0.5px;
---gd-type-letter-spacing-normal: 0.01em;
---gd-type-letter-spacing-wide: 0.1em;
---gd-type-letter-spacing-extra-wide: 0.24em;
+  /* 字距 */
+  --gd-type-letter-spacing-tight: -0.5px;
+  --gd-type-letter-spacing-normal: 0.01em;
+  --gd-type-letter-spacing-wide: 0.1em;
 
-/* 字重（语义档位） */
---gd-weight-regular: 400;
---gd-weight-medium: 500;
---gd-weight-semibold: 600;
---gd-weight-bold: 700;
---gd-weight-extrabold: 800;
---gd-weight-black: 900;
+  /* 字重（语义档位） */
+  --gd-weight-regular: 400;
+  --gd-weight-medium: 500;
+  --gd-weight-semibold: 600;
+  --gd-weight-bold: 700;
+  --gd-weight-extrabold: 800;
+  --gd-weight-black: 900;
 
   --gd-font-sans: "Microsoft YaHei", "PingFang SC", "Noto Sans SC", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
@@ -211,11 +231,9 @@ function renderPage(data, fetchFailed) {
   --gd-state-hover: 0.08;
   --gd-state-focus: 0.12;
   --gd-state-pressed: 0.12;
-  --gd-state-dragged: 0.16;
   --gd-state-disabled: 0.38;
 
   /* Motion（MD3 short/medium + easing） */
-  --gd-motion-duration-short2: 100ms;
   --gd-motion-duration-short4: 200ms;
   --gd-motion-duration-medium1: 250ms;
   --gd-motion-duration-medium2: 300ms;
@@ -226,17 +244,9 @@ function renderPage(data, fetchFailed) {
   /* Layout */
   --gd-nav-height: 64px;
   --gd-layout-max-width: 1200px;
-  --gd-space-1: 4px;
   --gd-space-2: 8px;
-  --gd-space-3: 12px;
-  --gd-space-4: 16px;
-  --gd-space-5: 20px;
   --gd-space-6: 24px;
   --gd-touch-target: 48px;
-
-  /* Elevation 别名（不替代玻璃） */
-  --gd-elevation-level2: 0 4px 24px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.3);
-  --gd-elevation-glow: 0 0 40px rgba(79, 124, 255, 0.2), 0 0 80px rgba(168, 85, 247, 0.08);
 
   /* 玻璃 — 冻结现网数值，禁止借「整理」改 blur/透明度 */
   --gd-glass-bg: rgba(18, 22, 40, 0.42);
@@ -245,6 +255,7 @@ function renderPage(data, fetchFailed) {
   --gd-glass-border: rgba(255, 255, 255, 0.14);
   --gd-glass-nav-bg: rgba(8, 12, 24, 0.75);
   --gd-glass-nav-blur: blur(20px) saturate(180%);
+  --gd-chrome-bar-bg: rgba(18, 22, 40, 0.92);
 }
 
 /* ===== 组件库内联: src/foundation/actions/gd-button.css ===== */
@@ -510,8 +521,10 @@ function renderPage(data, fetchFailed) {
     radial-gradient(circle at 50% 110%, rgba(var(--gd-color-blue-rgb), 0.12), transparent 36%);
 }
 
-/* 殿堂金：深色底 + 金色光晕（参考现网 shenmo 背景） */
+/* 殿堂金：深色底 + 金色光晕 + 与全站同款线条模糊 */
 .gd-groundback--gold {
+  isolation: isolate;
+  overflow: hidden;
   background: linear-gradient(145deg, #06070e 0%, #0a0c16 48%, #0e1322 100%);
 }
 
@@ -519,6 +532,17 @@ function renderPage(data, fetchFailed) {
   background:
     radial-gradient(40% 35% at 18% 14%, rgba(var(--gd-color-gold-rgb), 0.12), transparent 70%),
     radial-gradient(36% 32% at 86% 82%, rgba(var(--gd-color-error-rgb), 0.10), transparent 70%);
+}
+
+.gd-groundback--gold::after {
+  inset: -24px;
+  background-image: url("https://assets.galnavi.top/%E7%BA%BF%E6%9D%A1%E5%9B%BE%E6%A1%88.png");
+  background-repeat: repeat;
+  background-position: 0 0;
+  background-size: auto;
+  opacity: 0.16;
+  mix-blend-mode: screen;
+  filter: blur(10.8px);
 }
 
 /* prefers-reduced-motion：背景静态无动画，无额外处理 */
@@ -624,9 +648,10 @@ function renderPage(data, fetchFailed) {
   html::-webkit-scrollbar, body::-webkit-scrollbar { width: 0; height: 0; background: transparent; }
   html::-webkit-scrollbar-track, body::-webkit-scrollbar-track, html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb { background: transparent; }
   body {
-    min-height: 100vh; font-family: "Noto Sans SC","Outfit",sans-serif; color: var(--text); -webkit-font-smoothing: antialiased; overflow-x: hidden;
+    min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; font-family: "Noto Sans SC","Outfit",sans-serif; color: var(--text); -webkit-font-smoothing: antialiased; overflow-x: hidden;
     background: transparent;
   }
+  .gd-groundback { z-index: 0; }
   body::before, body::after { display: none; }
   .glow { display:none!important; position: fixed; z-index: 0; width: 520px; height: 520px; border-radius: 999px; filter: blur(118px); opacity: .3; pointer-events: none; will-change: transform,opacity; --gx: 0; --gy: 0; --gdx: 8%; --gdy: 6%; --go1: .28; --go2: .38; --gs: 1.08; animation: glowPulse 11s ease-in-out infinite; }
   .glow.one { top: -210px; left: -140px; background: #f59e0b; }
@@ -652,6 +677,8 @@ function renderPage(data, fetchFailed) {
     position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 56px 24px 80px;
     padding-left: max(24px,env(safe-area-inset-left,0px)); padding-right: max(24px,env(safe-area-inset-right,0px));
     padding-bottom: max(80px,calc(48px + env(safe-area-inset-bottom,0px)));
+    display: flex; flex-direction: column; flex: 1 1 auto; width: 100%; box-sizing: border-box;
+    min-height: 100vh; min-height: 100dvh;
   }
   .brand-lockup { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-bottom: 24px; text-align: center; }
   .brand-title {
@@ -742,7 +769,7 @@ function renderPage(data, fetchFailed) {
     .action-group--ext { grid-column: auto; grid-row: auto; width: auto; flex-shrink: 0; margin-left: 14px; padding-left: 14px; border-left: 1px solid rgba(255,255,255,.1); }
     .name-main { font-size: 16px; }
   }
-  footer { text-align: center; margin-top: 64px; padding-top: 28px; border-top: 1px solid var(--border); color: var(--muted); font-size: 13px; line-height: 2; }
+  footer { text-align: center; margin-top: 64px; padding-top: 28px; border-top: none; color: var(--muted); font-size: 13px; line-height: 2; }
   footer a { color: var(--muted); }
   .redirect-overlay { position: fixed; inset: 0; z-index: 9999; background: rgba(8,10,20,.92); backdrop-filter: blur(16px); display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .35s ease; }
   .redirect-overlay.active { opacity: 1; pointer-events: auto; }
@@ -1245,6 +1272,8 @@ gd-search { display: contents; }
   --gd-comp-item-color-light: #fcd34d;
   --gd-comp-item-color-rgb: 251, 191, 36;
   gap: 10px;
+  width: auto;
+  height: auto;
   padding: 14px 16px;
   border-radius: 14px;
   background: rgba(var(--gd-color-white-rgb), 0.035);
@@ -1256,9 +1285,28 @@ gd-search { display: contents; }
   min-width: 0;
   max-width: 100%;
   overflow: hidden;
+  isolation: isolate;
   transition:
     background 0.2s var(--gd-motion-easing-standard),
     border-color 0.2s var(--gd-motion-easing-standard);
+}
+.gd-card--item::before {
+  content: "";
+  position: absolute;
+  inset: -24px;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url("https://assets.galnavi.top/%E7%BA%BF%E6%9D%A1%E5%9B%BE%E6%A1%88.png");
+  background-repeat: repeat;
+  background-position: 0 0;
+  background-size: auto;
+  opacity: 0.16;
+  mix-blend-mode: screen;
+  filter: blur(10.8px);
+}
+.gd-card--item > * {
+  position: relative;
+  z-index: 1;
 }
 .gd-card--item--demonic {
   --gd-comp-item-color: #ef4444;
@@ -1481,6 +1529,10 @@ gd-search { display: contents; }
 .gd-footer__nav a:focus-visible { outline: 2px solid var(--gd-color-primary); outline-offset: 2px; }
 .gd-footer__sep { color: rgba(var(--gd-color-muted-white-rgb), 0.28); user-select: none; font-size: var(--gd-type-label-medium-size); }
 .gd-footer__copy { margin: 0; }
+.gd-footer--page {
+  margin-top: auto;
+  padding-top: 24px;
+}
 
 
 /* ===== 组件库内联: gd-skeleton.css ===== */
@@ -1822,10 +1874,10 @@ gd-search { display: contents; }
       </div>
     </div>
 
-    <footer class="gd-footer">
+    <footer class="gd-footer gd-footer--page">
       <nav class="gd-footer__nav" aria-label="页脚链接">
-        
-        
+        <a href="https://galnavi.top/sitemap.xml">sitemap.xml</a><span class="gd-footer__sep" aria-hidden="true">|</span>
+        <a href="https://galnavi.top/robots.txt">robots.txt</a><span class="gd-footer__sep" aria-hidden="true">|</span>
         <a href="mailto:feedback@galnavi.top">联系站长</a><span class="gd-footer__sep" aria-hidden="true">|</span>
         <a href="https://galnavi.top/nav/donate/">赞助本站</a><span class="gd-footer__sep" aria-hidden="true">|</span>
         <a href="https://galnavi.top/nav/friend/">申请友链</a><span class="gd-footer__sep" aria-hidden="true">|</span>
@@ -1862,6 +1914,7 @@ gd-search { display: contents; }
 
 <script type="application/json" id="boot-data">${bootJson}</script>
 <script>
+(function(){function a(){var h=(window.visualViewport&&window.visualViewport.height)||window.innerHeight;document.documentElement.style.setProperty("--gd-vvh",h+"px");}a();window.addEventListener("resize",a);if(window.visualViewport)window.visualViewport.addEventListener("resize",a);})();
 /* 组件库内联: gd-search.js（initGdSearch） */
 function initGdSearch(root) {
   const el = typeof root === "string" ? document.querySelector(root) : root;
@@ -1889,6 +1942,8 @@ function initGdSearch(root) {
   });
   sync();
 }
+
+
 var BOOT = JSON.parse(document.getElementById("boot-data").textContent);
 var SAMPLE = Array.isArray(BOOT.data) ? BOOT.data : [];
 var FETCH_FAILED = !!BOOT.failed;
