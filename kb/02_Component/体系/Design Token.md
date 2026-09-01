@@ -25,7 +25,7 @@ related:
 # Design Token
 
 > [!abstract] Summary
-> 换肤入口只有 `src/foundation/tokens/tokens.css`。`:root` 里 **139** 个 `--gd-*` 声明（2026-09-01 对照 `worker/new` 删掉未引用项后计数）。角色名对齐 MD3，色值是 GALNAVI 自己的。
+> 换肤入口只有 `src/foundation/tokens/tokens.css`。`:root` 里 **139** 个 `--gd-*` 声明（2026-09-01 对照页面 Worker 删掉未引用项后计数）。角色名对齐 MD3，色值是 GALNAVI 自己的。
 
 > [!warning] 不要口头估
 > 注释里的 `--gd-x-rgb`、以及 `var(--gd-…)` 嵌套引用，都不算新变量。

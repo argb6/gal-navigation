@@ -16,7 +16,7 @@ related:
 
 删掉空号之后重排：`01_Project` `02_Component` `03_Architecture` `04_Internal` `05_Log`。wikilink 仍按文件名，不靠路径。
 
-现行版本：`kb/GALNAVI-KB/README.md`（kbVersion 1.2.0）
+现行版本：`kb/README.md`（kbVersion 1.2.0）
 
 ## Related
 

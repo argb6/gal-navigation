@@ -38,7 +38,7 @@ related:
 | 哪页读 D1/KV | [[数据流]] |
 | 表名、绑定名、R2 | [[存储]] |
 | 部署 / 沙盒 / CSP | [[部署流程]] · [[沙盒开发]] · [[安全头]] |
-| 阅读副本 | `source/`（从 `worker/new` 抽出） |
+| 发布源码 | `worker/*.js`（status 为 β，其余与现网对齐） |
 | 组件红线 | [[GD 组件库]] → `体系/`、`组件/` |
 | 决策、示例、版本日志 | [[记录索引]]（路径在 `docs/`） |
 | 踩过的坑 | [[Problem-公告注入布局错乱]] · [[Problem-shenmo 命名混乱]] |
@@ -47,9 +47,7 @@ related:
 
 ## 能写什么
 
-现网口径尽量写全：Worker 名、路由、绑定名、库名、表字段、KV key、R2 公开域、toml 里的 **database_id / KV namespace id**。
-
-**禁止写入：** 接口密钥、账号密码、API token / `CF_API_TOKEN` 明文、`.wrangler` 登录凭证。密钥只写「走 Secret / 环境变量」。
+现网口径可以写绑定名、库名、表、KV key、R2 域。**本开源仓不写**资源 UUID、接口密钥、账密、token。
 
 ## 怎么写一篇
 

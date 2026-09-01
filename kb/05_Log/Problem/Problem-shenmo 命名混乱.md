@@ -41,6 +41,8 @@ related:
 - KV key `shenmo_legend_seen_v1` → `palace_legend_seen_v1`
 - Worker 注释 `Cloudflare Worker - shenmo.js` → `Cloudflare Worker - palace.js`
 
+2026-09-01：现网页未引用 `gd-palace.css`（样式写在 `palace.js` 内联），该文件已删除，`src/extend/palace/` 目录已去掉。
+
 ## 教训
 
 - 改名时必须全局搜索旧名（包括注释、变量名、文件名、展示文字）

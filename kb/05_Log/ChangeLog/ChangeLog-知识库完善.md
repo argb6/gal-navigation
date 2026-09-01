@@ -17,7 +17,7 @@ related:
 
 kb 1.3.0：现网绑定 / 库 ID / 路由可以写进库。接口密钥、账密、token 明文禁止写入。
 
-`source/` 从 `worker/new` 重抽十页，只掏空 `CF_API_TOKEN`。
+`source/` 并入本仓 `worker/` 作为发布源码。**status 仍是 β，未覆盖。**
 
 ## Related
 

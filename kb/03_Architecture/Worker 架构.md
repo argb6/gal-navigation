@@ -26,27 +26,25 @@ related:
 # Worker 架构
 
 > [!abstract] Summary
-> 现网每个页面仍是一份内联 HTML/CSS/JS 的模块 Worker。开源仓 `gal-navigation` 多了 `worker/layer/`，入口文件还没 import。
-
-对照仓库：现网在本工程 `worker/new/`；GitHub 在 `gal-navigation/worker/`（文件名相同，无 `new/`）。下文路径写现网，括号里是 GitHub。
+> 现网每个页面仍是一份内联 HTML/CSS/JS 的模块 Worker。**本仓**页面在 `worker/*.js`。`worker/layer/` 有分层对照，入口没有 import。
 
 ## Definition
 
-入口是模块 Worker：`export default { async fetch(request, env, ctx) }`。现网 `worker/new/*.js` **零 import**；查 D1/KV、拼页面、安全头都在同一文件。GitHub 的 `worker/*.js` 目前同样是单文件阅读副本，没有 `import` layer。本仓库阅读副本在 `source/`（从 `worker/new` 抽出，去掉密钥）。
+入口是模块 Worker：`export default { async fetch(request, env, ctx) }`。本仓 `worker/*.js` **零 import**。`status.js` 仍是 β。
 
 选择单文件内联：[[Decision-单文件 Worker]]。运行时口径：[[Cloudflare Worker]]。
 
-## 两棵目录
+## 本仓目录
 
-| | 现网（本仓库） | GitHub `gal-navigation` |
-|--|----------------|-------------------------|
-| 页面入口 | `worker/new/<page>.js` | `worker/<page>.js` |
-| 对照源 | `worker/shared/`（现网页不引用） | `worker/shared/`（约定给 Worker / layer import） |
-| 功能层 | **没有** `worker/layer/` | 有 `worker/layer/`（六层文件在，**入口未接入**） |
-| 部署配置 | `wrangler/<name>.toml` | **没有** wrangler 目录 |
-| 沙盒 | `sandbox/` | **没有** |
+| | 本仓 |
+|--|------|
+| 页面入口 | `worker/<page>.js` |
+| 对照源 | `worker/shared/`（页面不引用） |
+| 功能层 | `worker/layer/`（**入口未接入**） |
+| 部署配置 | 无 wrangler |
+| 沙盒 | 无 |
 
-GitHub 的 layer 是从单文件抽出来的对照实现，SQL/KV 名称按现网抄（`navi_sites`、`HERO_KV` / `hero_images`、殿堂 `env.group1`）。把它当「现网已经分层」是错的。
+GitHub 的 layer 是从单文件抽出来的对照实现，SQL/KV 名称按现网抄。把它当「已经分层上线」是错的。
 
 ## 请求怎么走
 
@@ -62,7 +60,7 @@ GitHub 的 layer 是从单文件抽出来的对照实现，SQL/KV 名称按现�
         └─ 未命中 → 内联 404（noindex）
 ```
 
-`error.toml` 的 service binding：index / websearch / detail / about / help / palace / donate / friend。**没有 status**。`/status/` 走控制台绑在 status Worker 上，不经过这张表。
+`error` 的 service binding：index / websearch / detail / about / help / palace / donate / friend。**没有 status**。`/status/` 单独绑 status Worker。
 
 `DEFAULT_ROUTES`（与 GitHub `worker/layer/api/router.js` 一致）：
 
@@ -92,15 +90,16 @@ worker/layer/
 
 单向：api → service → database。`shared/` 是常量/转义/SEO，layer 是功能。GitHub 入口若以后 import，也不得把 layer 打进浏览器。
 
-## 页面入口（现网）
+## 页面入口（本仓）
 
 | 页面 | 文件 |
 |------|------|
-| 首页 | `worker/new/index.js` |
-| 主站 | `worker/new/websearch.js` |
-| 详情 | `worker/new/detail.js` |
-| 殿堂 | `worker/new/palace.js` |
-| 关于 / 帮助 / 友链 / 捐献 / 状态 / 404 | 同目录对应文件 |
+| 首页 | `worker/index.js` |
+| 主站 | `worker/websearch.js` |
+| 详情 | `worker/detail.js` |
+| 殿堂 | `worker/palace.js` |
+| 关于 / 帮助 / 友链 / 捐献 / 404 | 同目录对应文件 |
+| 状态 | `worker/status.js`（β） |
 
 ## Related
 

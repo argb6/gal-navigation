@@ -38,7 +38,7 @@ related:
 |------|------|
 | 运行时 | V8 isolate（非 Node.js） |
 | 运行时模块 | 模块 Worker：`export default { fetch }` |
-| 部署 | `npx wrangler deploy -c wrangler/<name>.toml` |
+| 部署 | 本仓无 wrangler；线上在私有仓部署 |
 | 绑定 | D1、KV、R2、Service（跨 Worker 调用） |
 
 > [!warning] 两个「模块」
@@ -52,11 +52,10 @@ related:
 
 | 位置 | 谁执行 | 规则 |
 |------|--------|------|
-| `worker/new/*.js` | Cloudflare isolate | 部署入口。**零 `import`**。安全头、分类常量、SEO 都是页内副本。 |
-| `worker/shared/` | 不进现网 Worker 图 | 对照源：改分类/转义/SEO 时以这里为准，再抄回各页。现网页不 `import`。 |
+| `worker/*.js` | Cloudflare isolate | 本仓发布源。**零 `import`**。status 为 β。 |
+| `worker/shared/` | 不进页面 Worker 图 | 对照源，页面不 `import`。 |
 | `src/` | 浏览器（内联进 HTML 的 CSS/JS） | 禁止 `import` Worker 文件。 |
-| `sandbox/**` | 本机 Node 预览 | 可以 `import` `worker/shared/`（例如 NSFW Cookie 辅助）。只服务沙盒，不代表现网。 |
-| `worker/share/` | 静态文件 | `robots.txt` / `sitemap.xml`。名字接近 `shared`，不要当成 JS 模块目录。 |
+| `worker/layer/` | 不执行 | 对照分层，入口未接入。 |
 
 `worker/shared/` 三个文件：
 
@@ -70,10 +69,10 @@ related:
 
 ## 文件位置
 
-- 页面 Worker：`worker/new/*.js`
+- 页面 Worker：`worker/*.js`
 - 对照源：`worker/shared/`
-- 站点静态：`worker/share/`；图片见 [[存储]]
-- 配置：`wrangler/<name>.toml`，见 [[部署流程]]
+- 分层对照：`worker/layer/`（未接入）
+- 图片见 [[存储]]
 
 ## Related
 

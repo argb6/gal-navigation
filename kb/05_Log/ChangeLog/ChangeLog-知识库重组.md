@@ -16,7 +16,7 @@ related:
 
 目录整理记录。绑定名以 [[存储]] 为准，不要再用这篇里的脱敏假名。
 
-现行版本：`kb/GALNAVI-KB/README.md`
+现行版本：`kb/README.md`
 
 ## Related
 
