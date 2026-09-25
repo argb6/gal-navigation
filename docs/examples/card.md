@@ -66,13 +66,13 @@
 
 | 场景 | class |
 |---|---|
-| 主站卡片 | `gd-card gd-card--general`（可点加 `gd-card--link`）；宽 390px、高 100px（简介单行；基类 min(390px,100%)） |
+| 主站卡片 | `gd-card gd-card--general`（可点加 `gd-card--link`）；多列宽 390px、高 100px；仅一列（≤919）宽 100%；基类 min(390px,100%) |
 | 友链整卡 | `gd-card gd-card--link gd-card--friend` |
 | 条目卡（殿堂） | `gd-card gd-card--item`（+ `gd-card--item--demonic/immortal`；默认金色 divine） |
 
 ## 殿堂条目卡
 
-列表行，主站卡现已 `width: 390px; height: 100px`（`.gd-card--general`）；条目卡仍须显式。组件库已写 `width: auto; height 按 title/sub 字号行盒计算固定`，Worker 内联副本必须带上，否则序号和按钮还在、游戏名会被挤没。
+列表行，主站卡多列 `width: 390px; height: 100px`（`.gd-card--general`；仅一列时宽 100%）；条目卡仍须显式。组件库已写 `width: auto; height 按 title/sub 字号行盒计算固定`，Worker 内联副本必须带上，否则序号和按钮还在、游戏名会被挤没。
 
 ```html
 <article class="gd-card gd-card--item">

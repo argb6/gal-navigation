@@ -1,4 +1,4 @@
-/* gd-websearch — 主站内容壳：卡片最多 6 列，超宽屏限宽；单列宽度自适应 */
+/* gd-websearch — 主站内容壳：多列卡宽固定 390；仅一列（≤919）宽跟容器；最多 6 列限宽 */
 
 /* 顶栏通知跑马灯：循环次数 infinite；位移 --gd-notice-led-shift，时长 --gd-notice-led-duration（initGdNoticeLed 按字宽写入） */
 .gd-notice-led {
@@ -72,12 +72,23 @@
     var(--gd-card-cols, 6) * var(--gd-card-w, 390px) +
     (var(--gd-card-cols, 6) - 1) * var(--gd-card-gap, 14px)
   );
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--gd-card-w, 390px)), 1fr));
+  /* 多列：轨道/卡宽固定 --gd-card-w（390） */
+  grid-template-columns: repeat(auto-fill, var(--gd-card-w, 390px));
+  justify-content: start;
 }
 
-@media (max-width: 640px) {
+/* 仅一列：与 worker websearch 现网断点 ≤919 一致；卡宽跟容器 */
+@media (max-width: 919px) {
   .gd-page-shell { --gd-page-gutter: 16px; }
-  .gd-card-grid { grid-template-columns: minmax(0, 1fr); }
+  .gd-card-grid {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: none;
+  }
+  .gd-card-grid .gd-card--general,
+  .gd-card-grid .gd-skeleton--card {
+    width: 100%;
+    max-width: none;
+  }
 }
 
 /* 主站顶栏与通知/推荐条同一层毛玻璃（页面可给 .gd-navbar 加 .gd-navbar--led） */

@@ -2287,10 +2287,9 @@ gd-search { display: contents; }
   .gd-card__action { min-height: 32px; padding: 0 9px; }
 }
 
-/* 非主站卡：窄屏铺满；主站卡 --general 保持固定 390 */
+/* 非主站卡：窄屏铺满（friend/item 自带 width:auto，不受影响） */
 @media (max-width: 640px) {
   .gd-card { width: 100%; }
-  .gd-card--general { width: 390px; }
 }
 .gd-item-list {
   display: grid;
@@ -2336,6 +2335,14 @@ gd-search { display: contents; }
   text-overflow: ellipsis;
   display: block;
   min-height: 0;
+}
+
+/* 多列固定 390；仅一列（≤919，与 websearch 现网一致）时宽跟容器 */
+@media (max-width: 919px) {
+  .gd-card--general {
+    width: 100%;
+    max-width: 100%;
+  }
 }
 
 /* 主站卡详情弹窗（标签/操作从卡面挪入） */
@@ -2940,6 +2947,14 @@ gd-search { display: contents; }
   height: 23px;
 }
 
+/* 多列固定 390；仅一列（≤919，与 websearch 现网一致）时宽跟容器 */
+@media (max-width: 919px) {
+  .gd-skeleton--card {
+    width: 100%;
+    max-width: none;
+  }
+}
+
 /* 轮播原尺寸变体（1000px / 2:1 / max-height 400px），带流光加载动效 */
 .gd-skeleton--hero {
   position: relative;
@@ -3251,7 +3266,7 @@ html{overflow-x:hidden;overflow-x:clip}
 /* 站点推荐 + 最最近更新：上下布局 */
 .home-sections{display:flex;flex-direction:column;gap:24px}
 
-/* 卡片网格：420×212；最多 6 列；单列时宽度自适应 */
+/* 多列卡宽固定 --gd-card-w（390）；仅一列（≤919）时宽跟容器 */
 .card-grid{
   display:grid;
   gap:var(--gd-card-gap);

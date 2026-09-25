@@ -95,6 +95,14 @@
   height: 23px;
 }
 
+/* 多列固定 390；仅一列（≤919，与 websearch 现网一致）时宽跟容器 */
+@media (max-width: 919px) {
+  .gd-skeleton--card {
+    width: 100%;
+    max-width: none;
+  }
+}
+
 /* 轮播原尺寸变体（1000px / 2:1 / max-height 400px），带流光加载动效 */
 .gd-skeleton--hero {
   position: relative;

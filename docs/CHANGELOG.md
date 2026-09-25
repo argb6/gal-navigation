@@ -5,6 +5,8 @@
 ### 调整
 
 - 主站卡宽 400→390（`.gd-card--general` / 基类 `min(390px,100%)` / `gd-skeleton--card` / `--gd-card-w` / 站点卡弹窗）；同步组件库与 `worker/new/websearch`（及 sandbox）
+- 列数自适应卡宽：多列固定 390；仅一列（`@media (max-width: 919px)`，与 websearch 现网断点一致）时 `.gd-card--general` / `gd-skeleton--card` 宽跟容器；网格 `repeat(auto-fill, var(--gd-card-w))`（src `gd-websearch` / worker `.card-grid`）
+
 
 ## v1.6.1（当前）
 

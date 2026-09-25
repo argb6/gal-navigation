@@ -33,7 +33,7 @@ related:
 
 | 变体 | class | 尺寸 | 用途 |
 |------|-------|------|------|
-| 主站 | `gd-card gd-card--general`（可点加 `--link`） | 宽 390px、高 100px（基类 min(390px,100%)；≤640px 基类改为 100%） | 主站导航卡片 |
+| 主站 | `gd-card gd-card--general`（可点加 `--link`） | 多列宽 390px、高 100px；仅一列（≤919，与 websearch 现网一致）宽 100%；基类 min(390px,100%) | 主站导航卡片 |
 | 友链 | `gd-card--friend` | `auto` × `auto`（max 320px） | 友情链接卡 |
 | 条目 | `gd-card--item` | `auto` × `auto` | 圣器殿堂条目 |
 
@@ -43,7 +43,7 @@ related:
 - **禁止** `backdrop-filter` / `box-shadow`
 - Hover：`background: var(--gd-glass-bg-hover)` + `border-color: var(--gd-color-border-hover)` + `filter: brightness(1.05)`
 - **禁止垂直位移**（无 `translateY`）
-- 主站网格：`gd-card-grid`，每行最多 6 张
+- 主站网格：`gd-card-grid`（`repeat(auto-fill, var(--gd-card-w))`），每行最多 6 张；多列卡宽固定 390，仅一列时流体
 
 ### 主站导航卡
 
