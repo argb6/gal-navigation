@@ -35,6 +35,15 @@
 <body class="gd-overview">
   <div class="gd-overview__chrome" aria-hidden="true"></div>
 
+  <!-- preview：现网同款通知条占位（#belowNav） -->
+  <div class="gd-below-nav" id="belowNav">
+    <div class="gd-notice-led" id="previewPageNoticeLed" tabindex="0" aria-label="预览通知条">
+      <div class="gd-notice-led__track">
+        <span class="gd-notice-led__item">预览通知条（#belowNav）— 现网同款占位</span>
+      </div>
+    </div>
+  </div>
+
   <div class="gd-overview-toc-mobile" data-gd-mobile-toc>
     <button
       type="button"
@@ -553,16 +562,16 @@
 
     <section class="gd-section" id="filter-bar">
       <h2 class="gd-section__title">gd-orb__toggle 右下扩展按钮</h2>
-      <p class="demo-note">主站右下角扩展按钮：点开展开快捷入口，仅保留标签、弹窗、仓库、殿堂。</p>
+      <p class="demo-note">与现网一致：四项竖排 🏷️标签 / 💬弹窗 / 📦仓库 / 🏛️殿堂。<strong>框内</strong>为 <code>gd-orb--demo</code>：可在虚线演示区内拖动（不写入位置缓存、不出框）。预览页不挂载页级全页 orb。</p>
       <div class="demo-preview demo-preview--orb">
-        <div class="gd-orb gd-orb--demo" id="previewOrb">
-                    <div class="gd-orb__menu" id="previewOrbMenu" role="region" aria-label="快捷入口">
+        <div class="gd-orb gd-orb--demo" id="previewOrbDemo">
+          <div class="gd-orb__menu" id="previewOrbDemoMenu" role="region" aria-label="快捷入口">
             <button type="button" class="gd-orb__item" data-gd-orb="tags">🏷️ 标签</button>
             <button type="button" class="gd-orb__item" data-gd-orb="popup">💬 弹窗</button>
             <a class="gd-orb__item" href="https://github.com/argb6/gal-navigation" target="_blank" rel="noopener noreferrer">📦 仓库</a>
             <a class="gd-orb__item" href="https://galnavi.top/nav/palace/" target="_blank" rel="noopener noreferrer">🏛️ 殿堂</a>
           </div>
-        <button type="button" class="gd-orb__toggle" aria-expanded="false" aria-controls="previewOrbMenu" aria-label="打开快捷入口">
+          <button type="button" class="gd-orb__toggle" aria-expanded="false" aria-controls="previewOrbDemoMenu" aria-label="打开快捷入口">
             <svg class="gd-orb__icon gd-orb__icon--grid" viewBox="0 0 24 24" focusable="false" aria-hidden="true"><path fill="currentColor" d="M12 2.2 14.9 8.7 22 9.4 16.7 14.1 18.2 21.1 12 17.5 5.8 21.1 7.3 14.1 2 9.4 9.1 8.7Z"/></svg>
             <svg class="gd-orb__icon gd-orb__icon--close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" focusable="false" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
           </button>
@@ -1069,6 +1078,7 @@
       <p class="gd-modal__body" data-gd-nap-content></p>
     </div>
   </gd-modal>
+
 
   <script src="./gd-preview.js"></script>
 </body>

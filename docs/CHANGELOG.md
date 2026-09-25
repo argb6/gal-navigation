@@ -2,7 +2,13 @@
 
 ## Unreleased
 
+### 调整
+
+- preview：去掉页级 `#previewOrb` 及 `initGdOrb("#previewOrb")`（含仅服务它的 toast 回调）；orb 区块只保留框内 `gd-orb--demo`（可拖、不出框）；同步精简 demo-note / `#belowNav` 说明文案
+
 ### 修复
+
+- preview `gd-orb`：框内 `gd-orb--demo` 改为可在 `.demo-preview--orb` 内拖动（不写 `galnavi-orb-pos`）；全页 orb 上界 clamp 忽略异常大的 `#belowNav` bottom，避免可拖高度被夹成 0；文案区分框内 / 右下角。
 
 - 页脚「联系站长」mailto 统一为 `feedback@galnavi.top`（替换残留 `galnavifeedback@protonmail.com`：donate CONTACT_EMAIL、status / websearch 页脚；同步 sandbox）
 
@@ -12,6 +18,8 @@
 
 
 ### 调整
+
+- preview 同步 gd-orb：接入组件库拖动/上界 clamp（`#belowNav` / `.gd-below-nav`，回退 navbar）；预览页补 `#belowNav` 通知条占位 + 右下角现网同款可拖动 orb；框内保留 `gd-orb--demo` 四项竖排
 
 - status 页脚与主站对齐为五项：帮助文档、关于本站、联系站长、申请友链、站点状态（对照 websearch；本页站点状态带 aria-current）
 - `gd-orb` 拖动上界改为通知条下沿（`#belowNav` / `.gd-below-nav` 的 `getBoundingClientRect().bottom`；无通知条时回退 `#mainNav` / `.gd-navbar`）

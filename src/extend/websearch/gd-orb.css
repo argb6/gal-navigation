@@ -9,6 +9,7 @@
   height: 56px;
   pointer-events: none;
 }
+/* 预览框内：绝对定位，initGdOrb 限制在 .demo-preview--orb 内拖动 */
 .gd-orb--demo {
   position: absolute;
   z-index: 2;

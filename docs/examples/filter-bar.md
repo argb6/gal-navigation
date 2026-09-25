@@ -36,4 +36,4 @@ initGdOrb("#gdOrb", {
 - 有 `data-gd-orb` 的项走 `onAction`；普通链接直接跳转
 - 保留项：标签、仓库、弹窗、殿堂（不要酒馆 / 关于 / 帮助 / 友链）。收起图标为五角星，菜单单列
 - 圆钮可在视口内拖动；短按仍开关菜单。位置写入 `localStorage` 键 `galnavi-orb-pos`。靠近上沿或左沿时菜单翻面
-- `.gd-orb--demo` 只做预览，不启用拖动
+- `.gd-orb--demo` 预览框内可拖（限制在 `.demo-preview--orb`），不写 `galnavi-orb-pos`；现网页用无 `--demo` 的全页拖动
