@@ -1,6 +1,6 @@
 const ASSET_FAVICON = "https://assets.galnavi.top/favicon.png";
 const ASSET_ICON = "https://assets.galnavi.top/icon.png";
-const CONTACT_EMAIL = "galnavifeedback@protonmail.com";
+const CONTACT_EMAIL = "feedback@galnavi.top";
 const CONTACT_MAILTO = `mailto:${CONTACT_EMAIL}`;
 const GITHUB_URL = "https://github.com/argb6/gal-navigation";
 const QR_ALIPAY = "";

@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### 修复
+
+- 页脚「联系站长」mailto 统一为 `feedback@galnavi.top`（替换残留 `galnavifeedback@protonmail.com`：donate CONTACT_EMAIL、status / websearch 页脚；同步 sandbox）
+
 ### 变更
 
 - status Worker：去掉明文 `CF_API_TOKEN`，改为运行时读取 `env.CF_API_TOKEN`（Cloudflare Workers Secret）；缺 Secret 时降级不调 CF API

@@ -3632,7 +3632,7 @@ html{overflow-x:hidden;overflow-x:clip}
     <span class="gd-footer__sep" aria-hidden="true">|</span>
     <a href="https://galnavi.top/nav/about/">关于本站</a>
     <span class="gd-footer__sep" aria-hidden="true">|</span>
-    <a href="mailto:galnavifeedback@protonmail.com">联系站长</a>
+    <a href="mailto:feedback@galnavi.top">联系站长</a>
     <span class="gd-footer__sep" aria-hidden="true">|</span>
     <a href="https://galnavi.top/nav/friend/">申请友链</a>
     <span class="gd-footer__sep" aria-hidden="true">|</span>
