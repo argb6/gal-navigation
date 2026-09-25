@@ -32,7 +32,7 @@
 - **用途**：主站卡片 / 友链卡 / 条目卡（殿堂）
 - **依赖**：`tokens.css`（glass 系列）、`gd-tag.css`（标签）、主站卡详情弹窗用 `gd-modal`
 - **API**：纯 CSS；变体 `gd-card--general`、`gd-card--link`、`gd-card--friend`、`gd-card--item`、`gd-card--item--divine/demonic/immortal`
-- **尺寸**：主站卡宽 `min(400px, 100%)`、高按 title/sub 字号行盒固定；单列（≤640px）宽度 `100%`；网格见 `gd-card-grid`（每行最多 6 张）
+- **尺寸**：主站卡（`.gd-card--general`）宽 `390px`、高 `100px`；基类宽 `min(390px, 100%)`；单列（≤640px）宽度 `100%`；网格见 `gd-card-grid`（每行最多 6 张）
 - **主站卡**：卡面仅图标 / 标题 / 简介；标签与「介绍详情 / 链接直达」放在点击后的 `gd-modal`（`gd-modal--site-card`）内
 - **条目卡**：必须覆盖 `width: auto; height: auto`（不要继承主站卡固定高，否则游戏名会被按钮挤没）。表面 `::before` 铺与页面同款线条（`screen` + `blur(10.8px)`，不用 `backdrop-filter`）
 - **class**：`gd-card`、`gd-card--general`、`gd-card__header/icon/title-wrap/title/subtitle/tags/actions/btn`、`gd-card__item-main/body/name/num`、`gd-card__action--site/detail/ext`
@@ -140,7 +140,7 @@
 | 组件 | 路径 | 用途 | API |
 |---|---|---|---|
 | `gd-tooltip` | `feedback/tooltip/` | 提示气泡 | 纯 CSS |
-| `gd-skeleton` | `feedback/skeleton/` | 骨架屏（`--card` / `--hero` / `--detail` / `--item`） | 纯 CSS |；`--card` 对齐主站卡 min(400px,100%) / 固定(字号行盒)
+| `gd-skeleton` | `feedback/skeleton/` | 骨架屏（`--card` / `--hero` / `--detail` / `--item`） | 纯 CSS |；`--card` 对齐主站卡 390×100
 | `gd-empty-state` | `display/empty-state/` | 空状态 | 纯 CSS |
 | `gd-table` | `display/table/` | 表格 | 纯 CSS |
 | `gd-brand` | `foundation/brand/` | 品牌标题 | 纯 CSS |

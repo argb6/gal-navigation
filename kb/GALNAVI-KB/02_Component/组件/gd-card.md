@@ -33,7 +33,7 @@ related:
 
 | 变体 | class | 尺寸 | 用途 |
 |------|-------|------|------|
-| 主站 | `gd-card gd-card--general`（可点加 `--link`） | 宽 min(400px, 100%)、高按字号行盒固定（≤640px 宽仍 100%） | 主站导航卡片 |
+| 主站 | `gd-card gd-card--general`（可点加 `--link`） | 宽 390px、高 100px（基类 min(390px,100%)；≤640px 基类改为 100%） | 主站导航卡片 |
 | 友链 | `gd-card--friend` | `auto` × `auto`（max 320px） | 友情链接卡 |
 | 条目 | `gd-card--item` | `auto` × `auto` | 圣器殿堂条目 |
 

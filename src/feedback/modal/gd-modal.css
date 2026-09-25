@@ -22,7 +22,7 @@
   transform: scale(1);
 }
 .gd-modal {
-  width: min(92vw, 400px);
+  width: min(92vw, 390px);
   padding: 28px 24px 22px;
   border-radius: var(--gd-shape-corner-medium);
   border: 1px solid rgba(var(--gd-color-white-rgb), 0.14);

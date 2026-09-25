@@ -62,7 +62,7 @@
   background: var(--gd-glass-bg);
   border: 1px solid var(--gd-glass-border);
   box-sizing: border-box;
-  width: 400px;
+  width: 390px;
   max-width: none;
   height: 100px;
 }

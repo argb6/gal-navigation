@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### 调整
+
+- 主站卡宽 400→390（`.gd-card--general` / 基类 `min(390px,100%)` / `gd-skeleton--card` / `--gd-card-w` / 站点卡弹窗）；同步组件库与 `worker/new/websearch`（及 sandbox）
+
 ## v1.6.1（当前）
 
 2026-09-25。

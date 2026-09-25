@@ -68,7 +68,7 @@ related:
 | [[gd-navbar]] | 顶栏 / 汉堡 / 抽屉 / NSFW 红绿 |
 | [[gd-search]] | 顶栏固定 300px；只有 `expandable` 才变宽 |
 | [[gd-button]] | primary / pill / detail / link / nsfw |
-| [[gd-card]] | 主站宽 min(400px,100%) / 高 auto；条目卡必须 `auto` |
+| [[gd-card]] | 主站卡 390×100（基类 min(390px,100%)）；条目卡必须 `auto` |
 | [[gd-modal]] | 欢迎窗由 [[gd-orb]]「弹窗」打开 |
 | [[gd-footer]] | `z-index: 1` + `margin-top: auto`，压过背景 |
 | [[gd-groundback]] | `--websearch` 全站默认；`--gold` 仅殿堂 |

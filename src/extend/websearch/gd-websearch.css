@@ -43,7 +43,7 @@
 }
 
 .gd-page-shell {
-  --gd-card-w: 400px;
+  --gd-card-w: 390px;
   --gd-card-h: auto; /* card height is content-driven; kept for compat */
   --gd-card-gap: 14px;
   --gd-card-cols: 6;
@@ -69,10 +69,10 @@
   gap: var(--gd-card-gap, 14px);
   width: 100%;
   max-width: calc(
-    var(--gd-card-cols, 6) * var(--gd-card-w, 400px) +
+    var(--gd-card-cols, 6) * var(--gd-card-w, 390px) +
     (var(--gd-card-cols, 6) - 1) * var(--gd-card-gap, 14px)
   );
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--gd-card-w, 400px)), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--gd-card-w, 390px)), 1fr));
 }
 
 @media (max-width: 640px) {
