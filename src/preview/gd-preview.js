@@ -387,18 +387,21 @@
   function escapeHtml(s) {
     return String(s || "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
   }
-  var DEFAULT_HELP = "ACG[\u7A7A\u683C]\u5C0F\u8BF4 \u5305\u542BACG\u6216\u5C0F\u8BF4\u7684\u5361\u7247\nACG[\u7A7A\u683C]+\u5C0F\u8BF4\uFF0C\u540C\u65F6\u5305\u542BACG\u548C\u5C0F\u8BF4\u7684\u5361\u7247\nACG[\u7A7A\u683C]-\u5C0F\u8BF4\uFF0C\u5305\u542BACG\u4F46\u4E0D\u80FD\u6709\u5C0F\u8BF4\u7684\u5361\u7247";
+  var DEFAULT_HELP_HTML = `<span class="gd-search__help-tip__title">搜索规则</span><ul class="gd-search__help-tip__list"><li class="gd-search__help-tip__row"><code class="gd-search__help-tip__syn">ACG[空格]小说</code><span class="gd-search__help-tip__desc">包含 ACG 或小说</span></li><li class="gd-search__help-tip__row"><code class="gd-search__help-tip__syn">ACG[空格]+小说</code><span class="gd-search__help-tip__desc">同时包含 ACG 与小说</span></li><li class="gd-search__help-tip__row"><code class="gd-search__help-tip__syn">ACG[空格]-小说</code><span class="gd-search__help-tip__desc">含 ACG 且不含小说</span></li></ul>`;
+var DEFAULT_HELP =
+  "ACG[空格]小说 包含ACG或小说的卡片\nACG[空格]+小说，同时包含ACG和小说的卡片\nACG[空格]-小说，包含ACG但不能有小说的卡片";
   var GdSearch = class extends HTMLElement {
     connectedCallback() {
       if (!this.querySelector(".gd-search")) {
         const toolbar = this.getAttribute("variant") === "toolbar";
         const ariaLabel = this.getAttribute("aria-label") || "\u641C\u7D22";
         const help = this.hasAttribute("help");
-        const helpText = escapeHtml(this.getAttribute("help-text") || DEFAULT_HELP);
+        const customHelp = this.getAttribute("help-text");
+      const helpBody = customHelp ? escapeHtml(customHelp) : DEFAULT_HELP_HTML;
         const helpId = help ? "gd-search-help-" + Math.random().toString(36).slice(2, 8) : "";
         const helpHtml = help ? `<span class="gd-search__help-wrap gd-tooltip-wrap">
             <button type="button" class="gd-search__help" aria-label="\u641C\u7D22\u89C4\u5219" aria-describedby="${helpId}">?</button>
-            <span class="gd-tooltip gd-search__help-tip" id="${helpId}" role="tooltip">${helpText}</span>
+            <span class="gd-tooltip gd-search__help-tip" id="${helpId}" role="tooltip">${helpBody}</span>
           </span>` : "";
         this.innerHTML = `
         <div class="gd-search${toolbar ? " gd-search--toolbar" : ""}">
@@ -610,29 +613,39 @@
     const track = led && led.querySelector(".gd-notice-led__track");
     if (!led || !track) return;
     const first = track.querySelector(".gd-notice-led__item");
-    const text = first ? first.textContent : "";
+    const html = first ? first.innerHTML : "";
+    function mute(node) {
+      node.setAttribute("aria-hidden", "true");
+      node.querySelectorAll("a").forEach((a) => { a.tabIndex = -1; });
+    }
     function fillLed() {
-      if (!text) return;
+      if (!html) return;
+      track.style.animation = "none";
+      track.style.transform = "none";
       track.innerHTML = "";
-      let i = 0;
+      const nodes = [];
+      let guard = 0;
       do {
         const s = document.createElement("span");
         s.className = "gd-notice-led__item";
-        s.textContent = text;
-        if (i) s.setAttribute("aria-hidden", "true");
+        s.innerHTML = html;
+        if (nodes.length) mute(s);
         track.appendChild(s);
-        i += 1;
-      } while (track.scrollWidth < led.clientWidth * 2 && i < 12);
-      if (i < 2) {
-        const extra = document.createElement("span");
-        extra.className = "gd-notice-led__item";
-        extra.textContent = text;
-        extra.setAttribute("aria-hidden", "true");
-        track.appendChild(extra);
-      }
-      const half = track.scrollWidth / 2;
-      const dur = half > 0 ? half / 48 : 22;
-      track.style.setProperty("--gd-notice-led-duration", dur + "s");
+        nodes.push(s);
+        guard += 1;
+      } while (track.scrollWidth < led.clientWidth && guard < 8);
+      const clones = nodes.map((node) => {
+        const clone = node.cloneNode(true);
+        mute(clone);
+        track.appendChild(clone);
+        return clone;
+      });
+      let shift = Math.round(clones[0].getBoundingClientRect().left - nodes[0].getBoundingClientRect().left);
+      if (shift < 1) shift = Math.round(track.scrollWidth / 2);
+      track.style.setProperty("--gd-notice-led-shift", (-shift) + "px");
+      track.style.setProperty("--gd-notice-led-duration", (shift / 48) + "s");
+      track.style.animation = "";
+      track.style.transform = "";
     }
     fillLed();
     window.addEventListener("resize", fillLed);
@@ -722,15 +735,6 @@
           <div class="gd-skeleton__block gd-skeleton__line gd-skeleton__line--title"></div>
           <div class="gd-skeleton__block gd-skeleton__line gd-skeleton__line--sub"></div>
         </div>
-      </div>
-      <div class="gd-skeleton__tags">
-        <div class="gd-skeleton__block gd-skeleton__tag"></div>
-        <div class="gd-skeleton__block gd-skeleton__tag"></div>
-        <div class="gd-skeleton__block gd-skeleton__tag"></div>
-      </div>
-      <div class="gd-skeleton__actions">
-        <div class="gd-skeleton__block gd-skeleton__btn"></div>
-        <div class="gd-skeleton__block gd-skeleton__btn"></div>
       </div>
     </div>`,
     hero: () => `<div class="gd-skeleton gd-skeleton--hero" aria-hidden="true"></div>`
@@ -877,6 +881,21 @@
     });
   }
   bindGdModal("#releaseModal", "#btnRelease");
+  (function() {
+    var card = document.getElementById("demoSiteCard");
+    var overlay = document.getElementById("siteCardModal");
+    if (!card || !overlay) return;
+    var openSite = function() {
+      openGdModal(overlay, { returnFocus: card });
+    };
+    card.addEventListener("click", openSite);
+    card.addEventListener("keydown", function(e) {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        openSite();
+      }
+    });
+  })();
   var publishGo = document.querySelector("[data-gd-publish-go]");
   if (publishGo) {
     publishGo.addEventListener("click", function() {

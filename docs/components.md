@@ -30,12 +30,13 @@
 
 - **路径**：`src/display/card/gd-card.css`
 - **用途**：主站卡片 / 友链卡 / 条目卡（殿堂）
-- **依赖**：`tokens.css`（glass 系列）、`gd-tag.css`（标签）
-- **API**：纯 CSS；变体 `gd-card--friend`、`gd-card--item`、`gd-card--item--divine/demonic/immortal`
-- **尺寸**：主站卡 `420×212`；单列（≤640px）宽度 `100%`；网格见 `gd-card-grid`（每行最多 6 张）
+- **依赖**：`tokens.css`（glass 系列）、`gd-tag.css`（标签）、主站卡详情弹窗用 `gd-modal`
+- **API**：纯 CSS；变体 `gd-card--general`、`gd-card--link`、`gd-card--friend`、`gd-card--item`、`gd-card--item--divine/demonic/immortal`
+- **尺寸**：主站卡宽 `min(400px, 100%)`、高按 title/sub 字号行盒固定；单列（≤640px）宽度 `100%`；网格见 `gd-card-grid`（每行最多 6 张）
+- **主站卡**：卡面仅图标 / 标题 / 简介；标签与「介绍详情 / 链接直达」放在点击后的 `gd-modal`（`gd-modal--site-card`）内
 - **条目卡**：必须覆盖 `width: auto; height: auto`（不要继承主站卡固定高，否则游戏名会被按钮挤没）。表面 `::before` 铺与页面同款线条（`screen` + `blur(10.8px)`，不用 `backdrop-filter`）
-- **class**：`gd-card`、`gd-card__header/icon/title-wrap/title/subtitle/tags/actions/btn`、`gd-card__item-main/body/name/num`、`gd-card__action--site/detail/ext`
-- **事件**：无 JS 绑定（预览页按钮不跳转）
+- **class**：`gd-card`、`gd-card--general`、`gd-card__header/icon/title-wrap/title/subtitle/tags/actions/btn`、`gd-card__item-main/body/name/num`、`gd-card__action--site/detail/ext`
+- **事件**：主站卡预览用 `openGdModal`（整卡 click / Enter / Space）；禁止 `div onclick`
 - **禁止**：卡片使用 `backdrop-filter`/`box-shadow`（玻璃约定）；标签不要居中（须 `justify-content: flex-start`）
 - **示例**：见 `docs/examples/card.md`
 
@@ -139,7 +140,7 @@
 | 组件 | 路径 | 用途 | API |
 |---|---|---|---|
 | `gd-tooltip` | `feedback/tooltip/` | 提示气泡 | 纯 CSS |
-| `gd-skeleton` | `feedback/skeleton/` | 骨架屏（`--card` / `--hero` / `--detail` / `--item`） | 纯 CSS |
+| `gd-skeleton` | `feedback/skeleton/` | 骨架屏（`--card` / `--hero` / `--detail` / `--item`） | 纯 CSS |；`--card` 对齐主站卡 min(400px,100%) / 固定(字号行盒)
 | `gd-empty-state` | `display/empty-state/` | 空状态 | 纯 CSS |
 | `gd-table` | `display/table/` | 表格 | 纯 CSS |
 | `gd-brand` | `foundation/brand/` | 品牌标题 | 纯 CSS |
@@ -147,7 +148,7 @@
 | `gd-groundback` | `foundation/layout/` | 页面背景层 | `--websearch` 主站默认（线条模糊）；`--gold` 殿堂；`--blue` 点阵（预览对比）；`--bleed` 铺满 |
 | `gd-page` / `gd-page-shell` | `foundation/layout/` + `extend/websearch/` | 页面壳 / 主站限宽 | 纯 CSS + `initGdStickyViewport` |
 | `gd-glass` | `foundation/tokens/` | 玻璃工具类 | 纯 CSS |
-| `gd-orb` | `extend/websearch/` | 首页右下角快捷入口 | `initGdOrb`；点开两列胶囊；`role="region"` |
+| `gd-orb` | `extend/websearch/` | 主站右下角扩展按钮（标签/仓库/弹窗/殿堂）；圆钮可拖动 | `initGdOrb`；单列胶囊；`role="region"` |
 | `gd-card-grid` | `extend/websearch/` | 主站卡片网格（最多 6 列） | 纯 CSS |
 | `gd-nap` | `extend/websearch/` | 纳普彩蛋 | `initGdNap` |
 | `gd-notice-led` | `extend/websearch/` | 顶栏通知跑马灯 | `initGdNoticeLed`；`--gd-notice-led-duration` |

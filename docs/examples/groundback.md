@@ -18,7 +18,7 @@
 | `gd-groundback--websearch` | 主站、详情、关于、帮助、友链、捐献、状态、发布页、错误页 |
 | `gd-groundback--gold` | 仅圣器殿堂（金晕 + 同款线条） |
 | `gd-groundback--blue` | 点阵底（预览对比用） |
-| `gd-groundback--bleed` | 需要铺满视口时再加；预览盒内不要加 |
+| `gd-groundback--bleed` | 需要铺满视口时再加（`inset: 0`，不要 `100vw`）；预览盒内不要加 |
 
 线条层：`filter: blur(10.8px)` + `mix-blend-mode: screen`（装饰层，不是卡片 `backdrop-filter`）。
 

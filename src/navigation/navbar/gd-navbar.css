@@ -562,6 +562,29 @@
   .gd-navbar__inner > .gd-search:has(.gd-search__help) {
     overflow: visible;
   }
+  .gd-navbar__search .gd-search__box { width: 100%; }
+  .gd-navbar__search .gd-search__help-wrap {
+    position: absolute;
+    left: auto;
+    right: 6px;
+    top: 50%;
+    margin: 0;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    max-width: 24px;
+    display: block;
+  }
+  .gd-navbar__search .gd-search__help-tip {
+    position: absolute;
+    left: auto;
+    right: 0;
+    bottom: auto;
+    top: calc(100% + 8px);
+    transform: none;
+    margin: 0;
+  }
 }
 
 /* 展示页：强制手机布局预览（不依赖视口宽度） */
@@ -614,6 +637,29 @@
 .gd-navbar-stage--mobile .gd-navbar__search:has(.gd-search__help) .gd-search,
 .gd-navbar-stage--mobile .gd-navbar__inner > .gd-search:has(.gd-search__help) {
   overflow: visible;
+}
+.gd-navbar-stage--mobile .gd-navbar__search .gd-search__box { width: 100%; }
+.gd-navbar-stage--mobile .gd-navbar__search .gd-search__help-wrap {
+  position: absolute;
+  left: auto;
+  right: 6px;
+  top: 50%;
+  margin: 0;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  max-width: 24px;
+  display: block;
+}
+.gd-navbar-stage--mobile .gd-navbar__search .gd-search__help-tip {
+  position: absolute;
+  left: auto;
+  right: 0;
+  bottom: auto;
+  top: calc(100% + 8px);
+  transform: none;
+  margin: 0;
 }
 /* 手机预览里抽屉用 absolute，避免盖住整页 */
 .gd-navbar-stage--mobile {

@@ -56,14 +56,15 @@
 
 /* 卡片轮廓变体（padding/radius/gap/玻璃/宽度同主站卡片） */
 .gd-skeleton--card {
-  gap: 14px;
+  gap: 12px;
   padding: 20px;
   border-radius: var(--gd-shape-corner-large);
   background: var(--gd-glass-bg);
   border: 1px solid var(--gd-glass-border);
   box-sizing: border-box;
-  width: 100%;
-  max-width: 420px;
+  width: 400px;
+  max-width: none;
+  height: 100px;
 }
 .gd-skeleton--card .gd-skeleton__icon {
   width: 52px;
@@ -74,7 +75,7 @@
 .gd-skeleton--card .gd-skeleton__header {
   display: flex;
   align-items: flex-start;
-  gap: 14px;
+  gap: 12px;
   width: 100%;
 }
 .gd-skeleton--card .gd-skeleton__title-wrap {
@@ -82,30 +83,16 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0;
 }
-.gd-skeleton--card .gd-skeleton__line--title { width: 55%; height: 16px; }
-.gd-skeleton--card .gd-skeleton__line--sub { width: 80%; height: 12px; }
-.gd-skeleton--card .gd-skeleton__tags {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
+.gd-skeleton--card .gd-skeleton__line--title {
+  width: 55%;
+  height: 22px;
+  margin-bottom: 9px;
 }
-.gd-skeleton--card .gd-skeleton__tag {
-  width: 52px;
-  height: 26px;
-  border-radius: var(--gd-shape-corner-full);
-}
-.gd-skeleton--card .gd-skeleton__actions {
-  display: flex;
-  gap: 10px;
-  width: 100%;
-  margin-top: auto;
-}
-.gd-skeleton--card .gd-skeleton__btn {
-  flex: 1;
-  height: 42px;
-  border-radius: 12px;
+.gd-skeleton--card .gd-skeleton__line--sub {
+  width: 80%;
+  height: 23px;
 }
 
 /* 轮播原尺寸变体（1000px / 2:1 / max-height 400px），带流光加载动效 */
@@ -251,16 +238,7 @@
   .gd-skeleton--detail .gd-skeleton__grid {
     grid-template-columns: 1fr;
   }
-  .gd-skeleton--card {
-    max-width: none;
-  }
-  .gd-skeleton--card .gd-skeleton__actions {
-    flex-wrap: wrap;
-  }
-  .gd-skeleton--card .gd-skeleton__btn {
-    flex: 1 1 0;
-    min-width: 0;
-  }
+
 }
 
 /* 殿堂条目卡变体 — 尺寸/结构同 gd-card--item（序号 + 名称长条 + 操作按钮长条） */

@@ -119,7 +119,7 @@
 
 ## 首页快捷栏
 
-右下角 `gd-orb` 扩展按钮，点开后两列展开。示例见 [`../examples/filter-bar.md`](../examples/filter-bar.md)。
+右下角 `gd-orb` 扩展按钮，点开后单列展开，圆钮可在页面内拖动。示例见 [`../examples/filter-bar.md`](../examples/filter-bar.md)。
 
 ## CSS / 动效 / JS / HTML
 

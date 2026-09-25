@@ -1,27 +1,25 @@
-// GALNAVI Worker - Open Source Version
-// status 仍是 β，未用现网完整版覆盖。密钥用占位符，不要填入真实 token。
-// See AGENTS.md for project conventions.
 /**
  * Cloudflare Worker - status（站点状态页）
- * 路由: example.com/status/*
+ * 路由: galnavi.top/status/*
  * 构建: 由 sandbox/status-sandbox/build-status.mjs 生成
  * 数据: Cloudflare API（zone + analytics）+ 服务直连检测 + 事件记录
  * 事件规则: 同一服务短时间内连续 3 次异常 → 写入一条 yyyy-mm-dd hh-mm xxx事件
  */
 
-const ASSET_ICON = "https://your-cdn.example.com/assets/icon/favicon.png";
+const ASSET_FAVICON = "https://assets.galnavi.top/favicon.png";
+const ASSET_ICON = "https://assets.galnavi.top/icon.png";
 const SECURITY_HEADERS = {
   "Content-Type": "text/html; charset=utf-8",
   "Cache-Control": "private, no-store",
   "X-Content-Type-Options": "nosniff",
   "X-Frame-Options": "SAMEORIGIN",
   "Referrer-Policy": "strict-origin-when-cross-origin",
-  "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; connect-src 'self' https://example.com https://api.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self'",
+  "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; connect-src 'self' https://galnavi.top https://api.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self'",
 };
 
 // Cloudflare API Token（生产部署建议改为 Secret 绑定 CF_API_TOKEN）
-const CF_API_TOKEN = "YOUR_CLOUDFLARE_API_TOKEN"; // Set via environment variable
-const ZONE_NAME = "example.com";
+const CF_API_TOKEN = "YOUR_CLOUDFLARE_API_TOKEN";
+const ZONE_NAME = "galnavi.top";
 const CF_API_BASE = "https://api.cloudflare.com/client/v4";
 const CF_GRAPHQL = "https://api.cloudflare.com/client/v4/graphql";
 // 稳定运行起算日（站点正式上线）
@@ -29,14 +27,14 @@ const UPTIME_BASE = "2026-06-26";
 
 // 内置监测服务（无 env.DB 时的兜底清单）
 const DEFAULT_SERVICES = [
-  { name: "发布页", url: "https://example.com/" },
-  { name: "主站导航", url: "https://example.com/nav/" },
-  { name: "站点帮助", url: "https://example.com/nav/help/" },
-  { name: "关于本站", url: "https://example.com/nav/about/" },
-  { name: "圣器殿堂", url: "https://example.com/nav/palace/" },
-  { name: "友情链接", url: "https://example.com/nav/friend/" },
-  { name: "赞助本站", url: "https://example.com/nav/donate/" },
-  { name: "站点状态", url: "https://example.com/status/" },
+  { name: "发布页", url: "https://galnavi.top/" },
+  { name: "主站导航", url: "https://galnavi.top/nav/" },
+  { name: "站点帮助", url: "https://galnavi.top/nav/help/" },
+  { name: "关于本站", url: "https://galnavi.top/nav/about/" },
+  { name: "圣器殿堂", url: "https://galnavi.top/nav/palace/" },
+  { name: "友情链接", url: "https://galnavi.top/nav/friend/" },
+  { name: "赞助本站", url: "https://galnavi.top/nav/donate/" },
+  { name: "站点状态", url: "https://galnavi.top/status/" },
 ];
 
 // 事件规则：连续异常阈值 + 短时窗口
@@ -80,7 +78,7 @@ async function loadApiCache(env) {
       const raw = await env.STATUS_KV.get("api_cache", "json");
       if (raw) return raw;
     }
-  } catch (e) {}
+  } catch { /* 存储/接口失败时走内存或默认值 */ }
   return memory.apiCache;
 }
 
@@ -88,15 +86,15 @@ async function saveApiCache(env, data) {
   memory.apiCache = data;
   try {
     if (env && env.STATUS_KV) await env.STATUS_KV.put("api_cache", JSON.stringify(data));
-  } catch (e) {}
+  } catch { /* 存储/接口失败时走内存或默认值 */ }
 }
 
 // 网页自行抓取：到点时由首个访问请求触发（无 Cron），其余时间用缓存
 async function refreshApiData(env) {
   let zone = null;
-  try { zone = await fetchZone(); } catch (e) {}
+  try { zone = await fetchZone(); } catch { /* 存储/接口失败时走内存或默认值 */ }
   let visits = null;
-  try { if (zone) visits = await fetchTotalRequests(zone.id); } catch (e) {}
+  try { if (zone) visits = await fetchTotalRequests(zone.id); } catch { /* 存储/接口失败时走内存或默认值 */ }
   const now = beijingNow();
   const fresh = { date: now.date, slot: currentSlot(now.hour), visits, fetchedAt: Date.now() };
   await saveApiCache(env, fresh);
@@ -177,15 +175,15 @@ async function checkOne(url, timeoutMs) {
   }
 }
 
-// 检测清单：优先 env.DB.sites，兜底 DEFAULT_SERVICES
+// 检测清单：优先 env.DB.navi_sites，兜底 DEFAULT_SERVICES
 async function resolveServices(env) {
   try {
     if (env && env.DB) {
-      const { results } = await env.DB.prepare("SELECT item_key, title, url FROM sites WHERE url IS NOT NULL AND url != '' LIMIT 40").all();
+      const { results } = await env.DB.prepare("SELECT item_key, title, url FROM navi_sites WHERE url IS NOT NULL AND url != '' AND is_active = 1 LIMIT 40").all();
       const rows = results || [];
       if (rows.length) return rows.map((r) => ({ name: r.title || r.item_key, url: r.url }));
     }
-  } catch (e) {}
+  } catch { /* 存储/接口失败时走内存或默认值 */ }
   return DEFAULT_SERVICES;
 }
 
@@ -200,7 +198,7 @@ async function loadMemory(env) {
         memory.events = raw.events || [];
       }
     }
-  } catch (e) {}
+  } catch { /* 存储/接口失败时走内存或默认值 */ }
 }
 
 async function saveMemory(env) {
@@ -213,11 +211,11 @@ async function saveMemory(env) {
         events: memory.events,
       }));
     }
-  } catch (e) {}
+  } catch { /* 存储/接口失败时走内存或默认值 */ }
 }
 
 // 事件规则：短时间内连续 3 次相同异常 → 写入一条事件
-function recordEvents(results, env) {
+function recordEvents(results) {
   const now = Date.now();
   if (!memory.uptimeStart) memory.uptimeStart = now;
   const newEvents = [];
@@ -262,12 +260,6 @@ export default {
       url.pathname = "/status/";
       return Response.redirect(url.toString(), 301);
     }
-    // 首访 cookie 校验（VERIFIED_KEY = site-verified）
-    const cookie = request.headers.get("Cookie") || "";
-    const verified = cookie.includes("site-verified=1");
-    if (!verified) {
-      return Response.redirect("https://example.com/", 302);
-    }
     await loadMemory(env);
     // CF API 一天最多抓 3 次（0/8/16 点），网页请求触发，其余时间用缓存
     const apiCache = await loadApiCache(env);
@@ -288,7 +280,7 @@ export default {
     const services = await resolveServices(env);
     const results = await Promise.all(services.map((s) => checkOne(s.url, 8000)));
     const checked = services.map((s, i) => ({ ...s, ...results[i] }));
-    recordEvents(checked, env);
+    recordEvents(checked);
     await saveMemory(env);
     const uptimeDays = calcUptimeDays();
     const downCount = checked.filter((c) => !c.ok).length;
@@ -304,7 +296,7 @@ export default {
           noticeHtml = '<div class="status-notice__content">' + esc(raw) + '</div>';
         }
       }
-    } catch (e) {}
+    } catch { /* 存储/接口失败时走内存或默认值 */ }
     const page = renderPage({
       uptimeDays,
       visits: totalRequests,
@@ -369,9 +361,24 @@ const HTML_TEMPLATE = `<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="dark">
 <title>站点状态（beta）· GALNAVI</title>
+<meta name="description" content="GALNAVI 站点运行状态（beta）：稳定运行天数、累计访问、服务可用性与最近事件。">
 <meta name="robots" content="index, follow">
-<link rel="icon" href="https://your-cdn.example.com/assets/icon/favicon.png" type="image/png">
-<link rel="apple-touch-icon" href="https://your-cdn.example.com/assets/icon/favicon.png">
+<link rel="canonical" href="https://galnavi.top/status/">
+<link rel="icon" href="${ASSET_FAVICON}" type="image/png">
+<link rel="apple-touch-icon" href="${ASSET_ICON}">
+<meta property="og:type" content="website">
+<meta property="og:title" content="站点状态（beta）· GALNAVI">
+<meta property="og:description" content="GALNAVI 站点运行状态（beta）：稳定运行天数、累计访问、服务可用性与最近事件。">
+<meta property="og:url" content="https://galnavi.top/status/">
+<meta property="og:site_name" content="GALNAVI">
+<meta property="og:image" content="${ASSET_ICON}">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="站点状态（beta）· GALNAVI">
+<meta name="twitter:description" content="GALNAVI 站点运行状态。">
+<meta name="twitter:image" content="${ASSET_ICON}">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","name":"站点状态（beta）· GALNAVI","url":"https://galnavi.top/status/","description":"GALNAVI 站点运行状态","isPartOf":{"@type":"WebSite","name":"GALNAVI","url":"https://galnavi.top/"}}
+</script>
 <style>
 /* ===== 组件库（构建期内联） ===== */
 /* ===== src/foundation/tokens/tokens.css ===== */
@@ -386,14 +393,11 @@ const HTML_TEMPLATE = `<!DOCTYPE html>
   --gd-color-on-primary: #ffffff;
   --gd-color-primary-container: rgba(79, 124, 255, 0.12);
   --gd-color-secondary: #a855f7;
-  --gd-color-tertiary: #ec4899;
   --gd-color-on-surface: #f4f7ff;
   --gd-color-on-surface-variant: #93a4c8;
   --gd-color-on-surface-subtle: #aeb9d6;
   --gd-color-outline: #1e2a45;
-  --gd-color-outline-variant: rgba(30, 42, 69, 0.8);
   --gd-color-error: #f87171;
-  --gd-color-on-error: #ffffff;
 
   /* 链接色：静止蓝 #7aa2f7 → hover 深蓝 #9ec0ff */
   --gd-color-link: #7aa2f7;
@@ -405,14 +409,12 @@ const HTML_TEMPLATE = `<!DOCTYPE html>
   /* RGB 通道（供 rgba(var(--gd-x-rgb), a) 组合透明度层级） */
   --gd-color-primary-rgb: 79, 124, 255;
   --gd-color-secondary-rgb: 168, 85, 247;
-  --gd-color-tertiary-rgb: 236, 72, 153;
   --gd-color-accent-rgb: 139, 92, 246;
   --gd-color-sky-rgb: 56, 189, 248;
   --gd-color-sky-blue-rgb: 96, 165, 250;
   --gd-color-blue-rgb: 59, 130, 246;
   --gd-color-blue-deep-rgb: 37, 99, 235;
   --gd-color-indigo-rgb: 91, 141, 239;
-  --gd-color-link-rgb: 122, 162, 247;
   --gd-color-gold-rgb: 251, 191, 36;
   --gd-color-gold-deep-rgb: 245, 158, 11;
   --gd-color-error-rgb: 239, 68, 68;
@@ -421,7 +423,6 @@ const HTML_TEMPLATE = `<!DOCTYPE html>
   --gd-color-white-rgb: 255, 255, 255;
   --gd-color-muted-white-rgb: 232, 238, 255;
   --gd-color-grey-rgb: 139, 156, 192;
-  --gd-color-text-rgb: 244, 247, 255;
 
   /* 深色层级（遮罩/浮层/卡片渐变底） */
   --gd-color-navy-rgb: 8, 12, 24;
@@ -429,13 +430,11 @@ const HTML_TEMPLATE = `<!DOCTYPE html>
   --gd-color-navy-panel-rgb: 8, 10, 20;
   --gd-color-navy-card-rgb: 22, 28, 48;
   --gd-color-navy-card-deep-rgb: 12, 16, 28;
-  --gd-color-navy-modal-rgb: 14, 21, 37;
   --gd-color-ink-rgb: 20, 30, 56;
   --gd-color-ink-2-rgb: 38, 54, 94;
   --gd-color-ink-3-rgb: 12, 18, 36;
   --gd-color-ink-4-rgb: 24, 34, 65;
   --gd-color-outline-blue-rgb: 126, 153, 255;
-  --gd-color-blue-soft-rgb: 191, 219, 254;
 
   /* 语义层级便捷变量 */
   --gd-color-overlay: rgba(var(--gd-color-navy-deep-rgb), 0.88);
@@ -443,19 +442,16 @@ const HTML_TEMPLATE = `<!DOCTYPE html>
   --gd-color-overlay-float: rgba(var(--gd-color-navy-rgb), 0.95);
   --gd-color-card-gradient-a: rgba(var(--gd-color-navy-card-rgb), 0.96);
   --gd-color-card-gradient-b: rgba(var(--gd-color-navy-card-deep-rgb), 0.98);
-  --gd-color-modal-gradient-a: rgba(var(--gd-color-navy-modal-rgb), 0.96);
-  --gd-color-modal-gradient-b: rgba(var(--gd-color-navy-rgb), 0.98);
   --gd-color-border-hover: rgba(var(--gd-color-sky-rgb), 0.28);
   --gd-color-border-accent: rgba(var(--gd-color-accent-rgb), 0.22);
   --gd-color-demo-dash: rgba(var(--gd-color-grey-rgb), 0.45);
 
-  /* 补充语义色（release-modal 等引用） */
+  /* 补充语义色 */
   --gd-color-success: #86efac;
   --gd-color-error-light: #fca5a5;
   --gd-color-sky: #38bdf8;
   --gd-color-blue: #3b82f6;
   --gd-color-blue-deep: #2563eb;
-  --gd-color-accent-pink: #ff85c0;
   --gd-color-cyan: #22d3ee;
   --gd-color-cyan-light: #67e8f9;
   --gd-color-cyan-rgb: 34, 211, 238;
@@ -474,12 +470,6 @@ const HTML_TEMPLATE = `<!DOCTYPE html>
   --gd-gradient-title-b: #e9d5ff;
   --gd-gradient-title-c: #a78bfa;
   --gd-gradient-title-d: #8b5cf6;
-
-  /* 彩点色（filter-bar 等胶囊按钮的圆点循环色：三色循环 + 中性兜底） */
-  --gd-dot-1: var(--gd-color-primary);
-  --gd-dot-2: var(--gd-color-secondary);
-  --gd-dot-3: var(--gd-color-tertiary);
-  --gd-dot-neutral: #5a6a8a;
 
   /* 标签色（卡片标签三色循环） */
   --gd-tag-1-bg: rgba(168, 85, 247, 0.12);
@@ -501,49 +491,42 @@ const HTML_TEMPLATE = `<!DOCTYPE html>
   --gd-badge-gold-fg: #fcd34d;
 
   /* Shape — 语义 MD3 scale；数值贴现网 */
-  --gd-shape-corner-none: 0;
   --gd-shape-corner-extra-small: 8px;
   --gd-shape-corner-small: 14px;
   --gd-shape-corner-medium: 18px;
   --gd-shape-corner-large: 20px;
-  --gd-shape-corner-extra-large: 28px;
   --gd-shape-corner-full: 9999px;
 
   /* Type — 角色名 MD3；字号贴近现网 */
---gd-type-display-small-size: 36px;
---gd-type-display-small-line: 1.1;
---gd-type-display-medium-size: 48px;
---gd-type-headline-small-size: 24px;
---gd-type-headline-small-line: 1.3;
---gd-type-title-large-size: 22px;
---gd-type-title-large-line: 1.3;
---gd-type-title-medium-size: 16px;
---gd-type-title-medium-line: 1.4;
---gd-type-title-small-size: 15px;
---gd-type-title-small-line: 1.4;
---gd-type-label-large-size: 14px;
---gd-type-label-large-line: 1.4;
---gd-type-label-medium-size: 12px;
---gd-type-label-small-size: 11px;
---gd-type-body-large-size: 16px;
---gd-type-body-medium-size: 14px;
---gd-type-body-small-size: 12px;
---gd-type-note-size: 13px;
---gd-type-title-xxl-size: 18px;
+  --gd-type-display-small-size: 36px;
+  --gd-type-display-medium-size: 48px;
+  --gd-type-headline-small-size: 24px;
+  --gd-type-title-large-size: 22px;
+  --gd-type-title-medium-size: 16px;
+  --gd-type-title-medium-line: 1.4;
+  --gd-type-title-small-size: 15px;
+  --gd-type-label-large-size: 14px;
+  --gd-type-label-large-line: 1.4;
+  --gd-type-label-medium-size: 12px;
+  --gd-type-label-small-size: 11px;
+  --gd-type-body-large-size: 16px;
+  --gd-type-body-medium-size: 14px;
+  --gd-type-body-small-size: 12px;
+  --gd-type-note-size: 13px;
+  --gd-type-title-xxl-size: 18px;
 
-/* 字距 */
---gd-type-letter-spacing-tight: -0.5px;
---gd-type-letter-spacing-normal: 0.01em;
---gd-type-letter-spacing-wide: 0.1em;
---gd-type-letter-spacing-extra-wide: 0.24em;
+  /* 字距 */
+  --gd-type-letter-spacing-tight: -0.5px;
+  --gd-type-letter-spacing-normal: 0.01em;
+  --gd-type-letter-spacing-wide: 0.1em;
 
-/* 字重（语义档位） */
---gd-weight-regular: 400;
---gd-weight-medium: 500;
---gd-weight-semibold: 600;
---gd-weight-bold: 700;
---gd-weight-extrabold: 800;
---gd-weight-black: 900;
+  /* 字重（语义档位） */
+  --gd-weight-regular: 400;
+  --gd-weight-medium: 500;
+  --gd-weight-semibold: 600;
+  --gd-weight-bold: 700;
+  --gd-weight-extrabold: 800;
+  --gd-weight-black: 900;
 
   --gd-font-sans: "Microsoft YaHei", "PingFang SC", "Noto Sans SC", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
@@ -551,11 +534,9 @@ const HTML_TEMPLATE = `<!DOCTYPE html>
   --gd-state-hover: 0.08;
   --gd-state-focus: 0.12;
   --gd-state-pressed: 0.12;
-  --gd-state-dragged: 0.16;
   --gd-state-disabled: 0.38;
 
   /* Motion（MD3 short/medium + easing） */
-  --gd-motion-duration-short2: 100ms;
   --gd-motion-duration-short4: 200ms;
   --gd-motion-duration-medium1: 250ms;
   --gd-motion-duration-medium2: 300ms;
@@ -566,17 +547,9 @@ const HTML_TEMPLATE = `<!DOCTYPE html>
   /* Layout */
   --gd-nav-height: 64px;
   --gd-layout-max-width: 1200px;
-  --gd-space-1: 4px;
   --gd-space-2: 8px;
-  --gd-space-3: 12px;
-  --gd-space-4: 16px;
-  --gd-space-5: 20px;
   --gd-space-6: 24px;
   --gd-touch-target: 48px;
-
-  /* Elevation 别名（不替代玻璃） */
-  --gd-elevation-level2: 0 4px 24px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.3);
-  --gd-elevation-glow: 0 0 40px rgba(79, 124, 255, 0.2), 0 0 80px rgba(168, 85, 247, 0.08);
 
   /* 玻璃 — 冻结现网数值，禁止借「整理」改 blur/透明度 */
   --gd-glass-bg: rgba(18, 22, 40, 0.42);
@@ -585,6 +558,7 @@ const HTML_TEMPLATE = `<!DOCTYPE html>
   --gd-glass-border: rgba(255, 255, 255, 0.14);
   --gd-glass-nav-bg: rgba(8, 12, 24, 0.75);
   --gd-glass-nav-blur: blur(20px) saturate(180%);
+  --gd-chrome-bar-bg: rgba(18, 22, 40, 0.92);
 }
 
 /* ===== src/foundation/brand/gd-brand.css ===== */
@@ -643,7 +617,7 @@ const HTML_TEMPLATE = `<!DOCTYPE html>
 .gd-brand__title--shift {
   animation: gd-brand-glow 3s linear infinite;
 }
-/* 殿堂：橙 → 绿 → 红 循环（殿堂主题色） */
+/* 神魔殿堂：橙 → 绿 → 红 循环（殿堂主题色） */
 .gd-brand__title--palace {
   animation: gd-brand-glow-palace 2.25s linear infinite alternate;
 }
@@ -687,9 +661,9 @@ const HTML_TEMPLATE = `<!DOCTYPE html>
 
 /* ===== src/foundation/layout/gd-groundback.css ===== */
 /* gd-groundback：页面背景层
-   用法：<div class="gd-groundback gd-groundback--blue" aria-hidden="true"></div>
-   变体：--blue（默认，主站） / --gold（殿堂）
-   蓝色参考原版发布页（index.js）背景：三层光斑 + 对角渐变 + 点阵网格 + 底部光带。 */
+   用法：<div class="gd-groundback gd-groundback--websearch" aria-hidden="true"></div>
+   变体：--blue（点阵） / --websearch（线条模糊，除殿堂外全站） / --gold（殿堂）
+   蓝色参考原版发布页（galnavi.js）背景：三层光斑 + 对角渐变 + 点阵网格 + 底部光带。 */
 .gd-groundback {
   position: fixed;
   inset: 0;
@@ -729,8 +703,10 @@ const HTML_TEMPLATE = `<!DOCTYPE html>
     radial-gradient(circle at 50% 110%, rgba(var(--gd-color-blue-rgb), 0.12), transparent 36%);
 }
 
-/* 殿堂金：深色底 + 金色光晕（参考现网 palace 背景） */
+/* 殿堂金：深色底 + 金色光晕 + 与全站同款线条模糊 */
 .gd-groundback--gold {
+  isolation: isolate;
+  overflow: hidden;
   background: linear-gradient(145deg, #06070e 0%, #0a0c16 48%, #0e1322 100%);
 }
 
@@ -738,6 +714,47 @@ const HTML_TEMPLATE = `<!DOCTYPE html>
   background:
     radial-gradient(40% 35% at 18% 14%, rgba(var(--gd-color-gold-rgb), 0.12), transparent 70%),
     radial-gradient(36% 32% at 86% 82%, rgba(var(--gd-color-error-rgb), 0.10), transparent 70%);
+}
+
+.gd-groundback--gold::after {
+  inset: -24px;
+  background-image: url("https://assets.galnavi.top/%E7%BA%BF%E6%9D%A1%E5%9B%BE%E6%A1%88.png");
+  background-repeat: repeat;
+  background-position: 0 0;
+  background-size: auto;
+  opacity: 0.16;
+  mix-blend-mode: screen;
+  filter: blur(10.8px);
+}
+
+/* websearch：主站蓝底 + 线条图案平铺；screen 去掉 PNG 黑底 */
+.gd-groundback--websearch {
+  isolation: isolate;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 22% 18%, rgba(var(--gd-color-blue-rgb), 0.2), transparent 34%),
+    radial-gradient(circle at 78% 76%, rgba(var(--gd-color-cyan-rgb), 0.14), transparent 32%),
+    radial-gradient(circle at 50% 50%, rgba(var(--gd-color-secondary-rgb), 0.06), transparent 52%),
+    linear-gradient(145deg, var(--gd-color-background) 0%, var(--gd-color-surface) 45%, var(--gd-color-surface-variant) 100%);
+}
+
+.gd-groundback--websearch::before {
+  inset: -24px;
+  background-image: url("https://assets.galnavi.top/%E7%BA%BF%E6%9D%A1%E5%9B%BE%E6%A1%88.png");
+  background-repeat: repeat;
+  background-position: 0 0;
+  background-size: auto;
+  opacity: 0.16;
+  mix-blend-mode: screen;
+  filter: blur(10.8px);
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+.gd-groundback--websearch::after {
+  background:
+    linear-gradient(90deg, transparent, rgba(var(--gd-color-white-rgb), 0.028), transparent),
+    radial-gradient(circle at 50% 110%, rgba(var(--gd-color-blue-rgb), 0.12), transparent 36%);
 }
 
 /* prefers-reduced-motion：背景静态无动画，无额外处理 */
@@ -763,11 +780,17 @@ const HTML_TEMPLATE = `<!DOCTYPE html>
 html {
   scroll-behavior: smooth;
   background: var(--gd-color-background);
+  min-height: 100%;
 }
 
 body.gd-overview {
   margin: 0;
   min-height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  min-height: var(--gd-vvh, 100dvh);
+  display: flex;
+  flex-direction: column;
   color: var(--gd-color-on-surface);
   font-family: var(--gd-font-sans);
   text-rendering: optimizeLegibility;
@@ -793,6 +816,7 @@ body.gd-overview {
   max-width: none;
   margin: 0;
   box-sizing: border-box;
+  flex: 1 1 auto;
 }
 
 .gd-overview__layout {
@@ -1068,16 +1092,15 @@ body.gd-overview {
   position: relative;
 }
 
-.gd-overview .gd-footer {
-  margin-top: 56px;
+.gd-overview .gd-footer--page {
+  margin-top: auto;
   padding-top: 24px;
   border-top: none;
-}
-/* 尾页 footer：仅页面底部的 GALNAVI · Design 加顶部虚线分隔 */
-.gd-overview .gd-footer--page {
-  background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMSIgdmlld0JveD0iMCAwIDMyIDEiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxnIGNsaXAtcGF0aD0idXJsKCNjbGlwMF9oKSI+CjxwYXRoIGQ9Ik0xNiAwTDE2IDFMMCAxTDAgMEwxNiAwWiIgZmlsbD0iIzhiOWNjMCIgZmlsbC1vcGFjaXR5PSIwLjU1Ii8+CjwvZz4KPGRlZnM+CjxjbGlwUGF0aCBpZD0iY2xpcDBfaCI+CjxyZWN0IHdpZHRoPSIxIiBoZWlnaHQ9IjMyIiBmaWxsPSJ3aGl0ZSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAxKSByb3RhdGUoLTkwKSIvPgo8L2NsaXBQYXRoPgo8L2RlZnM+Cjwvc3ZnPgo=");
-  background-repeat: repeat-x;
-  background-position: 0 0;
+  flex-shrink: 0;
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 1;
 }
 
 /* —— 右侧「本页内容」 —— */
@@ -1642,7 +1665,7 @@ body.gd-overview {
 .gd-tag--blue { background: var(--gd-tag-2-bg); color: var(--gd-tag-2-fg); border-color: var(--gd-tag-2-border); }
 .gd-tag--pink { background: var(--gd-tag-3-bg); color: var(--gd-tag-3-fg); border-color: var(--gd-tag-3-border); }
 
-/* 标签索引页（example.com/nav/#tags tag-item） */
+/* 标签索引页（galnavi.top/nav/#tags tag-item） */
 .gd-tag-list {
   display: flex;
   flex-wrap: wrap;
@@ -1705,7 +1728,7 @@ body.gd-overview {
 }
 
 /* ===== src/display/card/gd-card.css ===== */
-/* gd-card — 玻璃数值冻结；主站 / 友链 / 殿堂变体 */
+/* gd-card — 玻璃数值冻结；主站 / 友链 / 神魔变体 */
 
 .gd-card {
   position: relative;
@@ -1855,7 +1878,7 @@ body.gd-overview {
   justify-content: start;
 }
 
-/* 殿堂 / 圣器殿堂 item-card */
+/* 神魔 / 圣器殿堂 item-card */
 .gd-card--item {
   --gd-comp-item-color: #fbbf24;
   --gd-comp-item-color-light: #fcd34d;
@@ -1874,9 +1897,28 @@ body.gd-overview {
   min-width: 0;
   max-width: 100%;
   overflow: hidden;
+  isolation: isolate;
   transition:
     background 0.2s var(--gd-motion-easing-standard),
     border-color 0.2s var(--gd-motion-easing-standard);
+}
+.gd-card--item::before {
+  content: "";
+  position: absolute;
+  inset: -24px;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url("https://assets.galnavi.top/%E7%BA%BF%E6%9D%A1%E5%9B%BE%E6%A1%88.png");
+  background-repeat: repeat;
+  background-position: 0 0;
+  background-size: auto;
+  opacity: 0.16;
+  mix-blend-mode: screen;
+  filter: blur(10.8px);
+}
+.gd-card--item > * {
+  position: relative;
+  z-index: 1;
 }
 .gd-card--item--demonic {
   --gd-comp-item-color: #ef4444;
@@ -2094,6 +2136,12 @@ body.gd-overview {
 
 /* ===== src/foundation/layout/gd-footer.css ===== */
 .gd-footer {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  margin-top: auto;
+  width: 100%;
+  box-sizing: border-box;
   text-align: center;
   padding: 28px 16px 40px;
   color: rgba(var(--gd-color-muted-white-rgb), 0.62);
@@ -2130,7 +2178,7 @@ body.gd-overview {
 
 /* ===== 状态页特有样式 ===== */
 .gd-groundback { z-index: 0; }
-.gd-overview__shell { position: relative; z-index: 1; }
+.gd-overview__shell { position: relative; z-index: 1; flex: 1 0 auto; }
 .gd-back-fab { position: fixed; top: max(12px, env(safe-area-inset-top, 0px)); left: max(12px, env(safe-area-inset-left, 0px)); z-index: 50; }
 .gd-overview__content .gd-brand__title { margin-top: 56px; }
 .gd-overview__content h2 { scroll-margin-top: 90px; }
@@ -2312,9 +2360,8 @@ body.gd-overview {
 </style>
 </head>
 <body class="gd-overview">
-<a class="gd-skip-link" href="#dashboard">跳到主要内容</a>
-<div class="gd-groundback gd-groundback--blue" aria-hidden="true"></div>
-<a class="gd-button gd-button--back gd-back-fab" href="https://example.com/nav/" aria-label="返回主站">
+<div class="gd-groundback gd-groundback--websearch" aria-hidden="true"></div>
+<a class="gd-button gd-button--back gd-back-fab" href="https://galnavi.top/nav/" aria-label="返回主站">
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
   返回主站
 </a>
@@ -2381,18 +2428,6 @@ body.gd-overview {
           <div class="gd-empty-state" id="noticeEmpty"><div class="gd-empty-state__icon" aria-hidden="true">📢</div><p class="gd-empty-state__title">暂无公告</p></div>
         </div>
       </section>
-      
-      <footer class="gd-footer gd-footer--page" role="contentinfo">
-        <nav class="gd-footer__nav" aria-label="页脚导航">
-          <a href="https://example.com/sitemap.xml">sitemap.xml</a><span class="gd-footer__sep" aria-hidden="true">|</span>
-          <a href="https://example.com/robots.txt">robots.txt</a><span class="gd-footer__sep" aria-hidden="true">|</span>
-          <a href="mailto:contact@example.com">联系站长</a><span class="gd-footer__sep" aria-hidden="true">|</span>
-          <a href="https://example.com/nav/donate/">赞助本站</a><span class="gd-footer__sep" aria-hidden="true">|</span>
-          <a href="https://example.com/nav/friend/">申请友链</a><span class="gd-footer__sep" aria-hidden="true">|</span>
-          <a href="https://example.com/status/" aria-current="page">站点状态</a>
-        </nav>
-        <p class="gd-footer__copy">&copy; 2026 GALNAVI · 愿每一次探索都有新的收获</p>
-      </footer>
     </div>
     <aside class="gd-overview__toc" aria-label="本页内容">
       <nav class="gd-otp" aria-label="本页索引">
@@ -2407,7 +2442,22 @@ body.gd-overview {
     </aside>
   </div>
 </div>
+<footer class="gd-footer gd-footer--page" role="contentinfo">
+  <nav class="gd-footer__nav" aria-label="页脚导航">
+    <a href="https://galnavi.top/nav/help/">帮助文档</a>
+    <span class="gd-footer__sep" aria-hidden="true">|</span>
+    <a href="https://galnavi.top/nav/about/">关于本站</a>
+    <span class="gd-footer__sep" aria-hidden="true">|</span>
+    <a href="mailto:galnavifeedback@protonmail.com">联系站长</a>
+    <span class="gd-footer__sep" aria-hidden="true">|</span>
+    <a href="https://galnavi.top/nav/friend/">申请友链</a>
+    <span class="gd-footer__sep" aria-hidden="true">|</span>
+    <a href="https://galnavi.top/status/" aria-current="page">站点状态</a>
+  </nav>
+  <p class="gd-footer__copy">&copy; 2026 GALNAVI · 愿每一次探索都有新的收获</p>
+</footer>
 <script>
+(function(){function a(){var h=(window.visualViewport&&window.visualViewport.height)||window.innerHeight;document.documentElement.style.setProperty("--gd-vvh",h+"px");}a();window.addEventListener("resize",a);if(window.visualViewport)window.visualViewport.addEventListener("resize",a);})();
 (function() {
 var root = document.querySelector('.gd-overview-toc-mobile');
 var btn = root && root.querySelector('[data-extend-ui-toc-toggle]');
@@ -2486,6 +2536,6 @@ window.addEventListener('scroll', requestSync, { passive: true });
 window.addEventListener('resize', requestSync);
 }
 })();
-<\/script>
+</script>
 </body>
 </html>`;

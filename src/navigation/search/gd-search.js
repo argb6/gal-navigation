@@ -60,6 +60,7 @@ function escapeHtml(s) {
   ));
 }
 
+const DEFAULT_HELP_HTML = `<span class="gd-search__help-tip__title">搜索规则</span><ul class="gd-search__help-tip__list"><li class="gd-search__help-tip__row"><code class="gd-search__help-tip__syn">ACG[空格]小说</code><span class="gd-search__help-tip__desc">包含 ACG 或小说</span></li><li class="gd-search__help-tip__row"><code class="gd-search__help-tip__syn">ACG[空格]+小说</code><span class="gd-search__help-tip__desc">同时包含 ACG 与小说</span></li><li class="gd-search__help-tip__row"><code class="gd-search__help-tip__syn">ACG[空格]-小说</code><span class="gd-search__help-tip__desc">含 ACG 且不含小说</span></li></ul>`;
 const DEFAULT_HELP =
   "ACG[空格]小说 包含ACG或小说的卡片\nACG[空格]+小说，同时包含ACG和小说的卡片\nACG[空格]-小说，包含ACG但不能有小说的卡片";
 
@@ -69,12 +70,13 @@ class GdSearch extends HTMLElement {
       const toolbar = this.getAttribute("variant") === "toolbar";
       const ariaLabel = this.getAttribute("aria-label") || "搜索";
       const help = this.hasAttribute("help");
-      const helpText = escapeHtml(this.getAttribute("help-text") || DEFAULT_HELP);
+      const customHelp = this.getAttribute("help-text");
+      const helpBody = customHelp ? escapeHtml(customHelp) : DEFAULT_HELP_HTML;
       const helpId = help ? "gd-search-help-" + Math.random().toString(36).slice(2, 8) : "";
       const helpHtml = help
         ? `<span class="gd-search__help-wrap gd-tooltip-wrap">
             <button type="button" class="gd-search__help" aria-label="搜索规则" aria-describedby="${helpId}">?</button>
-            <span class="gd-tooltip gd-search__help-tip" id="${helpId}" role="tooltip">${helpText}</span>
+            <span class="gd-tooltip gd-search__help-tip" id="${helpId}" role="tooltip">${helpBody}</span>
           </span>`
         : "";
       this.innerHTML = `

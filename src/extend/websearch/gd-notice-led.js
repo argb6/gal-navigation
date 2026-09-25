@@ -1,36 +1,48 @@
 /**
  * gd-notice-led — 顶栏通知跑马灯。
- * 复制文案填满两倍宽度后，按约 48px/s 写入 --gd-notice-led-duration，循环次数 infinite。
+ * 先铺满一屏，再复制一整段。位移用 --gd-notice-led-shift（像素），
+ * 时长用 --gd-notice-led-duration，按约 48px/s，循环次数 infinite。
  */
 export function initGdNoticeLed(root) {
   const led = typeof root === "string" ? document.querySelector(root) : (root || document.querySelector(".gd-notice-led"));
   const track = led && led.querySelector(".gd-notice-led__track");
   if (!led || !track) return;
   const first = track.querySelector(".gd-notice-led__item");
-  const text = first ? first.textContent : "";
+  const html = first ? first.innerHTML : "";
+
+  function mute(node) {
+    node.setAttribute("aria-hidden", "true");
+    node.querySelectorAll("a").forEach((a) => { a.tabIndex = -1; });
+  }
 
   function fillLed() {
-    if (!text) return;
+    if (!html) return;
+    track.style.animation = "none";
+    track.style.transform = "none";
     track.innerHTML = "";
-    let i = 0;
+    const nodes = [];
+    let guard = 0;
     do {
       const s = document.createElement("span");
       s.className = "gd-notice-led__item";
-      s.textContent = text;
-      if (i) s.setAttribute("aria-hidden", "true");
+      s.innerHTML = html;
+      if (nodes.length) mute(s);
       track.appendChild(s);
-      i += 1;
-    } while (track.scrollWidth < led.clientWidth * 2 && i < 12);
-    if (i < 2) {
-      const extra = document.createElement("span");
-      extra.className = "gd-notice-led__item";
-      extra.textContent = text;
-      extra.setAttribute("aria-hidden", "true");
-      track.appendChild(extra);
-    }
-    const half = track.scrollWidth / 2;
-    const dur = half > 0 ? half / 48 : 22;
-    track.style.setProperty("--gd-notice-led-duration", dur + "s");
+      nodes.push(s);
+      guard += 1;
+    } while (track.scrollWidth < led.clientWidth && guard < 8);
+    const clones = nodes.map((node) => {
+      const clone = node.cloneNode(true);
+      mute(clone);
+      track.appendChild(clone);
+      return clone;
+    });
+    let shift = Math.round(clones[0].getBoundingClientRect().left - nodes[0].getBoundingClientRect().left);
+    if (shift < 1) shift = Math.round(track.scrollWidth / 2);
+    track.style.setProperty("--gd-notice-led-shift", (-shift) + "px");
+    track.style.setProperty("--gd-notice-led-duration", (shift / 48) + "s");
+    track.style.animation = "";
+    track.style.transform = "";
   }
 
   fillLed();

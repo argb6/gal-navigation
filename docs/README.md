@@ -1,4 +1,7 @@
-# GalNavi gd 组件库 · 总说明
+﻿# GalNavi gd 组件库 · 总说明
+
+> **维护方：前端。** 与 `src/` 组件库同仓维护；改组件时同步改 docs。失效案例写入 `docs/standard/失效断链清单.md` 与 `kb/.../Problem/`。
+
 
 `src/` 是 GalNavi 自研的浏览器侧组件库（原生 CSS + CSS 变量 + 少量 Web Components），服务于现有 Cloudflare Worker 页面。页面数据、跳转、过滤和服务端逻辑由 Worker 自己处理；组件库只负责外观、交互状态和少量通用行为。
 
@@ -19,14 +22,14 @@
 | 注册 | `runtime/` | 自定义元素注册入口 |
 | 预览 | `preview/` | 组件总览页 + 打包产物 |
 
-完整目录树见 [`src/README.md`](../src/README.md)。版本戳 [`gd.config.json`](./gd.config.json)。
+完整目录树见 [`前端/src/README.md`](../../前端/src/README.md)（组件源在前端工作区）。版本戳 [`gd.config.json`](./gd.config.json)。
 
 ## 开发流程
 
 1. 改代码前先读本目录各文档
 2. 新增组件：选目录 → token 样式 → `preview/index.html` 加展示 → 更新文档（详见 [`standard/usage.md`](./standard/usage.md)）
 3. 改了 JS 必须重新打包（命令见 `src/README.md` 预览章节）
-4. 预览：双击 `src/preview/index.html`（file://）或静态 HTTP 服务
+4. 预览：双击 前端区 `src/preview/index.html`（file://；本区无此文件）或静态 HTTP 服务
 
 ## 文档导航
 
@@ -40,4 +43,10 @@
 | [`standard/open-source-prep.md`](./standard/open-source-prep.md) | 开源脱敏清单 |
 | [`examples/`](./examples/) | 短示例 |
 | [`decisions/`](./decisions/) | ADR |
-| [`../kb/README.md`](../kb/README.md) | 知识库入口与版本 |
+| [`../kb/GALNAVI-KB/README.md`](../kb/GALNAVI-KB/README.md) | 知识库入口与版本 |
+
+## 部署区维护
+
+- **跨区说明**：文档里的 `src/`、`sandbox/` 指前端工作区实体；本区维护 `docs/`、`wrangler/`、`worker/new/`、`kb/`。ADR/CHANGELOG 里的 `src/` 叙述先不批量改路径。
+- 跨区断链与过时路径：[standard/失效断链清单.md](./standard/失效断链清单.md)
+- 组件源码与预览在 **前端** 工作区的 `src/`，本区打开 `../src/...` 会断链属预期，改链前先对齐总指挥。

@@ -1,6 +1,6 @@
 # 使用示例
 
-活示例以 [`src/preview/index.html`](../../src/preview/index.html) 为准。本目录只留短片段，避免和预览页两套 HTML 长期分叉。
+活示例以 [前端 `src/preview/index.html`](../../../前端/src/preview/index.html) 为准。本目录只留短片段，避免和预览页两套 HTML 长期分叉。
 
 | 文件 | 组件 |
 |---|---|

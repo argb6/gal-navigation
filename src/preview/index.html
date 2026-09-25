@@ -81,7 +81,7 @@
     <article class="gd-overview__layout">
       <div class="gd-overview__content">
         <header>
-          <time class="gd-overview__date" datetime="2026-09-01">2026年9月1日 · v1.5.2</time>
+          <time class="gd-overview__date" datetime="2026-09-25">2026年9月25日 · v1.6.1</time>
           <h1 class="gd-overview__title" id="brand">gd 组件库</h1>
           <p class="gd-overview__lede">
             对照 galnavi 现有样式抽取；MD3 只对齐字号 / 圆角语义 / 状态透明度 / 动效时长。保留玻璃配色与层级，导航、抽屉和卡片不使用高斯模糊或阴影。短页页脚贴底；详情卡片在浏览器缩放时反向缩放。
@@ -151,17 +151,10 @@
           </nav>
           </gd-navbar>
           <div class="gd-below-nav" style="position:relative">
-            <div class="gd-notice-led" id="previewNoticeLed" tabindex="0" aria-label="站点通知演示">
+            <div class="gd-notice-led" id="previewNoticeLed" tabindex="0" aria-label="站点通知：本站闲聊群，遇到问题请打开帮助文档，更多标签点这里，想要了解本站点这里">
               <div class="gd-notice-led__track">
-                <span class="gd-notice-led__item">GALNAVI 2正式上线，本站特色是卡片的介绍详情和后续持续更新的教程体系</span>
+                <span class="gd-notice-led__item">本站<a class="gd-link" href="https://qm.qq.com/q/mYzxtmRVy8" target="_blank" rel="noopener noreferrer">闲聊群</a>，遇到问题请打开<a class="gd-link" href="https://galnavi.top/nav/help/">帮助文档</a>，更多标签<a class="gd-link" href="https://galnavi.top/nav/?cat=标签" data-gd-nav-tags aria-label="更多标签点这里">点这里</a>，想要了解本站<a class="gd-link" href="https://galnavi.top/nav/about/" aria-label="了解本站点这里">点这里</a></span>
               </div>
-            </div>
-            <div class="gd-rec-tags" aria-label="推荐标签">
-              <span class="gd-rec-tags__label">推荐标签：</span>
-              <button type="button" class="gd-tag">音乐</button>
-              <button type="button" class="gd-tag">小说</button>
-              <button type="button" class="gd-tag">漫画</button>
-              <a class="gd-link gd-rec-tags__more" href="#search" aria-label="更多标签">更多</a>
             </div>
           </div>
         </div>
@@ -292,9 +285,9 @@
 
     <section class="gd-section" id="card">
       <h2 class="gd-section__title">card 主站卡片</h2>
-      <p class="demo-note">尺寸 420×212；单列宽度 100%；主站网格每行最多 6 张（<code>gd-card-grid</code>）。标签靠左。</p>
+      <p class="demo-note">宽度 min(400px, 100%)，高度按标题/简介字号行盒固定（简介最多 3 行）；主站网格每行最多 6 张（<code>gd-card-grid</code>）。卡面只保留图标、标题、简介；点击整卡打开详情弹窗（标签与操作在弹窗内）。</p>
       <div class="demo-preview">
-        <article class="gd-card">
+        <article class="gd-card gd-card--general gd-card--link" id="demoSiteCard" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="siteCardModal" aria-label="打开卡片名称详情">
             <div class="gd-card__header">
               <div class="gd-card__icon" aria-hidden="true">霊</div>
               <div class="gd-card__title-wrap">
@@ -302,23 +295,13 @@
                 <div class="gd-card__subtitle">这里展示卡片的简要描述，让访客一眼了解内容方向。</div>
               </div>
             </div>
-            <div class="gd-card__tags">
-              <span class="gd-tag">ACG论坛</span>
-              <span class="gd-tag gd-tag--blue">galgame</span>
-              <span class="gd-tag gd-tag--pink">漫画</span>
-              <span class="gd-tag">ASMR</span>
-            </div>
-            <div class="gd-card__actions">
-              <button type="button" class="gd-card__btn gd-card__btn--detail">介绍详情</button>
-              <button type="button" class="gd-card__btn gd-card__btn--link">链接直达</button>
-            </div>
           </article>
       </div>
     </section>
 
     <section class="gd-section" id="publish-card">
       <h2 class="gd-section__title">card · 发布卡</h2>
-      <p class="demo-note">品牌标 + 发光字 + 站点说明，确认后进入主站。</p>
+      <p class="demo-note">主站卡 gd-card--general：固定宽 400px、高 100px，简介单行省略；点卡弹详情（标签与链接在弹窗内）。</p>
       <div class="demo-preview">
         <div class="demo-preview__bar">
           <span class="demo-preview__label">发布卡片</span>
@@ -345,7 +328,7 @@
 
     <section class="gd-section" id="item">
       <h2 class="gd-section__title">card · item 殿堂条目卡</h2>
-      <p class="demo-note">序号、中日标题、官网/详情与金色外链。</p>
+      <p class="demo-note">主站卡 gd-card--general：固定宽 400px、高 100px，简介单行省略；点卡弹详情（标签与链接在弹窗内）。</p>
       <div class="demo-preview">
         <div class="gd-item-list">
           <article class="gd-card gd-card--item">
@@ -468,26 +451,17 @@
 
     <section class="gd-section" id="skeleton">
       <h2 class="gd-section__title">skeleton 骨架屏</h2>
-      <p class="demo-note">数据加载占位：主站卡片 / 轮播原尺寸 / 详情页三列卡片 / 殿堂条目卡（尺寸与真实卡片一致）。</p>
+      <p class="demo-note">主站卡骨架 gd-skeleton--card：固定 400×100，标题条 + 简介条各一条。</p>
 
       <div class="demo-preview">
         <div class="demo-preview__label" style="margin-bottom:10px">主站卡片轮廓</div>
-        <div class="gd-skeleton gd-skeleton--card" aria-hidden="true">
+                <div class="gd-skeleton gd-skeleton--card" aria-hidden="true">
           <div class="gd-skeleton__header">
             <div class="gd-skeleton__block gd-skeleton__icon"></div>
             <div class="gd-skeleton__title-wrap">
               <div class="gd-skeleton__block gd-skeleton__line gd-skeleton__line--title"></div>
               <div class="gd-skeleton__block gd-skeleton__line gd-skeleton__line--sub"></div>
             </div>
-          </div>
-          <div class="gd-skeleton__tags">
-            <div class="gd-skeleton__block gd-skeleton__tag"></div>
-            <div class="gd-skeleton__block gd-skeleton__tag"></div>
-            <div class="gd-skeleton__block gd-skeleton__tag"></div>
-          </div>
-          <div class="gd-skeleton__actions">
-            <div class="gd-skeleton__block gd-skeleton__btn"></div>
-            <div class="gd-skeleton__block gd-skeleton__btn"></div>
           </div>
         </div>
       </div>
@@ -579,25 +553,17 @@
 
     <section class="gd-section" id="filter-bar">
       <h2 class="gd-section__title">gd-orb__toggle 右下扩展按钮</h2>
-      <p class="demo-note">首页快捷入口改为右下角按钮，点开后展开两列：站内入口 / 站点页面。真实按钮，Esc 关闭。</p>
+      <p class="demo-note">主站右下角扩展按钮：点开展开快捷入口，仅保留标签、弹窗、仓库、殿堂。</p>
       <div class="demo-preview demo-preview--orb">
         <div class="gd-orb gd-orb--demo" id="previewOrb">
-          <div class="gd-orb__menu" id="previewOrbMenu" role="region" aria-label="快捷入口">
-            <div class="gd-orb__col" role="group" aria-label="站内入口">
-              <button type="button" class="gd-orb__item" data-gd-orb="tags">标签</button>
-              <button type="button" class="gd-orb__item" data-gd-orb="tavern">酒馆</button>
-              <button type="button" class="gd-orb__item" data-gd-orb="repo">仓库</button>
-              <button type="button" class="gd-orb__item" data-gd-orb="popup">弹窗</button>
-            </div>
-            <div class="gd-orb__col" role="group" aria-label="站点页面">
-              <button type="button" class="gd-orb__item" data-gd-orb="about">关于</button>
-              <button type="button" class="gd-orb__item" data-gd-orb="help">帮助</button>
-              <button type="button" class="gd-orb__item" data-gd-orb="friend">友链</button>
-              <button type="button" class="gd-orb__item" data-gd-orb="palace">殿堂</button>
-            </div>
+                    <div class="gd-orb__menu" id="previewOrbMenu" role="region" aria-label="快捷入口">
+            <button type="button" class="gd-orb__item" data-gd-orb="tags">🏷️ 标签</button>
+            <button type="button" class="gd-orb__item" data-gd-orb="popup">💬 弹窗</button>
+            <a class="gd-orb__item" href="https://github.com/argb6/gal-navigation" target="_blank" rel="noopener noreferrer">📦 仓库</a>
+            <a class="gd-orb__item" href="https://galnavi.top/nav/palace/" target="_blank" rel="noopener noreferrer">🏛️ 殿堂</a>
           </div>
-          <button type="button" class="gd-orb__toggle" aria-expanded="false" aria-controls="previewOrbMenu" aria-label="打开快捷入口">
-            <svg class="gd-orb__icon gd-orb__icon--grid" viewBox="0 0 24 24" focusable="false" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="1.6" fill="currentColor"/><rect x="13" y="3" width="8" height="8" rx="1.6" fill="currentColor"/><rect x="3" y="13" width="8" height="8" rx="1.6" fill="currentColor"/><rect x="13" y="13" width="8" height="8" rx="1.6" fill="currentColor"/></svg>
+        <button type="button" class="gd-orb__toggle" aria-expanded="false" aria-controls="previewOrbMenu" aria-label="打开快捷入口">
+            <svg class="gd-orb__icon gd-orb__icon--grid" viewBox="0 0 24 24" focusable="false" aria-hidden="true"><path fill="currentColor" d="M12 2.2 14.9 8.7 22 9.4 16.7 14.1 18.2 21.1 12 17.5 5.8 21.1 7.3 14.1 2 9.4 9.1 8.7Z"/></svg>
             <svg class="gd-orb__icon gd-orb__icon--close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" focusable="false" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
           </button>
         </div>
@@ -974,11 +940,14 @@
         <p class="demo-note" style="margin:0">短内容区</p>
         <footer class="gd-footer">
           <nav class="gd-footer__nav" aria-label="页脚链接">
-            <a href="#footer">sitemap.xml</a><span class="gd-footer__sep" aria-hidden="true">|</span>
-            <a href="#footer">robots.txt</a><span class="gd-footer__sep" aria-hidden="true">|</span>
-            <a href="#footer">联系站长</a><span class="gd-footer__sep" aria-hidden="true">|</span>
-            <a href="#footer">赞助本站</a><span class="gd-footer__sep" aria-hidden="true">|</span>
-            <a href="#footer">申请友链</a><span class="gd-footer__sep" aria-hidden="true">|</span>
+            <a href="#footer">帮助文档</a>
+            <span class="gd-footer__sep" aria-hidden="true">|</span>
+            <a href="#footer">关于本站</a>
+            <span class="gd-footer__sep" aria-hidden="true">|</span>
+            <a href="#footer">联系站长</a>
+            <span class="gd-footer__sep" aria-hidden="true">|</span>
+            <a href="#footer">申请友链</a>
+            <span class="gd-footer__sep" aria-hidden="true">|</span>
             <a href="#footer">站点状态</a>
           </nav>
           <p class="gd-footer__copy">© 2026 GALNAVI · 愿每一次探索都有新的收获</p>
@@ -1037,6 +1006,28 @@
     </article>
   </main>
 
+  <gd-modal class="gd-modal-overlay" id="siteCardModal" role="dialog" aria-modal="true" aria-labelledby="siteCardModalTitle" aria-hidden="true" data-close-on-backdrop>
+    <div class="gd-modal gd-modal--site-card">
+      <button type="button" class="gd-modal__close" data-gd-close aria-label="关闭">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+      <div class="gd-modal--site-card__head">
+        <div class="gd-card__icon" aria-hidden="true">霊</div>
+        <h2 class="gd-modal__title" id="siteCardModalTitle">卡片名称</h2>
+      </div>
+      <p class="gd-modal__body">这里展示卡片的完整简介：站点定位、收录范围与使用提示等具体信息，供访客在弹窗内阅读后再跳转。</p>
+      <div class="gd-card__tags gd-modal--site-card__tags">
+        <span class="gd-tag">ACG论坛</span>
+        <span class="gd-tag gd-tag--blue">galgame</span>
+        <span class="gd-tag gd-tag--pink">漫画</span>
+        <span class="gd-tag">ASMR</span>
+      </div>
+      <div class="gd-modal__actions gd-modal__actions--row">
+        <a class="gd-card__btn gd-card__btn--detail" href="https://galnavi.top/nav/detail/?item_key=demo" target="_blank" rel="noopener noreferrer">介绍详情</a>
+        <a class="gd-card__btn gd-card__btn--link" href="https://galnavi.top/" target="_blank" rel="noopener noreferrer">链接直达</a>
+      </div>
+    </div>
+  </gd-modal>
   <gd-modal class="gd-modal-overlay gd-modal-overlay--redirect" id="redirectModal" role="dialog" aria-modal="true" aria-labelledby="redirectModalTitle" aria-hidden="true">
     <div class="gd-redirect-ring" aria-hidden="true"></div>
     <div class="gd-redirect-text" id="redirectModalTitle">即将跳转</div>

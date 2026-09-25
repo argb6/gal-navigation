@@ -726,11 +726,14 @@ body {
 </main>
 <footer class="gd-footer" role="contentinfo">
 <nav class="gd-footer__nav" aria-label="页脚导航">
-<a href="https://galnavi.top/sitemap.xml">sitemap.xml</a><span class="gd-footer__sep" aria-hidden="true">|</span>
-<a href="https://galnavi.top/robots.txt">robots.txt</a><span class="gd-footer__sep" aria-hidden="true">|</span>
-<a href="mailto:feedback@galnavi.top">联系站长</a><span class="gd-footer__sep" aria-hidden="true">|</span>
-<a href="https://galnavi.top/nav/donate/">赞助本站</a><span class="gd-footer__sep" aria-hidden="true">|</span>
-<a href="https://galnavi.top/nav/friend/">申请友链</a><span class="gd-footer__sep" aria-hidden="true">|</span>
+<a href="https://galnavi.top/nav/help/">帮助文档</a>
+<span class="gd-footer__sep" aria-hidden="true">|</span>
+<a href="https://galnavi.top/nav/about/">关于本站</a>
+<span class="gd-footer__sep" aria-hidden="true">|</span>
+<a href="mailto:feedback@galnavi.top">联系站长</a>
+<span class="gd-footer__sep" aria-hidden="true">|</span>
+<a href="https://galnavi.top/nav/friend/">申请友链</a>
+<span class="gd-footer__sep" aria-hidden="true">|</span>
 <a href="https://galnavi.top/status/">站点状态</a>
 </nav>
 <p class="gd-footer__copy">© 2026 GALNAVI · 愿每一次探索都有新的收获</p>

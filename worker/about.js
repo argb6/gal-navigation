@@ -1941,7 +1941,7 @@ body.gd-overview {
 <section class="gd-section" id="community">  <h2 class="gd-section__title">本站社群</h2><div class="card">
 <h3>交流群</h3>
 <ul>
-<li>QQ群：416074347。</li>
+<li>本站<a class="gd-link" href="https://qm.qq.com/q/mYzxtmRVy8" target="_blank" rel="noopener noreferrer">闲聊群</a>。</li>
 <li>本群用于 GALNAVI 相关交流、反馈与 ACG/Galgame 内容讨论。</li>
 <li>请文明交流，禁止广告、刷屏、引战及违法违规内容；分享第三方资源或链接时请注意版权与安全。</li>
 <li>如有网站问题、收录建议或功能反馈，欢迎在群内提出。</li>
@@ -1969,7 +1969,7 @@ body.gd-overview {
 </aside>
   </div>
 </div>
-<footer class="gd-footer gd-footer--page"><nav class="gd-footer__nav" aria-label="页脚链接"><a href="https://galnavi.top/sitemap.xml">sitemap.xml</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/robots.txt">robots.txt</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="mailto:feedback@galnavi.top">联系站长</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/donate/">赞助本站</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/friend/">申请友链</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/status/">站点状态</a></nav><p class="gd-footer__copy">© 2026 GALNAVI · 愿每一次探索都有新的收获</p></footer>
+<footer class="gd-footer gd-footer--page"><nav class="gd-footer__nav" aria-label="页脚链接"><a href="https://galnavi.top/nav/help/">帮助文档</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/about/">关于本站</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="mailto:feedback@galnavi.top">联系站长</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/friend/">申请友链</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/status/">站点状态</a></nav><p class="gd-footer__copy">© 2026 GALNAVI · 愿每一次探索都有新的收获</p></footer>
 <div id="redirectOverlay" class="gd-overview__redirect-overlay" aria-live="polite" aria-atomic="true"><div class="gd-overview__redirect-ring" aria-hidden="true"></div><div class="gd-overview__redirect-text">即将跳转</div><div id="redirectCountdown" class="gd-overview__redirect-countdown">3</div><button type="button" id="redirectCancel" class="gd-overview__redirect-cancel">取消跳转</button></div>
 <script>
 (function(){function a(){var h=(window.visualViewport&&window.visualViewport.height)||window.innerHeight;document.documentElement.style.setProperty("--gd-vvh",h+"px");}a();window.addEventListener("resize",a);if(window.visualViewport)window.visualViewport.addEventListener("resize",a);})();

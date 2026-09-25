@@ -80,9 +80,8 @@ gd 的部分设计要素参考并对齐 Google Material Design 3（MD3），对�
 │     └─ gd.js                   注册 gd-modal、gd-navbar、gd-search
 │
 └─ worker/                    服务端（不打包进浏览器）
-   ├─ 页面 Worker               websearch · detail · donate · about · help · friend · palace · index · error · status（β）
-   ├─ shared/                   对照（constants / security / seo）；页面不 import
-   └─ layer/                    分层对照，入口未接入
+   ├─ 页面 Worker               websearch · detail · donate · about · help · friend · palace · index · error · status
+   └─ shared/                   参考副本（constants / security / seo）；worker/new 不 import
 ```
 
 核心组件共 14 类（card/tag/badge/skeleton/brand/empty-state/table/toast/tooltip/hero-carousel/modal/navbar/search/footer），加上 `actions` 交互基元和 `layout` 页面结构层；`extend/` 仅承载按页面归类的扩展样式，不属于跨页核心组件。

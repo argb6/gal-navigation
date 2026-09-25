@@ -1922,13 +1922,11 @@ body.gd-overview {
 </div>
 <footer class="gd-footer gd-footer--page">
   <nav class="gd-footer__nav" aria-label="页脚链接">
-    <a href="https://galnavi.top/sitemap.xml">sitemap.xml</a>
+    <a href="https://galnavi.top/nav/help/">帮助文档</a>
     <span class="gd-footer__sep" aria-hidden="true">|</span>
-    <a href="https://galnavi.top/robots.txt">robots.txt</a>
+    <a href="https://galnavi.top/nav/about/">关于本站</a>
     <span class="gd-footer__sep" aria-hidden="true">|</span>
     <a href="mailto:feedback@galnavi.top">联系站长</a>
-    <span class="gd-footer__sep" aria-hidden="true">|</span>
-    <a href="https://galnavi.top/nav/donate/">赞助本站</a>
     <span class="gd-footer__sep" aria-hidden="true">|</span>
     <a href="https://galnavi.top/nav/friend/">申请友链</a>
     <span class="gd-footer__sep" aria-hidden="true">|</span>

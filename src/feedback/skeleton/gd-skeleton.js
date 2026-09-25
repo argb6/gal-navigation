@@ -30,15 +30,6 @@ const VARIANT_TEMPLATES = {
           <div class="gd-skeleton__block gd-skeleton__line gd-skeleton__line--sub"></div>
         </div>
       </div>
-      <div class="gd-skeleton__tags">
-        <div class="gd-skeleton__block gd-skeleton__tag"></div>
-        <div class="gd-skeleton__block gd-skeleton__tag"></div>
-        <div class="gd-skeleton__block gd-skeleton__tag"></div>
-      </div>
-      <div class="gd-skeleton__actions">
-        <div class="gd-skeleton__block gd-skeleton__btn"></div>
-        <div class="gd-skeleton__block gd-skeleton__btn"></div>
-      </div>
     </div>`,
   hero: () => `<div class="gd-skeleton gd-skeleton--hero" aria-hidden="true"></div>`,
 };

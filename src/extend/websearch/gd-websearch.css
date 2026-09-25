@@ -1,6 +1,6 @@
 /* gd-websearch — 主站内容壳：卡片最多 6 列，超宽屏限宽；单列宽度自适应 */
 
-/* 顶栏通知跑马灯：循环次数 infinite；一轮时长由 --gd-notice-led-duration 控制（initGdNoticeLed 按字宽写入，默认 22s） */
+/* 顶栏通知跑马灯：循环次数 infinite；位移 --gd-notice-led-shift，时长 --gd-notice-led-duration（initGdNoticeLed 按字宽写入） */
 .gd-notice-led {
   height: 36px;
   overflow: hidden;
@@ -22,10 +22,15 @@
   padding: 0 64px;
   white-space: nowrap;
   line-height: 36px;
+  flex: 0 0 auto;
+}
+.gd-notice-led .gd-link {
+  font-size: inherit;
+  font-weight: inherit;
 }
 @keyframes gd-led-marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(var(--gd-notice-led-shift, -50%), 0, 0); }
 }
 @media (prefers-reduced-motion: reduce) {
   .gd-notice-led__track {
@@ -38,8 +43,8 @@
 }
 
 .gd-page-shell {
-  --gd-card-w: 420px;
-  --gd-card-h: 212px;
+  --gd-card-w: 400px;
+  --gd-card-h: auto; /* card height is content-driven; kept for compat */
   --gd-card-gap: 14px;
   --gd-card-cols: 6;
   --gd-page-gutter: 32px;
@@ -64,10 +69,10 @@
   gap: var(--gd-card-gap, 14px);
   width: 100%;
   max-width: calc(
-    var(--gd-card-cols, 6) * var(--gd-card-w, 420px) +
+    var(--gd-card-cols, 6) * var(--gd-card-w, 400px) +
     (var(--gd-card-cols, 6) - 1) * var(--gd-card-gap, 14px)
   );
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--gd-card-w, 420px)), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--gd-card-w, 400px)), 1fr));
 }
 
 @media (max-width: 640px) {
