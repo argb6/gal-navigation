@@ -17,8 +17,8 @@ const SECURITY_HEADERS = {
   "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; connect-src 'self' https://galnavi.top https://api.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self'",
 };
 
-// Cloudflare API Token（生产部署建议改为 Secret 绑定 CF_API_TOKEN）
-const CF_API_TOKEN = "YOUR_CLOUDFLARE_API_TOKEN";
+// Cloudflare API Token：部署侧 wrangler secret put CF_API_TOKEN（运行时 env.CF_API_TOKEN）
+// 禁止硬编码；缺 Secret 时 refreshApiData 降级，不带空 Bearer 调 API
 const ZONE_NAME = "galnavi.top";
 const CF_API_BASE = "https://api.cloudflare.com/client/v4";
 const CF_GRAPHQL = "https://api.cloudflare.com/client/v4/graphql";
@@ -91,10 +91,25 @@ async function saveApiCache(env, data) {
 
 // 网页自行抓取：到点时由首个访问请求触发（无 Cron），其余时间用缓存
 async function refreshApiData(env) {
+  const token = env && env.CF_API_TOKEN;
+  if (!token) {
+    // 缺 Secret：明确降级，不静默用空串调 CF API
+    const now = beijingNow();
+    const prev = await loadApiCache(env);
+    const fresh = {
+      date: now.date,
+      slot: currentSlot(now.hour),
+      visits: prev ? prev.visits : null,
+      fetchedAt: Date.now(),
+      error: "missing CF_API_TOKEN",
+    };
+    await saveApiCache(env, fresh);
+    return fresh;
+  }
   let zone = null;
-  try { zone = await fetchZone(); } catch { /* 存储/接口失败时走内存或默认值 */ }
+  try { zone = await fetchZone(token); } catch { /* 存储/接口失败时回内存或默认值 */ }
   let visits = null;
-  try { if (zone) visits = await fetchTotalRequests(zone.id); } catch { /* 存储/接口失败时走内存或默认值 */ }
+  try { if (zone) visits = await fetchTotalRequests(zone.id, token); } catch { /* 存储/接口失败时回内存或默认值 */ }
   const now = beijingNow();
   const fresh = { date: now.date, slot: currentSlot(now.hour), visits, fetchedAt: Date.now() };
   await saveApiCache(env, fresh);
@@ -119,10 +134,11 @@ function esc(s) {
   return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
 }
 
-async function cfFetch(path, opts) {
+async function cfFetch(path, opts, token) {
+  if (!token) throw new Error("missing CF_API_TOKEN secret");
   const resp = await fetch(CF_API_BASE + path, {
     ...(opts || {}),
-    headers: { Authorization: "Bearer " + CF_API_TOKEN, "Content-Type": "application/json", ...((opts || {}).headers || {}) },
+    headers: { Authorization: "Bearer " + token, "Content-Type": "application/json", ...((opts || {}).headers || {}) },
   });
   if (!resp.ok) throw new Error("CF API " + resp.status);
   const json = await resp.json();
@@ -130,15 +146,15 @@ async function cfFetch(path, opts) {
   return json;
 }
 
-async function fetchZone() {
-  const json = await cfFetch("/zones?name=" + encodeURIComponent(ZONE_NAME) + "&per_page=1");
+async function fetchZone(token) {
+  const json = await cfFetch("/zones?name=" + encodeURIComponent(ZONE_NAME) + "&per_page=1", undefined, token);
   const zone = (json.result || [])[0];
   if (!zone) throw new Error("zone not found");
   return { id: zone.id, createdOn: zone.created_on || null };
 }
 
 // 累计访问：GraphQL 按天分组求和（统计区间从起算日起）
-async function fetchTotalRequests(zoneId) {
+async function fetchTotalRequests(zoneId, token) {
   const today = new Date().toISOString().slice(0, 10);
   const query = `query {
     viewer {
@@ -149,9 +165,10 @@ async function fetchTotalRequests(zoneId) {
       }
     }
   }`;
+  if (!token) throw new Error("missing CF_API_TOKEN secret");
   const resp = await fetch(CF_GRAPHQL, {
     method: "POST",
-    headers: { Authorization: "Bearer " + CF_API_TOKEN, "Content-Type": "application/json" },
+    headers: { Authorization: "Bearer " + token, "Content-Type": "application/json" },
     body: JSON.stringify({ query }),
   });
   if (!resp.ok) throw new Error("CF GraphQL " + resp.status);

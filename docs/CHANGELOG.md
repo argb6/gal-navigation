@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### 变更
+
+- status Worker：去掉明文 `CF_API_TOKEN`，改为运行时读取 `env.CF_API_TOKEN`（Cloudflare Workers Secret）；缺 Secret 时降级不调 CF API
+
+
 ### 调整
 
 - status 页脚与主站对齐为五项：帮助文档、关于本站、联系站长、申请友链、站点状态（对照 websearch；本页站点状态带 aria-current）
