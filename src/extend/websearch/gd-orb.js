@@ -38,10 +38,19 @@ export function initGdOrb(root, options) {
       const edge = 8;
       const s = 56;
       const maxL = Math.max(edge, window.innerWidth - s - edge);
-      const maxT = Math.max(edge, window.innerHeight - s - edge);
+      // 上界：通知条（#belowNav / .gd-below-nav）下沿，不能拖进/盖住通知区
+      let minT = edge;
+      const below = document.getElementById("belowNav") || document.querySelector(".gd-below-nav");
+      if (below) {
+        minT = Math.max(edge, Math.ceil(below.getBoundingClientRect().bottom));
+      } else {
+        const nav = document.getElementById("mainNav") || document.querySelector(".gd-navbar");
+        if (nav) minT = Math.max(edge, Math.ceil(nav.getBoundingClientRect().bottom));
+      }
+      const maxT = Math.max(minT, window.innerHeight - s - edge);
       return {
         left: Math.min(Math.max(edge, left), maxL),
-        top: Math.min(Math.max(edge, top), maxT),
+        top: Math.min(Math.max(minT, top), maxT),
       };
     }
 

@@ -4750,8 +4750,17 @@ document.addEventListener('DOMContentLoaded', function() {
     function clamp(left, top) {
       var edge = 8, s = 56;
       var maxL = Math.max(edge, window.innerWidth - s - edge);
-      var maxT = Math.max(edge, window.innerHeight - s - edge);
-      return { left: Math.min(Math.max(edge, left), maxL), top: Math.min(Math.max(edge, top), maxT) };
+      // 上界：通知条（#belowNav / .gd-below-nav）下沿，不能拖进/盖住通知区
+      var minT = edge;
+      var below = document.getElementById('belowNav') || document.querySelector('.gd-below-nav');
+      if (below) {
+        minT = Math.max(edge, Math.ceil(below.getBoundingClientRect().bottom));
+      } else {
+        var nav = document.getElementById('mainNav') || document.querySelector('.gd-navbar');
+        if (nav) minT = Math.max(edge, Math.ceil(nav.getBoundingClientRect().bottom));
+      }
+      var maxT = Math.max(minT, window.innerHeight - s - edge);
+      return { left: Math.min(Math.max(edge, left), maxL), top: Math.min(Math.max(minT, top), maxT) };
     }
     function placeMenu() {
       var rect = root.getBoundingClientRect();
