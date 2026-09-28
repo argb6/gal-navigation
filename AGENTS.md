@@ -25,8 +25,6 @@ GALNAVI（galnavi.top）：ACG 导航。Cloudflare Workers + D1 + KV + R2。页�
 
 **禁止：** 直接改 D1；在 `worker/*.js` 里 `import`；硬编码颜色；卡片用 `backdrop-filter` / `box-shadow`；`div onclick`；未问就 `git commit` / 部署 / 写密钥。
 
-`status.js` 仍是 **β**，不要按已发布源码去改成现网完整版。
-
 编码 UTF-8 无 BOM。
 
 ## 本仓有什么
@@ -47,5 +45,5 @@ GALNAVI（galnavi.top）：ACG 导航。Cloudflare Workers + D1 + KV + R2。页�
 ## 数据（只准帮写查询）
 
 - D1：`nav` / `navi_sites`；友链库 `friend` / `sites`；殿堂 `env.group1` / `resources`
-- KV：`HERO_KV`/`hero_images`，`FEATURED_KV`/`featured_items`，`DONATE_KV`/`donors`，`STATUS_KV`，`NOTICE_KV`
+- KV：`HERO_KV`/`hero_images`，`FEATURED_KV`/`featured_items`，`DONATE_KV`/`donors`
 - 图：`https://assets.galnavi.top/`

@@ -14,7 +14,7 @@ GALNAVI 是面向 ACG 的导航与信息聚合站（[galnavi.top](https://galnav
 
 每个页面一份 Cloudflare Worker，HTML / CSS / JS 打在同一个文件里。界面是自研 **gd**（GalNavi Design）：深色玻璃拟态，语义对齐 Material Design 3，不换皮。
 
-本仓库是**开源源码**。线上部署用的 wrangler / 密钥不在这里。`worker/status.js` 仍是 β，其它页面与现网实现对齐。
+本仓库是**开源源码**。线上部署用的 wrangler / 密钥不在这里。页面与现网实现对齐。
 
 ## 页面截屏
 
@@ -49,7 +49,6 @@ GALNAVI 是面向 ACG 的导航与信息聚合站（[galnavi.top](https://galnav
 | 关于 / 帮助 | `about.js` / `help.js` | 站点说明与使用指南 |
 | 友链 | `worker/friend.js` | 友链表与提交 |
 | 捐献 | `worker/donate.js` | 捐款名单 |
-| 状态 | `worker/status.js` | β |
 | 404 | `worker/error.js` | 未匹配路径兜底 |
 
 ## 目录

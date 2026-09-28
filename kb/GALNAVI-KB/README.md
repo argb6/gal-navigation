@@ -49,7 +49,7 @@ related:
 
 现网口径尽量写全：Worker 名、路由、绑定名、库名、表字段、KV key、R2 公开域、toml 里的 **database_id / KV namespace id**。
 
-**禁止写入：** 接口密钥、账号密码、API token / `CF_API_TOKEN` 明文、`.wrangler` 登录凭证。密钥只写「走 Secret / 环境变量」。
+**禁止写入：** 接口密钥、账号密码、API token / API token 明文、`.wrangler` 登录凭证。密钥只写「走 Secret / 环境变量」。
 
 ## 怎么写一篇
 

@@ -16,7 +16,7 @@
 
 ### 变更
 
-- status Worker：去掉明文 `CF_API_TOKEN`，改为运行时读取 `env.CF_API_TOKEN`（Cloudflare Workers Secret）；缺 Secret 时降级不调 CF API
+- （开源已移除 status 页相关记录）
 
 
 ### 调整
@@ -36,7 +36,7 @@
 ### 变更
 
 - 页脚去掉「站点状态」，第一项为「主站首页」，其后为帮助文档、关于本站、联系站长、申请友链
-- 删除 status Worker、本地状态页、站点地图中的 `/status/`，以及只给状态页用的检测层
+- （开源不含 status 页）
 - 有页脚的页面补上右下 `gd-orb` 蓝色星星（主站原本就有；捐献页会跳到关于，不另放一颗）
 - 星星按钮的位置按离视口右缘、下缘的距离保存，换页时先藏住再放回原处
 - 组件预览去掉页顶通知条；扩展页演示改为专题卡片（300×400，图片 256×256，点开再看正文）
@@ -78,7 +78,7 @@
 - `docs/migration.md`、`docs/coding-style.md` 删除（内容已在 CHANGELOG / `docs/standard/usage.md`）
 - `usage.md` / `tokens.md` / `open-source-prep.md` 挪到 `docs/standard/`
 - 根目录去掉重复稿 `gd-architecture.md`、`worker-component-report.md`；项目地图改在根 `README.md`，AI 规矩在 `AGENTS.md`
-- 知识库文件夹改成连续编号 `01`–`05`（`kbVersion` 1.2.0）；`worker/share` 与现网 index 的 robots/sitemap 对齐（含 `/status/`）
+- 知识库文件夹改成连续编号 `01`–`05`（`kbVersion` 1.2.0）；`worker/share` 与现网 robots/sitemap 对齐（开源不含 ）
 - 知识库 1.3.0：写入现网 D1/KV UUID 与部署表；禁止写 token。`source/` 是从 `worker/new` 抽出的发布用源代码（**不含** β 版 status）
 - 删除未被现网页引用的 `src/extend/about`、`help`、`palace` CSS（关于用 `gd-table`，帮助用 overview 目录，殿堂样式在 `palace.js` 内联）
 - 主站背景不要用 `100vw`：全屏刷新时会把右下 `gd-orb` 裁掉，改 `inset: 0`
@@ -166,8 +166,8 @@
 
 ### 新增
 
-- 站点状态页（`/status/`）组件化完成，复用 gd-overview 布局 + gd-brand + gd-footer + gd-empty-state
-- 状态页公告系统：`NOTICE_KV` 读取公告内容，`status-notice__content` 样式（蓝底圆角卡片）
+- （开源已移除 status 页相关记录）
+- （开源已移除 status 页相关记录）
 - 状态页仪表盘样式（`status-dashboard` / `status-stat` / `status-list` / `status-event`）
 - `gd-overview` 布局新增 `status` 页面（extendPages）
 

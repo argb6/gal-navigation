@@ -18,7 +18,7 @@
 
 ### 1.1 CF API Token
 
-- status Worker 已删除，不再有状态页去读 `CF_API_TOKEN`
+- 开源仓不含 status Worker / ；相关 Secret 不进仓
 - 已出现在仓库/文档的旧 token **立刻轮换**；不要把 token 写进开源仓
 
 ### 1.2 Wrangler 账号缓存
@@ -84,7 +84,7 @@ gal-navigation/
 
 ## 四、发布前检查表
 
-- [ ] 无 API token / 账密 / `CF_API_TOKEN` 明文
+- [ ] 无 API token / 账密 / API token 明文
 - [ ] 无 `.wrangler/`、无真实 `database_id` / KV `id`
 - [ ] 邮箱按 §1.4 处理
 - [ ] docs/kb 不含 UUID（或已打码）
