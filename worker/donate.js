@@ -2136,7 +2136,7 @@ body.gd-overview {
   <h2 class="gd-section__title">其他方式</h2>
   <div class="card">
     <ul>
-      <li><a class="gd-link" href="${CONTACT_MAILTO}">邮件联系</a> — 捐献相关问题，或想确认收款信息</li>
+      <li><a class="gd-link" href="https://galnavi.top/nav/about/#feedback">站点反馈</a> — 捐献相关问题，或想确认收款信息</li>
       <li><a class="gd-link" href="${GITHUB_URL}" target="_blank" rel="noopener noreferrer">GitHub</a> — 给一颗 Star 支持一下</li>
     </ul>
   </div>
@@ -2163,7 +2163,7 @@ ${renderDonorsSection(donors)}
 </aside>
   </div>
 </div>
-<footer class="gd-footer gd-footer--page"><nav class="gd-footer__nav" aria-label="页脚链接"><a href="https://galnavi.top/nav/">主站首页</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/help/">帮助文档</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/about/">关于本站</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/friend/">申请友链</a></nav><p class="gd-footer__copy">© 2026 GALNAVI · 愿每一次探索都有新的收获</p></footer>
+<footer class="gd-footer gd-footer--page"><nav class="gd-footer__nav" aria-label="页脚链接"><a href="https://galnavi.top/nav/">主站首页</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/help/">帮助文档</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/about/">关于本站</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/about/#feedback">联系站长</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/friend/">申请友链</a></nav><p class="gd-footer__copy">© 2026 GALNAVI · 愿每一次探索都有新的收获</p></footer>
 <script>
 (function(){function a(){var h=(window.visualViewport&&window.visualViewport.height)||window.innerHeight;document.documentElement.style.setProperty("--gd-vvh",h+"px");}a();window.addEventListener("resize",a);if(window.visualViewport)window.visualViewport.addEventListener("resize",a);})();
 (function() {

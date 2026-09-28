@@ -2177,7 +2177,7 @@ body.gd-overview {
 <li>账号：<a class="gd-link" href="https://space.bilibili.com/3744946343382123" rel="noopener noreferrer">@纳普小镇</a></li>
 </ul>
 </div></section>
-<section class="gd-section" id="feedback">  <h2 class="gd-section__title">站点反馈</h2><div class="card"><p>如果你在使用 GALNAVI 时发现问题，欢迎向我们反馈。</p><ul><li><strong>网站问题</strong> — 页面异常、链接失效、显示错误等。</li><li><strong>收录建议</strong> — 推荐新的站点、工具或资源。</li><li><strong>内容问题</strong> — 信息错误、分类不当、描述需要修改。</li><li><strong>功能建议</strong> — 对网站功能或使用体验的建议。</li></ul><p>反馈时请尽量说明具体问题，并附上相关页面链接或截图，方便我们处理。</p></div></section>
+<section class="gd-section" id="feedback">  <h2 class="gd-section__title">站点反馈</h2><div class="card"><p>如果你在使用 GALNAVI 时发现问题，欢迎向我们反馈。</p><ul><li><strong>网站问题</strong> — 页面异常、链接失效、显示错误等。</li><li><strong>收录建议</strong> — 推荐新的站点、工具或资源。</li><li><strong>内容问题</strong> — 信息错误、分类不当、描述需要修改。</li><li><strong>功能建议</strong> — 对网站功能或使用体验的建议。</li></ul><p>反馈时请尽量说明具体问题，并附上相关页面链接或截图，方便我们处理。</p><p>目前暂不提供公开邮箱；可通过 <a class="gd-link" href="https://github.com/argb6/gal-navigation" target="_blank" rel="noopener noreferrer">GitHub Issue</a> 提交反馈，或关注本站后续公布的联系渠道。</p></div></section>
 <section class="gd-section" id="donate">
   <h2 class="gd-section__title">捐献</h2>
   <div class="card"><p>支持 GALNAVI 资源中枢的日常维护。自愿捐献，感谢每一份心意。</p>
@@ -2191,7 +2191,7 @@ body.gd-overview {
     <p class="gd-donate-note">相关信息请在付款界面备注</p>
     <h3>其他方式</h3>
     <ul>
-      <li><a class="gd-link" href="${CONTACT_MAILTO}">邮件联系</a> — 捐献相关问题，或想确认收款信息</li>
+      <li><a class="gd-link" href="#feedback">站点反馈</a> — 捐献相关问题，或想确认收款信息</li>
       <li><a class="gd-link" href="${GITHUB_URL}" target="_blank" rel="noopener noreferrer">GitHub</a> — 给一颗 Star 支持一下</li>
     </ul>
     ${renderDonorTable(donors)}
@@ -2203,7 +2203,7 @@ body.gd-overview {
     </div>
   </div>
 </div>
-<footer class="gd-footer gd-footer--page"><nav class="gd-footer__nav" aria-label="页脚链接"><a href="https://galnavi.top/nav/">主站首页</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/help/">帮助文档</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/about/">关于本站</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/friend/">申请友链</a></nav><p class="gd-footer__copy">© 2026 GALNAVI · 愿每一次探索都有新的收获</p></footer>
+<footer class="gd-footer gd-footer--page"><nav class="gd-footer__nav" aria-label="页脚链接"><a href="https://galnavi.top/nav/">主站首页</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/help/">帮助文档</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/about/">关于本站</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/about/#feedback">联系站长</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/friend/">申请友链</a></nav><p class="gd-footer__copy">© 2026 GALNAVI · 愿每一次探索都有新的收获</p></footer>
 <div id="redirectOverlay" class="gd-overview__redirect-overlay" aria-live="polite" aria-atomic="true"><div class="gd-overview__redirect-ring" aria-hidden="true"></div><div class="gd-overview__redirect-text">即将跳转</div><div id="redirectCountdown" class="gd-overview__redirect-countdown">3</div><button type="button" id="redirectCancel" class="gd-overview__redirect-cancel">取消跳转</button></div>
 <script>
 (function(){function a(){var h=(window.visualViewport&&window.visualViewport.height)||window.innerHeight;document.documentElement.style.setProperty("--gd-vvh",h+"px");}a();window.addEventListener("resize",a);if(window.visualViewport)window.visualViewport.addEventListener("resize",a);})();

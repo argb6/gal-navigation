@@ -1939,7 +1939,7 @@ body.gd-overview {
             <li>本站描述：ACG 二次元资源导航网站</li>
             <li>本站链接：<a class="gd-link" href="https://galnavi.top/">https://galnavi.top/</a></li>
             <li>本站图标：<a class="gd-link" href="https://assets.galnavi.top/icon.png">https://assets.galnavi.top/icon.png</a></li>
-            <li>联系方式：见友链申请说明（本页不公示邮箱）</li>
+            <li>联系方式：见 <a class="gd-link" href="https://galnavi.top/nav/about/#feedback">关于本站 · 站点反馈</a></li>
           </ul>
         </div>
       </section>
@@ -1966,7 +1966,7 @@ body.gd-overview {
     <span class="gd-footer__sep" aria-hidden="true">|</span>
     <a href="https://galnavi.top/nav/about/">关于本站</a>
     <span class="gd-footer__sep" aria-hidden="true">|</span>
-    
+    <a href="https://galnavi.top/nav/about/#feedback">联系站长</a>
     <span class="gd-footer__sep" aria-hidden="true">|</span>
     <a href="https://galnavi.top/nav/friend/">申请友链</a>
 

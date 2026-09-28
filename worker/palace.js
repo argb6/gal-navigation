@@ -1920,7 +1920,7 @@ gd-search { display: contents; }
         <span class="gd-footer__sep" aria-hidden="true">|</span>
         <a href="https://galnavi.top/nav/about/">关于本站</a>
         <span class="gd-footer__sep" aria-hidden="true">|</span>
-        
+        <a href="https://galnavi.top/nav/about/#feedback">联系站长</a>
         <span class="gd-footer__sep" aria-hidden="true">|</span>
         <a href="https://galnavi.top/nav/friend/">申请友链</a>
 
