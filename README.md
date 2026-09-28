@@ -19,7 +19,7 @@ GALNAVI 是面向 ACG 的导航与信息聚合站（[galnavi.top](https://galnav
 ## 页面截屏
 
 <table>
-  <tr><td><img src="https://raw.githubusercontent.com/argb6/gal-navigation/main/assets/index.png" alt="main"></td></tr>
+  <tr><td><img src="https://raw.githubusercontent.com/argb6/gal-navigation/main/assets/index.jpeg" alt="index"></td></tr>
   <tr><td align="center"><em>发布页</em></td></tr>
 </table>
 
@@ -36,6 +36,11 @@ GALNAVI 是面向 ACG 的导航与信息聚合站（[galnavi.top](https://galnav
 <table>
   <tr><td><img src="https://raw.githubusercontent.com/argb6/gal-navigation/main/assets/help.png" alt="help"></td></tr>
   <tr><td align="center"><em>帮助</em></td></tr>
+</table>
+
+<table>
+  <tr><td><img src="https://raw.githubusercontent.com/argb6/gal-navigation/main/assets/about.png" alt="about"></td></tr>
+  <tr><td align="center"><em>关于</em></td></tr>
 </table>
 
 ## 页面
