@@ -12,7 +12,7 @@
 
 - preview `gd-orb`：框内 `gd-orb--demo` 改为可在 `.demo-preview--orb` 内拖动（不写 `galnavi-orb-pos`）；全页 orb 上界 clamp 忽略异常大的 `#belowNav` bottom，避免可拖高度被夹成 0；文案区分框内 / 右下角。
 
-- 页脚「联系站长」mailto 统一为 `feedback@galnavi.top`（替换残留 `galnavifeedback@protonmail.com`：donate CONTACT_EMAIL、status / websearch 页脚；同步 sandbox）
+- 页脚「联系站长」页脚去掉「联系站长」邮箱 / mailto（开源与正式源均不公示邮箱）
 
 ### 变更
 
