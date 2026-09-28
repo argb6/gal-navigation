@@ -33,7 +33,7 @@ gd 组件（src/ 组件库，浏览器侧 CSS/JS）
 | 内容 | 说明 |
 |---|---|
 | `worker/new/*.js` | 现网部署入口：查 D1/KV、拼 HTML、页内 `SECURITY_HEADERS`（零 `import`） |
-| `source/*.js` | 对外发布用的源代码（从 `worker/new` 抽出；**不含** β 版 status） |
+| `source/*.js` | 对外发布用的源代码（从 `worker/new` 抽出） |
 | `worker/shared/constants.js` | 分类常量参考源（DB 键 / 前端键 / 标签）；现网页已抄入，不 import |
 | `worker/shared/security.js` | 安全头基线 + 转义工具（参考）；现网页用页内副本 |
 | `worker/shared/seo.js` | 生产用 meta / OG 参考（现网页内联副本） |
@@ -44,7 +44,7 @@ gd 组件（src/ 组件库，浏览器侧 CSS/JS）
 
 | 变体 | Worker |
 |---|---|
-| `gd-groundback--websearch` | index / websearch / detail / about / help / friend / donate / status / error |
+| `gd-groundback--websearch` | index / websearch / detail / about / help / friend / donate / error |
 | `gd-groundback--gold` | palace |
 
 详情等页：`body` 透明，`.gd-groundback { z-index: 0 }`，正文更高，否则旧渐变会盖住线条。
@@ -56,7 +56,7 @@ gd 组件（src/ 组件库，浏览器侧 CSS/JS）
 | 目录 | 来源页面 |
 |---|---|
 | `extend/overview/` | 组件总览页自身壳层（虚线分割、索引） |
-| `extend/websearch/` | websearch.js（右下 gd-orb 快捷入口、卡片网格、纳普彩蛋、欢迎弹窗、通知跑马灯） |
+| `extend/websearch/` | websearch.js（卡片网格、纳普彩蛋、欢迎弹窗、通知跑马灯）。`gd-orb` 源文件在这里，有页脚的页面都用 |
 | `extend/donate/` | donate.js（扫码卡、名单） |
 | `extend/detail/` | detail.js（亮点横幅、三列详情卡） |
 | `extend/home/` | index.js（发布页） |

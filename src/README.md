@@ -71,7 +71,7 @@ gd 的部分设计要素参考并对齐 Google Material Design 3（MD3），对�
 │  │
 │  ├─ extend/ 页面扩展（按来源 Worker 页面归类）
 │  │  ├─ overview/   总览页壳层（虚线分割、索引）✓
-│  │  ├─ websearch/  右下 gd-orb 快捷入口 + 卡片网格 + 纳普彩蛋 + 欢迎弹窗 + 通知跑马灯 ✓
+│  │  ├─ websearch/  gd-orb 源文件（有页脚的页面都用）+ 卡片网格 + 纳普彩蛋 + 欢迎弹窗 + 通知跑马灯 ✓
 │  │  ├─ home/       发布页（index.js）✓
 │  │  ├─ donate/     捐献页              ✓
 │  │  ├─ detail/     详情页（含反向缩放）  ✓
@@ -80,7 +80,7 @@ gd 的部分设计要素参考并对齐 Google Material Design 3（MD3），对�
 │     └─ gd.js                   注册 gd-modal、gd-navbar、gd-search
 │
 └─ worker/                    服务端（不打包进浏览器）
-   ├─ 页面 Worker               websearch · detail · donate · about · help · friend · palace · index · error · status
+   ├─ 页面 Worker               websearch · detail · donate · about · help · friend · palace · index · error
    └─ shared/                   参考副本（constants / security / seo）；worker/new 不 import
 ```
 

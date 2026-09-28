@@ -35,15 +35,6 @@
 <body class="gd-overview">
   <div class="gd-overview__chrome" aria-hidden="true"></div>
 
-  <!-- preview：现网同款通知条占位（#belowNav） -->
-  <div class="gd-below-nav" id="belowNav">
-    <div class="gd-notice-led" id="previewPageNoticeLed" tabindex="0" aria-label="预览通知条">
-      <div class="gd-notice-led__track">
-        <span class="gd-notice-led__item">预览通知条（#belowNav）— 现网同款占位</span>
-      </div>
-    </div>
-  </div>
-
   <div class="gd-overview-toc-mobile" data-gd-mobile-toc>
     <button
       type="button"
@@ -90,7 +81,7 @@
     <article class="gd-overview__layout">
       <div class="gd-overview__content">
         <header>
-          <time class="gd-overview__date" datetime="2026-09-25">2026年9月25日 · v1.6.1</time>
+          <time class="gd-overview__date" datetime="2026-09-28">2026年9月28日 · v0.1.7</time>
           <h1 class="gd-overview__title" id="brand">gd 组件库</h1>
           <p class="gd-overview__lede">
             对照 galnavi 现有样式抽取；MD3 只对齐字号 / 圆角语义 / 状态透明度 / 动效时长。保留玻璃配色与层级，导航、抽屉和卡片不使用高斯模糊或阴影。短页页脚贴底；详情卡片在浏览器缩放时反向缩放。
@@ -162,7 +153,7 @@
           <div class="gd-below-nav" style="position:relative">
             <div class="gd-notice-led" id="previewNoticeLed" tabindex="0" aria-label="站点通知：本站闲聊群，遇到问题请打开帮助文档，更多标签点这里，想要了解本站点这里">
               <div class="gd-notice-led__track">
-                <span class="gd-notice-led__item">本站<a class="gd-link" href="https://qm.qq.com/q/mYzxtmRVy8" target="_blank" rel="noopener noreferrer">闲聊群</a>，遇到问题请打开<a class="gd-link" href="https://galnavi.top/nav/help/">帮助文档</a>，更多标签<a class="gd-link" href="https://galnavi.top/nav/?cat=标签" data-gd-nav-tags aria-label="更多标签点这里">点这里</a>，想要了解本站<a class="gd-link" href="https://galnavi.top/nav/about/" aria-label="了解本站点这里">点这里</a></span>
+                <span class="gd-notice-led__item">本站闲聊群，遇到问题请打开帮助文档，更多标签点这里，想要了解本站点这里</span>
               </div>
             </div>
           </div>
@@ -895,49 +886,23 @@
 
     <section class="gd-section" id="extend-ui">
       <h2 class="gd-section__title">extend 扩展页 UI</h2>
-      <p class="demo-note">预览页自身壳层：内容区 + 竖向虚线 + 右侧索引；窄屏（&lt;768px）索引切换为汉堡标。</p>
+      <p class="demo-note">专题卡片。除单列外每张 300×400，图片位 256×256。点开后再看这一节。</p>
       <div class="demo-preview demo-preview--pad-bottom">
-        <div class="extend-ui-demo">
-          <div class="extend-ui-demo__main">
-            <div class="gd-overview-toc-mobile extend-ui-demo__toc-mobile" data-extend-ui-toc>
-              <button type="button" class="gd-overview-toc-mobile__btn gd-hamburger-motion" data-extend-ui-toc-toggle aria-expanded="false" aria-controls="extendUiTocPanel" aria-label="打开本页索引">
-                <svg class="gd-hamburger-motion__menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
-                <svg class="gd-hamburger-motion__close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
-              </button>
-              <div class="gd-overview-toc-mobile__panel" id="extendUiTocPanel" data-extend-ui-toc-panel aria-hidden="true" hidden>
-                <p class="gd-overview-mobile-list__label">本页内容</p>
-                <nav class="gd-overview-mobile-list" aria-label="本页索引">
-                  <a class="gd-overview-mobile-list__link is-active" href="#extend-ui">分区一</a>
-                  <a class="gd-overview-mobile-list__link" href="#extend-ui">分区二</a>
-                  <a class="gd-overview-mobile-list__link" href="#extend-ui">分区三</a>
-                </nav>
-              </div>
-            </div>
-            <p class="gd-overview__date">2026年8月11日</p>
-            <h3 class="gd-overview__title" style="margin:4px 0 0">扩展页标题</h3>
-            <p class="gd-overview__lede">页面引导语，说明本页内容与方向。</p>
-            <div class="gd-overview__meta">
-              <span class="gd-overview__tag">标签一</span>
-              <span class="gd-overview__tag">标签二</span>
-            </div>
-            <div class="gd-overview__rule" aria-hidden="true"></div>
-            <div class="gd-section" style="margin-top:16px">
-              <h4 class="gd-section__title">分区标题</h4>
-              <div class="demo-preview">
-                <p class="demo-note" style="margin:0">分区内容区，虚线框为演示容器。</p>
-              </div>
-            </div>
+        <div class="gd-topic-hub" id="extendTopicHub">
+          <div class="gd-topic-cards">
+            <button type="button" class="gd-topic-card" data-topic="extend-a"><span class="gd-topic-card__media" aria-hidden="true"></span><span class="gd-topic-card__no">01</span><span class="gd-topic-card__title">分区一</span><span class="gd-topic-card__sum">点开后只看这一节的正文。</span></button>
+            <button type="button" class="gd-topic-card" data-topic="extend-b"><span class="gd-topic-card__media" aria-hidden="true"></span><span class="gd-topic-card__no">02</span><span class="gd-topic-card__title">分区二</span><span class="gd-topic-card__sum">和帮助、关于页同一套卡片。</span></button>
+            <button type="button" class="gd-topic-card" data-topic="extend-c"><span class="gd-topic-card__media" aria-hidden="true"></span><span class="gd-topic-card__no">03</span><span class="gd-topic-card__title">分区三</span><span class="gd-topic-card__sum">返回专题回到卡片列表。</span></button>
           </div>
-          <aside class="extend-ui-demo__toc" aria-label="演示索引">
-            <nav class="gd-otp" aria-label="本页索引">
-              <p class="gd-otp__label">本页内容</p>
-              <div class="gd-otp__list">
-                <a class="gd-otp__link is-active" href="#extend-ui">分区一</a>
-                <a class="gd-otp__link" href="#extend-ui">分区二</a>
-                <a class="gd-otp__link" href="#extend-ui">分区三</a>
-              </div>
-            </nav>
-          </aside>
+        </div>
+        <div class="gd-topic-detail" id="extendTopicDetail" hidden>
+          <button type="button" class="gd-button gd-button--back gd-topic-back" id="extendTopicBack">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            返回专题
+          </button>
+          <section class="gd-topic-article" id="extend-a"><h3 class="gd-section__title">分区一</h3><p>点开卡片后看到的正文。右侧索引和顶栏标签不再出现在扩展页。</p></section>
+          <section class="gd-topic-article" id="extend-b"><h3 class="gd-section__title">分区二</h3><p>图片位 256×256，卡片在多列时固定 300×400。</p></section>
+          <section class="gd-topic-article" id="extend-c"><h3 class="gd-section__title">分区三</h3><p>窄到只剩一列时，卡片随宽度伸缩，图片仍是 256×256。</p></section>
         </div>
       </div>
     </section>
@@ -949,6 +914,8 @@
         <p class="demo-note" style="margin:0">短内容区</p>
         <footer class="gd-footer">
           <nav class="gd-footer__nav" aria-label="页脚链接">
+            <a href="#footer">主站首页</a>
+            <span class="gd-footer__sep" aria-hidden="true">|</span>
             <a href="#footer">帮助文档</a>
             <span class="gd-footer__sep" aria-hidden="true">|</span>
             <a href="#footer">关于本站</a>
@@ -956,8 +923,6 @@
             <a href="#footer">联系站长</a>
             <span class="gd-footer__sep" aria-hidden="true">|</span>
             <a href="#footer">申请友链</a>
-            <span class="gd-footer__sep" aria-hidden="true">|</span>
-            <a href="#footer">站点状态</a>
           </nav>
           <p class="gd-footer__copy">© 2026 GALNAVI · 愿每一次探索都有新的收获</p>
         </footer>

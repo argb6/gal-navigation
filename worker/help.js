@@ -1742,6 +1742,178 @@ body.gd-overview {
   .gd-tag:hover { transform: none; }
 }
 
+/* 主站导航卡：整卡可点，卡面无 tags/actions（对齐现网 gd-card--general） */
+.gd-card--general {
+  cursor: pointer;
+  gap: 12px;
+  justify-content: flex-start;
+  width: 390px;
+  height: 100px;
+}
+.gd-card--general:focus-visible {
+  outline: 2px solid var(--gd-color-primary);
+  outline-offset: 2px;
+}
+.gd-card--general .gd-card__header {
+  align-items: flex-start;
+  gap: 12px;
+}
+.gd-card--general .gd-card__title-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.gd-card--general .gd-card__subtitle {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  min-height: 0;
+}
+@media (max-width: 919px) {
+  .gd-card--general {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+/* ===== src/feedback/modal/gd-modal.css（help 示范弹窗精简副本） ===== */
+.gd-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: var(--gd-color-overlay);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--gd-motion-duration-medium1) var(--gd-motion-easing-standard);
+}
+.gd-modal-overlay.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+.gd-modal-overlay.is-open > .gd-modal {
+  transform: scale(1);
+}
+.gd-modal {
+  width: min(92vw, 390px);
+  padding: 28px 24px 22px;
+  border-radius: var(--gd-shape-corner-medium);
+  border: 1px solid rgba(var(--gd-color-white-rgb), 0.14);
+  background: linear-gradient(180deg, var(--gd-color-card-gradient-a), var(--gd-color-card-gradient-b));
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  text-align: center;
+  transform: scale(0.96);
+  transition: transform var(--gd-motion-duration-medium2) var(--gd-motion-easing-emphasized);
+}
+.gd-modal__title {
+  margin: 0 0 12px;
+  font-size: var(--gd-type-title-large-size);
+  font-weight: var(--gd-weight-extrabold);
+  color: var(--gd-color-on-surface);
+}
+.gd-modal__body {
+  margin: 0 0 22px;
+  font-size: var(--gd-type-body-medium-size);
+  line-height: 1.75;
+  color: var(--gd-color-on-surface-variant);
+}
+.gd-modal__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.gd-modal__actions--row {
+  flex-direction: row;
+}
+.gd-modal__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 36px;
+  height: 36px;
+  min-width: var(--gd-touch-target);
+  min-height: var(--gd-touch-target);
+  border-radius: 10px;
+  background: rgba(var(--gd-color-white-rgb), 0.055);
+  border: 1px solid var(--gd-color-outline);
+  color: rgba(var(--gd-color-muted-white-rgb), 0.44);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.gd-modal__close:hover {
+  background: rgba(var(--gd-color-white-rgb), 0.095);
+  color: var(--gd-color-on-surface);
+}
+.gd-modal__close:focus-visible { outline: 2px solid var(--gd-color-primary); outline-offset: 2px; }
+
+/* 主站卡详情弹窗（标签/操作从卡面挪入） */
+.gd-modal--site-card {
+  text-align: left;
+  width: min(92vw, 440px);
+  position: relative;
+}
+.gd-modal--site-card .gd-modal__close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  min-height: 36px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(var(--gd-color-white-rgb), 0.08);
+  color: rgba(var(--gd-color-muted-white-rgb), 0.88);
+  box-shadow: inset 0 0 0 1px rgba(var(--gd-color-white-rgb), 0.1);
+}
+.gd-modal--site-card .gd-modal__close svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+.gd-modal--site-card .gd-modal__close:hover {
+  background: rgba(var(--gd-color-white-rgb), 0.16);
+  color: var(--gd-color-on-surface);
+  box-shadow: inset 0 0 0 1px rgba(var(--gd-color-white-rgb), 0.18);
+}
+.gd-modal--site-card__head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0 28px 12px 0;
+}
+.gd-modal--site-card__head .gd-modal__title {
+  margin: 0;
+  text-align: left;
+}
+.gd-modal--site-card .gd-modal__body {
+  text-align: left;
+}
+.gd-modal--site-card__tags {
+  justify-content: flex-start;
+  align-content: flex-start;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+  max-height: min(40vh, 240px);
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.gd-modal--site-card .gd-modal__actions--row .gd-card__btn {
+  flex: 1 1 0;
+  min-width: 0;
+  text-decoration: none;
+}
+
 /* ===== src/foundation/layout/gd-footer.css ===== */
 .gd-footer {
   position: relative;
@@ -1810,6 +1982,79 @@ body.gd-overview {
 .gd-overview__content ul li { position: relative; color: var(--gd-color-on-surface-variant); font-size: var(--gd-type-body-large-size); margin-bottom: 12px; line-height: 1.85; padding-left: .15em; }
 .gd-overview__content ul li::before { content: ""; position: absolute; left: -1em; top: .72em; width: 5px; height: 5px; border-radius: 50%; background: var(--gd-color-primary); }
 .gd-footer { padding-top: 32px; }
+.gd-overview-toc-mobile,
+.gd-overview__toc { display: none !important; }
+@media (min-width: 768px) {
+  .gd-overview__layout { grid-template-columns: minmax(0, 1fr); }
+}
+.gd-help-hub { container-type: inline-size; }
+.gd-help-topics {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 300px);
+  justify-content: start;
+  gap: 20px;
+  margin: 8px 0 24px;
+}
+.gd-help-topic {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  box-sizing: border-box;
+  width: 300px;
+  height: 400px;
+  margin: 0;
+  padding: 22px 21px 16px;
+  overflow: hidden;
+  text-align: left;
+  cursor: pointer;
+  color: var(--gd-color-on-surface);
+  font-family: inherit;
+  border-radius: 18px;
+  border: 1px solid rgba(var(--gd-color-white-rgb), 0.1);
+  background: linear-gradient(180deg, var(--gd-color-card-gradient-a), var(--gd-color-card-gradient-b));
+  appearance: none;
+  -webkit-appearance: none;
+}
+.gd-help-topic:hover { filter: brightness(1.06); }
+.gd-help-topic:focus-visible { outline: 2px solid var(--gd-color-primary); outline-offset: 3px; }
+.gd-help-topic__media {
+  display: block;
+  width: 100%;
+  height: 256px;
+  flex: 0 0 auto;
+  border-radius: 12px;
+  background: rgba(var(--gd-color-primary-rgb), 0.14);
+}
+.gd-help-topic__no,
+.gd-help-topic__title,
+.gd-help-topic__sum { width: 100%; }
+.gd-help-topic__no { font-size: 13px; font-weight: var(--gd-weight-bold); color: var(--gd-color-link); }
+.gd-help-topic__title { font-size: 20px; font-weight: var(--gd-weight-bold); line-height: 1.25; }
+.gd-help-topic__sum {
+  color: var(--gd-color-on-surface-variant);
+  font-size: 14px;
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+.gd-help-detail h3 { margin: 22px 0 8px; font-size: 18px; color: var(--gd-color-on-surface); scroll-margin-top: 90px; }
+.gd-help-back { margin: 56px 0 8px; }
+.gd-help-detail .gd-section { display: none; }
+.gd-help-detail .gd-section.is-on { display: block; }
+.gd-help-hub[hidden],
+.gd-help-detail[hidden] { display: none !important; }
+@container (max-width: 619px) {
+  .gd-help-topics { grid-template-columns: 1fr; }
+  .gd-help-topic { width: 100%; height: auto; overflow: visible; align-items: flex-start; }
+  .gd-help-topic__media,
+  .gd-help-topic__no,
+  .gd-help-topic__title,
+  .gd-help-topic__sum { width: 256px; }
+  .gd-help-topic__media { height: 256px; }
+}
 /* gd-card 手机端仅宽度自适应，其余尺寸由组件库 gd-card.css 控制 */
 @media (max-width: 640px) {
   .gd-overview__content .gd-card { width: 100%; }
@@ -1825,6 +2070,46 @@ body.gd-overview {
 .gd-hamburger-motion[aria-expanded="true"] .gd-hamburger-motion__close { opacity: 1; transform: translate(-50%,-50%) rotate(0deg) scale(1); }
 
 </style>
+<style>
+/* gd-orb */
+.gd-orb{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:max(20px,env(safe-area-inset-bottom,0px));z-index:80;width:56px;height:56px;pointer-events:none}
+.gd-orb:not(.is-placed){visibility:hidden}
+.gd-orb__menu{position:absolute;right:0;bottom:66px;display:flex;flex-direction:column;align-items:stretch;gap:8px;margin:0;padding:0;transform-origin:100% 100%;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(18px) scale(0.72);transition:opacity 0.2s ease,transform 0.32s cubic-bezier(0.22,1,0.36,1),visibility 0s linear 0.32s}
+.gd-orb.is-open .gd-orb__menu{opacity:1;visibility:visible;pointer-events:auto;transform:none;transition:opacity 0.2s ease,transform 0.32s cubic-bezier(0.22,1,0.36,1),visibility 0s linear 0s}
+.gd-orb__item{display:inline-flex;align-items:center;justify-content:flex-start;gap:8px;box-sizing:border-box;min-height:48px;min-width:120px;padding:0 16px;border-radius:999px;border:1px solid rgba(var(--gd-color-primary-rgb),0.28);background:var(--gd-color-surface);color:var(--gd-color-on-surface);font-family:var(--gd-font-sans);font-size:var(--gd-type-label-large-size);font-weight:var(--gd-weight-semibold);letter-spacing:var(--gd-type-letter-spacing-wide);text-decoration:none;cursor:pointer;appearance:none;-webkit-appearance:none;white-space:nowrap;opacity:0;transform:translateY(12px) scale(0.88);transition:opacity 0.2s ease,transform 0.28s cubic-bezier(0.22,1,0.36,1)}
+.gd-orb.is-open .gd-orb__item{opacity:1;transform:none}
+.gd-orb.is-open .gd-orb__item:nth-child(1){transition-delay:0.04s}
+.gd-orb.is-open .gd-orb__item:nth-child(2){transition-delay:0.08s}
+.gd-orb.is-open .gd-orb__item:nth-child(3){transition-delay:0.12s}
+.gd-orb.is-open .gd-orb__item:nth-child(4){transition-delay:0.16s}
+.gd-orb:not(.is-open) .gd-orb__item:nth-child(1){transition-delay:0.12s}
+.gd-orb:not(.is-open) .gd-orb__item:nth-child(2){transition-delay:0.08s}
+.gd-orb:not(.is-open) .gd-orb__item:nth-child(3){transition-delay:0.04s}
+.gd-orb:not(.is-open) .gd-orb__item:nth-child(4){transition-delay:0s}
+.gd-orb__item:hover{color:var(--gd-color-on-surface);background:rgba(var(--gd-color-primary-rgb),0.12);border-color:rgba(var(--gd-color-primary-rgb),0.4)}
+.gd-orb__item:focus-visible{outline:2px solid var(--gd-color-primary);outline-offset:2px}
+.gd-orb__toggle{pointer-events:auto;position:absolute;right:0;bottom:0;width:56px;height:56px;min-width:56px;min-height:56px;padding:0;border:1px solid rgba(var(--gd-color-primary-rgb),0.32);border-radius:50%;background:var(--gd-color-primary);color:var(--gd-color-on-primary);cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;appearance:none;-webkit-appearance:none}
+.gd-orb.is-dragging .gd-orb__toggle{cursor:grabbing}
+.gd-orb.is-menu-down .gd-orb__menu{bottom:auto;top:66px;transform-origin:100% 0%}
+.gd-orb.is-menu-right .gd-orb__menu{right:auto;left:0;transform-origin:0% 100%}
+.gd-orb.is-menu-down.is-menu-right .gd-orb__menu{transform-origin:0% 0%}
+.gd-orb__toggle:hover{filter:brightness(1.08)}
+.gd-orb__toggle:focus-visible{outline:2px solid var(--gd-color-primary);outline-offset:3px}
+.gd-orb__icon{display:block;width:22px;height:22px;position:absolute;top:50%;left:50%;margin:0;transition:opacity 0.22s ease,transform 0.28s cubic-bezier(0.4,0,0.2,1)}
+.gd-orb__icon--grid{opacity:1;transform:translate(-50%,-50%) rotate(0deg) scale(1)}
+.gd-orb__icon--close{opacity:0;transform:translate(-50%,-50%) rotate(-90deg) scale(0.7)}
+.gd-orb.is-open .gd-orb__icon--grid{opacity:0;transform:translate(-50%,-50%) rotate(90deg) scale(0.7)}
+.gd-orb.is-open .gd-orb__icon--close{opacity:1;transform:translate(-50%,-50%) rotate(0deg) scale(1)}
+@media(prefers-reduced-motion:reduce){
+  .gd-orb__menu,.gd-orb__item,.gd-orb__icon{transition:none}
+  .gd-orb__menu{transform:none}
+  .gd-orb.is-open .gd-orb__menu{transform:none}
+  .gd-orb__item{transform:none;opacity:1}
+  .gd-orb:not(.is-open) .gd-orb__item{opacity:0}
+  .gd-orb__icon--grid,.gd-orb.is-open .gd-orb__icon--close{transform:translate(-50%,-50%) rotate(0deg) scale(1)}
+  .gd-orb__icon--close,.gd-orb.is-open .gd-orb__icon--grid{transform:translate(-50%,-50%) rotate(0deg) scale(0.7)}
+}
+</style>
 </head>
 <body class="gd-overview">
 <div class="gd-groundback gd-groundback--websearch" aria-hidden="true"></div>
@@ -1836,75 +2121,69 @@ body.gd-overview {
 <div class="gd-overview__shell">
   <div class="gd-overview__layout">
     <div class="gd-overview__content">
-      <div class="gd-overview-toc-mobile" data-extend-ui-toc>
-        <button type="button" class="gd-overview-toc-mobile__btn gd-hamburger-motion" data-extend-ui-toc-toggle aria-expanded="false" aria-controls="helpTocPanel" aria-label="打开本页索引">
-          <svg class="gd-hamburger-motion__menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
-          <svg class="gd-hamburger-motion__close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
-        </button>
-        <div class="gd-overview-toc-mobile__panel" id="helpTocPanel" data-extend-ui-toc-panel aria-hidden="true" hidden>
-          <p class="gd-overview-mobile-list__label">本页内容</p>
-          <nav class="gd-overview-mobile-list" aria-label="本页索引">
-            <a class="gd-overview-mobile-list__link" href="#tags">标签说明</a>
-            <a class="gd-overview-mobile-list__link" href="#cardguide">卡片说明</a>
-            <a class="gd-overview-mobile-list__link" href="#genres">常见游戏类别</a>
-            <a class="gd-overview-mobile-list__link" href="#legend">魔法传说</a>
-            <a class="gd-overview-mobile-list__link" href="#github">GitHub 加速</a>
-            <a class="gd-overview-mobile-list__link" href="#unzip">解压方法</a>
-          </nav>
-        </div>
-      </div>
+      <div id="helpHub" class="gd-help-hub">
       <h1 class="gd-brand__title gd-brand__title--shift gd-brand__title--demo">使用指南</h1>
-      <p class="gd-overview__lede">几分钟了解标签含义、卡片结构、搜索技巧及新手避坑指南。</p>
-      <div class="gd-overview__meta">
-        <span class="gd-overview__tag">标签说明</span>
-        <span class="gd-overview__tag">卡片说明</span>
-        <span class="gd-overview__tag">常见游戏类别</span>
-        <span class="gd-overview__tag">魔法传说</span>
-        <span class="gd-overview__tag">GitHub 加速</span>
-        <span class="gd-overview__tag">解压方法</span>
+      <p class="gd-overview__lede">每个专题是一张卡片。点开后再看这一节的具体内容。</p>
+      <div class="gd-help-topics">
+        <button type="button" class="gd-help-topic" data-help-topic="legend">
+          <span class="gd-help-topic__media" aria-hidden="true"></span>
+          <span class="gd-help-topic__no">01</span>
+          <span class="gd-help-topic__title">魔法传说</span>
+          <span class="gd-help-topic__sum">高墙、猫耳娘纳普，以及离开小镇的那份祝福。</span>
+        </button>
+        <button type="button" class="gd-help-topic" data-help-topic="cards">
+          <span class="gd-help-topic__media" aria-hidden="true"></span>
+          <span class="gd-help-topic__no">02</span>
+          <span class="gd-help-topic__title">卡片与标签</span>
+          <span class="gd-help-topic__sum">卡面上看什么，点开之后那些标签分别是什么意思。</span>
+        </button>
+        <button type="button" class="gd-help-topic" data-help-topic="genres">
+          <span class="gd-help-topic__media" aria-hidden="true"></span>
+          <span class="gd-help-topic__no">03</span>
+          <span class="gd-help-topic__title">常见游戏类别</span>
+          <span class="gd-help-topic__sum">ADV、视觉小说、RPG、音游这些说法，分别指哪一种玩法。</span>
+        </button>
+        <button type="button" class="gd-help-topic" data-help-topic="tools">
+          <span class="gd-help-topic__media" aria-hidden="true"></span>
+          <span class="gd-help-topic__no">04</span>
+          <span class="gd-help-topic__title">获取与解压</span>
+          <span class="gd-help-topic__sum">电脑和手机怎么打开 GitHub，压缩包怎么解。</span>
+        </button>
       </div>
-      <div class="gd-overview__rule" aria-hidden="true"></div>
-<section class="gd-section" id="tags">
-  <h2 class="gd-section__title">标签说明</h2>
-<div class="card"><p>每个卡片下方都有一组标签，以下是各标签的含义：</p><ul><li><span class="gd-tag">帮助文档</span> — 提供网站使用方法，包括解压密码，常见的模拟器，工具下载等。</li><li><span class="gd-tag">开源</span> — 常指网站或项目公开源代码，用户可以查看或参与开发。</li><li><span class="gd-tag">魔法</span> — 提供特殊网络环境下的访问工具或相关资源，有些情况换个运营商网络环境即可。</li><li><span class="gd-tag">表里世界</span> — 用于区分 SFW 和 NSFW 的网站。</li><li><span class="gd-tag">国内云盘</span> — 使用国内网盘存储或分享资源，普遍下载速度堪忧。</li><li><span class="gd-tag">国外云盘</span> — 使用国外网盘存储或分享资源，大多需要魔法。</li><li><span class="gd-tag">自建云盘</span> — 网站站长自行搭建的云盘，用于存储和分享资源，质量和速度均有保证。</li><li><span class="gd-tag">API</span> — 提供接口，方便开发者连接做二次开发。</li><li><span class="gd-tag">补丁</span> — 提供游戏汉化、修复、更新或功能扩展等补丁。</li><li><span class="gd-tag">登录</span> — 获取网站资源前需要注册登录账号。</li><li><span class="gd-tag">积分制</span> — 网站通过积分限制兑换资源，大多是限制次数，每日签到还可以获取积分。</li><li><span class="gd-tag">步兵</span> — 没有进行马赛克处理的相关内容，需要在合适的场所打开。</li><li><span class="gd-tag">磁链</span> — 通过磁力链接获取资源的一种方式，一般需要下载器。</li><li><span class="gd-tag">干货站</span> — 对游戏没有介绍或有少量介绍的网站，一般都是即点即下。</li><li><span class="gd-tag">转区</span> — 通过修改系统区域或使用相关工具，解决部分日文游戏乱码、无法启动等问题。</li></ul></div>
+      </div>
+      <div id="helpDetail" class="gd-help-detail" hidden>
+      <button type="button" class="gd-button gd-button--back gd-help-back" id="helpBackTopics">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        返回专题
+      </button>
+<section class="gd-section" id="legend">
+  <h2 class="gd-section__title">魔法传说</h2>
+<div class="card"><p>小镇四面高墙，材料坚固无法破坏，这使小镇与外界保持着距离。镇上唯一的大门由强悍的守卫日夜守护，人们可以自由地进入，却无法离开。 然而，这一成不变的规则却被这位披风猫耳娘纳普打破了。她说出了一件令人震惊的事：只要有人能摸她的猫耳，就能获得一份魔法的祝福，这份祝福将帮助人们离开这个小镇。 当然，这份祝福并非人人都能获得，只有那些符合条件的人才有机会得到。 此后，小镇上出现了两个新的角色：传教士和魔法师。他们运用自己的特殊能力，致力于传播这份魔法，同时保护着小镇的安宁。</p></div>
 </section>
-<section class="gd-section" id="cardguide">
-  <h2 class="gd-section__title">卡片说明</h2>
-<article class="gd-card">  <div class="gd-card__header">    <div class="gd-card__icon" aria-hidden="true">站</div>    <div class="gd-card__title-wrap">      <div class="gd-card__title">示例站名</div>      <div class="gd-card__subtitle">描述：取自网站的元数据（SEO）或网站关于。</div>    </div>  </div>  <div class="gd-card__tags">    <span class="gd-tag">ADV</span><span class="gd-tag gd-tag--blue">熟肉</span>  </div>  <div class="gd-card__actions">    <button type="button" class="gd-card__btn gd-card__btn--detail">介绍详情</button>    <button type="button" class="gd-card__btn gd-card__btn--link">链接直达</button>  </div></article><div class="card"><ul><li><span class="gd-tag">描述</span> — 取自网站的元数据（SEO）或网站关于。</li><li><span class="gd-tag">标签</span> — 根据网站的实际需求进行打标签，可能会出现交叉重复的情况，发现错误请联系我。</li><li><span class="gd-tag">介绍详情</span> — 根据实际考察，从性质、官网、社群等多维度进行勘察。</li><li><span class="gd-tag">链接直达</span> — 传送到发布页或官网。</li></ul></div>
+<section class="gd-section" id="cards">
+  <h2 class="gd-section__title">卡片与标签</h2>
+  <h3 id="cardguide">卡片说明</h3>
+<article class="gd-card gd-card--general gd-card--link" id="helpDemoSiteCard" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="helpSiteCardModal" aria-label="打开示例站名详情"><div class="gd-card__header"><div class="gd-card__icon" aria-hidden="true">站</div><div class="gd-card__title-wrap"><div class="gd-card__title">示例站名</div><div class="gd-card__subtitle">简介取自网站元数据或关于页，卡面单行省略。</div></div></div></article><div class="card"><p>主站导航卡（gd-card--general）：多列宽 390px、高 100px；仅一列（≤919px）宽 100%。卡面只保留图标、标题与单行简介；<strong>点击整卡</strong>打开详情弹窗（标签与操作在弹窗内）。</p><ul><li><span class="gd-tag">简介</span> — 卡面单行展示（过长省略）；完整说明在弹窗内。</li><li><span class="gd-tag">标签</span> — 卡面不展示；点开弹窗后可见全部标签（可能交叉重复，发现错误请联系我）。</li><li><span class="gd-tag">介绍详情</span> — 弹窗内按钮，跳转多维度勘察后的站点详情页。</li><li><span class="gd-tag">链接直达</span> — 弹窗内按钮，传送到发布页或官网。</li></ul></div>
+  <h3 id="tags">标签说明</h3>
+<div class="card"><p>点击卡片打开详情弹窗后可见全部标签，以下是各标签的含义：</p><ul><li><span class="gd-tag">帮助文档</span> — 提供网站使用方法，包括解压密码，常见的模拟器，工具下载等。</li><li><span class="gd-tag">开源</span> — 常指网站或项目公开源代码，用户可以查看或参与开发。</li><li><span class="gd-tag">魔法</span> — 提供特殊网络环境下的访问工具或相关资源，有些情况换个运营商网络环境即可。</li><li><span class="gd-tag">表里世界</span> — 用于区分 SFW 和 NSFW 的网站。</li><li><span class="gd-tag">国内云盘</span> — 使用国内网盘存储或分享资源，普遍下载速度堪忧。</li><li><span class="gd-tag">国外云盘</span> — 使用国外网盘存储或分享资源，大多需要魔法。</li><li><span class="gd-tag">自建云盘</span> — 网站站长自行搭建的云盘，用于存储和分享资源，质量和速度均有保证。</li><li><span class="gd-tag">API</span> — 提供接口，方便开发者连接做二次开发。</li><li><span class="gd-tag">补丁</span> — 提供游戏汉化、修复、更新或功能扩展等补丁。</li><li><span class="gd-tag">登录</span> — 获取网站资源前需要注册登录账号。</li><li><span class="gd-tag">积分制</span> — 网站通过积分限制兑换资源，大多是限制次数，每日签到还可以获取积分。</li><li><span class="gd-tag">步兵</span> — 没有进行马赛克处理的相关内容，需要在合适的场所打开。</li><li><span class="gd-tag">磁链</span> — 通过磁力链接获取资源的一种方式，一般需要下载器。</li><li><span class="gd-tag">干货站</span> — 对游戏没有介绍或有少量介绍的网站，一般都是即点即下。</li><li><span class="gd-tag">转区</span> — 通过修改系统区域或使用相关工具，解决部分日文游戏乱码、无法启动等问题。</li></ul></div>
 </section>
 <section class="gd-section" id="genres">
   <h2 class="gd-section__title">常见游戏类别</h2>
 <div class="card"><p>Galgame 不只是文字游戏，按玩法分也有很多种类，常见说法如下：</p><ul><li><span class="gd-tag">ADV / AVG</span> — 文字冒险，Galgame 最主流的类型，通过分支选项走进不同路线。</li><li><span class="gd-tag">VNG / NVL</span> — 视觉小说，文字铺满屏幕，弱化玩法、强化剧情，更像带音乐对白的电子书。</li><li><span class="gd-tag">RPG</span> — 角色扮演，养成与策略结合，角色成长推动剧情，代表作品如兰斯系列。</li><li><span class="gd-tag">ARPG</span> — 动作角色扮演，在角色扮演基础上加入实时动作战斗。</li><li><span class="gd-tag">SLG</span> — 策略模拟，策略玩法与文字冒险结合，老牌作品如战女神系列。</li><li><span class="gd-tag">ACT / AAG</span> — 动作类，剧情由穿插的动作战斗推动，代表作如 BALDR 系列。</li><li><span class="gd-tag">养成</span> — 通过选项提升好感度攻略女主，代表作如 LOVELY×CATION。</li><li><span class="gd-tag">生肉</span> — 未汉化的原版游戏，一般为日文，需要自己啃或配合机翻。</li><li><span class="gd-tag">熟肉</span> — 已汉化的版本，通常指带中文补丁的资源。</li><li><span class="gd-tag">SIM / 模拟经营</span> — 模拟经营、养成、经营管理等玩法，例如经营学校、农场、店铺等。</li><li><span class="gd-tag">PZL / PUZ</span> — 解谜类，以谜题、推理或机关为主要玩法。</li><li><span class="gd-tag">RHY / 音游</span> — 以音乐、节奏操作为核心玩法。</li><li><span class="gd-tag">卡牌 / CCG</span> — 以卡牌收集、构筑和战斗为主要玩法。</li><li><span class="gd-tag">STG / 射击</span> — 弹幕、横版射击等，虽然 Galgame 中比较少见，但分类体系可以保留。</li><li><span class="gd-tag">MMO / Online</span> — 网络联机或在线游戏，如果收录范围以后包含这类作品，可以加上。</li><li><span class="gd-tag">MMD</span> — 全称 MikuMikuDance，是樋口优所开发的一款免费的 3D 动画制作软件，现在指用此软件制作的动画。</li><li><span class="gd-tag">同人</span> — 基于原作的二次创作作品，多由个人或社团制作。</li></ul></div>
 </section>
-<section class="gd-section" id="legend">
-  <h2 class="gd-section__title">魔法传说</h2>
-<div class="card"><p>小镇四面高墙，材料坚固无法破坏，这使小镇与外界保持着距离。镇上唯一的大门由强悍的守卫日夜守护，人们可以自由地进入，却无法离开。 然而，这一成不变的规则却被这位披风猫耳娘纳普打破了。她说出了一件令人震惊的事：只要有人能摸她的猫耳，就能获得一份魔法的祝福，这份祝福将帮助人们离开这个小镇。 当然，这份祝福并非人人都能获得，只有那些符合条件的人才有机会得到。 此后，小镇上出现了两个新的角色：传教士和魔法师。他们运用自己的特殊能力，致力于传播这份魔法，同时保护着小镇的安宁。</p></div>
-</section>
-<section class="gd-section" id="github">
-  <h2 class="gd-section__title">GitHub 加速</h2>
+<section class="gd-section" id="tools">
+  <h2 class="gd-section__title">获取与解压</h2>
+  <h3 id="github">GitHub 加速</h3>
 <div class="card"><p>电脑端</p><ul><li>下载安装 <a class="gd-link" href="https://steampp.net/" target="_blank" rel="noopener noreferrer">Watt Toolkit</a>（原名 Steam++），网络加速中勾选 GitHub 即可。</li><li>浏览器安装 <a class="gd-link" href="https://microsoftedge.microsoft.com/addons/detail/%E7%AF%A1%E6%94%B9%E7%8C%B4/iikmkjmpaadaobahmlepeloendndfphd" target="_blank" rel="noopener noreferrer">油猴插件（Tampermonkey）</a>，再下载 <a class="gd-link" href="https://greasyfork.org/zh-CN/scripts/412245-github-enhancement-high-speed-download" target="_blank" rel="noopener noreferrer">GitHub 加速脚本</a> 进行安装。</li><li>魔法直达，懂得都懂。</li></ul></div><div class="card"><p>移动端</p><ul><li>直接下载 <a class="gd-link" href="https://gitclone.com/docs/feature/github_app" target="_blank" rel="noopener noreferrer">GitHub App</a>（官方客户端不受墙影响）。</li><li>浏览器安装<a class="gd-link" href="https://microsoftedge.microsoft.com/addons/detail/%E7%AF%A1%E6%94%B9%E7%8C%B4/iikmkjmpaadaobahmlepeloendndfphd" target="_blank" rel="noopener noreferrer">油猴插件（Tampermonkey）</a>，再下载<a class="gd-link" href="https://greasyfork.org/zh-CN/scripts/412245-github-enhancement-high-speed-download" target="_blank" rel="noopener noreferrer">GitHub 加速脚本</a>进行安装。</li><li>魔法直达，懂得都懂。</li></ul></div>
-</section>
-<section class="gd-section" id="unzip">
-  <h2 class="gd-section__title">解压方法</h2>
+  <h3 id="unzip">解压方法</h3>
 <div class="card"><ul><li>下载完的压缩包不要在线解压，去文件管理找到压缩包本体，使用专门的解压软件进行解压。</li><li>部分压缩包会有密码，一般在下载网站的帮助文档、首页、页脚等位置可以找到。</li><li>lz4 压缩一般是双格式后缀（如 <span class="gd-tag">.rar.lz4</span>），一般是解压两次，需用专门软件。推荐 <span class="gd-tag">ZArchiver</span>（移动端）和 <span class="gd-tag">7-Zip ZS</span>（电脑端）。</li><li>分卷文件格式为 <span class="gd-tag">.part1.rar</span>，带 part 的一般为分卷文件，需要全部下载后，解压 part1，用 <span class="gd-tag">ZArchiver</span>（移动端）或 <span class="gd-tag">WinRAR</span>（电脑端）。</li><li>有部分为自解压格式压缩包，格式一般为 <span class="gd-tag">exe</span>，双击解压即可。</li><li>遇到压缩包损坏无法解压，使用 <span class="gd-tag">WinRAR</span> 进行修复，尝试无果请重新下载或更换资源站。</li></ul></div>
 </section>
+      </div>
     </div>
-<aside class="gd-overview__toc" aria-label="本页内容">
-  <nav class="gd-otp" aria-label="本页索引">
-    <p class="gd-otp__label">本页内容</p>
-    <div class="gd-otp__list">
-      <a class="gd-otp__link" href="#tags">标签说明</a>
-      <a class="gd-otp__link" href="#cardguide">卡片说明</a>
-      <a class="gd-otp__link" href="#genres">常见游戏类别</a>
-      <a class="gd-otp__link" href="#legend">魔法传说</a>
-      <a class="gd-otp__link" href="#github">GitHub 加速</a>
-      <a class="gd-otp__link" href="#unzip">解压方法</a>
-    </div>
-  </nav>
-</aside>
   </div>
 </div>
-<footer class="gd-footer gd-footer--page"><nav class="gd-footer__nav" aria-label="页脚链接"><a href="https://galnavi.top/nav/help/">帮助文档</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/about/">关于本站</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="mailto:feedback@galnavi.top">联系站长</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/friend/">申请友链</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/status/">站点状态</a></nav><p class="gd-footer__copy">© 2026 GALNAVI · 愿每一次探索都有新的收获</p></footer>
+<div class="gd-modal-overlay" id="helpSiteCardModal" role="dialog" aria-modal="true" aria-labelledby="helpSiteCardModalTitle" aria-hidden="true" data-close-on-backdrop><div class="gd-modal gd-modal--site-card"><button type="button" class="gd-modal__close" data-gd-close aria-label="关闭"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button><div class="gd-modal--site-card__head"><div class="gd-card__icon" aria-hidden="true">站</div><h2 class="gd-modal__title" id="helpSiteCardModalTitle">示例站名</h2></div><p class="gd-modal__body">这是示范弹窗：完整简介、全部标签以及「介绍详情 / 链接直达」都在这里展示（卡面不放标签与按钮）。</p><div class="gd-card__tags gd-modal--site-card__tags"><span class="gd-tag">帮助文档</span><span class="gd-tag gd-tag--blue">开源</span><span class="gd-tag gd-tag--pink">国内云盘</span><span class="gd-tag">干货站</span></div><div class="gd-modal__actions gd-modal__actions--row"><a class="gd-card__btn gd-card__btn--detail" href="https://galnavi.top/nav/detail/" target="_blank" rel="noopener noreferrer">介绍详情</a><a class="gd-card__btn gd-card__btn--link" href="https://galnavi.top/nav/" target="_blank" rel="noopener noreferrer">链接直达</a></div></div></div>
+<footer class="gd-footer gd-footer--page"><nav class="gd-footer__nav" aria-label="页脚链接"><a href="https://galnavi.top/nav/">主站首页</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/help/">帮助文档</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/about/">关于本站</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="mailto:feedback@galnavi.top">联系站长</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/friend/">申请友链</a></nav><p class="gd-footer__copy">© 2026 GALNAVI · 愿每一次探索都有新的收获</p></footer>
 <script>
 (function(){function a(){var h=(window.visualViewport&&window.visualViewport.height)||window.innerHeight;document.documentElement.style.setProperty("--gd-vvh",h+"px");}a();window.addEventListener("resize",a);if(window.visualViewport)window.visualViewport.addEventListener("resize",a);})();
 (function() {
@@ -1984,6 +2263,248 @@ else syncActive();
 window.addEventListener('scroll', requestSync, { passive: true });
 window.addEventListener('resize', requestSync);
 }
+})();
+
+(function() {
+  var hub = document.getElementById('helpHub');
+  var detail = document.getElementById('helpDetail');
+  var back = document.getElementById('helpBackTopics');
+  if (!hub || !detail) return;
+  var sections = Array.prototype.slice.call(detail.querySelectorAll('.gd-section[id]'));
+  var alias = { tags: 'cards', cardguide: 'cards', github: 'tools', unzip: 'tools' };
+  function showTopic(id) {
+    var target = alias[id] || id;
+    var found = false;
+    sections.forEach(function(sec) {
+      var on = sec.id === target;
+      sec.classList.toggle('is-on', on);
+      if (on) found = true;
+    });
+    if (!found) return;
+    hub.hidden = true;
+    detail.hidden = false;
+    var sub = alias[id] ? document.getElementById(id) : null;
+    if (sub) requestAnimationFrame(function() { sub.scrollIntoView({ block: 'start' }); });
+    else window.scrollTo(0, 0);
+  }
+  function showHub() {
+    detail.hidden = true;
+    hub.hidden = false;
+    sections.forEach(function(sec) { sec.classList.remove('is-on'); });
+    window.scrollTo(0, 0);
+  }
+  hub.addEventListener('click', function(e) {
+    var btn = e.target.closest('[data-help-topic]');
+    if (!btn || !hub.contains(btn)) return;
+    var id = btn.getAttribute('data-help-topic');
+    showTopic(id);
+    try { history.pushState({ helpTopic: id }, '', '#' + id); } catch (err) {}
+  });
+  if (back) back.addEventListener('click', function() {
+    showHub();
+    try { history.pushState({ helpTopic: '' }, '', location.pathname + location.search); } catch (err) {}
+  });
+  window.addEventListener('popstate', function() {
+    var id = (location.hash || '').replace(/^#/, '');
+    if (id) showTopic(id);
+    else showHub();
+  });
+  var initial = (location.hash || '').replace(/^#/, '');
+  if (initial) showTopic(initial);
+})();
+
+(function() {
+  var card = document.getElementById('helpDemoSiteCard');
+  var overlay = document.getElementById('helpSiteCardModal');
+  if (!card || !overlay) return;
+  function openDemo() {
+    overlay.classList.add('is-open');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    var closeBtn = overlay.querySelector('[data-gd-close]');
+    if (closeBtn) closeBtn.focus();
+  }
+  function closeDemo() {
+    overlay.classList.remove('is-open');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    try { card.focus(); } catch (e) {}
+  }
+  card.addEventListener('click', openDemo);
+  card.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      openDemo();
+    }
+  });
+  overlay.querySelectorAll('[data-gd-close]').forEach(function(n) {
+    n.addEventListener('click', function(e) { e.stopPropagation(); closeDemo(); });
+  });
+  overlay.addEventListener('click', function(e) {
+    if (e.target === overlay && overlay.hasAttribute('data-close-on-backdrop')) closeDemo();
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && overlay.classList.contains('is-open')) {
+      e.preventDefault();
+      closeDemo();
+    }
+  });
+})();
+</script>
+<div class="gd-orb" id="gdOrb">
+  <div class="gd-orb__menu" id="gdOrbMenu" role="region" aria-label="快捷入口">
+    <a class="gd-orb__item" href="https://galnavi.top/nav/?cat=标签">🏷️ 标签</a>
+    <a class="gd-orb__item" href="https://galnavi.top/nav/?welcome=1">💬 弹窗</a>
+    <a class="gd-orb__item" href="https://github.com/argb6/gal-navigation" target="_blank" rel="noopener noreferrer">📦 仓库</a>
+    <a class="gd-orb__item" href="https://galnavi.top/nav/palace/" target="_blank" rel="noopener noreferrer">🏛️ 殿堂</a>
+  </div>
+  <button type="button" class="gd-orb__toggle" id="gdOrbToggle" aria-expanded="false" aria-controls="gdOrbMenu" aria-label="打开快捷入口">
+    <svg class="gd-orb__icon gd-orb__icon--grid" viewBox="0 0 24 24" focusable="false" aria-hidden="true"><path fill="currentColor" d="M12 2.2 14.9 8.7 22 9.4 16.7 14.1 18.2 21.1 12 17.5 5.8 21.1 7.3 14.1 2 9.4 9.1 8.7Z"/></svg>
+    <svg class="gd-orb__icon gd-orb__icon--close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" focusable="false" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+</div>
+<script>
+(function(){
+  var root=document.getElementById('gdOrb');
+  var toggle=document.getElementById('gdOrbToggle');
+  var menu=document.getElementById('gdOrbMenu');
+  if(!root||!toggle||!menu)return;
+  function setOpen(open){
+    root.classList.toggle('is-open',open);
+    toggle.setAttribute('aria-expanded',open?'true':'false');
+    toggle.setAttribute('aria-label',open?'关闭快捷入口':'打开快捷入口');
+    menu.setAttribute('aria-hidden',open?'false':'true');
+    menu.inert=!open;
+  }
+  menu.inert=true;
+  menu.setAttribute('aria-hidden','true');
+  var POS_KEY='galnavi-orb-pos';
+  var dragging=false,moved=false,suppressClick=false,startX=0,startY=0,originL=0,originT=0;
+  function dragClamp(left,top){
+    var edge=8,s=56;
+    var maxL=Math.max(edge,window.innerWidth-s-edge);
+    var minT=edge;
+    var ceiling=window.innerHeight-s-edge;
+    var below=document.getElementById('belowNav')||document.querySelector('.gd-below-nav');
+    if(below){
+      var bb=below.getBoundingClientRect().bottom;
+      if(bb>0&&bb<ceiling)minT=Math.max(edge,Math.ceil(bb));
+    }else{
+      var nav=document.getElementById('mainNav')||document.querySelector('.gd-navbar');
+      if(nav){
+        var nb=nav.getBoundingClientRect().bottom;
+        if(nb>0&&nb<ceiling)minT=Math.max(edge,Math.ceil(nb));
+      }
+    }
+    var maxT=Math.max(minT,ceiling);
+    return{left:Math.min(Math.max(edge,left),maxL),top:Math.min(Math.max(minT,top),maxT)};
+  }
+  function screenClamp(left,top){
+    var edge=8,s=56;
+    var maxL=Math.max(edge,window.innerWidth-s-edge);
+    var maxT=Math.max(edge,window.innerHeight-s-edge);
+    return{left:Math.min(Math.max(edge,left),maxL),top:Math.min(Math.max(edge,top),maxT)};
+  }
+  function offsetsOf(left,top){
+    return{right:Math.round(window.innerWidth-(left+56)),bottom:Math.round(window.innerHeight-(top+56))};
+  }
+  function pointOf(saved){
+    return screenClamp(window.innerWidth-saved.right-56,window.innerHeight-saved.bottom-56);
+  }
+  function writePos(left,top){
+    try{localStorage.setItem(POS_KEY,JSON.stringify(offsetsOf(left,top)));}catch(err){}
+  }
+  function placeMenu(){
+    var rect=root.getBoundingClientRect();
+    var menuW=menu.offsetWidth||160;
+    var menuH=menu.offsetHeight||220;
+    var need=menuH+10;
+    root.classList.toggle('is-menu-down',rect.top<need&&(window.innerHeight-rect.bottom)>rect.top);
+    root.classList.toggle('is-menu-right',rect.right<menuW+8&&(window.innerWidth-rect.left)>rect.right);
+  }
+  function place(left,top){
+    var p=dragClamp(left,top);
+    root.style.left=p.left+'px';
+    root.style.top=p.top+'px';
+    root.style.right='auto';
+    root.style.bottom='auto';
+    placeMenu();
+    return p;
+  }
+  function showAt(left,top){
+    root.style.left=left+'px';
+    root.style.top=top+'px';
+    root.style.right='auto';
+    root.style.bottom='auto';
+    root.classList.add('is-placed');
+    placeMenu();
+  }
+  function restore(){
+    var shown=false;
+    try{
+      var raw=localStorage.getItem(POS_KEY);
+      if(raw){
+        var p=JSON.parse(raw);
+        if(p&&typeof p.right==='number'&&typeof p.bottom==='number'){
+          var xy=pointOf(p);
+          showAt(xy.left,xy.top);
+          shown=true;
+        }else if(p&&typeof p.left==='number'&&typeof p.top==='number'){
+          var old=screenClamp(p.left,p.top);
+          writePos(old.left,old.top);
+          showAt(old.left,old.top);
+          shown=true;
+        }
+      }
+    }catch(err){}
+    if(!shown)root.classList.add('is-placed');
+    placeMenu();
+  }
+  toggle.addEventListener('pointerdown',function(e){
+    if(e.button!=null&&e.button!==0)return;
+    dragging=true;moved=false;
+    var rect=root.getBoundingClientRect();
+    startX=e.clientX;startY=e.clientY;originL=rect.left;originT=rect.top;
+    try{toggle.setPointerCapture(e.pointerId);}catch(err){}
+  });
+  toggle.addEventListener('pointermove',function(e){
+    if(!dragging)return;
+    var dx=e.clientX-startX,dy=e.clientY-startY;
+    if(!moved&&(dx*dx+dy*dy)<36)return;
+    if(!moved){moved=true;root.classList.add('is-dragging');}
+    place(originL+dx,originT+dy);
+  });
+  function endDrag(e){
+    if(!dragging)return;
+    dragging=false;
+    root.classList.remove('is-dragging');
+    if(moved){
+      suppressClick=true;
+      var rect=root.getBoundingClientRect();
+      var saved=dragClamp(rect.left,rect.top);
+      writePos(saved.left,saved.top);
+    }
+    try{if(e&&toggle.hasPointerCapture(e.pointerId))toggle.releasePointerCapture(e.pointerId);}catch(err){}
+  }
+  toggle.addEventListener('pointerup',endDrag);
+  toggle.addEventListener('pointercancel',endDrag);
+  toggle.addEventListener('click',function(e){
+    e.stopPropagation();
+    if(suppressClick){suppressClick=false;e.preventDefault();return;}
+    setOpen(!root.classList.contains('is-open'));
+    placeMenu();
+  });
+  window.addEventListener('resize',function(){restore();});
+  restore();
+  menu.addEventListener('click',function(e){
+    if(e.target.closest('.gd-orb__item'))setOpen(false);
+  });
+  document.addEventListener('click',function(e){
+    if(root.classList.contains('is-open')&&!root.contains(e.target))setOpen(false);
+  });
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'&&root.classList.contains('is-open')){setOpen(false);toggle.focus();}
+  });
 })();
 </script>
 </body>

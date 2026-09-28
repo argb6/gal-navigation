@@ -82,6 +82,33 @@ export function initGdOrb(root, options) {
     el.classList.toggle("is-menu-right", rect.right < menuW + 8 && window.innerWidth - rect.left > rect.right);
   }
 
+  function screenClamp(left, top) {
+    const edge = 8;
+    const s = 56;
+    const maxL = Math.max(edge, window.innerWidth - s - edge);
+    const maxT = Math.max(edge, window.innerHeight - s - edge);
+    return {
+      left: Math.min(Math.max(edge, left), maxL),
+      top: Math.min(Math.max(edge, top), maxT),
+    };
+  }
+
+  function offsetsOf(left, top) {
+    return {
+      right: Math.round(window.innerWidth - (left + 56)),
+      bottom: Math.round(window.innerHeight - (top + 56)),
+    };
+  }
+
+  function pointOf(saved) {
+    return screenClamp(window.innerWidth - saved.right - 56, window.innerHeight - saved.bottom - 56);
+  }
+
+  function writePos(left, top) {
+    if (!POS_KEY) return;
+    try { localStorage.setItem(POS_KEY, JSON.stringify(offsetsOf(left, top))); } catch { /* 隐私模式可能拒绝写入 */ }
+  }
+
   function place(left, top) {
     const p = clamp(left, top);
     el.style.left = p.left + "px";
@@ -92,26 +119,40 @@ export function initGdOrb(root, options) {
     return p;
   }
 
+  function showAt(left, top) {
+    el.style.left = left + "px";
+    el.style.top = top + "px";
+    el.style.right = "auto";
+    el.style.bottom = "auto";
+    el.classList.add("is-placed");
+    placeMenu();
+  }
+
   function restore() {
     if (!POS_KEY) {
+      el.classList.add("is-placed");
       placeMenu();
       return;
     }
+    let shown = false;
     try {
       const raw = localStorage.getItem(POS_KEY);
-      if (!raw) {
-        placeMenu();
-        return;
+      if (raw) {
+        const p = JSON.parse(raw);
+        if (p && typeof p.right === "number" && typeof p.bottom === "number") {
+          const xy = pointOf(p);
+          showAt(xy.left, xy.top);
+          shown = true;
+        } else if (p && typeof p.left === "number" && typeof p.top === "number") {
+          const old = screenClamp(p.left, p.top);
+          writePos(old.left, old.top);
+          showAt(old.left, old.top);
+          shown = true;
+        }
       }
-      const p = JSON.parse(raw);
-      if (!p || typeof p.left !== "number" || typeof p.top !== "number") {
-        placeMenu();
-        return;
-      }
-      place(p.left, p.top);
-    } catch {
-      placeMenu();
-    }
+    } catch { /* 坐标损坏就用默认右下角 */ }
+    if (!shown) el.classList.add("is-placed");
+    placeMenu();
   }
 
   toggle.addEventListener("pointerdown", (e) => {
@@ -149,7 +190,8 @@ export function initGdOrb(root, options) {
       suppressClick = true;
       if (POS_KEY) {
         const rect = el.getBoundingClientRect();
-        try { localStorage.setItem(POS_KEY, JSON.stringify(clamp(rect.left, rect.top))); } catch { /* 隐私模式可能拒绝写入 */ }
+        const p = clamp(rect.left, rect.top);
+        writePos(p.left, p.top);
       }
     }
     try {
@@ -169,13 +211,12 @@ export function initGdOrb(root, options) {
     placeMenu();
   });
   window.addEventListener("resize", () => {
-    if (el.style.left) {
-      if (contain) place(el.offsetLeft, el.offsetTop);
-      else {
-        const rect = el.getBoundingClientRect();
-        place(rect.left, rect.top);
-      }
-    } else placeMenu();
+    if (contain) {
+      if (el.style.left) place(el.offsetLeft, el.offsetTop);
+      else placeMenu();
+      return;
+    }
+    restore();
   });
   restore();
 

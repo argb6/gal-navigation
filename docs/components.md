@@ -148,7 +148,7 @@
 | `gd-groundback` | `foundation/layout/` | 页面背景层 | `--websearch` 主站默认（线条模糊）；`--gold` 殿堂；`--blue` 点阵（预览对比）；`--bleed` 铺满 |
 | `gd-page` / `gd-page-shell` | `foundation/layout/` + `extend/websearch/` | 页面壳 / 主站限宽 | 纯 CSS + `initGdStickyViewport` |
 | `gd-glass` | `foundation/tokens/` | 玻璃工具类 | 纯 CSS |
-| `gd-orb` | `extend/websearch/` | 主站右下角扩展按钮（标签/仓库/弹窗/殿堂）；圆钮可拖动 | `initGdOrb`；单列胶囊；`role="region"` |
+| `gd-orb` | `extend/websearch/` | 有页脚的页面右下蓝色星星（标签/仓库/弹窗/殿堂）；位置按离右缘、下缘的距离保存 | `initGdOrb`；单列胶囊；`role="region"` |
 | `gd-card-grid` | `extend/websearch/` | 主站卡片网格（最多 6 列） | 纯 CSS |
 | `gd-nap` | `extend/websearch/` | 纳普彩蛋 | `initGdNap` |
 | `gd-notice-led` | `extend/websearch/` | 顶栏通知跑马灯 | `initGdNoticeLed`；`--gd-notice-led-duration` |

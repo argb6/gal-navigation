@@ -18,9 +18,8 @@
 
 ### 1.1 CF API Token
 
-- **风险位置**：现网 / 前端 `worker/new/status.js`、沙盒 status（若仍硬编码）
-- **处理**：改为 Secret 绑定 `env.CF_API_TOKEN`；已出现在仓库/文档的旧 token **立刻轮换**
-- 开源仓 `status.js` 保持 **β 占位**，不含现网密钥
+- status Worker 已删除，不再有状态页去读 `CF_API_TOKEN`
+- 已出现在仓库/文档的旧 token **立刻轮换**；不要把 token 写进开源仓
 
 ### 1.2 Wrangler 账号缓存
 
@@ -87,7 +86,6 @@ gal-navigation/
 
 - [ ] 无 API token / 账密 / `CF_API_TOKEN` 明文
 - [ ] 无 `.wrangler/`、无真实 `database_id` / KV `id`
-- [ ] `status.js` 为 β 占位
 - [ ] 邮箱按 §1.4 处理
 - [ ] docs/kb 不含 UUID（或已打码）
 - [ ] 推送目标为 `gal-navigation` remote，不是误推私有 toml

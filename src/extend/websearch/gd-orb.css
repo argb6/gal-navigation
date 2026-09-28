@@ -9,6 +9,10 @@
   height: 56px;
   pointer-events: none;
 }
+/* 读到坐标前先藏住，避免换页时先闪到右下角 */
+.gd-orb:not(.is-placed) {
+  visibility: hidden;
+}
 /* 预览框内：绝对定位，initGdOrb 限制在 .demo-preview--orb 内拖动 */
 .gd-orb--demo {
   position: absolute;

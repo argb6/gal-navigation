@@ -1,4 +1,4 @@
-# ADR-0007: KV 存储策略（轮播图/推荐/捐款/状态/公告）
+# ADR-0007: KV 存储策略（轮播图/推荐/捐款）
 
 ## 状态
 
@@ -15,8 +15,6 @@
 - 轮播图 URL 列表
 - 推荐项 key 列表
 - 捐款名单
-- 站点状态监控数据
-- 站点公告
 
 这些数据特点：读多写少、无需 SQL 查询、值为 JSON 或纯文本。
 
@@ -31,9 +29,6 @@
 | HERO_KV | `hero_images` | JSON 数组 `["url1","url2"]` | 首页轮播图 |
 | FEATURED_KV | `featured_items` | JSON 数组 `["key1","key2"]` | 首页推荐项 |
 | DONATE_KV | `donors` | JSON 数组 `[{name,amount,note,date}]` | 捐款名单 |
-| STATUS_KV | `state` | JSON `{failCounts,lastEventAt,uptimeStart,events}` | 监控状态 |
-| STATUS_KV | `api_cache` | JSON `{date,slot,visits,fetchedAt}` | CF API 缓存 |
-| NOTICE_KV | `notice` | 纯文本 | 站点公告 |
 
 ## 原因
 

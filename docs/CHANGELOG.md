@@ -4,6 +4,8 @@
 
 ### 调整
 
+- 帮助页「卡片预览」对齐现网 `gd-card--general`：卡面无标签/双按钮；点击打开示范 `gd-modal--site-card`；标签说明/卡片说明文案同步（点卡弹窗、标签在弹窗内）；同步 sandbox help
+
 - preview：去掉页级 `#previewOrb` 及 `initGdOrb("#previewOrb")`（含仅服务它的 toast 回调）；orb 区块只保留框内 `gd-orb--demo`（可拖、不出框）；同步精简 demo-note / `#belowNav` 说明文案
 
 ### 修复
@@ -27,7 +29,19 @@
 - 列数自适应卡宽：多列固定 390；仅一列（`@media (max-width: 919px)`，与 websearch 现网断点一致）时 `.gd-card--general` / `gd-skeleton--card` 宽跟容器；网格 `repeat(auto-fill, var(--gd-card-w))`（src `gd-websearch` / worker `.card-grid`）
 
 
-## v1.6.1（当前）
+## v0.1.7（当前）
+
+2026-09-28。
+
+### 变更
+
+- 页脚去掉「站点状态」，第一项为「主站首页」，其后为帮助文档、关于本站、联系站长、申请友链
+- 删除 status Worker、本地状态页、站点地图中的 `/status/`，以及只给状态页用的检测层
+- 有页脚的页面补上右下 `gd-orb` 蓝色星星（主站原本就有；捐献页会跳到关于，不另放一颗）
+- 星星按钮的位置按离视口右缘、下缘的距离保存，换页时先藏住再放回原处
+- 组件预览去掉页顶通知条；扩展页演示改为专题卡片（300×400，图片 256×256，点开再看正文）
+
+## v1.6.1
 
 2026-09-25。
 
