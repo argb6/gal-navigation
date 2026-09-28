@@ -9,13 +9,92 @@ const SECURITY_HEADERS = {
   "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; connect-src 'self' https://galnavi.top; font-src 'self' data: https://fonts.gstatic.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self'",
 };
 
+const CONTACT_EMAIL = "feedback@galnavi.top";
+const CONTACT_MAILTO = `mailto:${CONTACT_EMAIL}`;
+const GITHUB_URL = "https://github.com/argb6/gal-navigation";
+const QR_ALIPAY = "";
+const QR_WECHAT = "";
+const DONORS_KV_KEY = "donors";
+const NAME_MAX = 40;
+const NOTE_MAX = 80;
+const AMOUNT_MAX = 24;
+const DATE_MAX = 32;
+
 export default {
-  async fetch() {
-    return new Response(renderPage(), { headers: SECURITY_HEADERS });
+  async fetch(request, env) {
+    const donors = await loadDonors(env);
+    return new Response(renderPage(donors), { headers: SECURITY_HEADERS });
   },
 };
 
-function renderPage() {
+async function loadDonors(env) {
+  if (!env?.DONATE_KV) return [];
+  try {
+    const raw = await env.DONATE_KV.get(DONORS_KV_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed.map(normalizeDonor).filter(Boolean);
+  } catch {
+    return [];
+  }
+}
+
+function normalizeDonor(row) {
+  if (!row || typeof row !== "object") return null;
+  const name = clampText(row.name, NAME_MAX);
+  if (!name) return null;
+  return {
+    name,
+    amount: clampText(row.amount, AMOUNT_MAX),
+    note: clampText(row.note, NOTE_MAX),
+    date: clampText(row.date, DATE_MAX),
+  };
+}
+
+function clampText(v, max) {
+  if (v == null) return "";
+  const s = String(v).trim().replace(/\s+/g, " ");
+  if (!s) return "";
+  return s.length > max ? s.slice(0, max) : s;
+}
+
+function escapeHtml(s) {
+  return String(s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+function escapeAttr(s) {
+  return escapeHtml(s).replace(/'/g, "&#39;");
+}
+
+function isSafeHttpUrl(url) {
+  if (!url || typeof url !== "string") return false;
+  try {
+    const u = new URL(url);
+    return u.protocol === "http:" || u.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
+function renderQrCard(label, src) {
+  const title = escapeHtml(label);
+  if (isSafeHttpUrl(src)) {
+    return '<div class="gd-donate-card"><p class="gd-donate-card__label">' + title + '</p><img class="gd-donate-card__qr" src="' + escapeAttr(src) + '" alt="' + title + '收款码" loading="lazy" referrerpolicy="no-referrer" width="180" height="180"></div>';
+  }
+  return '<div class="gd-donate-card gd-donate-card--empty"><p class="gd-donate-card__label">' + title + '</p><div class="gd-donate-card__slot" role="img" aria-label="' + title + '收款码筹备中">收款码筹备中</div></div>';
+}
+
+function renderDonorTable(donors) {
+  const rows = donors.length ? donors.map((d) => {
+    const cell = (v) => (v ? escapeHtml(v) : "—");
+    return "<tr><td>" + escapeHtml(d.name) + "</td><td>" + cell(d.amount) + "</td><td>" + cell(d.note) + "</td><td>" + cell(d.date) + "</td></tr>";
+  }).join("") : '<tr><td colspan="4">暂无捐赠记录</td></tr>';
+  const count = donors.length ? '<span class="gd-section__count">' + donors.length + "</span>" : "";
+  return '<h3>捐款名单' + count + '</h3><div class="gd-donate-table-wrap"><table class="gd-donate-table" aria-label="捐款名单"><thead><tr><th scope="col">昵称</th><th scope="col">金额</th><th scope="col">备注</th><th scope="col">日期</th></tr></thead><tbody>' + rows + "</tbody></table></div>";
+}
+
+function renderPage(donors) {
   return `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -1862,6 +1941,100 @@ body.gd-overview {
 .gd-overview__content ul li::before { content: ""; position: absolute; left: -1em; top: .72em; width: 5px; height: 5px; border-radius: 50%; background: var(--gd-color-primary); }
 .gd-overview__content .gd-friend-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; justify-content: start; }
 .gd-footer { padding-top: 32px; }
+.gd-overview-toc-mobile,
+.gd-overview__toc { display: none !important; }
+@media (min-width: 768px) {
+  .gd-overview__layout { grid-template-columns: minmax(0, 1fr); }
+}
+.gd-help-hub { container-type: inline-size; }
+.gd-help-topics {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 300px);
+  justify-content: start;
+  gap: 20px;
+  margin: 8px 0 24px;
+}
+.gd-help-topic {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  box-sizing: border-box;
+  width: 300px;
+  height: 400px;
+  margin: 0;
+  padding: 22px 21px 16px;
+  overflow: hidden;
+  text-align: left;
+  cursor: pointer;
+  color: var(--gd-color-on-surface);
+  font-family: inherit;
+  border-radius: 18px;
+  border: 1px solid rgba(var(--gd-color-white-rgb), 0.1);
+  background: linear-gradient(180deg, var(--gd-color-card-gradient-a), var(--gd-color-card-gradient-b));
+  appearance: none;
+  -webkit-appearance: none;
+}
+.gd-help-topic:hover { filter: brightness(1.06); }
+.gd-help-topic:focus-visible { outline: 2px solid var(--gd-color-primary); outline-offset: 3px; }
+.gd-help-topic__media {
+  display: block;
+  width: 100%;
+  height: 256px;
+  flex: 0 0 auto;
+  overflow: hidden;
+  border-radius: 12px;
+  background: rgba(var(--gd-color-primary-rgb), 0.14);
+}
+.gd-help-topic__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.gd-help-topic__no,
+.gd-help-topic__title,
+.gd-help-topic__sum { width: 100%; }
+.gd-help-topic__no { font-size: 13px; font-weight: var(--gd-weight-bold); color: var(--gd-color-link); }
+.gd-help-topic__title { font-size: 20px; font-weight: var(--gd-weight-bold); line-height: 1.25; }
+.gd-help-topic__sum {
+  color: var(--gd-color-on-surface-variant);
+  font-size: 14px;
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+.gd-help-back { margin: 56px 0 8px; }
+.gd-help-detail .gd-section { display: none; }
+.gd-help-detail .gd-section.is-on { display: block; }
+.gd-help-hub[hidden],
+.gd-help-detail[hidden] { display: none !important; }
+.gd-donate-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; margin: 8px 0 0; }
+.gd-donate-card { display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 22px 18px; border-radius: 20px; background: var(--gd-glass-bg); border: 1px solid var(--gd-glass-border); font-family: var(--gd-font-sans); }
+.gd-donate-card__label { font-size: var(--gd-type-title-small-size); font-weight: var(--gd-weight-bold); color: var(--gd-color-on-surface); }
+.gd-donate-card__qr { width: 180px; height: 180px; object-fit: contain; border-radius: 12px; background: var(--gd-color-on-primary); padding: 8px; display: block; }
+.gd-donate-card__slot { width: 180px; height: 180px; border-radius: 12px; background: rgba(var(--gd-color-ink-4-rgb), 0.72); border: 1px dashed rgba(var(--gd-color-grey-rgb), 0.56); display: flex; align-items: center; justify-content: center; color: var(--gd-color-on-surface-subtle); font-size: var(--gd-type-note-size); font-weight: var(--gd-weight-semibold); box-sizing: border-box; }
+.gd-donate-card--empty { min-height: 220px; justify-content: center; }
+.gd-donate-note { margin: 14px 0 0; font-size: var(--gd-type-label-large-size); line-height: 1.6; color: var(--gd-color-on-surface-subtle); }
+.gd-donate-table-wrap { overflow-x: auto; }
+.gd-donate-table { width: 100%; border-collapse: collapse; min-width: 480px; font-size: var(--gd-type-label-large-size); }
+.gd-donate-table th, .gd-donate-table td { padding: 12px 14px; text-align: left; border-bottom: 1px solid rgba(var(--gd-color-white-rgb), 0.08); }
+.gd-donate-table thead th { font-size: var(--gd-type-note-size); font-weight: var(--gd-weight-bold); color: var(--gd-color-on-surface-variant); white-space: nowrap; }
+.gd-donate-table tbody td { color: var(--gd-color-on-surface-variant); line-height: 1.55; }
+.gd-donate-table tbody td:first-child { color: var(--gd-color-on-surface); font-weight: var(--gd-weight-bold); }
+.gd-section__count { margin-left: 8px; font-size: var(--gd-type-note-size); font-weight: var(--gd-weight-semibold); color: var(--gd-color-on-surface-subtle); }
+.gd-help-detail h3 { margin: 22px 0 8px; font-size: 18px; color: var(--gd-color-on-surface); scroll-margin-top: 90px; }
+@container (max-width: 619px) {
+  .gd-help-topics { grid-template-columns: 1fr; }
+  .gd-help-topic { width: 100%; height: auto; overflow: visible; align-items: flex-start; }
+  .gd-help-topic__media,
+  .gd-help-topic__no,
+  .gd-help-topic__title,
+  .gd-help-topic__sum { width: 256px; }
+  .gd-help-topic__media { height: 256px; }
+}
 /* 手机端友链网格改单列，其余 gd-card 尺寸由组件库控制 */
 @media (max-width: 640px) {
   .gd-overview__content .gd-friend-grid { grid-template-columns: 1fr; }
@@ -1881,6 +2054,46 @@ body.gd-overview {
 .gd-hamburger-motion[aria-expanded="true"] .gd-hamburger-motion__close { opacity: 1; transform: translate(-50%,-50%) rotate(0deg) scale(1); }
 
 </style>
+<style>
+/* gd-orb */
+.gd-orb{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:max(20px,env(safe-area-inset-bottom,0px));z-index:80;width:56px;height:56px;pointer-events:none}
+.gd-orb:not(.is-placed){visibility:hidden}
+.gd-orb__menu{position:absolute;right:0;bottom:66px;display:flex;flex-direction:column;align-items:stretch;gap:8px;margin:0;padding:0;transform-origin:100% 100%;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(18px) scale(0.72);transition:opacity 0.2s ease,transform 0.32s cubic-bezier(0.22,1,0.36,1),visibility 0s linear 0.32s}
+.gd-orb.is-open .gd-orb__menu{opacity:1;visibility:visible;pointer-events:auto;transform:none;transition:opacity 0.2s ease,transform 0.32s cubic-bezier(0.22,1,0.36,1),visibility 0s linear 0s}
+.gd-orb__item{display:inline-flex;align-items:center;justify-content:flex-start;gap:8px;box-sizing:border-box;min-height:48px;min-width:120px;padding:0 16px;border-radius:999px;border:1px solid rgba(var(--gd-color-primary-rgb),0.28);background:var(--gd-color-surface);color:var(--gd-color-on-surface);font-family:var(--gd-font-sans);font-size:var(--gd-type-label-large-size);font-weight:var(--gd-weight-semibold);letter-spacing:var(--gd-type-letter-spacing-wide);text-decoration:none;cursor:pointer;appearance:none;-webkit-appearance:none;white-space:nowrap;opacity:0;transform:translateY(12px) scale(0.88);transition:opacity 0.2s ease,transform 0.28s cubic-bezier(0.22,1,0.36,1)}
+.gd-orb.is-open .gd-orb__item{opacity:1;transform:none}
+.gd-orb.is-open .gd-orb__item:nth-child(1){transition-delay:0.04s}
+.gd-orb.is-open .gd-orb__item:nth-child(2){transition-delay:0.08s}
+.gd-orb.is-open .gd-orb__item:nth-child(3){transition-delay:0.12s}
+.gd-orb.is-open .gd-orb__item:nth-child(4){transition-delay:0.16s}
+.gd-orb:not(.is-open) .gd-orb__item:nth-child(1){transition-delay:0.12s}
+.gd-orb:not(.is-open) .gd-orb__item:nth-child(2){transition-delay:0.08s}
+.gd-orb:not(.is-open) .gd-orb__item:nth-child(3){transition-delay:0.04s}
+.gd-orb:not(.is-open) .gd-orb__item:nth-child(4){transition-delay:0s}
+.gd-orb__item:hover{color:var(--gd-color-on-surface);background:rgba(var(--gd-color-primary-rgb),0.12);border-color:rgba(var(--gd-color-primary-rgb),0.4)}
+.gd-orb__item:focus-visible{outline:2px solid var(--gd-color-primary);outline-offset:2px}
+.gd-orb__toggle{pointer-events:auto;position:absolute;right:0;bottom:0;width:56px;height:56px;min-width:56px;min-height:56px;padding:0;border:1px solid rgba(var(--gd-color-primary-rgb),0.32);border-radius:50%;background:var(--gd-color-primary);color:var(--gd-color-on-primary);cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;appearance:none;-webkit-appearance:none}
+.gd-orb.is-dragging .gd-orb__toggle{cursor:grabbing}
+.gd-orb.is-menu-down .gd-orb__menu{bottom:auto;top:66px;transform-origin:100% 0%}
+.gd-orb.is-menu-right .gd-orb__menu{right:auto;left:0;transform-origin:0% 100%}
+.gd-orb.is-menu-down.is-menu-right .gd-orb__menu{transform-origin:0% 0%}
+.gd-orb__toggle:hover{filter:brightness(1.08)}
+.gd-orb__toggle:focus-visible{outline:2px solid var(--gd-color-primary);outline-offset:3px}
+.gd-orb__icon{display:block;width:22px;height:22px;position:absolute;top:50%;left:50%;margin:0;transition:opacity 0.22s ease,transform 0.28s cubic-bezier(0.4,0,0.2,1)}
+.gd-orb__icon--grid{opacity:1;transform:translate(-50%,-50%) rotate(0deg) scale(1)}
+.gd-orb__icon--close{opacity:0;transform:translate(-50%,-50%) rotate(-90deg) scale(0.7)}
+.gd-orb.is-open .gd-orb__icon--grid{opacity:0;transform:translate(-50%,-50%) rotate(90deg) scale(0.7)}
+.gd-orb.is-open .gd-orb__icon--close{opacity:1;transform:translate(-50%,-50%) rotate(0deg) scale(1)}
+@media(prefers-reduced-motion:reduce){
+  .gd-orb__menu,.gd-orb__item,.gd-orb__icon{transition:none}
+  .gd-orb__menu{transform:none}
+  .gd-orb.is-open .gd-orb__menu{transform:none}
+  .gd-orb__item{transform:none;opacity:1}
+  .gd-orb:not(.is-open) .gd-orb__item{opacity:0}
+  .gd-orb__icon--grid,.gd-orb.is-open .gd-orb__icon--close{transform:translate(-50%,-50%) rotate(0deg) scale(1)}
+  .gd-orb__icon--close,.gd-orb.is-open .gd-orb__icon--grid{transform:translate(-50%,-50%) rotate(0deg) scale(0.7)}
+}
+</style>
 </head>
 <body class="gd-overview">
 <div class="gd-groundback gd-groundback--websearch" aria-hidden="true"></div>
@@ -1892,39 +2105,28 @@ body.gd-overview {
 <div class="gd-overview__shell">
   <div class="gd-overview__layout">
     <div class="gd-overview__content">
-      <div class="gd-overview-toc-mobile" data-extend-ui-toc>
-        <button type="button" class="gd-overview-toc-mobile__btn gd-hamburger-motion" data-extend-ui-toc-toggle aria-expanded="false" aria-controls="aboutTocPanel" aria-label="打开本页索引">
-          <svg class="gd-hamburger-motion__menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
-          <svg class="gd-hamburger-motion__close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
-        </button>
-        <div class="gd-overview-toc-mobile__panel" id="aboutTocPanel" data-extend-ui-toc-panel aria-hidden="true" hidden>
-          <p class="gd-overview-mobile-list__label">本页内容</p>
-          <nav class="gd-overview-mobile-list" aria-label="本页索引">
-            <a class="gd-overview-mobile-list__link" href="#legend">起源传说</a>
-            <a class="gd-overview-mobile-list__link" href="#history">发展史</a>
-            <a class="gd-overview-mobile-list__link" href="#nap">纳普图片声明</a>
-            <a class="gd-overview-mobile-list__link" href="#copyright">版权声明</a>
-            <a class="gd-overview-mobile-list__link" href="#disclaimer">站点声明</a>
-            <a class="gd-overview-mobile-list__link" href="#community">本站社群</a>
-            <a class="gd-overview-mobile-list__link" href="#feedback">站点反馈</a>
-          </nav>
-        </div>
-      </div>
+      <div id="helpHub" class="gd-help-hub">
       <h1 class="gd-brand__title gd-brand__title--shift gd-brand__title--demo">关于</h1>
-      <p class="gd-overview__lede">了解 GALNAVI 资源中枢的起源传说、版权声明、站点声明与社群。</p>
-      <div class="gd-overview__meta">
-        <span class="gd-overview__tag">起源传说</span>
-        <span class="gd-overview__tag">发展史</span>
-        <span class="gd-overview__tag">版权声明</span>
-        <span class="gd-overview__tag">站点声明</span>
-        <span class="gd-overview__tag">本站社群</span>
-        <span class="gd-overview__tag">站点反馈</span>
+      <p class="gd-overview__lede">每个专题是一张卡片。点开后再看这一节，捐献也在这里。</p>
+      <div class="gd-help-topics">
+        <button type="button" class="gd-help-topic" data-help-topic="origin"><span class="gd-help-topic__media" aria-hidden="true"><img src="https://assets.galnavi.top/about/%E7%81%AF%E5%A1%94.png" alt="" width="256" height="256"></span><span class="gd-help-topic__no">01</span><span class="gd-help-topic__title">起源与发展</span><span class="gd-help-topic__sum">猫耳娘纳普点亮灯塔的故事，以及从立项到网页焕新的时间线。</span></button>
+        <button type="button" class="gd-help-topic" data-help-topic="components"><span class="gd-help-topic__media" aria-hidden="true"><img src="https://assets.galnavi.top/about/%E6%8A%80%E6%9C%AF.png" alt="" width="256" height="256"></span><span class="gd-help-topic__no">02</span><span class="gd-help-topic__title">组件与技术</span><span class="gd-help-topic__sum">自研 gd 组件，加上 Cloudflare Workers、D1、KV 和 R2。</span></button>
+        <button type="button" class="gd-help-topic" data-help-topic="statements"><span class="gd-help-topic__media" aria-hidden="true"><img src="https://assets.galnavi.top/about/%E5%A3%B0%E6%98%8E.png" alt="" width="256" height="256"></span><span class="gd-help-topic__no">03</span><span class="gd-help-topic__title">声明</span><span class="gd-help-topic__sum">纳普图片、版权和站点收录，这三项声明放在一起。</span></button>
+        <button type="button" class="gd-help-topic" data-help-topic="community"><span class="gd-help-topic__media" aria-hidden="true"><img src="https://assets.galnavi.top/about/%E7%A4%BE%E7%BE%A4.png" alt="" width="256" height="256"></span><span class="gd-help-topic__no">04</span><span class="gd-help-topic__title">本站社群</span><span class="gd-help-topic__sum">闲聊群和 B 站账号。</span></button>
+        <button type="button" class="gd-help-topic" data-help-topic="feedback"><span class="gd-help-topic__media" aria-hidden="true"><img src="https://assets.galnavi.top/about/%E5%8F%8D%E9%A6%88.png" alt="" width="256" height="256"></span><span class="gd-help-topic__no">05</span><span class="gd-help-topic__title">站点反馈</span><span class="gd-help-topic__sum">页面问题、收录建议和功能建议怎么提。</span></button>
+        <button type="button" class="gd-help-topic" data-help-topic="donate"><span class="gd-help-topic__media" aria-hidden="true"><img src="https://assets.galnavi.top/about/%E6%8D%90%E7%8C%AE.png" alt="" width="256" height="256"></span><span class="gd-help-topic__no">06</span><span class="gd-help-topic__title">捐献</span><span class="gd-help-topic__sum">自愿支持站点维护。扫码、其他方式和捐款名单都在这里。</span></button>
       </div>
-      <div class="gd-overview__rule" aria-hidden="true"></div>
-<section class="gd-section" id="legend">  <h2 class="gd-section__title">起源传说</h2><div class="card">
+      </div>
+      <div id="helpDetail" class="gd-help-detail" hidden>
+      <button type="button" class="gd-button gd-button--back gd-help-back" id="helpBackTopics">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        返回专题
+      </button>
+<section class="gd-section" id="origin"><h2 class="gd-section__title">起源与发展</h2><div class="card">
+<h3 id="legend">起源传说</h3>
 <p>这是一个科技与魔法的世界，在其中一个角落坐落着一个边缘小镇，很不幸，它正在遭遇一场史无前例的资源匮乏，通往各个幻想乡的道路连接中断，记录着爱与冒险的精神卷轴纷纷遗失。 就在居民们陷入水深火热时，一位披斗篷的猫耳娘站了出来。为了拯救小镇，她在荒野中日夜吟唱魔法，凭一己之力建立起了一座宏伟的灯塔——Galnavi 资源中枢。 此后，小镇的生活也是一天比一天好。人们为了纪念这位猫耳娘，在中央广场建立了荣誉雕像，并取名为猫耳娘纳普。</p>
-</section>
-<section class="gd-section" id="history">  <h2 class="gd-section__title">发展史</h2><table class="gd-table"><tbody>
+<h3 id="history">发展史</h3>
+<table class="gd-table"><tbody>
 <tr><th scope="row">2026.05.23</th><td>galnavi 的项目正式启动</td></tr>
 <tr><th scope="row">2026.05.24</th><td>正式注册域名</td></tr>
 <tr><th scope="row">2026.05.26</th><td>网页成功部署，开始构建 UI</td></tr>
@@ -1934,10 +2136,36 @@ body.gd-overview {
 <tr><th scope="row">2026.06.26</th><td>完成开发并全面开放</td></tr>
 <tr><th scope="row">2026.07.02</th><td>网页 UI 焕新</td></tr>
 </tbody></table>
-</section>
-<section class="gd-section" id="nap">  <h2 class="gd-section__title">纳普图片声明</h2><div class="card"><ul><li>本站吉祥物及相关视觉形象为 GALNAVI 的品牌形象，仅限本站及经授权的用途使用。</li><li>未经许可，请勿擅自转载、修改、商用或用于其他项目。</li></ul></div></section>
-<section class="gd-section" id="copyright">  <h2 class="gd-section__title">版权声明</h2><div class="card"><ul><li>本站尊重知识产权。本站展示的游戏名称、图片、简介等内容，其版权归原著作权人、开发商或发行商所有。</li><li>本站主要提供信息整理、站点导航及相关链接索引，不主张拥有第三方内容的版权。</li><li>如您认为本站展示的内容侵犯了您的合法权益，请联系我们并提供相关权利证明及具体内容。经核实后，本站将及时处理相关内容或链接。</li><li>本站不鼓励、不支持任何侵犯版权及其他违法行为。</li></ul></div></section>
-<section class="gd-section" id="disclaimer">  <h2 class="gd-section__title">站点声明</h2><div class="card"><ul><li>GALNAVI 是一个 ACG、Galgame 相关的信息导航与站点聚合平台，主要提供站点收录、信息整理、标签分类及搜索服务。</li><li>本站收录的第三方网站、链接及其内容均由相应网站运营者负责，本站无法保证其内容的准确性、合法性、安全性或持续有效性。</li><li>访问第三方网站或使用其提供的内容前，请自行判断相关风险，并遵守所在地区的法律法规。</li><li>用户不得利用本站从事违法、侵权或其他不当活动。因用户访问或使用第三方网站及内容产生的相关责任，由用户自行承担。</li><li>本站有权根据实际情况调整收录内容及相关服务。</li></ul></div></section>
+</div></section>
+<section class="gd-section" id="components"><h2 class="gd-section__title">组件与技术</h2><div class="card">
+<p>每个页面一份 Cloudflare Worker，HTML / CSS / JS 打在同一个文件里。界面是自研 <strong>gd</strong>（GalNavi Design）：深色玻璃拟态，语义对齐 Material Design 3，不换皮。</p>
+<h3>GALNAVI Design</h3>
+<p>gd 统一视觉和交互：</p>
+<ul>
+<li><strong>Foundation</strong>：Token、布局、品牌</li>
+<li><strong>Navigation</strong>：顶栏、搜索</li>
+<li><strong>Display</strong>：卡片、标签、徽章</li>
+<li><strong>Feedback</strong>：弹窗、提示</li>
+<li><strong>Extend</strong>：主站快捷按钮、详情、捐献</li>
+</ul>
+<h3 id="tech">技术栈</h3>
+<table class="gd-table"><tbody>
+<tr><th scope="row">Runtime</th><td>Cloudflare Workers</td></tr>
+<tr><th scope="row">Database</th><td>Cloudflare D1</td></tr>
+<tr><th scope="row">Storage</th><td>Cloudflare KV、R2</td></tr>
+<tr><th scope="row">UI</th><td>GD（GALNAVI Design）</td></tr>
+<tr><th scope="row">Frontend</th><td>HTML / CSS / JavaScript</td></tr>
+</tbody></table>
+<p>数据：D1 放导航、友链、殿堂；KV 放轮播、推荐、捐款和公告；图标与品牌图在 R2。</p>
+</div></section>
+<section class="gd-section" id="statements"><h2 class="gd-section__title">声明</h2><div class="card">
+<h3 id="nap">纳普图片声明</h3>
+<ul><li>本站吉祥物及相关视觉形象为 GALNAVI 的品牌形象，仅限本站及经授权的用途使用。</li><li>未经许可，请勿擅自转载、修改、商用或用于其他项目。</li></ul>
+<h3 id="copyright">版权声明</h3>
+<ul><li>本站尊重知识产权。本站展示的游戏名称、图片、简介等内容，其版权归原著作权人、开发商或发行商所有。</li><li>本站主要提供信息整理、站点导航及相关链接索引，不主张拥有第三方内容的版权。</li><li>如您认为本站展示的内容侵犯了您的合法权益，请联系我们并提供相关权利证明及具体内容。经核实后，本站将及时处理相关内容或链接。</li><li>本站不鼓励、不支持任何侵犯版权及其他违法行为。</li></ul>
+<h3 id="disclaimer">站点声明</h3>
+<ul><li>GALNAVI 是一个 ACG、Galgame 相关的信息导航与站点聚合平台，主要提供站点收录、信息整理、标签分类及搜索服务。</li><li>本站收录的第三方网站、链接及其内容均由相应网站运营者负责，本站无法保证其内容的准确性、合法性、安全性或持续有效性。</li><li>访问第三方网站或使用其提供的内容前，请自行判断相关风险，并遵守所在地区的法律法规。</li><li>用户不得利用本站从事违法、侵权或其他不当活动。因用户访问或使用第三方网站及内容产生的相关责任，由用户自行承担。</li><li>本站有权根据实际情况调整收录内容及相关服务。</li></ul>
+</div></section>
 <section class="gd-section" id="community">  <h2 class="gd-section__title">本站社群</h2><div class="card">
 <h3>交流群</h3>
 <ul>
@@ -1952,27 +2180,82 @@ body.gd-overview {
 </ul>
 </div></section>
 <section class="gd-section" id="feedback">  <h2 class="gd-section__title">站点反馈</h2><div class="card"><p>如果你在使用 GALNAVI 时发现问题，欢迎向我们反馈。</p><ul><li><strong>网站问题</strong> — 页面异常、链接失效、显示错误等。</li><li><strong>收录建议</strong> — 推荐新的站点、工具或资源。</li><li><strong>内容问题</strong> — 信息错误、分类不当、描述需要修改。</li><li><strong>功能建议</strong> — 对网站功能或使用体验的建议。</li></ul><p>反馈时请尽量说明具体问题，并附上相关页面链接或截图，方便我们处理。</p><p>反馈邮箱：<a class="gd-link" href="mailto:feedback@galnavi.top">feedback@galnavi.top</a></p></div></section>
+<section class="gd-section" id="donate">
+  <h2 class="gd-section__title">捐献</h2>
+  <div class="card"><p>支持 GALNAVI 资源中枢的日常维护。自愿捐献，感谢每一份心意。</p>
+    <h3>为何支持</h3>
+    <ul>
+      <li>GALNAVI 是非营利的 ACG 资源导航站。灯塔要亮着，需要持续整理收录、维护页面，以及支付基础的托管与域名开销。</li>
+      <li>如果你觉得这里帮到过你，可以自愿支持一点点——金额不论大小，心意我们都收下。捐款不会换取会员特权或特殊权限，仅用于支持网站的持续运营与维护。</li>
+    </ul>
+    <h3>扫码支持</h3>
+    <div class="gd-donate-grid">${renderQrCard("支付宝", QR_ALIPAY)}${renderQrCard("微信", QR_WECHAT)}</div>
+    <p class="gd-donate-note">相关信息请在付款界面备注</p>
+    <h3>其他方式</h3>
+    <ul>
+      <li><a class="gd-link" href="${CONTACT_MAILTO}">邮件联系</a> — 捐献相关问题，或想确认收款信息</li>
+      <li><a class="gd-link" href="${GITHUB_URL}" target="_blank" rel="noopener noreferrer">GitHub</a> — 给一颗 Star 支持一下</li>
+    </ul>
+    ${renderDonorTable(donors)}
+    <h3>说明</h3>
+    <p>请确认你正在官方域名 galnavi.top 上操作。本页不会通过弹窗、私信或不明链接索要转账。未成年人请在监护人同意下再考虑支持。感谢每一位愿意支持 GALNAVI 的朋友。</p>
+  </div>
+</section>
+      </div>
     </div>
-<aside class="gd-overview__toc" aria-label="本页内容">
-  <nav class="gd-otp" aria-label="本页索引">
-    <p class="gd-otp__label">本页内容</p>
-    <div class="gd-otp__list">
-      <a class="gd-otp__link" href="#legend">起源传说</a>
-      <a class="gd-otp__link" href="#history">发展史</a>
-      <a class="gd-otp__link" href="#nap">纳普图片声明</a>
-      <a class="gd-otp__link" href="#copyright">版权声明</a>
-      <a class="gd-otp__link" href="#disclaimer">站点声明</a>
-      <a class="gd-otp__link" href="#community">本站社群</a>
-      <a class="gd-otp__link" href="#feedback">站点反馈</a>
-    </div>
-  </nav>
-</aside>
   </div>
 </div>
-<footer class="gd-footer gd-footer--page"><nav class="gd-footer__nav" aria-label="页脚链接"><a href="https://galnavi.top/nav/help/">帮助文档</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/about/">关于本站</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="mailto:feedback@galnavi.top">联系站长</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/friend/">申请友链</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/status/">站点状态</a></nav><p class="gd-footer__copy">© 2026 GALNAVI · 愿每一次探索都有新的收获</p></footer>
+<footer class="gd-footer gd-footer--page"><nav class="gd-footer__nav" aria-label="页脚链接"><a href="https://galnavi.top/nav/">主站首页</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/help/">帮助文档</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/about/">关于本站</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="mailto:feedback@galnavi.top">联系站长</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/friend/">申请友链</a></nav><p class="gd-footer__copy">© 2026 GALNAVI · 愿每一次探索都有新的收获</p></footer>
 <div id="redirectOverlay" class="gd-overview__redirect-overlay" aria-live="polite" aria-atomic="true"><div class="gd-overview__redirect-ring" aria-hidden="true"></div><div class="gd-overview__redirect-text">即将跳转</div><div id="redirectCountdown" class="gd-overview__redirect-countdown">3</div><button type="button" id="redirectCancel" class="gd-overview__redirect-cancel">取消跳转</button></div>
 <script>
 (function(){function a(){var h=(window.visualViewport&&window.visualViewport.height)||window.innerHeight;document.documentElement.style.setProperty("--gd-vvh",h+"px");}a();window.addEventListener("resize",a);if(window.visualViewport)window.visualViewport.addEventListener("resize",a);})();
+(function() {
+  var hub = document.getElementById('helpHub');
+  var detail = document.getElementById('helpDetail');
+  var back = document.getElementById('helpBackTopics');
+  if (!hub || !detail) return;
+  var sections = Array.prototype.slice.call(detail.querySelectorAll('.gd-section[id]'));
+  var alias = { legend: 'origin', history: 'origin', nap: 'statements', copyright: 'statements', disclaimer: 'statements', tech: 'components' };
+  function showTopic(id) {
+    var target = alias[id] || id;
+    var found = false;
+    sections.forEach(function(sec) {
+      var on = sec.id === target;
+      sec.classList.toggle('is-on', on);
+      if (on) found = true;
+    });
+    if (!found) return;
+    hub.hidden = true;
+    detail.hidden = false;
+    var sub = alias[id] ? document.getElementById(id) : null;
+    if (sub) requestAnimationFrame(function() { sub.scrollIntoView({ block: 'start' }); });
+    else window.scrollTo(0, 0);
+  }
+  function showHub() {
+    detail.hidden = true;
+    hub.hidden = false;
+    sections.forEach(function(sec) { sec.classList.remove('is-on'); });
+    window.scrollTo(0, 0);
+  }
+  hub.addEventListener('click', function(e) {
+    var btn = e.target.closest('[data-help-topic]');
+    if (!btn || !hub.contains(btn)) return;
+    var id = btn.getAttribute('data-help-topic');
+    showTopic(id);
+    try { history.pushState({ helpTopic: id }, '', '#' + id); } catch (err) {}
+  });
+  if (back) back.addEventListener('click', function() {
+    showHub();
+    try { history.pushState({ helpTopic: '' }, '', location.pathname + location.search); } catch (err) {}
+  });
+  window.addEventListener('popstate', function() {
+    var id = (location.hash || '').replace(/^#/, '');
+    if (id) showTopic(id);
+    else showHub();
+  });
+  var initial = (location.hash || '').replace(/^#/, '');
+  if (initial) showTopic(initial);
+})();
 (function() {
 var root = document.querySelector('.gd-overview-toc-mobile');
 var btn = root && root.querySelector('[data-extend-ui-toc-toggle]');
@@ -2058,6 +2341,162 @@ var timerId=null,onCancel=null;
 function clearRedirect(){if(timerId){clearInterval(timerId);timerId=null}var overlay=document.getElementById("redirectOverlay"),cancelBtn=document.getElementById("redirectCancel");if(overlay){overlay.classList.remove("active");overlay.setAttribute("aria-hidden","true")}if(onCancel&&cancelBtn){cancelBtn.removeEventListener("click",onCancel);onCancel=null}}
 function startRedirect(targetUrl){var overlay=document.getElementById("redirectOverlay"),countdownEl=document.getElementById("redirectCountdown"),cancelBtn=document.getElementById("redirectCancel");if(!overlay||!countdownEl){window.open(targetUrl,"_blank","noopener,noreferrer");return}clearRedirect();var seconds=3;overlay.classList.add("active");overlay.setAttribute("aria-hidden","false");countdownEl.textContent=String(seconds);timerId=setInterval(function(){seconds-=1;if(seconds<=0){clearRedirect();window.open(targetUrl,"_blank","noopener,noreferrer");return}countdownEl.textContent=String(seconds);},1000);onCancel=function(){clearRedirect()};if(cancelBtn)cancelBtn.addEventListener("click",onCancel);}
 document.addEventListener("click",function(e){var anchor=e.target.closest("a");if(!anchor)return;var href=anchor.getAttribute("href");if(!href)return;var lower=href.trim().toLowerCase();if(lower.indexOf("javascript:")===0||lower.indexOf("data:")===0){e.preventDefault();return}if(href.charAt(0)==="#")return;if(href.indexOf("https://galnavi.top/nav/")===0||href.indexOf("/nav/")===0)return;if(!isSafeHttpUrl(href))return;try{if(new URL(href,window.location.origin).hostname===window.location.hostname)return}catch(err){return}e.preventDefault();startRedirect(href);});
+})();
+</script>
+<div class="gd-orb" id="gdOrb">
+  <div class="gd-orb__menu" id="gdOrbMenu" role="region" aria-label="快捷入口">
+    <a class="gd-orb__item" href="https://galnavi.top/nav/?cat=标签">🏷️ 标签</a>
+    <a class="gd-orb__item" href="https://galnavi.top/nav/?welcome=1">💬 弹窗</a>
+    <a class="gd-orb__item" href="https://github.com/argb6/gal-navigation" target="_blank" rel="noopener noreferrer">📦 仓库</a>
+    <a class="gd-orb__item" href="https://galnavi.top/nav/palace/" target="_blank" rel="noopener noreferrer">🏛️ 殿堂</a>
+  </div>
+  <button type="button" class="gd-orb__toggle" id="gdOrbToggle" aria-expanded="false" aria-controls="gdOrbMenu" aria-label="打开快捷入口">
+    <svg class="gd-orb__icon gd-orb__icon--grid" viewBox="0 0 24 24" focusable="false" aria-hidden="true"><path fill="currentColor" d="M12 2.2 14.9 8.7 22 9.4 16.7 14.1 18.2 21.1 12 17.5 5.8 21.1 7.3 14.1 2 9.4 9.1 8.7Z"/></svg>
+    <svg class="gd-orb__icon gd-orb__icon--close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" focusable="false" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+</div>
+<script>
+(function(){
+  var root=document.getElementById('gdOrb');
+  var toggle=document.getElementById('gdOrbToggle');
+  var menu=document.getElementById('gdOrbMenu');
+  if(!root||!toggle||!menu)return;
+  function setOpen(open){
+    root.classList.toggle('is-open',open);
+    toggle.setAttribute('aria-expanded',open?'true':'false');
+    toggle.setAttribute('aria-label',open?'关闭快捷入口':'打开快捷入口');
+    menu.setAttribute('aria-hidden',open?'false':'true');
+    menu.inert=!open;
+  }
+  menu.inert=true;
+  menu.setAttribute('aria-hidden','true');
+  var POS_KEY='galnavi-orb-pos';
+  var dragging=false,moved=false,suppressClick=false,startX=0,startY=0,originL=0,originT=0;
+  function dragClamp(left,top){
+    var edge=8,s=56;
+    var maxL=Math.max(edge,window.innerWidth-s-edge);
+    var minT=edge;
+    var ceiling=window.innerHeight-s-edge;
+    var below=document.getElementById('belowNav')||document.querySelector('.gd-below-nav');
+    if(below){
+      var bb=below.getBoundingClientRect().bottom;
+      if(bb>0&&bb<ceiling)minT=Math.max(edge,Math.ceil(bb));
+    }else{
+      var nav=document.getElementById('mainNav')||document.querySelector('.gd-navbar');
+      if(nav){
+        var nb=nav.getBoundingClientRect().bottom;
+        if(nb>0&&nb<ceiling)minT=Math.max(edge,Math.ceil(nb));
+      }
+    }
+    var maxT=Math.max(minT,ceiling);
+    return{left:Math.min(Math.max(edge,left),maxL),top:Math.min(Math.max(minT,top),maxT)};
+  }
+  function screenClamp(left,top){
+    var edge=8,s=56;
+    var maxL=Math.max(edge,window.innerWidth-s-edge);
+    var maxT=Math.max(edge,window.innerHeight-s-edge);
+    return{left:Math.min(Math.max(edge,left),maxL),top:Math.min(Math.max(edge,top),maxT)};
+  }
+  function offsetsOf(left,top){
+    return{right:Math.round(window.innerWidth-(left+56)),bottom:Math.round(window.innerHeight-(top+56))};
+  }
+  function pointOf(saved){
+    return screenClamp(window.innerWidth-saved.right-56,window.innerHeight-saved.bottom-56);
+  }
+  function writePos(left,top){
+    try{localStorage.setItem(POS_KEY,JSON.stringify(offsetsOf(left,top)));}catch(err){}
+  }
+  function placeMenu(){
+    var rect=root.getBoundingClientRect();
+    var menuW=menu.offsetWidth||160;
+    var menuH=menu.offsetHeight||220;
+    var need=menuH+10;
+    root.classList.toggle('is-menu-down',rect.top<need&&(window.innerHeight-rect.bottom)>rect.top);
+    root.classList.toggle('is-menu-right',rect.right<menuW+8&&(window.innerWidth-rect.left)>rect.right);
+  }
+  function place(left,top){
+    var p=dragClamp(left,top);
+    root.style.left=p.left+'px';
+    root.style.top=p.top+'px';
+    root.style.right='auto';
+    root.style.bottom='auto';
+    placeMenu();
+    return p;
+  }
+  function showAt(left,top){
+    root.style.left=left+'px';
+    root.style.top=top+'px';
+    root.style.right='auto';
+    root.style.bottom='auto';
+    root.classList.add('is-placed');
+    placeMenu();
+  }
+  function restore(){
+    var shown=false;
+    try{
+      var raw=localStorage.getItem(POS_KEY);
+      if(raw){
+        var p=JSON.parse(raw);
+        if(p&&typeof p.right==='number'&&typeof p.bottom==='number'){
+          var xy=pointOf(p);
+          showAt(xy.left,xy.top);
+          shown=true;
+        }else if(p&&typeof p.left==='number'&&typeof p.top==='number'){
+          var old=screenClamp(p.left,p.top);
+          writePos(old.left,old.top);
+          showAt(old.left,old.top);
+          shown=true;
+        }
+      }
+    }catch(err){}
+    if(!shown)root.classList.add('is-placed');
+    placeMenu();
+  }
+  toggle.addEventListener('pointerdown',function(e){
+    if(e.button!=null&&e.button!==0)return;
+    dragging=true;moved=false;
+    var rect=root.getBoundingClientRect();
+    startX=e.clientX;startY=e.clientY;originL=rect.left;originT=rect.top;
+    try{toggle.setPointerCapture(e.pointerId);}catch(err){}
+  });
+  toggle.addEventListener('pointermove',function(e){
+    if(!dragging)return;
+    var dx=e.clientX-startX,dy=e.clientY-startY;
+    if(!moved&&(dx*dx+dy*dy)<36)return;
+    if(!moved){moved=true;root.classList.add('is-dragging');}
+    place(originL+dx,originT+dy);
+  });
+  function endDrag(e){
+    if(!dragging)return;
+    dragging=false;
+    root.classList.remove('is-dragging');
+    if(moved){
+      suppressClick=true;
+      var rect=root.getBoundingClientRect();
+      var saved=dragClamp(rect.left,rect.top);
+      writePos(saved.left,saved.top);
+    }
+    try{if(e&&toggle.hasPointerCapture(e.pointerId))toggle.releasePointerCapture(e.pointerId);}catch(err){}
+  }
+  toggle.addEventListener('pointerup',endDrag);
+  toggle.addEventListener('pointercancel',endDrag);
+  toggle.addEventListener('click',function(e){
+    e.stopPropagation();
+    if(suppressClick){suppressClick=false;e.preventDefault();return;}
+    setOpen(!root.classList.contains('is-open'));
+    placeMenu();
+  });
+  window.addEventListener('resize',function(){restore();});
+  restore();
+  menu.addEventListener('click',function(e){
+    if(e.target.closest('.gd-orb__item'))setOpen(false);
+  });
+  document.addEventListener('click',function(e){
+    if(root.classList.contains('is-open')&&!root.contains(e.target))setOpen(false);
+  });
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'&&root.classList.contains('is-open')){setOpen(false);toggle.focus();}
+  });
 })();
 </script>
 </body>

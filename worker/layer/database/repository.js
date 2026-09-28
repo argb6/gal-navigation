@@ -6,7 +6,7 @@
  */
 
 import { fetchNavData, fetchSiteByKey, fetchFriendLinks, insertFriendLink, fetchPalaceGroups } from "./d1.js";
-import { fetchHeroImages, fetchFeaturedKeys, fetchDonors, fetchNotice } from "./kv.js";
+import { fetchHeroImages, fetchFeaturedKeys, fetchDonors } from "./kv.js";
 
 /** 首页数据（轮播图 + 推荐项） */
 export async function fetchHomeData(env) {
@@ -50,9 +50,4 @@ export async function fetchPalaceData(env) {
 /** 捐献页数据 */
 export async function fetchDonateData(env) {
   return fetchDonors(env);
-}
-
-/** 状态页公告 */
-export async function fetchNoticeData(env) {
-  return fetchNotice(env);
 }

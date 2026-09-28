@@ -55,7 +55,7 @@ related:
 | navigation | `src/navigation/` | [[gd-navbar]] [[gd-search]] |
 | display | `src/display/` | [[gd-card]] [[gd-hero]] |
 | feedback | `src/feedback/` | [[gd-modal]] |
-| extend | `src/extend/` | [[gd-orb]]（websearch）；detail 反向缩放、palace 条目卡无独立笔记 |
+| extend | `src/extend/` | [[gd-orb]]（源文件在 websearch，有页脚的页面都用）；detail 反向缩放、palace 条目卡无独立笔记 |
 | runtime | `src/runtime/` | [[Web Component]] |
 | preview | `src/preview/` | 组件总览页 |
 
@@ -73,7 +73,7 @@ related:
 | [[gd-footer]] | `z-index: 1` + `margin-top: auto`，压过背景 |
 | [[gd-groundback]] | `--websearch` 全站默认；`--gold` 仅殿堂 |
 | [[gd-hero]] | 首屏骨架，不要整段 `hidden` |
-| [[gd-orb]] | 右下两列胶囊；菜单 `role="region"` |
+| [[gd-orb]] | 有页脚的页面右下圆钮，图标为五角星；菜单单列，`role="region"` |
 
 ## 命名约定
 

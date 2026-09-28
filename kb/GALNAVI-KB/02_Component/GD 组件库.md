@@ -9,7 +9,7 @@ tags:
   - component-library
   - moc
 date: 2026-08-14
-updated: 2026-09-25
+updated: 2026-09-28
 type: component
 category: Component
 status: active
@@ -26,7 +26,7 @@ related:
 # GD 组件库
 
 > [!abstract] Summary
-> GalNavi Design（gd）入口。本篇只讲结构和红线。变量 / 玻璃 / 状态层 / 自定义元素在 `体系/`；一篇一组件在 `组件/`。当前 v1.6.1。
+> GalNavi Design（gd）入口。本篇只讲结构和红线。变量 / 玻璃 / 状态层 / 自定义元素在 `体系/`；一篇一组件在 `组件/`。当前 v0.1.7。
 
 ## 怎么读
 
@@ -38,7 +38,7 @@ related:
 | `体系/` | 全库共用的规则，不是某个 class | [[Design Token]] · [[玻璃表面系统]] · [[状态层模式]] · [[Web Component]] |
 | `组件/` | 现网还在用的 `gd-*`，一篇一事 | [[gd-navbar]] [[gd-search]] [[gd-button]] [[gd-card]] [[gd-modal]] [[gd-footer]] [[gd-groundback]] [[gd-hero]] [[gd-orb]] |
 
-活示例：`src/preview/index.html`（2026年9月25日 · v1.6.1）。文档：`docs/README.md`。
+活示例：`src/preview/index.html`（2026年9月28日 · v0.1.7）。文档：`docs/README.md`。
 
 ## Definition
 
@@ -55,7 +55,7 @@ related:
 | navigation | `src/navigation/` | [[gd-navbar]] [[gd-search]] |
 | display | `src/display/` | [[gd-card]] [[gd-hero]] |
 | feedback | `src/feedback/` | [[gd-modal]] |
-| extend | `src/extend/` | [[gd-orb]]（websearch）；detail 反向缩放、palace 条目卡无独立笔记 |
+| extend | `src/extend/` | [[gd-orb]]（源文件在 websearch，有页脚的页面都用）；detail 反向缩放、palace 条目卡无独立笔记 |
 | runtime | `src/runtime/` | [[Web Component]] |
 | preview | `src/preview/` | 组件总览页 |
 
@@ -73,7 +73,7 @@ related:
 | [[gd-footer]] | `z-index: 1` + `margin-top: auto`，压过背景 |
 | [[gd-groundback]] | `--websearch` 全站默认；`--gold` 仅殿堂 |
 | [[gd-hero]] | 首屏骨架，不要整段 `hidden` |
-| [[gd-orb]] | 右下圆钮，图标为五角星；菜单单列，`role="region"` |
+| [[gd-orb]] | 有页脚的页面右下圆钮，图标为五角星；菜单单列，`role="region"` |
 
 ## 命名约定
 
@@ -100,4 +100,4 @@ related:
 - [[Decision-MD3 对齐口径]] — 对齐语义不换皮
 - [[Decision-玻璃拟态保留]] — 玻璃数值冻结
 - [[记录索引]] — ADR / 示例 / CHANGELOG 路径
-- [[ChangeLog-gd v1.6.1]] — 当前组件库版本
+- [[ChangeLog-gd v0.1.7]] — 当前组件库版本

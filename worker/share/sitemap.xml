@@ -32,8 +32,4 @@
     <loc>https://galnavi.top/nav/friend/</loc>
     <priority>0.8</priority>
   </url>
-  <url>
-    <loc>https://galnavi.top/status/</loc>
-    <priority>0.6</priority>
-  </url>
 </urlset>

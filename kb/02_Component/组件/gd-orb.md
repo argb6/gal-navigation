@@ -8,7 +8,7 @@ tags:
   - websearch
   - fab
 date: 2026-09-01
-updated: 2026-09-01
+updated: 2026-09-28
 type: component
 category: Component
 status: active
@@ -21,19 +21,19 @@ related:
 # gd-orb
 
 > [!abstract] Summary
-> 主站右下角快捷入口。点开两列胶囊（站内入口 / 站点页面）。
+>有页脚的页面右下角都有这颗蓝色星星。圆钮可在页面内拖动，点开展开快捷入口，仅保留标签、仓库、弹窗、殿堂。主站上标签和弹窗留在本页；其它页点这两项会回到主站。
 
 ## Definition
 
 | 部件 | class | 说明 |
 |------|-------|------|
-| 根 | `.gd-orb` | `position: fixed`，右下 `56×56`，`z-index: 80` |
+| 根 | `.gd-orb` | `position: fixed`，默认右下 `56×56`，可拖动。位置记在 `galnavi-orb-pos`，存的是离视口右缘和下缘的距离 |
 | 菜单 | `.gd-orb__menu` | `role="region"`，不要 `role="menu"` |
-| 列 | `.gd-orb__col` | 左列站内、右列页面 |
+| 列 | `.gd-orb__col` | 单列竖排 |
 | 项 | `.gd-orb__item` | 真实 `<button>` 或 `<a href>`；`data-gd-orb` |
-| 开关 | `.gd-orb__toggle` | 圆钮；`aria-expanded` / `aria-controls` |
+| 开关 | `.gd-orb__toggle` | 圆钮；收起为五角星，展开换成叉 |
 
-左列：标签、酒馆、仓库、弹窗。右列：关于、帮助、友链、殿堂。「弹窗」打开 [[gd-modal]] 欢迎窗。
+保留项：标签、仓库、弹窗、殿堂。「弹窗」打开 [[gd-modal]] 欢迎窗。
 
 ## Implementation
 

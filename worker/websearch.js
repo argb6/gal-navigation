@@ -3226,6 +3226,7 @@ html{overflow-x:hidden;overflow-x:clip}
 }
 
 .gd-orb{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:max(20px,env(safe-area-inset-bottom,0px));z-index:80;width:56px;height:56px;pointer-events:none}
+.gd-orb:not(.is-placed){visibility:hidden}
 .gd-orb__menu{position:absolute;right:0;bottom:66px;display:flex;flex-direction:column;align-items:stretch;gap:8px;margin:0;padding:0;transform-origin:100% 100%;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(18px) scale(0.72);transition:opacity 0.2s ease,transform 0.32s cubic-bezier(0.22,1,0.36,1),visibility 0s linear 0.32s}
 .gd-orb.is-open .gd-orb__menu{opacity:1;visibility:visible;pointer-events:auto;transform:none;transition:opacity 0.2s ease,transform 0.32s cubic-bezier(0.22,1,0.36,1),visibility 0s linear 0s}
 .gd-orb__col{display:flex;flex-direction:column;gap:8px;align-items:stretch}
@@ -3628,15 +3629,14 @@ html{overflow-x:hidden;overflow-x:clip}
 <!-- ===== gd-footer ===== -->
 <footer class="gd-footer gd-footer--page" role="contentinfo">
   <nav class="gd-footer__nav" aria-label="页脚导航">
-    <a href="https://galnavi.top/nav/help/">帮助文档</a>
+    <a href="https://galnavi.top/nav/">主站首页</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/help/">帮助文档</a>
     <span class="gd-footer__sep" aria-hidden="true">|</span>
     <a href="https://galnavi.top/nav/about/">关于本站</a>
     <span class="gd-footer__sep" aria-hidden="true">|</span>
     <a href="mailto:feedback@galnavi.top">联系站长</a>
     <span class="gd-footer__sep" aria-hidden="true">|</span>
     <a href="https://galnavi.top/nav/friend/">申请友链</a>
-    <span class="gd-footer__sep" aria-hidden="true">|</span>
-    <a href="https://galnavi.top/status/" target="_blank" rel="noopener noreferrer">站点状态</a>
+
   </nav>
   <p class="gd-footer__copy">&copy; 2026 GALNAVI · 愿每一次探索都有新的收获</p>
 </footer>
@@ -4617,7 +4617,15 @@ document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && welcomeModal.classList.contains('is-open')) closeWelcome(); });
     var welcomeSeen = false;
     try { welcomeSeen = localStorage.getItem(WKEY) === '1'; } catch(e) {}
-    if (!welcomeSeen) openWelcome();
+    var forceWelcome = /(?:^|[?&])welcome=1(?:&|$)/.test(location.search);
+    if (!welcomeSeen || forceWelcome) openWelcome();
+    if (forceWelcome) {
+      try {
+        var clean = new URL(location.href);
+        clean.searchParams.delete('welcome');
+        history.replaceState(history.state, '', clean.pathname + clean.search + clean.hash);
+      } catch (e2) {}
+    }
   }
 
 
@@ -4747,20 +4755,39 @@ document.addEventListener('DOMContentLoaded', function() {
     var moved = false;
     var suppressClick = false;
     var startX = 0, startY = 0, originL = 0, originT = 0;
-    function clamp(left, top) {
+    function dragClamp(left, top) {
       var edge = 8, s = 56;
       var maxL = Math.max(edge, window.innerWidth - s - edge);
-      // 上界：通知条（#belowNav / .gd-below-nav）下沿，不能拖进/盖住通知区
       var minT = edge;
+      var ceiling = window.innerHeight - s - edge;
       var below = document.getElementById('belowNav') || document.querySelector('.gd-below-nav');
       if (below) {
-        minT = Math.max(edge, Math.ceil(below.getBoundingClientRect().bottom));
+        var bb = below.getBoundingClientRect().bottom;
+        if (bb > 0 && bb < ceiling) minT = Math.max(edge, Math.ceil(bb));
       } else {
         var nav = document.getElementById('mainNav') || document.querySelector('.gd-navbar');
-        if (nav) minT = Math.max(edge, Math.ceil(nav.getBoundingClientRect().bottom));
+        if (nav) {
+          var nb = nav.getBoundingClientRect().bottom;
+          if (nb > 0 && nb < ceiling) minT = Math.max(edge, Math.ceil(nb));
+        }
       }
-      var maxT = Math.max(minT, window.innerHeight - s - edge);
+      var maxT = Math.max(minT, ceiling);
       return { left: Math.min(Math.max(edge, left), maxL), top: Math.min(Math.max(minT, top), maxT) };
+    }
+    function screenClamp(left, top) {
+      var edge = 8, s = 56;
+      var maxL = Math.max(edge, window.innerWidth - s - edge);
+      var maxT = Math.max(edge, window.innerHeight - s - edge);
+      return { left: Math.min(Math.max(edge, left), maxL), top: Math.min(Math.max(edge, top), maxT) };
+    }
+    function offsetsOf(left, top) {
+      return { right: Math.round(window.innerWidth - (left + 56)), bottom: Math.round(window.innerHeight - (top + 56)) };
+    }
+    function pointOf(saved) {
+      return screenClamp(window.innerWidth - saved.right - 56, window.innerHeight - saved.bottom - 56);
+    }
+    function writePos(left, top) {
+      try { localStorage.setItem(POS_KEY, JSON.stringify(offsetsOf(left, top))); } catch (err) {}
     }
     function placeMenu() {
       var rect = root.getBoundingClientRect();
@@ -4773,7 +4800,7 @@ document.addEventListener('DOMContentLoaded', function() {
       root.classList.toggle('is-menu-right', rect.right < menuW + 8 && (window.innerWidth - rect.left) > rect.right);
     }
     function place(left, top) {
-      var p = clamp(left, top);
+      var p = dragClamp(left, top);
       root.style.left = p.left + 'px';
       root.style.top = p.top + 'px';
       root.style.right = 'auto';
@@ -4781,14 +4808,34 @@ document.addEventListener('DOMContentLoaded', function() {
       placeMenu();
       return p;
     }
+    function showAt(left, top) {
+      root.style.left = left + 'px';
+      root.style.top = top + 'px';
+      root.style.right = 'auto';
+      root.style.bottom = 'auto';
+      root.classList.add('is-placed');
+      placeMenu();
+    }
     function restore() {
+      var shown = false;
       try {
         var raw = localStorage.getItem(POS_KEY);
-        if (!raw) { placeMenu(); return; }
-        var p = JSON.parse(raw);
-        if (!p || typeof p.left !== 'number' || typeof p.top !== 'number') { placeMenu(); return; }
-        place(p.left, p.top);
-      } catch (err) { placeMenu(); }
+        if (raw) {
+          var p = JSON.parse(raw);
+          if (p && typeof p.right === 'number' && typeof p.bottom === 'number') {
+            var xy = pointOf(p);
+            showAt(xy.left, xy.top);
+            shown = true;
+          } else if (p && typeof p.left === 'number' && typeof p.top === 'number') {
+            var old = screenClamp(p.left, p.top);
+            writePos(old.left, old.top);
+            showAt(old.left, old.top);
+            shown = true;
+          }
+        }
+      } catch (err) {}
+      if (!shown) root.classList.add('is-placed');
+      placeMenu();
     }
     toggle.addEventListener('pointerdown', function(e) {
       if (e.button != null && e.button !== 0) return;
@@ -4819,7 +4866,8 @@ document.addEventListener('DOMContentLoaded', function() {
       if (moved) {
         suppressClick = true;
         var rect = root.getBoundingClientRect();
-        try { localStorage.setItem(POS_KEY, JSON.stringify(clamp(rect.left, rect.top))); } catch (err) {}
+        var saved = dragClamp(rect.left, rect.top);
+        writePos(saved.left, saved.top);
       }
       try { if (e && toggle.hasPointerCapture(e.pointerId)) toggle.releasePointerCapture(e.pointerId); } catch (err) {}
     }
@@ -4831,12 +4879,7 @@ document.addEventListener('DOMContentLoaded', function() {
       setOpen(!root.classList.contains('is-open'));
       placeMenu();
     });
-    window.addEventListener('resize', function() {
-      if (root.style.left) {
-        var rect = root.getBoundingClientRect();
-        place(rect.left, rect.top);
-      } else placeMenu();
-    });
+    window.addEventListener('resize', function() { restore(); });
     restore();
     menu.addEventListener('click', function(e) {
       var item = e.target.closest('[data-gd-orb]');

@@ -35,7 +35,7 @@ related:
 
 ## 层级
 
-库默认 `z-index: -1`。总览 Worker（about / help / donate / friend / status）把背景抬到 `0`，让线条压过透明 `body`。这时 [[gd-footer]] 和 `.gd-overview__shell` 必须 `z-index: 1`，否则滚到底只看见背景。
+库默认 `z-index: -1`。总览 Worker（about / help / donate / friend）把背景抬到 `0`，让线条压过透明 `body`。这时 [[gd-footer]] 和 `.gd-overview__shell` 必须 `z-index: 1`，否则滚到底只看见背景。
 
 > [!warning] 不要盖住
 > `body` 必须透明，线条才露得出。详情页曾经把层设成 `-1` 又给 body 上实色，线条画在底色后面。预览页不要把 `--blue` 点阵当成现网默认。

@@ -8,7 +8,7 @@ tags:
   - websearch
   - fab
 date: 2026-09-01
-updated: 2026-09-25
+updated: 2026-09-28
 type: component
 category: Component
 status: active
@@ -23,13 +23,13 @@ related:
 # gd-orb
 
 > [!abstract] Summary
->主站右下角扩展按钮。圆钮可在页面内拖动，点开展开快捷入口，仅保留标签、仓库、弹窗、殿堂。
+>有页脚的页面右下角都有这颗蓝色星星。圆钮可在页面内拖动，点开展开快捷入口，仅保留标签、仓库、弹窗、殿堂。主站上标签和弹窗留在本页；其它页点这两项会回到主站。
 
 ## Definition
 
 | 部件 | class | 说明 |
 |------|-------|------|
-| 根 | `.gd-orb` | `position: fixed`，默认右下 `56×56`，可拖动，位置记在 `galnavi-orb-pos` |
+| 根 | `.gd-orb` | `position: fixed`，默认右下 `56×56`，可拖动。位置记在 `galnavi-orb-pos`，存的是离视口右缘和下缘的距离，换页时先藏住再放回原处 |
 | 菜单 | `.gd-orb__menu` | `role="region"`，不要 `role="menu"` |
 | 列 | `.gd-orb__col` | 单列竖排 |
 | 项 | `.gd-orb__item` | 真实 `<button>` 或 `<a href>`；`data-gd-orb` |
@@ -42,7 +42,7 @@ related:
 - `initGdOrb(root, { onAction })`：`onAction` 只处理需要脚本的项（标签 / 酒馆 / 弹窗）；带 `href` 的项让浏览器自己跳
 - 打开：根加 `is-open`；菜单 `inert` 在关闭时为 true
 - Esc 关闭并焦点回到开关；点菜单外关闭
-- 预览演示加 `.gd-orb--demo`（不要 `fixed` 飞出预览盒，演示钮不启用拖动）
+- 预览演示加 `.gd-orb--demo`（不要 `fixed` 飞出预览盒）。框内可拖，不写 `galnavi-orb-pos`
 - 拖动超过约 6 像素才算移动，短按仍开关菜单。靠近上沿或左沿时菜单翻到下方或右侧
 
 > [!warning] 不要两框

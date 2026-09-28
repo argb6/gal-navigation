@@ -32,7 +32,7 @@ related:
 
 ## Definition
 
-入口是模块 Worker：`export default { async fetch(request, env, ctx) }`。现网 `worker/new/*.js` **零 import**；查 D1/KV、拼页面、安全头都在同一文件。对外发布的源码在 `source/`（从 `worker/new` 抽出；**不含** β 版 `status.js`）。GitHub `gal-navigation/worker/*.js` 是另一份单文件副本，没有 `import` layer。
+入口是模块 Worker：`export default { async fetch(request, env, ctx) }`。现网 `worker/new/*.js` **零 import**；查 D1/KV、拼页面、安全头都在同一文件。对外发布的源码在 `source/`（从 `worker/new` 抽出）。GitHub `gal-navigation/worker/*.js` 是另一份单文件副本，没有 `import` layer。
 
 选择单文件内联：[[Decision-单文件 Worker]]。运行时口径：[[Cloudflare Worker]]。
 
@@ -41,7 +41,7 @@ related:
 | | 现网（本仓库） | GitHub `gal-navigation` |
 |--|----------------|-------------------------|
 | 页面入口 | `worker/new/<page>.js` | `worker/<page>.js` |
-| 发布源码 | `source/<page>.js`（对外发布；不含 status） | （开源仓用 `worker/`） |
+| 发布源码 | `source/<page>.js`（对外发布） | （开源仓用 `worker/`） |
 | 对照源 | `worker/shared/`（现网页不引用） | `worker/shared/`（约定给 Worker / layer import） |
 | 功能层 | **没有** `worker/layer/` | 有 `worker/layer/`（六层文件在，**入口未接入**） |
 | 部署配置 | `wrangler/<name>.toml` | **没有** wrangler 目录 |
@@ -63,7 +63,7 @@ GitHub 的 layer 是从单文件抽出来的对照实现，SQL/KV 名称按现�
         └─ 未命中 → 内联 404（noindex）
 ```
 
-`error.toml` 的 service binding：index / websearch / detail / about / help / palace / donate / friend。**没有 status**。`/status/` 走控制台绑在 status Worker 上，不经过这张表。
+`error.toml` 的 service binding：index / websearch / detail / about / help / palace / donate / friend。
 
 `DEFAULT_ROUTES`（与 GitHub `worker/layer/api/router.js` 一致）：
 
@@ -85,7 +85,7 @@ GitHub 的 layer 是从单文件抽出来的对照实现，SQL/KV 名称按现�
 worker/layer/
 ├── api/        路由与端点（router 对照 error.js）
 ├── database/   D1 + KV
-├── service/    搜索 / SEO / 缓存 / 站点检测
+├── service/    搜索 / SEO / 缓存
 ├── render/     HTML 与数据注入
 ├── security/   CSP / CORS / 转义 / NSFW cookie
 └── utils/      JSON/HTML/重定向/404

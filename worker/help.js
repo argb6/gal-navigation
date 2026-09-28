@@ -2023,8 +2023,15 @@ body.gd-overview {
   width: 100%;
   height: 256px;
   flex: 0 0 auto;
+  overflow: hidden;
   border-radius: 12px;
   background: rgba(var(--gd-color-primary-rgb), 0.14);
+}
+.gd-help-topic__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 .gd-help-topic__no,
 .gd-help-topic__title,
@@ -2126,25 +2133,25 @@ body.gd-overview {
       <p class="gd-overview__lede">每个专题是一张卡片。点开后再看这一节的具体内容。</p>
       <div class="gd-help-topics">
         <button type="button" class="gd-help-topic" data-help-topic="legend">
-          <span class="gd-help-topic__media" aria-hidden="true"></span>
+          <span class="gd-help-topic__media" aria-hidden="true"><img src="https://assets.galnavi.top/help/%E9%AD%94%E6%B3%95%E4%BC%A0%E8%AF%B4.png" alt="" width="256" height="256"></span>
           <span class="gd-help-topic__no">01</span>
           <span class="gd-help-topic__title">魔法传说</span>
           <span class="gd-help-topic__sum">高墙、猫耳娘纳普，以及离开小镇的那份祝福。</span>
         </button>
         <button type="button" class="gd-help-topic" data-help-topic="cards">
-          <span class="gd-help-topic__media" aria-hidden="true"></span>
+          <span class="gd-help-topic__media" aria-hidden="true"><img src="https://assets.galnavi.top/help/%E5%8D%A1%E7%89%87.png" alt="" width="256" height="256"></span>
           <span class="gd-help-topic__no">02</span>
           <span class="gd-help-topic__title">卡片与标签</span>
           <span class="gd-help-topic__sum">卡面上看什么，点开之后那些标签分别是什么意思。</span>
         </button>
         <button type="button" class="gd-help-topic" data-help-topic="genres">
-          <span class="gd-help-topic__media" aria-hidden="true"></span>
+          <span class="gd-help-topic__media" aria-hidden="true"><img src="https://assets.galnavi.top/help/%E6%B8%B8%E6%88%8F.png" alt="" width="256" height="256"></span>
           <span class="gd-help-topic__no">03</span>
           <span class="gd-help-topic__title">常见游戏类别</span>
           <span class="gd-help-topic__sum">ADV、视觉小说、RPG、音游这些说法，分别指哪一种玩法。</span>
         </button>
         <button type="button" class="gd-help-topic" data-help-topic="tools">
-          <span class="gd-help-topic__media" aria-hidden="true"></span>
+          <span class="gd-help-topic__media" aria-hidden="true"><img src="https://assets.galnavi.top/help/%E8%A7%A3%E5%8E%8B.png" alt="" width="256" height="256"></span>
           <span class="gd-help-topic__no">04</span>
           <span class="gd-help-topic__title">获取与解压</span>
           <span class="gd-help-topic__sum">电脑和手机怎么打开 GitHub，压缩包怎么解。</span>

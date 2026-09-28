@@ -30,7 +30,7 @@ related:
 
 ## Definition
 
-入口是模块 Worker：`export default { async fetch(request, env, ctx) }`。本仓 `worker/*.js` **零 import**。`status.js` 仍是 β。
+入口是模块 Worker：`export default { async fetch(request, env, ctx) }`。本仓 `worker/*.js` **零 import**。
 
 选择单文件内联：[[Decision-单文件 Worker]]。运行时口径：[[Cloudflare Worker]]。
 
@@ -60,7 +60,7 @@ GitHub 的 layer 是从单文件抽出来的对照实现，SQL/KV 名称按现�
         └─ 未命中 → 内联 404（noindex）
 ```
 
-`error` 的 service binding：index / websearch / detail / about / help / palace / donate / friend。**没有 status**。`/status/` 单独绑 status Worker。
+`error` 的 service binding：index / websearch / detail / about / help / palace / donate / friend。
 
 `DEFAULT_ROUTES`（与 GitHub `worker/layer/api/router.js` 一致）：
 
@@ -82,7 +82,7 @@ GitHub 的 layer 是从单文件抽出来的对照实现，SQL/KV 名称按现�
 worker/layer/
 ├── api/        路由与端点（router 对照 error.js）
 ├── database/   D1 + KV
-├── service/    搜索 / SEO / 缓存 / 站点检测
+├── service/    搜索 / SEO / 缓存
 ├── render/     HTML 与数据注入
 ├── security/   CSP / CORS / 转义 / NSFW cookie
 └── utils/      JSON/HTML/重定向/404
@@ -99,7 +99,6 @@ worker/layer/
 | 详情 | `worker/detail.js` |
 | 殿堂 | `worker/palace.js` |
 | 关于 / 帮助 / 友链 / 捐献 / 404 | 同目录对应文件 |
-| 状态 | `worker/status.js`（β） |
 
 ## Related
 
