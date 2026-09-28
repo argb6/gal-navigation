@@ -4,6 +4,8 @@
 
 ### 调整
 
+- **status 已从前端彻底移除**：删除 `worker/new/status.js` 与 `sandbox/status-sandbox/`；INFOFLOW / README / open-source-prep 改为「已删除」口径（不再「非开源本地保留」）
+
 - 帮助页「卡片预览」对齐现网 `gd-card--general`：卡面无标签/双按钮；点击打开示范 `gd-modal--site-card`；标签说明/卡片说明文案同步（点卡弹窗、标签在弹窗内）；同步 sandbox help
 
 - preview：去掉页级 `#previewOrb` 及 `initGdOrb("#previewOrb")`（含仅服务它的 toast 回调）；orb 区块只保留框内 `gd-orb--demo`（可拖、不出框）；同步精简 demo-note / `#belowNav` 说明文案
@@ -12,11 +14,11 @@
 
 - preview `gd-orb`：框内 `gd-orb--demo` 改为可在 `.demo-preview--orb` 内拖动（不写 `galnavi-orb-pos`）；全页 orb 上界 clamp 忽略异常大的 `#belowNav` bottom，避免可拖高度被夹成 0；文案区分框内 / 右下角。
 
-- 页脚「联系站长」页脚去掉「联系站长」邮箱 / mailto（开源与正式源均不公示邮箱）
+- 正式源去掉运营联系邮箱：页脚「联系站长」改为链到 `/nav/about/#feedback`（不再 mailto）；about 反馈段与 donate「邮件联系」改为无邮箱占位（GitHub Issue / 站点反馈）；friend 去掉 `admin@galnavi.top`；删除 about/donate 的 CONTACT_EMAIL / CONTACT_MAILTO；同步 sandbox。第三方站点资料字段中的 mailto 解析逻辑保留。（此前曾统一为 feedback@ / 替换旧 protonmail，现已全部移除）
 
 ### 变更
 
-- （开源已移除 status 页相关记录）
+- （历史）status Worker 曾改为仅运行时 `env.CF_API_TOKEN`；**现 status 已整页删除，前端无此配置**
 
 
 ### 调整
@@ -36,7 +38,7 @@
 ### 变更
 
 - 页脚去掉「站点状态」，第一项为「主站首页」，其后为帮助文档、关于本站、联系站长、申请友链
-- （开源不含 status 页）
+- 删除 status Worker、本地状态页、站点地图中的 `/status/`，以及只给状态页用的检测层
 - 有页脚的页面补上右下 `gd-orb` 蓝色星星（主站原本就有；捐献页会跳到关于，不另放一颗）
 - 星星按钮的位置按离视口右缘、下缘的距离保存，换页时先藏住再放回原处
 - 组件预览去掉页顶通知条；扩展页演示改为专题卡片（300×400，图片 256×256，点开再看正文）
@@ -78,7 +80,7 @@
 - `docs/migration.md`、`docs/coding-style.md` 删除（内容已在 CHANGELOG / `docs/standard/usage.md`）
 - `usage.md` / `tokens.md` / `open-source-prep.md` 挪到 `docs/standard/`
 - 根目录去掉重复稿 `gd-architecture.md`、`worker-component-report.md`；项目地图改在根 `README.md`，AI 规矩在 `AGENTS.md`
-- 知识库文件夹改成连续编号 `01`–`05`（`kbVersion` 1.2.0）；`worker/share` 与现网 robots/sitemap 对齐（开源不含 ）
+- 知识库文件夹改成连续编号 `01`–`05`（`kbVersion` 1.2.0）；`worker/share` 与现网 index 的 robots/sitemap 对齐（含 `/status/`）
 - 知识库 1.3.0：写入现网 D1/KV UUID 与部署表；禁止写 token。`source/` 是从 `worker/new` 抽出的发布用源代码（**不含** β 版 status）
 - 删除未被现网页引用的 `src/extend/about`、`help`、`palace` CSS（关于用 `gd-table`，帮助用 overview 目录，殿堂样式在 `palace.js` 内联）
 - 主站背景不要用 `100vw`：全屏刷新时会把右下 `gd-orb` 裁掉，改 `inset: 0`
@@ -166,8 +168,8 @@
 
 ### 新增
 
-- （开源已移除 status 页相关记录）
-- （开源已移除 status 页相关记录）
+- 站点状态页（`/status/`）组件化完成，复用 gd-overview 布局 + gd-brand + gd-footer + gd-empty-state
+- 状态页公告系统：`NOTICE_KV` 读取公告内容，`status-notice__content` 样式（蓝底圆角卡片）
 - 状态页仪表盘样式（`status-dashboard` / `status-stat` / `status-list` / `status-event`）
 - `gd-overview` 布局新增 `status` 页面（extendPages）
 

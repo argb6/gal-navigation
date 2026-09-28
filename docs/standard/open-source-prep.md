@@ -16,9 +16,9 @@
 
 ## 一、敏感信息（必须处理 · 红线仍有效）
 
-### 1.1 CF API Token
+### 1.1 CF API Token / status
 
-- 开源仓不含 status Worker / ；相关 Secret 不进仓
+- **status 已从前端彻底移除**：无 `worker/new/status.js`、无 `sandbox/status-sandbox/`；前端不再维护站点状态页，亦无 `CF_API_TOKEN` / `STATUS_KV` 用途
 - 已出现在仓库/文档的旧 token **立刻轮换**；不要把 token 写进开源仓
 
 ### 1.2 Wrangler 账号缓存
@@ -36,8 +36,8 @@
 
 | 邮箱 | 处理 |
 |------|------|
-| 任何邮箱 / mailto（含页脚联系站长） | **一律不进** |
-| 个人/第三方邮箱明文 | 替换为站点域或占位 |
+| 运营/页脚/文档联系邮箱（含 `feedback@` / `admin@` / 旧 protonmail） | **全部去掉**：页脚「联系站长」链到 `/nav/about/#feedback` 或纯文本；正文用无邮箱占位（如 GitHub Issue） |
+| 第三方站点公开资料字段中的邮箱 | 默认不动（非我们运营联系方式） |
 
 ---
 
@@ -51,7 +51,7 @@
 gal-navigation/
 ├── AGENTS.md / README.md / LICENSE / CONTRIBUTING.md
 ├── src/                 # 从前端拷贝的 gd（无密钥）
-├── worker/*.js          # 从可发布源抽出；零 import；不含现网 Secret
+├── worker/*.js          # 从可发布源抽出；零 import；不含现网 Secret；**不含 status**
 ├── worker/shared/       # 对照源
 ├── worker/share/        # robots / sitemap 对照
 ├── worker/layer/        # 未接入分层对照（若有）
@@ -63,7 +63,8 @@ gal-navigation/
 
 - `wrangler/*.toml`（真实 ID）、`.wrangler/`
 - `部署/temp/`、前端 `sandbox/` 里的调试稿（除非单独脱敏且有必要）
-- β 版现网 `status` 密钥与私有监控配置
+- **status 已从前端删除**：勿再拷贝或恢复 `worker/new/status.js` / `sandbox/status-sandbox/`；开源仓若残留 status，由**部署删除**
+- 任何曾用于 status 的 `CF_API_TOKEN` / `STATUS_KV` 配置（前端侧已无）
 - `backup/`、一次性 freeze 目录
 
 **发布源口径**：现网部署仍用接收区 `部署/worker/new/`（经总指挥收前端交付）。开源 `worker/` 是另一份公开副本；改开源仓 ≠ 已上线。
@@ -84,11 +85,12 @@ gal-navigation/
 
 ## 四、发布前检查表
 
-- [ ] 无 API token / 账密 / API token 明文
+- [ ] 无 API token / 账密 / `CF_API_TOKEN` 明文
 - [ ] 无 `.wrangler/`、无真实 `database_id` / KV `id`
 - [ ] 邮箱按 §1.4 处理
 - [ ] docs/kb 不含 UUID（或已打码）
 - [ ] 推送目标为 `gal-navigation` remote，不是误推私有 toml
+- [ ] 确认前端已无 status 产物（无 `worker/new/status.js` / status-sandbox）；开源副本不含 status；部署侧已清开源仓痕迹
 - [ ] 总指挥已确认本批可开源
 
 更细的断链与跨区路径见 [`失效断链清单.md`](./失效断链清单.md)。
