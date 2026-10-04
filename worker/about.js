@@ -1968,12 +1968,16 @@ body.gd-overview {
   color: var(--gd-color-on-surface);
   font-family: inherit;
   border-radius: 18px;
-  border: 1px solid rgba(var(--gd-color-white-rgb), 0.1);
-  background: linear-gradient(180deg, var(--gd-color-card-gradient-a), var(--gd-color-card-gradient-b));
+  border: 1px solid var(--gd-glass-border);
+  background: var(--gd-glass-bg);
   appearance: none;
   -webkit-appearance: none;
 }
-.gd-help-topic:hover { filter: brightness(1.06); }
+.gd-help-topic:hover {
+  background: var(--gd-glass-bg-hover);
+  border-color: var(--gd-color-border-hover);
+  filter: brightness(1.05);
+}
 .gd-help-topic:focus-visible { outline: 2px solid var(--gd-color-primary); outline-offset: 3px; }
 .gd-help-topic__media {
   display: block;
@@ -2026,7 +2030,7 @@ body.gd-overview {
 .gd-help-detail h3 { margin: 22px 0 8px; font-size: 18px; color: var(--gd-color-on-surface); scroll-margin-top: 90px; }
 @container (max-width: 619px) {
   .gd-help-topics { grid-template-columns: 1fr; }
-  .gd-help-topic { width: 100%; height: auto; overflow: visible; align-items: flex-start; }
+  .gd-help-topic { width: 100%; height: auto; overflow: visible; align-items: center; }
   .gd-help-topic__media,
   .gd-help-topic__no,
   .gd-help-topic__title,
@@ -2136,7 +2140,7 @@ body.gd-overview {
 </tbody></table>
 </div></section>
 <section class="gd-section" id="components"><h2 class="gd-section__title">组件与技术</h2><div class="card">
-<p>每个页面一份 Cloudflare Worker，HTML / CSS / JS 打在同一个文件里。界面是自研 <strong>gd</strong>（GalNavi Design）：深色玻璃拟态，语义对齐 Material Design 3，不换皮。</p>
+<p>每个页面一份 Cloudflare Worker，HTML / CSS / JS 打在同一个文件里。界面是自研 <strong>gd</strong>（GalNavi Design）：深色玻璃拟态。</p>
 <h3>GALNAVI Design</h3>
 <p>gd 统一视觉和交互：</p>
 <ul>

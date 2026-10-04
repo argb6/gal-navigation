@@ -2011,12 +2011,16 @@ body.gd-overview {
   color: var(--gd-color-on-surface);
   font-family: inherit;
   border-radius: 18px;
-  border: 1px solid rgba(var(--gd-color-white-rgb), 0.1);
-  background: linear-gradient(180deg, var(--gd-color-card-gradient-a), var(--gd-color-card-gradient-b));
+  border: 1px solid var(--gd-glass-border);
+  background: var(--gd-glass-bg);
   appearance: none;
   -webkit-appearance: none;
 }
-.gd-help-topic:hover { filter: brightness(1.06); }
+.gd-help-topic:hover {
+  background: var(--gd-glass-bg-hover);
+  border-color: var(--gd-color-border-hover);
+  filter: brightness(1.05);
+}
 .gd-help-topic:focus-visible { outline: 2px solid var(--gd-color-primary); outline-offset: 3px; }
 .gd-help-topic__media {
   display: block;
@@ -2055,7 +2059,7 @@ body.gd-overview {
 .gd-help-detail[hidden] { display: none !important; }
 @container (max-width: 619px) {
   .gd-help-topics { grid-template-columns: 1fr; }
-  .gd-help-topic { width: 100%; height: auto; overflow: visible; align-items: flex-start; }
+  .gd-help-topic { width: 100%; height: auto; overflow: visible; align-items: center; }
   .gd-help-topic__media,
   .gd-help-topic__no,
   .gd-help-topic__title,
