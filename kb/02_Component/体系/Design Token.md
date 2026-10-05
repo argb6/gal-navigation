@@ -18,7 +18,7 @@ related:
   - "[[GD 组件库]]"
   - "[[玻璃表面系统]]"
   - "[[状态层模式]]"
-  - "[[Decision-MD3 对齐口径]]"
+  - "[[Decision-GD设计系统边界]]"
   - "[[ChangeLog-gd v1.5.1]]"
   - "[[ChangeLog-gd v1.6.0]]"
 ---
@@ -26,7 +26,7 @@ related:
 # Design Token
 
 > [!abstract] Summary
-> 换肤入口只有 `src/foundation/tokens/tokens.css`。`:root` 里 **139** 个 `--gd-*` 声明（2026-09-01 对照 `worker/new` 删掉未引用项后计数）。角色名对齐 MD3，色值是 GALNAVI 自己的。
+> 换肤入口只有 `src/foundation/tokens/tokens.css`。`:root` 里 **139** 个 `--gd-*` 声明（2026-09-01 对照 `worker/new` 删掉未引用项后计数）。角色名对齐 ，色值是 GALNAVI 自己的。
 
 > [!warning] 不要口头估
 > 注释里的 `--gd-x-rgb`、以及 `var(--gd-…)` 嵌套引用，都不算新变量。
@@ -200,4 +200,4 @@ related:
 - [[状态层模式]] — `--gd-state-*`
 - [[ChangeLog-gd v1.5.1]] — 删未引用 token
 - [[ChangeLog-gd v1.6.0]] — `--gd-notice-led-shift`
-- [[Decision-MD3 对齐口径]] — 对齐原则
+- [[Decision-GD设计系统边界]] — 对齐原则

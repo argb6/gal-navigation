@@ -15,26 +15,26 @@ const html = `<!DOCTYPE html>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="dark">
-<title>GALNAVI · 使用指南</title>
-<meta name="description" content="GALNAVI 使用指南 — 了解标签含义、魔法传说、GitHub 加速技巧以及 Galgame 新手避坑指引，几分钟掌握工具与网站导航的全部功能。">
-<meta name="keywords" content="GALNAVI, 使用指南, Galgame, 导航, 标签说明, 魔法传说, GitHub 加速, 新手指引, 模拟器, 网盘">
+<title>GALNAVI · 遇到困难的高效解决办法</title>
+<meta name="description" content="Galgame 汉化与补丁找不到、模拟器或解压工具不会用、标签看不懂，按卡片一步步处理。这是 GALNAVI 给 ACG 二次元导航准备的解决办法。">
+<meta name="keywords" content="GALNAVI, 纳普, 使用指南, Galgame, 汉化, 补丁, 模拟器, 解压工具, ACG导航, 二次元, 新手">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://galnavi.top/nav/help/">
 <link rel="icon" type="image/png" href="https://assets.galnavi.top/favicon.png">
 <link rel="apple-touch-icon" href="https://assets.galnavi.top/icon.png">
 <link rel="sitemap" type="application/xml" title="Sitemap" href="https://galnavi.top/sitemap.xml">
 <meta property="og:type" content="website">
-<meta property="og:title" content="GALNAVI · 使用指南">
-<meta property="og:description" content="了解标签含义、魔法传说、GitHub 加速技巧及 Galgame 新手避坑指引，几分钟掌握全部功能。">
+<meta property="og:title" content="GALNAVI · 遇到困难的高效解决办法">
+<meta property="og:description" content="Galgame 汉化与补丁找不到、模拟器或解压工具不会用、标签看不懂，按卡片一步步处理。这是 GALNAVI 给 ACG 二次元导航准备的解决办法。">
 <meta property="og:url" content="https://galnavi.top/nav/help/">
 <meta property="og:site_name" content="GALNAVI">
 <meta property="og:image" content="https://assets.galnavi.top/icon.png">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="GALNAVI · 使用指南">
-<meta name="twitter:description" content="了解标签含义、魔法传说、GitHub 加速技巧及 Galgame 新手避坑指引。">
+<meta name="twitter:title" content="GALNAVI · 遇到困难的高效解决办法">
+<meta name="twitter:description" content="Galgame 汉化与补丁找不到、模拟器或解压工具不会用、标签看不懂，按卡片一步步处理。这是 GALNAVI 给 ACG 二次元导航准备的解决办法。">
 <meta name="twitter:image" content="https://assets.galnavi.top/icon.png">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","name":"GALNAVI · 使用指南","url":"https://galnavi.top/nav/help/","description":"了解标签含义、魔法传说、GitHub 加速技巧及 Galgame 新手避坑指引。","isPartOf":{"@type":"WebSite","name":"GALNAVI","url":"https://galnavi.top/"}}
+{"@context":"https://schema.org","@type":"WebPage","name":"GALNAVI · 遇到困难的高效解决办法","url":"https://galnavi.top/nav/help/","description":"Galgame 汉化与补丁找不到、模拟器或解压工具不会用、标签看不懂，按卡片一步步处理。这是 GALNAVI 给 ACG 二次元导航准备的解决办法。","isPartOf":{"@type":"WebSite","name":"GALNAVI","url":"https://galnavi.top/"}}
 </script>
 
 <style>
@@ -2117,7 +2117,7 @@ body.gd-overview {
     <div class="gd-overview__content">
       <div id="helpHub" class="gd-help-hub">
       <h1 class="gd-brand__title gd-brand__title--shift gd-brand__title--demo">使用指南</h1>
-      <p class="gd-overview__lede">每个专题是一张卡片。点开后再看这一节的具体内容。</p>
+      <p class="gd-overview__lede">遇到困难就从这些卡片里找办法。Galgame 汉化、补丁、模拟器和解压，点开再看步骤。</p>
       <div class="gd-help-topics">
         <button type="button" class="gd-help-topic" data-help-topic="legend">
           <span class="gd-help-topic__media" aria-hidden="true"><img src="https://assets.galnavi.top/help/%E9%AD%94%E6%B3%95%E4%BC%A0%E8%AF%B4.png" alt="" width="256" height="256"></span>

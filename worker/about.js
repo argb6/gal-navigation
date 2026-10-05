@@ -135,9 +135,9 @@ function renderPage(donors, linksHtml) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="dark">
-<title>关于 GALNAVI · 站点声明</title>
-<meta name="description" content="了解 GALNAVI 资源中枢的起源传说——猫耳娘纳普如何点亮灯塔拯救小镇。包含纳普形象声明、版权声明、站点声明与友情链接。">
-<meta name="keywords" content="GALNAVI, 关于GALNAVI, 猫耳娘纳普, 纳普传说, 资源中枢, ACG导航, 版权声明, 站点声明, 二次元导航, 友情链接">
+<title>GALNAVI · 关于这个的一切都在这</title>
+<meta name="description" content="来历、版权和免责声明、友情链接，关于 GALNAVI（纳普）的都在这。本站是 ACG 二次元与 Galgame 导航，汉化、补丁和下载由原站负责。">
+<meta name="keywords" content="GALNAVI, 纳普, 关于GALNAVI, ACG导航, Galgame导航, 二次元, 站点声明, 版权声明, 友情链接">
 <meta name="author" content="GALNAVI">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://galnavi.top/nav/about/">
@@ -147,16 +147,16 @@ function renderPage(donors, linksHtml) {
 <meta property="og:type" content="website">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:site_name" content="GALNAVI">
-<meta property="og:title" content="关于 GALNAVI · 猫耳娘传说">
-<meta property="og:description" content="了解 GALNAVI 资源中枢的起源传说、版权声明、站点声明与友情链接。">
+<meta property="og:title" content="GALNAVI · 关于这个的一切都在这">
+<meta property="og:description" content="来历、版权和免责声明、友情链接，关于 GALNAVI（纳普）的都在这。本站是 ACG 二次元与 Galgame 导航，汉化、补丁和下载由原站负责。">
 <meta property="og:url" content="https://galnavi.top/nav/about/">
 <meta property="og:image" content="${ASSET_ICON}">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="关于 GALNAVI · 猫耳娘传说">
-<meta name="twitter:description" content="了解 GALNAVI 资源中枢的起源传说、版权声明、站点声明与友情链接。">
+<meta name="twitter:title" content="GALNAVI · 关于这个的一切都在这">
+<meta name="twitter:description" content="来历、版权和免责声明、友情链接，关于 GALNAVI（纳普）的都在这。本站是 ACG 二次元与 Galgame 导航，汉化、补丁和下载由原站负责。">
 <meta name="twitter:image" content="${ASSET_ICON}">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","name":"关于 GALNAVI · 猫耳娘传说","url":"https://galnavi.top/nav/about/","description":"了解 GALNAVI 资源中枢的起源传说、版权声明、站点声明与友情链接。","isPartOf":{"@type":"WebSite","name":"GALNAVI","url":"https://galnavi.top/"}}
+{"@context":"https://schema.org","@type":"WebPage","name":"GALNAVI · 关于这个的一切都在这","url":"https://galnavi.top/nav/about/","description":"来历、版权和免责声明、友情链接，关于 GALNAVI（纳普）的都在这。本站是 ACG 二次元与 Galgame 导航，汉化、补丁和下载由原站负责。","isPartOf":{"@type":"WebSite","name":"GALNAVI","url":"https://galnavi.top/"}}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://galnavi.top/nav/"},{"@type":"ListItem","position":2,"name":"关于","item":"https://galnavi.top/nav/about/"}]}
@@ -2170,7 +2170,7 @@ body.gd-overview {
     <div class="gd-overview__content">
       <div id="helpHub" class="gd-help-hub">
       <h1 class="gd-brand__title gd-brand__title--shift gd-brand__title--demo">关于</h1>
-      <p class="gd-overview__lede">每个专题是一张卡片。点开后再看这一节，友链和捐献也在这里。</p>
+      <p class="gd-overview__lede">关于这个的一切都在这。点开卡片看来历、声明和友链。</p>
       <div class="gd-help-topics">
         <button type="button" class="gd-help-topic" data-help-topic="origin"><span class="gd-help-topic__media" aria-hidden="true"><img src="https://assets.galnavi.top/about/%E7%81%AF%E5%A1%94.png" alt="" width="256" height="256"></span><span class="gd-help-topic__no">01</span><span class="gd-help-topic__title">起源与发展</span><span class="gd-help-topic__sum">猫耳娘纳普点亮灯塔的故事，以及从立项到网页焕新的时间线。</span></button>
         <button type="button" class="gd-help-topic" data-help-topic="components"><span class="gd-help-topic__media" aria-hidden="true"><img src="https://assets.galnavi.top/about/%E6%8A%80%E6%9C%AF.png" alt="" width="256" height="256"></span><span class="gd-help-topic__no">02</span><span class="gd-help-topic__title">组件与技术</span><span class="gd-help-topic__sum">自研 gd 组件，加上 Cloudflare Workers、D1、KV 和 R2。</span></button>

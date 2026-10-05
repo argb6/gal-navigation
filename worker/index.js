@@ -5,23 +5,23 @@ const html = `<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GALNAVI 永久发布页 · ACG 二次元资源导航入口</title>
-<meta name="description" content="GALNAVI 官方永久发布页，一站直达 ACG 二次元资源聚合导航。纯净无广，收藏本页即可随时找回入口。">
-<meta name="keywords" content="GALNAVI, 永久发布页, ACG导航, 二次元导航, 资源聚合, Galgame">
+<title>GALNAVI · Galgame与ACG二次元导航入口</title>
+<meta name="description" content="GALNAVI（纳普）收藏入口。从这里进入 Galgame、美少女游戏汉化与补丁、模拟器和解压工具导航。纯净无广，按 Ctrl+D 保存本页。">
+<meta name="keywords" content="GALNAVI, 纳普, Galgame导航, ACG导航, 二次元资源, 美少女游戏, 汉化, 补丁, 模拟器, 解压工具">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://galnavi.top/">
 <link rel="icon" href="https://assets.galnavi.top/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="https://assets.galnavi.top/icon.png">
 <link rel="sitemap" type="application/xml" title="Sitemap" href="https://galnavi.top/sitemap.xml">
 <meta property="og:type" content="website">
-<meta property="og:title" content="GALNAVI 永久发布页 · ACG 二次元资源导航入口">
-<meta property="og:description" content="GALNAVI 官方永久发布页，一站直达 ACG 二次元资源聚合导航。纯净无广，收藏本页即可随时找回入口。">
+<meta property="og:title" content="GALNAVI · Galgame与ACG二次元导航入口">
+<meta property="og:description" content="GALNAVI（纳普）收藏入口。从这里进入 Galgame、美少女游戏汉化与补丁、模拟器和解压工具导航。纯净无广，按 Ctrl+D 保存本页。">
 <meta property="og:url" content="https://galnavi.top/">
 <meta property="og:site_name" content="GALNAVI">
 <meta property="og:image" content="https://assets.galnavi.top/icon.png">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="GALNAVI 永久发布页 · ACG 二次元资源导航入口">
-<meta name="twitter:description" content="GALNAVI 官方永久发布页，一站直达 ACG 二次元资源聚合导航。纯净无广，收藏本页即可随时找回入口。">
+<meta name="twitter:title" content="GALNAVI · Galgame与ACG二次元导航入口">
+<meta name="twitter:description" content="GALNAVI（纳普）收藏入口。从这里进入 Galgame、美少女游戏汉化与补丁、模拟器和解压工具导航。纯净无广，按 Ctrl+D 保存本页。">
 <meta name="twitter:image" content="https://assets.galnavi.top/icon.png">
 <style>/* src/foundation/tokens/tokens.css */
 /* gd tokens — 色值/玻璃为现网取值；字号/圆角/状态透明度语义对齐 MD3 */
@@ -936,7 +936,7 @@ const html = `<!DOCTYPE html>
 </style>
 
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebSite","name":"GALNAVI","url":"https://galnavi.top/","description":"ACG 二次元资源聚合导航站","potentialAction":{"@type":"SearchAction","target":"https://galnavi.top/nav/?q={search_term_string}","query-input":"required name=search_term_string"}}
+{"@context":"https://schema.org","@type":"WebSite","name":"GALNAVI","alternateName":"纳普","url":"https://galnavi.top/","description":"GALNAVI（纳普），Galgame 与 ACG 二次元资源导航入口","potentialAction":{"@type":"SearchAction","target":"https://galnavi.top/nav/?q={search_term_string}","query-input":"required name=search_term_string"}}
 </script>
 <style>
 /* 沙盒发布页基础样式：组件外观一律来自组件库（/src/ 引用） */
@@ -999,14 +999,14 @@ body.modal-open{overflow:hidden}
 </style>
 </head><body>
 <div class="gd-groundback gd-groundback--websearch" aria-hidden="true"></div>
-<main class="page" id="main" aria-label="GALNAVI 发布页">
+<main class="page" id="main" aria-label="GALNAVI Galgame 导航入口">
 <div class="gd-publish-card is-demo">
 <header class="gd-publish-card__header">
 <div class="gd-publish-card__brand">
 <img class="gd-publish-card__logo" alt="GALNAVI 品牌标" src="https://assets.galnavi.top/logo.png">
 </div>
 <h1 class="gd-brand__title gd-brand__title--demo gd-publish-card__wordmark">GALNAVI</h1>
-<p class="gd-publish-card__lead">一个专注于 ACG 二次元资源网站聚合与收录的纯净导航站点。纯净无广，秒速响应，一站直达。</p>
+<p class="gd-publish-card__lead">GALNAVI（纳普），Galgame 和 ACG 二次元资源导航。汉化、补丁、模拟器、解压工具都从这里进。纯净无广，收藏本页就能找回入口。</p>
 </header>
 <div class="gd-publish-card__body">
 <p class="gd-publish-card__note">建议使用 <a class="gd-link" href="https://www.mozilla.org/firefox/new/" target="_blank" rel="noopener noreferrer">Firefox</a>、<a class="gd-link" href="https://www.microsoft.com/edge" target="_blank" rel="noopener noreferrer">Edge</a>、<a class="gd-link" href="https://www.google.com/chrome/" target="_blank" rel="noopener noreferrer">Chrome</a> 等浏览器访问。</p>

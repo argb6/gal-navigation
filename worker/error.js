@@ -24,25 +24,25 @@ const fallbackHtml = `<!DOCTYPE html>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#1c2a48">
-<title>页面不存在 · GALNAVI</title>
-<meta name="description" content="你要访问的页面不存在或已被移除。返回 GALNAVI 主站，继续探索 ACG 二次元资源导航。">
+<title>GALNAVI · 你是不走错地方了</title>
+<meta name="description" content="这个地址没有对应页面。回到 GALNAVI，继续搜索 Galgame、ACG 二次元站点、汉化补丁和模拟器工具。">
 <meta name="robots" content="noindex, nofollow">
 <link rel="canonical" href="https://galnavi.top/">
 <link rel="icon" href="https://assets.galnavi.top/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="https://assets.galnavi.top/icon.png">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:title" content="页面不存在 · GALNAVI">
-<meta property="og:description" content="你要访问的页面不存在或已被移除。返回 GALNAVI 主站，继续探索 ACG 二次元资源导航。">
+<meta property="og:title" content="GALNAVI · 你是不走错地方了">
+<meta property="og:description" content="这个地址没有对应页面。回到 GALNAVI，继续搜索 Galgame、ACG 二次元站点、汉化补丁和模拟器工具。">
 <meta property="og:url" content="https://galnavi.top/">
 <meta property="og:site_name" content="GALNAVI">
 <meta property="og:image" content="https://assets.galnavi.top/icon.png">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="页面不存在 · GALNAVI">
-<meta name="twitter:description" content="你要访问的页面不存在或已被移除。返回 GALNAVI 主站。">
+<meta name="twitter:title" content="GALNAVI · 你是不走错地方了">
+<meta name="twitter:description" content="这个地址没有对应页面。回到 GALNAVI，继续搜索 Galgame、ACG 二次元站点、汉化补丁和模拟器工具。">
 <meta name="twitter:image" content="https://assets.galnavi.top/icon.png">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","name":"页面不存在 · GALNAVI","url":"https://galnavi.top/","description":"你要访问的页面不存在或已被移除。","isPartOf":{"@type":"WebSite","name":"GALNAVI","url":"https://galnavi.top/"}}
+{"@context":"https://schema.org","@type":"WebPage","name":"GALNAVI · 你是不走错地方了","url":"https://galnavi.top/","description":"这个地址没有对应页面。回到 GALNAVI，继续搜索 Galgame、ACG 二次元站点、汉化补丁和模拟器工具。","isPartOf":{"@type":"WebSite","name":"GALNAVI","url":"https://galnavi.top/"}}
 </script>
 <style>
 /* ===== src/foundation/tokens/tokens.css ===== */
@@ -756,7 +756,7 @@ body {
 <div class="gd-publish-card__brand">
 <div class="gd-publish-card__wordmark-404" aria-hidden="true">404</div>
 </div>
-<h1 class="gd-publish-card__lead gd-publish-card__title-404">页面不存在</h1>
+<h1 class="gd-publish-card__lead gd-publish-card__title-404">你是不走错地方了</h1>
 <p class="gd-publish-card__lead gd-publish-card__path">你要访问的网址不存在或已被移除。\${path}</p>
 </header>
 <footer class="gd-publish-card__footer">

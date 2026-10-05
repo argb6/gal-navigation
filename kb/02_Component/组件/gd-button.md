@@ -18,7 +18,7 @@ related:
   - "[[Design Token]]"
   - "[[状态层模式]]"
   - "[[gd-navbar]]"
-  - "[[Decision-MD3 对齐口径]]"
+  - "[[Decision-GD设计系统边界]]"
 ---
 
 # gd-button

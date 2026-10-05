@@ -53,26 +53,26 @@ function renderPage(data, fetchFailed) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>圣器殿堂</title>
-<meta name="description" content="GALNAVI 圣器殿堂 —— 神器、魔器、仙器总览。">
-<meta name="keywords" content="GALNAVI, 圣器殿堂, 神器, 魔器, 仙器, ACG, Galgame, 导航">
+<title>圣器殿堂 · 圣器之名 · 神魔仙</title>
+<meta name="description" content="以圣器之名，把 Galgame 与美少女游戏分成神器、魔器、仙器。可搜中文或日文名，是 GALNAVI（纳普）里的游戏名录。">
+<meta name="keywords" content="GALNAVI, 纳普, 圣器殿堂, Galgame, 美少女游戏, 游戏名录, ACG, 二次元, 神器, 魔器, 仙器">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://galnavi.top/nav/palace/">
 <link rel="icon" href="https://assets.galnavi.top/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="https://assets.galnavi.top/icon.png">
 <link rel="sitemap" type="application/xml" title="Sitemap" href="https://galnavi.top/sitemap.xml">
 <meta property="og:type" content="website">
-<meta property="og:title" content="圣器殿堂 · GALNAVI">
-<meta property="og:description" content="GALNAVI 圣器殿堂 —— 神器、魔器、仙器总览。">
+<meta property="og:title" content="圣器殿堂 · 圣器之名 · 神魔仙">
+<meta property="og:description" content="以圣器之名，把 Galgame 与美少女游戏分成神器、魔器、仙器。可搜中文或日文名，是 GALNAVI（纳普）里的游戏名录。">
 <meta property="og:url" content="https://galnavi.top/nav/palace/">
 <meta property="og:site_name" content="GALNAVI">
 <meta property="og:image" content="https://assets.galnavi.top/icon.png">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="圣器殿堂 · GALNAVI">
-<meta name="twitter:description" content="GALNAVI 圣器殿堂 —— 神器、魔器、仙器总览。">
+<meta name="twitter:title" content="圣器殿堂 · 圣器之名 · 神魔仙">
+<meta name="twitter:description" content="以圣器之名，把 Galgame 与美少女游戏分成神器、魔器、仙器。可搜中文或日文名，是 GALNAVI（纳普）里的游戏名录。">
 <meta name="twitter:image" content="https://assets.galnavi.top/icon.png">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","name":"圣器殿堂 · GALNAVI","url":"https://galnavi.top/nav/palace/","description":"GALNAVI 圣器殿堂 —— 神器、魔器、仙器总览。","isPartOf":{"@type":"WebSite","name":"GALNAVI","url":"https://galnavi.top/"}}
+{"@context":"https://schema.org","@type":"WebPage","name":"圣器殿堂 · 圣器之名 · 神魔仙","url":"https://galnavi.top/nav/palace/","description":"以圣器之名，把 Galgame 与美少女游戏分成神器、魔器、仙器。可搜中文或日文名，是 GALNAVI（纳普）里的游戏名录。","isPartOf":{"@type":"WebSite","name":"GALNAVI","url":"https://galnavi.top/"}}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1832,7 +1832,7 @@ gd-search { display: contents; }
   <main class="page">
     <header class="brand-lockup">
       <h1 class="gd-brand__title gd-brand__title--palace gd-brand__title--demo">圣器殿堂</h1>
-      <p class="brand-subtitle">神器 · 魔器 · 仙器</p>
+      <p class="brand-subtitle">圣器之名 · 神器 · 魔器 · 仙器</p>
       <button type="button" class="gd-link brand-legend" id="openLegend">阅读圣器传说</button>
     </header>
 
@@ -1843,7 +1843,7 @@ gd-search { display: contents; }
           <span class="gd-search__icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4.5 4.5"></path></svg>
           </span>
-          <input class="gd-search__input" id="searchInput" type="search" placeholder="搜索游戏名（中文 / 日文）" aria-label="搜索游戏">
+          <input class="gd-search__input" id="searchInput" type="search" placeholder="搜索 Galgame 名（中文 / 日文）" aria-label="搜索游戏">
           <button type="button" class="gd-search__clear" id="searchClear" aria-label="清除">&times;</button>
         </div>
       </div>

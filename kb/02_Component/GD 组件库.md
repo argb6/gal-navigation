@@ -18,7 +18,7 @@ related:
   - "[[玻璃表面系统]]"
   - "[[状态层模式]]"
   - "[[Web Component]]"
-  - "[[Decision-MD3 对齐口径]]"
+  - "[[Decision-GD设计系统边界]]"
   - "[[Decision-玻璃拟态保留]]"
   - "[[记录索引]]"
 ---
@@ -100,7 +100,7 @@ related:
 - [[玻璃表面系统]] — 三级玻璃；顶栏用 `--gd-chrome-bar-bg`
 - [[状态层模式]] — hover/focus/pressed，禁止 `translateY`
 - [[Web Component]] — modal / navbar / search；orb 不是自定义元素
-- [[Decision-MD3 对齐口径]] — 对齐语义不换皮
+- [[Decision-GD设计系统边界]] — 对齐语义不换皮
 - [[Decision-玻璃拟态保留]] — 玻璃数值冻结
 - [[记录索引]] — ADR / 示例 / CHANGELOG 路径
 - [[ChangeLog-gd v0.2.1]] — 当前组件库版本

@@ -101,23 +101,23 @@ function renderPage(navData, heroImages, featuredKeys, nsfwFlag) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="dark">
-<title>GALNAVI - ACG 二次元资源聚合导航</title>
-<meta name="description" content="一个专注于 ACG 二次元资源网站聚合与收录的纯净导航站点。纯净无广，秒速响应，一站直达。">
-<meta name="keywords" content="GALNAVI, ACG, 二次元, 导航, 资源聚合, Galgame, 模拟器, 汉化, 工具, 网站导航">
+<title>GALNAVI · Galgame ACG二次元站点工具的聚合搜索</title>
+<meta name="description" content="在 GALNAVI（纳普）聚合搜索 Galgame、ACG 二次元站点与工具。美少女游戏汉化、补丁、下载入口，以及模拟器、解压工具，搜到就能打开。纯净无广。">
+<meta name="keywords" content="GALNAVI, 纳普, Galgame导航, 美少女游戏, ACG导航, 二次元资源, 汉化, 补丁, 下载, 模拟器, 解压工具, 网站导航">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://galnavi.top/nav/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="GALNAVI - ACG 二次元资源聚合导航">
-<meta property="og:description" content="一个专注于 ACG 二次元资源网站聚合与收录的纯净导航站点。纯净无广，秒速响应，一站直达。">
+<meta property="og:title" content="GALNAVI · Galgame ACG二次元站点工具的聚合搜索">
+<meta property="og:description" content="在 GALNAVI（纳普）聚合搜索 Galgame、ACG 二次元站点与工具。美少女游戏汉化、补丁、下载入口，以及模拟器、解压工具，搜到就能打开。纯净无广。">
 <meta property="og:url" content="https://galnavi.top/nav/">
 <meta property="og:site_name" content="GALNAVI">
 <meta property="og:image" content="${ASSET_ICON}">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="GALNAVI - ACG 二次元资源聚合导航">
-<meta name="twitter:description" content="一个专注于 ACG 二次元资源网站聚合与收录的纯净导航站点。纯净无广，秒速响应，一站直达。">
+<meta name="twitter:title" content="GALNAVI · Galgame ACG二次元站点工具的聚合搜索">
+<meta name="twitter:description" content="在 GALNAVI（纳普）聚合搜索 Galgame、ACG 二次元站点与工具。美少女游戏汉化、补丁、下载入口，以及模拟器、解压工具，搜到就能打开。纯净无广。">
 <meta name="twitter:image" content="${ASSET_ICON}">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebSite","name":"GALNAVI","url":"https://galnavi.top/nav/","description":"ACG 二次元资源聚合导航站","potentialAction":{"@type":"SearchAction","target":"https://galnavi.top/nav/?q={search_term_string}","query-input":"required name=search_term_string"}}
+{"@context":"https://schema.org","@type":"WebSite","name":"GALNAVI","alternateName":"纳普","url":"https://galnavi.top/nav/","description":"在 GALNAVI（纳普）聚合搜索 Galgame、ACG 二次元站点与工具。美少女游戏汉化、补丁、下载入口，以及模拟器、解压工具，搜到就能打开。纯净无广。","potentialAction":{"@type":"SearchAction","target":"https://galnavi.top/nav/?q={search_term_string}","query-input":"required name=search_term_string"}}
 </script>
 <link rel="icon" type="image/png" href="${ASSET_FAVICON}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -3213,6 +3213,7 @@ html{overflow-x:hidden;overflow-x:clip}
 }
 
 /* 站点推荐 + 最最近更新：上下布局 */
+.gd-home-lede{margin:0 0 4px;color:var(--gd-color-on-surface-variant);font-size:var(--gd-type-body-medium-size);line-height:1.6}
 .home-sections{display:flex;flex-direction:column;gap:24px}
 
 /* 多列卡宽固定 --gd-card-w（390）；仅一列（≤919）时宽跟容器 */
@@ -3383,7 +3384,7 @@ html{overflow-x:hidden;overflow-x:clip}
           <span class="gd-search__icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4.5 4.5"></path></svg>
           </span>
-          <input class="gd-search__input" type="search" placeholder="你要搜什么呢" id="navSearch" aria-label="搜索资源" aria-autocomplete="list" aria-controls="navSearchHist" aria-expanded="false">
+          <input class="gd-search__input" type="search" placeholder="搜索 Galgame、汉化、模拟器" id="navSearch" aria-label="搜索资源" aria-autocomplete="list" aria-controls="navSearchHist" aria-expanded="false">
           <button type="button" class="gd-search__clear" id="navSearchClear" aria-label="清除搜索">×</button>
           <span class="gd-search__help-wrap gd-tooltip-wrap">
             <button type="button" class="gd-search__help" aria-label="搜索规则" aria-describedby="navSearchHelpTip">?</button>
@@ -3472,6 +3473,7 @@ html{overflow-x:hidden;overflow-x:clip}
     <!-- 站点推荐 + 最近更新（仅首页） -->
     <div class="home-sections">
       <section class="gd-section" aria-label="站点推荐">
+        <p class="gd-home-lede">Galgame、ACG 二次元站点与工具的聚合搜索。汉化、补丁、模拟器、解压都能从这里找。</p>
         <h2 class="gd-section__title" id="featuredTitle">站点推荐</h2>
         <div class="card-grid is-active" id="featuredGrid"></div>
       </section>
