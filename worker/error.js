@@ -950,6 +950,8 @@ const DEFAULT_ROUTES = {
   "/robots.txt": "index",
   "/sitemap.xml": "index",
   "/favicon.ico": "index",
+  "/YOUR_INDEXNOW_KEY.txt": "index",
+  "/indexnow": "index",
   "/nav/": "websearch",
   "/nav/detail/": "detail",
   "/nav/about/": "about",

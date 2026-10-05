@@ -1212,6 +1212,8 @@ body.modal-open{overflow:hidden}
 </body>
 </html>`;
 
+const INDEXNOW_KEY = "YOUR_INDEXNOW_KEY";
+
 const robotsTxt = `User-agent: *
 Allow: /
 Sitemap: https://galnavi.top/sitemap.xml
@@ -1246,6 +1248,26 @@ const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
 </urlset>
 `;
 
+function indexNowUrlList() {
+  const urls = [];
+  const re = /<loc>([^<]+)<\/loc>/g;
+  let m;
+  while ((m = re.exec(sitemapXml)) !== null) urls.push(m[1].trim());
+  return urls;
+}
+
+async function submitIndexNow() {
+  return fetch("https://www.bing.com/indexnow", {
+    method: "POST",
+    headers: { "Content-Type": "application/json; charset=utf-8" },
+    body: JSON.stringify({
+      host: "galnavi.top",
+      key: INDEXNOW_KEY,
+      urlList: indexNowUrlList(),
+    }),
+  });
+}
+
 const SECURITY_HEADERS = {
   "Content-Type": "text/html; charset=utf-8",
   "Cache-Control": "private, no-store",
@@ -1269,6 +1291,21 @@ export default {
     if (path === "/sitemap.xml") {
       return new Response(sitemapXml, {
         headers: { "Content-Type": "application/xml; charset=utf-8", "Cache-Control": "private, no-store" }
+      });
+    }
+
+    if (path === "/" + INDEXNOW_KEY + ".txt") {
+      return new Response(INDEXNOW_KEY + "\n", {
+        headers: { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "public, max-age=86400" }
+      });
+    }
+
+    if (path === "/indexnow") {
+      const upstream = await submitIndexNow();
+      const text = await upstream.text();
+      return new Response(text, {
+        status: upstream.status,
+        headers: { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "private, no-store" }
       });
     }
 
