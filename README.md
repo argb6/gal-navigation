@@ -12,7 +12,7 @@
 
 GALNAVI 是面向 ACG 的导航与信息聚合站（[galnavi.top](https://galnavi.top)）。把分散的站点、工具、会社等信息做成分类、标签、搜索和详情，方便查找。
 
-每个页面一份 Cloudflare Worker，HTML / CSS / JS 打在同一个文件里。界面是自研 **gd**（GalNavi Design）：深色玻璃拟态，语义对齐 Material Design 3，不换皮。
+每个页面一份 Cloudflare Worker，HTML / CSS / JS 打在同一个文件里。界面是自研 **gd**（GalNavi Design）：深色玻璃拟态。
 
 本仓库是**开源源码**。线上部署用的 wrangler / 密钥不在这里。页面与现网实现对齐。
 
