@@ -77,4 +77,4 @@
 
 站点图标已从 Supabase 存储桶迁到 Cloudflare R2（公开域 `assets.galnavi.top`）。`icon_path` 仍存 URL/路径，指向 R2 对象。
 
-分类映射已抄进各 Worker 页内，不再 `import worker/shared/constants.js`。友链页当前查询 `sites`（不是本文的 `friends` 名）。殿堂走独立库 `group1` 的 `resources` 表（`official_url` / `details_url` / `link1`–`link3`）。
+分类映射已抄进各 Worker 页内，不再 `import worker/shared/constants.js`。about 页通过 `FRIEND_DB` 查 `sites`（不是本文的 `friends` 名；独立友链页已下线）。殿堂走独立库 `group1` 的 `resources` 表（`official_url` / `details_url` / `link1`–`link3`）。

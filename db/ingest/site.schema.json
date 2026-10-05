@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GALNAVI site ingest",
+  "type": "object",
+  "required": ["item_key", "title", "category", "is_active"],
+  "additionalProperties": false,
+  "properties": {
+    "item_key": { "type": "string", "minLength": 1 },
+    "title": { "type": "string", "minLength": 1 },
+    "category": {
+      "type": "string",
+      "enum": ["simulators", "websites", "tools", "company", "hanhua"]
+    },
+    "tags": { "type": "string" },
+    "short_desc": { "type": "string" },
+    "url": { "type": "string" },
+    "icon_path": { "type": "string" },
+    "md_content": { "type": "string" },
+    "is_active": { "type": "integer", "enum": [0, 1, 2] },
+    "updated_at": { "type": "string" }
+  }
+}

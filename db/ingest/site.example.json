@@ -1,0 +1,12 @@
+{
+  "item_key": "example-site",
+  "title": "示例站点",
+  "category": "websites",
+  "tags": "galgame,资讯",
+  "short_desc": "一句话简介",
+  "url": "https://example.com",
+  "icon_path": "https://example.com/icons/example-site.png",
+  "md_content": "## 简介\n\n详细说明……",
+  "is_active": 1,
+  "updated_at": "2026-10-05"
+}
