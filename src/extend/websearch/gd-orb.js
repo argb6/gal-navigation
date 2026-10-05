@@ -222,12 +222,9 @@ export function initGdOrb(root, options) {
 
   menu.addEventListener("click", (e) => {
     const item = e.target.closest("[data-gd-orb]");
-    if (!item) {
-      if (e.target.closest(".gd-orb__item")) setOpen(false);
-      return;
-    }
+    if (!item) return;
     const act = item.getAttribute("data-gd-orb");
-    setOpen(false);
+    if (act === "popup") setOpen(false);
     if (act && onAction) {
       e.preventDefault();
       onAction(act);

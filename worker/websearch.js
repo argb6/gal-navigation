@@ -4962,13 +4962,10 @@ document.addEventListener('DOMContentLoaded', function() {
     restore();
     menu.addEventListener('click', function(e) {
       var item = e.target.closest('[data-gd-orb]');
-      if (!item) {
-        if (e.target.closest('.gd-orb__item')) setOpen(false);
-        return;
-      }
+      if (!item) return;
       e.preventDefault();
       var act = item.getAttribute('data-gd-orb');
-      setOpen(false);
+      if (act === 'popup') setOpen(false);
       if (act === 'tags') navigateTo('tags');
       else if (act === 'popup') openWelcome();
     });

@@ -2492,9 +2492,6 @@ window.addEventListener('resize', requestSync);
   });
   window.addEventListener('resize',function(){restore();});
   restore();
-  menu.addEventListener('click',function(e){
-    if(e.target.closest('.gd-orb__item'))setOpen(false);
-  });
   document.addEventListener('click',function(e){
     if(root.classList.contains('is-open')&&!root.contains(e.target))setOpen(false);
   });
