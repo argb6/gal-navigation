@@ -34,12 +34,11 @@
   margin: 0;
   padding: 0;
   transform-origin: 100% 100%;
-  opacity: 0;
+  opacity: 1;
   visibility: hidden;
   pointer-events: none;
   transform: translateY(18px) scale(0.72);
   transition:
-    opacity 0.2s ease,
     transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
     visibility 0s linear 0.32s;
 }
@@ -49,7 +48,6 @@
   pointer-events: auto;
   transform: none;
   transition:
-    opacity 0.2s ease,
     transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
     visibility 0s linear 0s;
 }
@@ -78,9 +76,9 @@
   appearance: none;
   -webkit-appearance: none;
   white-space: nowrap;
-  opacity: 0;
+  opacity: 1;
   transform: translateY(12px) scale(0.88);
-  transition: opacity 0.2s ease, transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .gd-orb.is-open .gd-orb__item {
   opacity: 1;
@@ -94,10 +92,13 @@
 .gd-orb:not(.is-open) .gd-orb__item:nth-child(2) { transition-delay: 0.08s; }
 .gd-orb:not(.is-open) .gd-orb__item:nth-child(3) { transition-delay: 0.04s; }
 .gd-orb:not(.is-open) .gd-orb__item:nth-child(4) { transition-delay: 0s; }
-.gd-orb__item:hover {
+.gd-orb__item:hover,
+.gd-orb__item:active {
   color: var(--gd-color-on-surface);
-  background: rgba(var(--gd-color-primary-rgb), 0.12);
-  border-color: rgba(var(--gd-color-primary-rgb), 0.4);
+  background: var(--gd-color-surface);
+  border-color: rgba(var(--gd-color-primary-rgb), 0.45);
+  filter: brightness(1.08);
+  opacity: 1;
 }
 .gd-orb__item:focus-visible {
   outline: 2px solid var(--gd-color-primary);
@@ -135,7 +136,12 @@
   transform-origin: 0% 100%;
 }
 .gd-orb.is-menu-down.is-menu-right .gd-orb__menu { transform-origin: 0% 0%; }
-.gd-orb__toggle:hover { filter: brightness(1.08); }
+.gd-orb__toggle:hover,
+.gd-orb__toggle:active {
+  filter: brightness(1.08);
+  opacity: 1;
+  background: var(--gd-color-primary);
+}
 .gd-orb__toggle:focus-visible {
   outline: 2px solid var(--gd-color-primary);
   outline-offset: 3px;
@@ -148,7 +154,7 @@
   top: 50%;
   left: 50%;
   margin: 0;
-  transition: opacity 0.22s ease, transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .gd-orb__icon--grid {
   opacity: 1;
@@ -173,7 +179,6 @@
   .gd-orb__menu { transform: none; }
   .gd-orb.is-open .gd-orb__menu { transform: none; }
   .gd-orb__item { transform: none; opacity: 1; }
-  .gd-orb:not(.is-open) .gd-orb__item { opacity: 0; }
   .gd-orb__icon--grid,
   .gd-orb.is-open .gd-orb__icon--close {
     transform: translate(-50%, -50%) rotate(0deg) scale(1);

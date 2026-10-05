@@ -8,7 +8,6 @@ const SECURITY_HEADERS = {
   "Referrer-Policy": "strict-origin-when-cross-origin",
   "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; connect-src 'self' https://galnavi.top; font-src 'self' data: https://fonts.gstatic.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self'",
 };
-
 const GITHUB_URL = "https://github.com/argb6/gal-navigation";
 const QR_ALIPAY = "";
 const QR_WECHAT = "";
@@ -135,6 +134,7 @@ function renderPage(donors, linksHtml) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
 <title>关于 GALNAVI · 站点声明</title>
 <meta name="description" content="了解 GALNAVI 资源中枢的起源传说——猫耳娘纳普如何点亮灯塔拯救小镇。包含纳普形象声明、版权声明、站点声明与友情链接。">
 <meta name="keywords" content="GALNAVI, 关于GALNAVI, 猫耳娘纳普, 纳普传说, 资源中枢, ACG导航, 版权声明, 站点声明, 二次元导航, 友情链接">
@@ -551,6 +551,7 @@ function renderPage(donors, linksHtml) {
 }
 
 html {
+  color-scheme: dark;
   scroll-behavior: smooth;
   background: var(--gd-color-background);
   min-height: 100%;
@@ -2120,9 +2121,9 @@ body.gd-overview {
 /* gd-orb */
 .gd-orb{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:max(20px,env(safe-area-inset-bottom,0px));z-index:80;width:56px;height:56px;pointer-events:none}
 .gd-orb:not(.is-placed){visibility:hidden}
-.gd-orb__menu{position:absolute;right:0;bottom:66px;display:flex;flex-direction:column;align-items:stretch;gap:8px;margin:0;padding:0;transform-origin:100% 100%;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(18px) scale(0.72);transition:opacity 0.2s ease,transform 0.32s cubic-bezier(0.22,1,0.36,1),visibility 0s linear 0.32s}
-.gd-orb.is-open .gd-orb__menu{opacity:1;visibility:visible;pointer-events:auto;transform:none;transition:opacity 0.2s ease,transform 0.32s cubic-bezier(0.22,1,0.36,1),visibility 0s linear 0s}
-.gd-orb__item{display:inline-flex;align-items:center;justify-content:flex-start;gap:8px;box-sizing:border-box;min-height:48px;min-width:120px;padding:0 16px;border-radius:999px;border:1px solid rgba(var(--gd-color-primary-rgb),0.28);background:var(--gd-color-surface);color:var(--gd-color-on-surface);font-family:var(--gd-font-sans);font-size:var(--gd-type-label-large-size);font-weight:var(--gd-weight-semibold);letter-spacing:var(--gd-type-letter-spacing-wide);text-decoration:none;cursor:pointer;appearance:none;-webkit-appearance:none;white-space:nowrap;opacity:0;transform:translateY(12px) scale(0.88);transition:opacity 0.2s ease,transform 0.28s cubic-bezier(0.22,1,0.36,1)}
+.gd-orb__menu{position:absolute;right:0;bottom:66px;display:flex;flex-direction:column;align-items:stretch;gap:8px;margin:0;padding:0;transform-origin:100% 100%;opacity:1;visibility:hidden;pointer-events:none;transform:translateY(18px) scale(0.72);transition:transform 0.32s cubic-bezier(0.22,1,0.36,1),visibility 0s linear 0.32s}
+.gd-orb.is-open .gd-orb__menu{opacity:1;visibility:visible;pointer-events:auto;transform:none;transition:transform 0.32s cubic-bezier(0.22,1,0.36,1),visibility 0s linear 0s}
+.gd-orb__item{display:inline-flex;align-items:center;justify-content:flex-start;gap:8px;box-sizing:border-box;min-height:48px;min-width:120px;padding:0 16px;border-radius:999px;border:1px solid rgba(var(--gd-color-primary-rgb),0.28);background:var(--gd-color-surface);color:var(--gd-color-on-surface);font-family:var(--gd-font-sans);font-size:var(--gd-type-label-large-size);font-weight:var(--gd-weight-semibold);letter-spacing:var(--gd-type-letter-spacing-wide);text-decoration:none;cursor:pointer;appearance:none;-webkit-appearance:none;white-space:nowrap;opacity:1;transform:translateY(12px) scale(0.88);transition:transform 0.28s cubic-bezier(0.22,1,0.36,1)}
 .gd-orb.is-open .gd-orb__item{opacity:1;transform:none}
 .gd-orb.is-open .gd-orb__item:nth-child(1){transition-delay:0.04s}
 .gd-orb.is-open .gd-orb__item:nth-child(2){transition-delay:0.08s}
@@ -2132,16 +2133,16 @@ body.gd-overview {
 .gd-orb:not(.is-open) .gd-orb__item:nth-child(2){transition-delay:0.08s}
 .gd-orb:not(.is-open) .gd-orb__item:nth-child(3){transition-delay:0.04s}
 .gd-orb:not(.is-open) .gd-orb__item:nth-child(4){transition-delay:0s}
-.gd-orb__item:hover{color:var(--gd-color-on-surface);background:rgba(var(--gd-color-primary-rgb),0.12);border-color:rgba(var(--gd-color-primary-rgb),0.4)}
+.gd-orb__item:hover,.gd-orb__item:active{color:var(--gd-color-on-surface);background:var(--gd-color-surface);border-color:rgba(var(--gd-color-primary-rgb),0.45);filter:brightness(1.08);opacity:1}
 .gd-orb__item:focus-visible{outline:2px solid var(--gd-color-primary);outline-offset:2px}
 .gd-orb__toggle{pointer-events:auto;position:absolute;right:0;bottom:0;width:56px;height:56px;min-width:56px;min-height:56px;padding:0;border:1px solid rgba(var(--gd-color-primary-rgb),0.32);border-radius:50%;background:var(--gd-color-primary);color:var(--gd-color-on-primary);cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;appearance:none;-webkit-appearance:none}
 .gd-orb.is-dragging .gd-orb__toggle{cursor:grabbing}
 .gd-orb.is-menu-down .gd-orb__menu{bottom:auto;top:66px;transform-origin:100% 0%}
 .gd-orb.is-menu-right .gd-orb__menu{right:auto;left:0;transform-origin:0% 100%}
 .gd-orb.is-menu-down.is-menu-right .gd-orb__menu{transform-origin:0% 0%}
-.gd-orb__toggle:hover{filter:brightness(1.08)}
+.gd-orb__toggle:hover,.gd-orb__toggle:active{filter:brightness(1.08);opacity:1;background:var(--gd-color-primary)}
 .gd-orb__toggle:focus-visible{outline:2px solid var(--gd-color-primary);outline-offset:3px}
-.gd-orb__icon{display:block;width:22px;height:22px;position:absolute;top:50%;left:50%;margin:0;transition:opacity 0.22s ease,transform 0.28s cubic-bezier(0.4,0,0.2,1)}
+.gd-orb__icon{display:block;width:22px;height:22px;position:absolute;top:50%;left:50%;margin:0;transition:transform 0.28s cubic-bezier(0.4,0,0.2,1)}
 .gd-orb__icon--grid{opacity:1;transform:translate(-50%,-50%) rotate(0deg) scale(1)}
 .gd-orb__icon--close{opacity:0;transform:translate(-50%,-50%) rotate(-90deg) scale(0.7)}
 .gd-orb.is-open .gd-orb__icon--grid{opacity:0;transform:translate(-50%,-50%) rotate(90deg) scale(0.7)}
@@ -2151,7 +2152,7 @@ body.gd-overview {
   .gd-orb__menu{transform:none}
   .gd-orb.is-open .gd-orb__menu{transform:none}
   .gd-orb__item{transform:none;opacity:1}
-  .gd-orb:not(.is-open) .gd-orb__item{opacity:0}
+  
   .gd-orb__icon--grid,.gd-orb.is-open .gd-orb__icon--close{transform:translate(-50%,-50%) rotate(0deg) scale(1)}
   .gd-orb__icon--close,.gd-orb.is-open .gd-orb__icon--grid{transform:translate(-50%,-50%) rotate(0deg) scale(0.7)}
 }
@@ -2177,7 +2178,7 @@ body.gd-overview {
         <button type="button" class="gd-help-topic" data-help-topic="community"><span class="gd-help-topic__media" aria-hidden="true"><img src="https://assets.galnavi.top/about/%E7%A4%BE%E7%BE%A4.png" alt="" width="256" height="256"></span><span class="gd-help-topic__no">04</span><span class="gd-help-topic__title">本站社群</span><span class="gd-help-topic__sum">闲聊群和 B 站账号。</span></button>
         <button type="button" class="gd-help-topic" data-help-topic="feedback"><span class="gd-help-topic__media" aria-hidden="true"><img src="https://assets.galnavi.top/about/%E5%8F%8D%E9%A6%88.png" alt="" width="256" height="256"></span><span class="gd-help-topic__no">05</span><span class="gd-help-topic__title">站点反馈</span><span class="gd-help-topic__sum">页面问题、收录建议和功能建议怎么提。</span></button>
         <button type="button" class="gd-help-topic" data-help-topic="donate"><span class="gd-help-topic__media" aria-hidden="true"><img src="https://assets.galnavi.top/about/%E6%8D%90%E7%8C%AE.png" alt="" width="256" height="256"></span><span class="gd-help-topic__no">06</span><span class="gd-help-topic__title">捐献</span><span class="gd-help-topic__sum">自愿支持站点维护。扫码、其他方式和捐款名单都在这里。</span></button>
-        <button type="button" class="gd-help-topic" data-help-topic="friend"><span class="gd-help-topic__media" aria-hidden="true"></span><span class="gd-help-topic__no">07</span><span class="gd-help-topic__title">友链</span><span class="gd-help-topic__sum">怎么申请友链，以及已经合作的站点。</span></button>
+        <button type="button" class="gd-help-topic" data-help-topic="friend"><span class="gd-help-topic__media" aria-hidden="true"><img src="https://assets.galnavi.top/about/%E5%8F%8B%E9%93%BE.png" alt="" width="256" height="256"></span><span class="gd-help-topic__no">07</span><span class="gd-help-topic__title">友链</span><span class="gd-help-topic__sum">怎么申请友链，以及已经合作的站点。</span></button>
       </div>
       </div>
       <div id="helpDetail" class="gd-help-detail" hidden>

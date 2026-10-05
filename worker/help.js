@@ -14,6 +14,7 @@ const html = `<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
 <title>GALNAVI · 使用指南</title>
 <meta name="description" content="GALNAVI 使用指南 — 了解标签含义、魔法传说、GitHub 加速技巧以及 Galgame 新手避坑指引，几分钟掌握工具与网站导航的全部功能。">
 <meta name="keywords" content="GALNAVI, 使用指南, Galgame, 导航, 标签说明, 魔法传说, GitHub 加速, 新手指引, 模拟器, 网盘">
@@ -426,6 +427,7 @@ const html = `<!DOCTYPE html>
 }
 
 html {
+  color-scheme: dark;
   scroll-behavior: smooth;
   background: var(--gd-color-background);
   min-height: 100%;
@@ -2066,9 +2068,9 @@ body.gd-overview {
 /* gd-orb */
 .gd-orb{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:max(20px,env(safe-area-inset-bottom,0px));z-index:80;width:56px;height:56px;pointer-events:none}
 .gd-orb:not(.is-placed){visibility:hidden}
-.gd-orb__menu{position:absolute;right:0;bottom:66px;display:flex;flex-direction:column;align-items:stretch;gap:8px;margin:0;padding:0;transform-origin:100% 100%;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(18px) scale(0.72);transition:opacity 0.2s ease,transform 0.32s cubic-bezier(0.22,1,0.36,1),visibility 0s linear 0.32s}
-.gd-orb.is-open .gd-orb__menu{opacity:1;visibility:visible;pointer-events:auto;transform:none;transition:opacity 0.2s ease,transform 0.32s cubic-bezier(0.22,1,0.36,1),visibility 0s linear 0s}
-.gd-orb__item{display:inline-flex;align-items:center;justify-content:flex-start;gap:8px;box-sizing:border-box;min-height:48px;min-width:120px;padding:0 16px;border-radius:999px;border:1px solid rgba(var(--gd-color-primary-rgb),0.28);background:var(--gd-color-surface);color:var(--gd-color-on-surface);font-family:var(--gd-font-sans);font-size:var(--gd-type-label-large-size);font-weight:var(--gd-weight-semibold);letter-spacing:var(--gd-type-letter-spacing-wide);text-decoration:none;cursor:pointer;appearance:none;-webkit-appearance:none;white-space:nowrap;opacity:0;transform:translateY(12px) scale(0.88);transition:opacity 0.2s ease,transform 0.28s cubic-bezier(0.22,1,0.36,1)}
+.gd-orb__menu{position:absolute;right:0;bottom:66px;display:flex;flex-direction:column;align-items:stretch;gap:8px;margin:0;padding:0;transform-origin:100% 100%;opacity:1;visibility:hidden;pointer-events:none;transform:translateY(18px) scale(0.72);transition:transform 0.32s cubic-bezier(0.22,1,0.36,1),visibility 0s linear 0.32s}
+.gd-orb.is-open .gd-orb__menu{opacity:1;visibility:visible;pointer-events:auto;transform:none;transition:transform 0.32s cubic-bezier(0.22,1,0.36,1),visibility 0s linear 0s}
+.gd-orb__item{display:inline-flex;align-items:center;justify-content:flex-start;gap:8px;box-sizing:border-box;min-height:48px;min-width:120px;padding:0 16px;border-radius:999px;border:1px solid rgba(var(--gd-color-primary-rgb),0.28);background:var(--gd-color-surface);color:var(--gd-color-on-surface);font-family:var(--gd-font-sans);font-size:var(--gd-type-label-large-size);font-weight:var(--gd-weight-semibold);letter-spacing:var(--gd-type-letter-spacing-wide);text-decoration:none;cursor:pointer;appearance:none;-webkit-appearance:none;white-space:nowrap;opacity:1;transform:translateY(12px) scale(0.88);transition:transform 0.28s cubic-bezier(0.22,1,0.36,1)}
 .gd-orb.is-open .gd-orb__item{opacity:1;transform:none}
 .gd-orb.is-open .gd-orb__item:nth-child(1){transition-delay:0.04s}
 .gd-orb.is-open .gd-orb__item:nth-child(2){transition-delay:0.08s}
@@ -2078,16 +2080,16 @@ body.gd-overview {
 .gd-orb:not(.is-open) .gd-orb__item:nth-child(2){transition-delay:0.08s}
 .gd-orb:not(.is-open) .gd-orb__item:nth-child(3){transition-delay:0.04s}
 .gd-orb:not(.is-open) .gd-orb__item:nth-child(4){transition-delay:0s}
-.gd-orb__item:hover{color:var(--gd-color-on-surface);background:rgba(var(--gd-color-primary-rgb),0.12);border-color:rgba(var(--gd-color-primary-rgb),0.4)}
+.gd-orb__item:hover,.gd-orb__item:active{color:var(--gd-color-on-surface);background:var(--gd-color-surface);border-color:rgba(var(--gd-color-primary-rgb),0.45);filter:brightness(1.08);opacity:1}
 .gd-orb__item:focus-visible{outline:2px solid var(--gd-color-primary);outline-offset:2px}
 .gd-orb__toggle{pointer-events:auto;position:absolute;right:0;bottom:0;width:56px;height:56px;min-width:56px;min-height:56px;padding:0;border:1px solid rgba(var(--gd-color-primary-rgb),0.32);border-radius:50%;background:var(--gd-color-primary);color:var(--gd-color-on-primary);cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;appearance:none;-webkit-appearance:none}
 .gd-orb.is-dragging .gd-orb__toggle{cursor:grabbing}
 .gd-orb.is-menu-down .gd-orb__menu{bottom:auto;top:66px;transform-origin:100% 0%}
 .gd-orb.is-menu-right .gd-orb__menu{right:auto;left:0;transform-origin:0% 100%}
 .gd-orb.is-menu-down.is-menu-right .gd-orb__menu{transform-origin:0% 0%}
-.gd-orb__toggle:hover{filter:brightness(1.08)}
+.gd-orb__toggle:hover,.gd-orb__toggle:active{filter:brightness(1.08);opacity:1;background:var(--gd-color-primary)}
 .gd-orb__toggle:focus-visible{outline:2px solid var(--gd-color-primary);outline-offset:3px}
-.gd-orb__icon{display:block;width:22px;height:22px;position:absolute;top:50%;left:50%;margin:0;transition:opacity 0.22s ease,transform 0.28s cubic-bezier(0.4,0,0.2,1)}
+.gd-orb__icon{display:block;width:22px;height:22px;position:absolute;top:50%;left:50%;margin:0;transition:transform 0.28s cubic-bezier(0.4,0,0.2,1)}
 .gd-orb__icon--grid{opacity:1;transform:translate(-50%,-50%) rotate(0deg) scale(1)}
 .gd-orb__icon--close{opacity:0;transform:translate(-50%,-50%) rotate(-90deg) scale(0.7)}
 .gd-orb.is-open .gd-orb__icon--grid{opacity:0;transform:translate(-50%,-50%) rotate(90deg) scale(0.7)}
@@ -2097,7 +2099,7 @@ body.gd-overview {
   .gd-orb__menu{transform:none}
   .gd-orb.is-open .gd-orb__menu{transform:none}
   .gd-orb__item{transform:none;opacity:1}
-  .gd-orb:not(.is-open) .gd-orb__item{opacity:0}
+  
   .gd-orb__icon--grid,.gd-orb.is-open .gd-orb__icon--close{transform:translate(-50%,-50%) rotate(0deg) scale(1)}
   .gd-orb__icon--close,.gd-orb.is-open .gd-orb__icon--grid{transform:translate(-50%,-50%) rotate(0deg) scale(0.7)}
 }
