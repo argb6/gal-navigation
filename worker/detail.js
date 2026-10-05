@@ -601,10 +601,15 @@ return `<!DOCTYPE html>
     opacity var(--gd-motion-duration-short4) var(--gd-motion-easing-standard);
   overflow: hidden;
 }
+.gd-button:hover,
+.gd-button:focus-visible {
+  color: var(--gd-color-on-surface);
+}
 .gd-button::before {
   content: "";
   position: absolute;
   inset: 0;
+  border-radius: inherit;
   background: currentColor;
   opacity: 0;
   pointer-events: none;
@@ -637,7 +642,6 @@ return `<!DOCTYPE html>
 .gd-button--secondary:hover {
   background: rgba(var(--gd-color-white-rgb), 0.08);
   border-color: rgba(var(--gd-color-white-rgb), 0.2);
-  color: var(--gd-color-on-surface);
 }
 .gd-button--danger {
   background: linear-gradient(135deg, var(--gd-gradient-pink-a), var(--gd-gradient-pink-b));
@@ -706,7 +710,6 @@ return `<!DOCTYPE html>
 .gd-button--ghost:hover {
   background: rgba(var(--gd-color-accent-rgb), 0.25);
   border-color: rgba(var(--gd-color-accent-rgb), 0.45);
-  color: var(--gd-color-on-primary);
 }
 .gd-button--ghost.is-disabled,
 .gd-button--ghost:disabled {
@@ -767,7 +770,6 @@ return `<!DOCTYPE html>
 .gd-button--back--orange:hover {
   border-color: rgba(var(--gd-color-gold-deep-rgb), 0.6);
   background: rgba(var(--gd-color-gold-deep-rgb), 0.12);
-  color: var(--gd-color-on-surface);
   filter: none;
 }
 .gd-button--back:focus-visible {
@@ -1184,60 +1186,12 @@ body.gd-detail {
 .tag.orange { background: rgba(251, 146, 60, 0.15); border: 1px solid rgba(251, 146, 60, 0.25); color: #fb923c; }
 .tag.sky { background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.25); color: #38bdf8; }
 .gd-detail__grid { margin-bottom: 8px; }
-.redirect-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  background: var(--gd-color-overlay-strong);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.35s ease;
-}
-.redirect-overlay.active { opacity: 1; pointer-events: auto; }
-.redirect-ring {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  border: 3px solid rgba(var(--gd-color-accent-rgb), 0.15);
-  border-top-color: var(--gd-color-secondary);
-  animation: redirectSpin 0.8s linear infinite;
-  margin-bottom: 32px;
-}
-@keyframes redirectSpin { to { transform: rotate(360deg); } }
-.redirect-text { font-size: 18px; font-weight: 600; color: var(--gd-color-on-surface); margin-bottom: 12px; }
-.redirect-countdown {
-  font-size: 48px;
-  font-weight: 800;
-  background: linear-gradient(135deg, #c4b5fd 0%, #e9d5ff 30%, #a78bfa 60%, #8b5cf6 100%);
-  background-size: 200% auto;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: gradientShift 3s ease infinite;
-}
-@keyframes gradientShift { 0%, 100% { background-position: 0% center; } 50% { background-position: 100% center; } }
-.redirect-cancel {
-  margin-top: 28px;
-  padding: 10px 28px;
-  border-radius: 100px;
-  border: 1px solid rgba(var(--gd-color-white-rgb), 0.12);
-  background: rgba(var(--gd-color-white-rgb), 0.04);
-  color: var(--gd-color-on-surface-subtle);
-  font-size: var(--gd-type-label-large-size);
-  cursor: pointer;
-  transition: all 0.25s ease;
-}
-.redirect-cancel:hover {
-  color: var(--gd-color-on-surface);
-  background: rgba(var(--gd-color-white-rgb), 0.08);
-  border-color: rgba(var(--gd-color-white-rgb), 0.2);
-}
+
+.gd-leave { position: relative; z-index: 3; overflow: visible; }
+.gd-leave-svg { position: absolute; pointer-events: none; z-index: 4; overflow: visible; animation: gd-leave-fade 2.4s linear both; }
+.gd-leave-svg svg { display: block; width: 100%; height: 100%; overflow: visible; }
+@keyframes gd-leave-fade { 0% { opacity: 0; } 18% { opacity: 1; } 82% { opacity: 1; } 100% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .gd-leave-svg { animation: none; } }
 /* ===== 组件库内联: gd-skeleton.css（detail 卡片区占位） ===== */
 body.gd-loading .gd-button--back,
 body.gd-loading .gd-detail__header { display: none; }
@@ -1512,12 +1466,7 @@ ${branches.slice(1).map(b => renderSection(b)).join("\n")}
 <p class="gd-footer__copy">© 2026 GALNAVI · 愿每一次探索都有新的收获</p>
 </footer>
 </div>
-<div id="redirectOverlay" class="redirect-overlay" role="dialog" aria-modal="true" aria-labelledby="redirectText" aria-hidden="true">
-<div class="redirect-ring"></div>
-<div class="redirect-text" id="redirectText">即将跳转</div>
-<div id="redirectCountdown" class="redirect-countdown" aria-live="polite">3</div>
-<button id="redirectCancel" class="redirect-cancel">取消跳转</button>
-</div>
+
 <script>
 function isSafeHttpUrl(url) {
   if (!url || typeof url !== 'string') return false;
@@ -1531,7 +1480,6 @@ function isSafeHttpUrl(url) {
 document.addEventListener('DOMContentLoaded', function() {
   (function(){function a(){var h=(window.visualViewport&&window.visualViewport.height)||window.innerHeight;document.documentElement.style.setProperty("--gd-vvh",h+"px");}a();window.addEventListener("resize",a);if(window.visualViewport)window.visualViewport.addEventListener("resize",a);})();
   var redirectTimerId = null;
-  var redirectCancelHandler = null;
 
   /* 骨架屏 → 真实内容：放骨架屏动效，数据就绪后展示完整卡片（palace 同款） */
   (function() {
@@ -1563,62 +1511,115 @@ document.addEventListener('DOMContentLoaded', function() {
     if (href.startsWith('#')) return;
     if (!isSafeHttpUrl(href)) return;
     try { if (new URL(href).hostname === window.location.hostname) return; } catch (_) { return; }
+    if (anchor.closest('.gd-below-nav')) return;
     e.preventDefault();
     e.stopPropagation();
-    startRedirect(href);
-  });
+    startRedirect(href, anchor);
+  }, true);
 
-  function startRedirect(targetUrl) {
-    var overlay = document.getElementById('redirectOverlay');
-    var countdownEl = document.getElementById('redirectCountdown');
-    var cancelBtn = document.getElementById('redirectCancel');
-    if (!overlay || !countdownEl) {
-      window.open(targetUrl, '_blank', 'noopener,noreferrer');
+  function leaveTone(el) {
+    var cs = getComputedStyle(el);
+    var buttonLike = el.matches('button, .gd-button, .gd-card__btn, .gd-card__action, .gd-section-card__link, input[type="button"], input[type="submit"]');
+    if (!buttonLike) {
+      var img = cs.backgroundImage && cs.backgroundImage !== 'none';
+      var bgm = (cs.backgroundColor || '').match(/rgba?\\(\\s*\\d+\\s*,\\s*\\d+\\s*,\\s*\\d+(?:\\s*,\\s*([\\d.]+))?\\)/);
+      var alpha = bgm ? (bgm[1] == null ? 1 : parseFloat(bgm[1])) : 0;
+      var filled = img || alpha > 0.25;
+      var inline = cs.display === 'inline' || (cs.display === 'inline-block' && (parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight) < 16));
+      buttonLike = filled && !inline;
+    }
+    if (!buttonLike) return '#ffffff';
+    var stops = (cs.backgroundImage || '').match(/rgba?\\(\\s*(\\d+)\\s*,\\s*(\\d+)\\s*,\\s*(\\d+)/);
+    var src = stops ? [+stops[1], +stops[2], +stops[3]] : null;
+    if (!src) {
+      var solid = (cs.backgroundColor || '').match(/rgba?\\(\\s*(\\d+)\\s*,\\s*(\\d+)\\s*,\\s*(\\d+)/);
+      if (solid) src = [+solid[1], +solid[2], +solid[3]];
+    }
+    if (!src) return '#ffffff';
+    return 'rgb(' + src.map(function(n) { return Math.round(n + (255 - n) * 0.42); }).join(',') + ')';
+  }
+  var LEAVE_MS = 2400;
+  function paintLeave(el, onEnd) {
+    if (!el || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      if (onEnd) setTimeout(onEnd, LEAVE_MS);
       return;
     }
-    if (redirectTimerId) {
-      clearInterval(redirectTimerId);
+    var prev = el.querySelector('.gd-leave-svg');
+    if (prev) prev.remove();
+    var color = leaveTone(el);
+    var text = color === '#ffffff';
+    
+    var w = el.offsetWidth, h = el.offsetHeight;
+    if (!w || !h) { if (onEnd) setTimeout(onEnd, LEAVE_MS); return; }
+    var radius = parseFloat(getComputedStyle(el).borderRadius) || 0;
+    var stroke = 3, half = stroke / 2;
+    var entry = el.classList.contains('gd-section-card__link');
+    var outside = text ? 6 : (entry ? half : 0);
+    var bw = w + outside * 2, bh = h + outside * 2;
+    var rx = text ? Math.min(bw, bh) / 2 : Math.max(0, Math.min(radius + outside, bw / 2, bh / 2));
+    var wrap = document.createElement('span');
+    wrap.className = 'gd-leave-svg';
+    wrap.setAttribute('aria-hidden', 'true');
+    wrap.style.left = (-(outside + half)) + 'px';
+    wrap.style.top = (-(outside + half)) + 'px';
+    wrap.style.right = 'auto';
+    wrap.style.bottom = 'auto';
+    wrap.style.width = (bw + stroke) + 'px';
+    wrap.style.height = (bh + stroke) + 'px';
+    var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', '0 0 ' + (bw + stroke) + ' ' + (bh + stroke));
+    var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    rect.setAttribute('x', String(half));
+    rect.setAttribute('y', String(half));
+    rect.setAttribute('width', String(bw));
+    rect.setAttribute('height', String(bh));
+    rect.setAttribute('rx', String(rx));
+    rect.setAttribute('fill', 'none');
+    rect.setAttribute('stroke', color);
+    rect.setAttribute('stroke-width', String(stroke));
+    rect.setAttribute('stroke-linecap', 'round');
+    rect.setAttribute('stroke-linejoin', 'round');
+    rect.setAttribute('pathLength', '100');
+    rect.setAttribute('stroke-dasharray', '18 82');
+    rect.style.filter = 'drop-shadow(0 0 4px ' + color + ')';
+    var spin = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+    spin.setAttribute('attributeName', 'stroke-dashoffset');
+    spin.setAttribute('from', '0');
+    spin.setAttribute('to', '-200');
+    spin.setAttribute('dur', '2.4s');
+    spin.setAttribute('fill', 'freeze');
+    rect.appendChild(spin);
+    if (onEnd) wrap.addEventListener('animationend', onEnd);
+    svg.appendChild(rect);
+    wrap.appendChild(svg);
+    el.appendChild(wrap);
+  }
+  function startRedirect(targetUrl, sourceEl) {
+    if (redirectTimerId) return;
+    var jumped = false;
+    var waitId = 0;
+    function go() {
+      if (jumped) return;
+      jumped = true;
+      clearTimeout(waitId);
       redirectTimerId = null;
-    }
-    if (redirectCancelHandler && cancelBtn) {
-      cancelBtn.removeEventListener('click', redirectCancelHandler);
-      redirectCancelHandler = null;
-    }
-
-    var seconds = 3;
-    overlay.classList.add('active');
-    overlay.setAttribute('aria-hidden', 'false');
-    countdownEl.textContent = seconds;
-
-    function tick() {
-      seconds--;
-      if (seconds <= 0) {
-        clearInterval(redirectTimerId);
-        redirectTimerId = null;
-        window.open(targetUrl, '_blank', 'noopener,noreferrer');
-        overlay.classList.remove('active');
-        overlay.setAttribute('aria-hidden', 'true');
-        if (redirectCancelHandler && cancelBtn) {
-          cancelBtn.removeEventListener('click', redirectCancelHandler);
-          redirectCancelHandler = null;
-        }
-        return;
+      if (sourceEl) {
+        sourceEl.classList.remove('gd-leave');
+        sourceEl.removeAttribute('aria-busy');
+        var mark = sourceEl.querySelector('.gd-leave-svg');
+        if (mark) mark.remove();
       }
-      countdownEl.textContent = seconds;
+      var pending = null;
+      try { pending = window.open(targetUrl, '_blank'); } catch (e) { pending = null; }
+      if (!pending) window.location.href = targetUrl;
     }
-
-    redirectTimerId = setInterval(tick, 1000);
-
-    redirectCancelHandler = function cancel() {
-      clearInterval(redirectTimerId);
-      redirectTimerId = null;
-      overlay.classList.remove('active');
-      overlay.setAttribute('aria-hidden', 'true');
-      if (cancelBtn) cancelBtn.removeEventListener('click', redirectCancelHandler);
-      redirectCancelHandler = null;
-    };
-
-    if (cancelBtn) cancelBtn.addEventListener('click', redirectCancelHandler);
+    if (sourceEl) {
+      sourceEl.classList.add('gd-leave');
+      sourceEl.setAttribute('aria-busy', 'true');
+      paintLeave(sourceEl, go);
+    }
+    waitId = setTimeout(go, LEAVE_MS + 80);
+    redirectTimerId = waitId;
   }
 });
 </script>

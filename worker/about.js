@@ -125,7 +125,8 @@ function renderFriendCard(f) {
   const icon = f.favicon_url && isSafeHttpUrl(f.favicon_url)
     ? '<img src="' + escapeAttr(f.favicon_url) + '" alt="" loading="lazy" width="22" height="22">'
     : '<span aria-hidden="true">' + name.charAt(0) + "</span>";
-  return '<a class="gd-card gd-card--friend gd-card--link" href="' + url + '" target="_blank" rel="noopener noreferrer"><div class="gd-card__header"><div class="gd-card__icon">' + icon + '</div><div class="gd-card__title-wrap"><div class="gd-card__title">' + name + '</div><div class="gd-card__subtitle">' + desc + "</div></div></div></a>";
+  const tip = desc ? '<span class="gd-friend-tip" role="tooltip">' + desc + "</span>" : "";
+  return '<a class="gd-card gd-card--friend gd-card--link" href="' + url + '" target="_blank" rel="noopener noreferrer"><div class="gd-card__header"><div class="gd-card__icon">' + icon + '</div><div class="gd-card__title-wrap"><div class="gd-card__title">' + name + '</div><div class="gd-card__subtitle">' + desc + "</div></div></div>" + tip + "</a>";
 }
 
 function renderPage(donors, linksHtml) {
@@ -1181,10 +1182,15 @@ body.gd-overview {
     opacity var(--gd-motion-duration-short4) var(--gd-motion-easing-standard);
   overflow: hidden;
 }
+.gd-button:hover,
+.gd-button:focus-visible {
+  color: var(--gd-color-on-surface);
+}
 .gd-button::before {
   content: "";
   position: absolute;
   inset: 0;
+  border-radius: inherit;
   background: currentColor;
   opacity: 0;
   pointer-events: none;
@@ -1217,7 +1223,6 @@ body.gd-overview {
 .gd-button--secondary:hover {
   background: rgba(var(--gd-color-white-rgb), 0.08);
   border-color: rgba(var(--gd-color-white-rgb), 0.2);
-  color: var(--gd-color-on-surface);
 }
 .gd-button--danger {
   background: linear-gradient(135deg, var(--gd-gradient-pink-a), var(--gd-gradient-pink-b));
@@ -1286,7 +1291,6 @@ body.gd-overview {
 .gd-button--ghost:hover {
   background: rgba(var(--gd-color-accent-rgb), 0.25);
   border-color: rgba(var(--gd-color-accent-rgb), 0.45);
-  color: var(--gd-color-on-primary);
 }
 .gd-button--ghost.is-disabled,
 .gd-button--ghost:disabled {
@@ -1341,14 +1345,12 @@ body.gd-overview {
   border-color: rgba(var(--gd-color-indigo-rgb), 0.45);
   background: var(--gd-color-surface);
   transform: translateX(-2px);
-  color: var(--gd-color-on-primary);
   filter: none;
 }
 /* 返回主站（殿堂橙边框变体） */
 .gd-button--back--orange:hover {
   border-color: rgba(var(--gd-color-gold-deep-rgb), 0.6);
   background: rgba(var(--gd-color-gold-deep-rgb), 0.12);
-  color: var(--gd-color-on-surface);
   filter: none;
 }
 .gd-button--back:focus-visible {
@@ -1595,6 +1597,10 @@ body.gd-overview {
   color: var(--gd-color-on-primary);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
+.gd-card__btn:hover,
+.gd-card__btn:focus-visible {
+  color: var(--gd-color-on-primary);
+}
 .gd-card__btn--detail {
   background: linear-gradient(135deg, var(--gd-gradient-primary-a), var(--gd-gradient-primary-b));
   box-shadow: none;
@@ -1625,12 +1631,54 @@ body.gd-overview {
 }
 
 /* 友链 */
-.gd-card--friend { width: auto; height: auto; max-width: 320px; }
+.gd-card--friend {
+  width: 320px;
+  height: 100px;
+  max-width: 320px;
+  overflow: visible;
+  justify-content: center;
+}
 .gd-card--friend .gd-card__icon { width: 50px; height: 50px; }
-.gd-card--friend .gd-card__subtitle { min-height: 0; }
+.gd-card--friend .gd-card__subtitle {
+  min-height: 0;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.gd-card--friend .gd-friend-tip {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  z-index: 20;
+  width: max-content;
+  max-width: 280px;
+  padding: 8px 12px;
+  border-radius: var(--gd-shape-corner-extra-small);
+  background: var(--gd-color-overlay-float);
+  border: 1px solid rgba(var(--gd-color-white-rgb), 0.12);
+  color: var(--gd-color-on-surface);
+  font-size: var(--gd-type-body-small-size);
+  line-height: 1.4;
+  white-space: normal;
+  text-align: left;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(4px);
+  transition:
+    opacity var(--gd-motion-duration-short4) var(--gd-motion-easing-standard),
+    transform var(--gd-motion-duration-short4) var(--gd-motion-easing-standard);
+}
+.gd-card--friend:hover,
+.gd-card--friend:focus-visible { z-index: 5; }
+.gd-card--friend:hover .gd-friend-tip,
+.gd-card--friend:focus-visible .gd-friend-tip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
 .gd-friend-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 320px));
+  grid-template-columns: repeat(auto-fill, 320px);
   gap: 18px;
   justify-content: start;
 }
@@ -1645,37 +1693,18 @@ body.gd-overview {
   height: auto;
   padding: 14px 16px;
   border-radius: 14px;
-  background: rgba(var(--gd-color-white-rgb), 0.035);
+  background: var(--gd-glass-bg);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  border: 1px solid rgba(var(--gd-color-white-rgb), 0.08);
+  border: 1px solid var(--gd-glass-border);
   box-shadow: none;
   transform: none;
   min-width: 0;
   max-width: 100%;
   overflow: hidden;
-  isolation: isolate;
   transition:
     background 0.2s var(--gd-motion-easing-standard),
     border-color 0.2s var(--gd-motion-easing-standard);
-}
-.gd-card--item::before {
-  content: "";
-  position: absolute;
-  inset: -24px;
-  z-index: 0;
-  pointer-events: none;
-  background-image: url("https://assets.galnavi.top/%E7%BA%BF%E6%9D%A1%E5%9B%BE%E6%A1%88.png");
-  background-repeat: repeat;
-  background-position: 0 0;
-  background-size: auto;
-  opacity: 0.16;
-  mix-blend-mode: screen;
-  filter: blur(10.8px);
-}
-.gd-card--item > * {
-  position: relative;
-  z-index: 1;
 }
 .gd-card--item--demonic {
   --gd-comp-item-color: #ef4444;
@@ -1688,7 +1717,7 @@ body.gd-overview {
   --gd-comp-item-color-rgb: 16, 185, 129;
 }
 .gd-card--item:hover {
-  background: rgba(var(--gd-color-white-rgb), 0.05);
+  background: var(--gd-glass-bg-hover);
   border-color: rgba(var(--gd-comp-item-color-rgb), 0.28);
   box-shadow: none;
   transform: none;
@@ -1973,7 +2002,8 @@ body.gd-overview {
 .gd-overview__content ul { margin: 6px 0 8px; padding-left: 1.15em; list-style: none; }
 .gd-overview__content ul li { position: relative; color: var(--gd-color-on-surface-variant); font-size: var(--gd-type-body-large-size); margin-bottom: 12px; line-height: 1.85; padding-left: .15em; }
 .gd-overview__content ul li::before { content: ""; position: absolute; left: -1em; top: .72em; width: 5px; height: 5px; border-radius: 50%; background: var(--gd-color-primary); }
-.gd-overview__content .gd-friend-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; justify-content: start; }
+.gd-overview__content .gd-friend-grid { display: grid; grid-template-columns: repeat(auto-fill, 320px); gap: 18px; justify-content: start; }
+.gd-overview__content .gd-card--friend { width: 320px; height: 100px; max-width: 320px; }
 .gd-footer { padding-top: 32px; }
 .gd-overview-toc-mobile,
 .gd-overview__toc { display: none !important; }
@@ -2068,18 +2098,17 @@ body.gd-overview {
   .gd-help-topics { grid-template-columns: 300px; justify-content: center; }
   .gd-help-topic { width: 300px; }
 }
-/* 手机端友链网格改单列，其余 gd-card 尺寸由组件库控制 */
+/* 窄屏友链卡仍是 320×100，不拉满容器 */
 @media (max-width: 640px) {
-  .gd-overview__content .gd-friend-grid { grid-template-columns: 1fr; }
+  .gd-overview__content .gd-friend-grid { grid-template-columns: 320px; justify-content: center; }
+  .gd-overview__content .gd-card--friend { width: 320px; height: 100px; }
 }
-.gd-overview__redirect-overlay { position: fixed; inset: 0; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(8,10,20,.92); backdrop-filter: blur(16px); opacity: 0; pointer-events: none; transition: opacity .35s ease; }
-.gd-overview__redirect-overlay.active { opacity: 1; pointer-events: auto; }
-.gd-overview__redirect-ring { width: 80px; height: 80px; border-radius: 50%; border: 3px solid rgba(251,191,36,.15); border-top-color: #fbbf24; animation: redirectSpin .8s linear infinite; margin-bottom: 32px; }
-@keyframes redirectSpin { to { transform: rotate(360deg); } }
-.gd-overview__redirect-text { font-size: 18px; font-weight: 600; color: var(--gd-color-on-surface); margin-bottom: 12px; }
-.gd-overview__redirect-countdown { font-size: 48px; font-weight: 800; color: #fbbf24; }
-.gd-overview__redirect-cancel { margin-top: 28px; padding: 10px 28px; border-radius: 999px; border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.04); color: var(--gd-color-on-surface-variant); font: inherit; font-size: 14px; cursor: pointer; }
-.gd-overview__redirect-cancel:hover { color: var(--gd-color-on-surface); background: rgba(255,255,255,.08); }
+
+.gd-leave { position: relative; z-index: 3; overflow: visible; }
+.gd-leave-svg { position: absolute; pointer-events: none; z-index: 4; overflow: visible; animation: gd-leave-fade 2.4s linear both; }
+.gd-leave-svg svg { display: block; width: 100%; height: 100%; overflow: visible; }
+@keyframes gd-leave-fade { 0% { opacity: 0; } 18% { opacity: 1; } 82% { opacity: 1; } 100% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .gd-leave-svg { animation: none; } }
 .gd-hamburger-motion svg { display: block; width: 22px; height: 22px; position: absolute; transition: opacity .22s ease, transform .28s cubic-bezier(.4,0,.2,1); }
 .gd-hamburger-motion .gd-hamburger-motion__menu { opacity: 1; transform: translate(-50%,-50%) rotate(0deg) scale(1); }
 .gd-hamburger-motion .gd-hamburger-motion__close { opacity: 0; transform: translate(-50%,-50%) rotate(-90deg) scale(.7); }
@@ -2257,7 +2286,7 @@ body.gd-overview {
 <footer class="gd-footer gd-footer--page"><nav class="gd-footer__nav" aria-label="页脚链接"><a href="https://galnavi.top/nav/">主站首页</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/help/">帮助文档</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/about/">关于本站</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/about/#friend">友情链接</a>
 <span class="gd-footer__sep" aria-hidden="true">|</span>
 <a href="#feedback">联系站长</a></nav><p class="gd-footer__copy">© 2026 GALNAVI · 愿每一次探索都有新的收获</p></footer>
-<div id="redirectOverlay" class="gd-overview__redirect-overlay" aria-live="polite" aria-atomic="true"><div class="gd-overview__redirect-ring" aria-hidden="true"></div><div class="gd-overview__redirect-text">即将跳转</div><div id="redirectCountdown" class="gd-overview__redirect-countdown">3</div><button type="button" id="redirectCancel" class="gd-overview__redirect-cancel">取消跳转</button></div>
+
 <script>
 (function(){function a(){var h=(window.visualViewport&&window.visualViewport.height)||window.innerHeight;document.documentElement.style.setProperty("--gd-vvh",h+"px");}a();window.addEventListener("resize",a);if(window.visualViewport)window.visualViewport.addEventListener("resize",a);})();
 (function() {
@@ -2389,9 +2418,12 @@ window.addEventListener('resize', requestSync);
 (function(){
 function isSafeHttpUrl(url){if(!url||typeof url!=="string")return false;try{var u=new URL(url,window.location.origin);return u.protocol==="http:"||u.protocol==="https:"}catch(e){return false}}
 var timerId=null,onCancel=null;
-function clearRedirect(){if(timerId){clearInterval(timerId);timerId=null}var overlay=document.getElementById("redirectOverlay"),cancelBtn=document.getElementById("redirectCancel");if(overlay){overlay.classList.remove("active");overlay.setAttribute("aria-hidden","true")}if(onCancel&&cancelBtn){cancelBtn.removeEventListener("click",onCancel);onCancel=null}}
-function startRedirect(targetUrl){var overlay=document.getElementById("redirectOverlay"),countdownEl=document.getElementById("redirectCountdown"),cancelBtn=document.getElementById("redirectCancel");if(!overlay||!countdownEl){window.open(targetUrl,"_blank","noopener,noreferrer");return}clearRedirect();var seconds=3;overlay.classList.add("active");overlay.setAttribute("aria-hidden","false");countdownEl.textContent=String(seconds);timerId=setInterval(function(){seconds-=1;if(seconds<=0){clearRedirect();window.open(targetUrl,"_blank","noopener,noreferrer");return}countdownEl.textContent=String(seconds);},1000);onCancel=function(){clearRedirect()};if(cancelBtn)cancelBtn.addEventListener("click",onCancel);}
-document.addEventListener("click",function(e){var anchor=e.target.closest("a");if(!anchor)return;var href=anchor.getAttribute("href");if(!href)return;var lower=href.trim().toLowerCase();if(lower.indexOf("javascript:")===0||lower.indexOf("data:")===0){e.preventDefault();return}if(href.charAt(0)==="#")return;if(href.indexOf("https://galnavi.top/nav/")===0||href.indexOf("/nav/")===0)return;if(!isSafeHttpUrl(href))return;try{if(new URL(href,window.location.origin).hostname===window.location.hostname)return}catch(err){return}e.preventDefault();startRedirect(href);});
+
+function leaveTone(el){var cs=getComputedStyle(el);var buttonLike=el.matches("button, .gd-button, .gd-card__btn, .gd-card__action, .gd-section-card__link, input[type='button'], input[type='submit']");if(!buttonLike){var img=cs.backgroundImage&&cs.backgroundImage!=="none";var bgm=(cs.backgroundColor||"").match(/rgba?\\(\\s*\\d+\\s*,\\s*\\d+\\s*,\\s*\\d+(?:\\s*,\\s*([\\d.]+))?\\)/);var alpha=bgm?(bgm[1]==null?1:parseFloat(bgm[1])):0;var filled=img||alpha>0.25;var inline=cs.display==="inline"||(cs.display==="inline-block"&&(parseFloat(cs.paddingLeft)+parseFloat(cs.paddingRight)<16));buttonLike=filled&&!inline}if(!buttonLike)return"#ffffff";var stops=(cs.backgroundImage||"").match(/rgba?\\(\\s*(\\d+)\\s*,\\s*(\\d+)\\s*,\\s*(\\d+)/);var src=stops?[+stops[1],+stops[2],+stops[3]]:null;if(!src){var solid=(cs.backgroundColor||"").match(/rgba?\\(\\s*(\\d+)\\s*,\\s*(\\d+)\\s*,\\s*(\\d+)/);if(solid)src=[+solid[1],+solid[2],+solid[3]]}if(!src)return"#ffffff";return"rgb("+src.map(function(n){return Math.round(n+(255-n)*0.42)}).join(",")+")"}
+var LEAVE_MS=2400;
+function paintLeave(el,onEnd){if(!el||window.matchMedia("(prefers-reduced-motion: reduce)").matches){if(onEnd)setTimeout(onEnd,LEAVE_MS);return}var prev=el.querySelector(".gd-leave-svg");if(prev)prev.remove();var color=leaveTone(el);var text=color==="#ffffff";var w=el.offsetWidth,h=el.offsetHeight;if(!w||!h){if(onEnd)setTimeout(onEnd,LEAVE_MS);return}var radius=parseFloat(getComputedStyle(el).borderRadius)||0;var stroke=3,half=stroke/2;var entry=el.classList.contains("gd-section-card__link");var outside=text?6:(entry?half:0);var bw=w+outside*2,bh=h+outside*2;var rx=text?Math.min(bw,bh)/2:Math.max(0,Math.min(radius+outside,bw/2,bh/2));var wrap=document.createElement("span");wrap.className="gd-leave-svg";wrap.setAttribute("aria-hidden","true");wrap.style.left=(-(outside+half))+"px";wrap.style.top=(-(outside+half))+"px";wrap.style.right="auto";wrap.style.bottom="auto";wrap.style.width=(bw+stroke)+"px";wrap.style.height=(bh+stroke)+"px";var svg=document.createElementNS("http://www.w3.org/2000/svg","svg");svg.setAttribute("viewBox","0 0 "+(bw+stroke)+" "+(bh+stroke));var rect=document.createElementNS("http://www.w3.org/2000/svg","rect");rect.setAttribute("x",String(half));rect.setAttribute("y",String(half));rect.setAttribute("width",String(bw));rect.setAttribute("height",String(bh));rect.setAttribute("rx",String(rx));rect.setAttribute("fill","none");rect.setAttribute("stroke",color);rect.setAttribute("stroke-width",String(stroke));rect.setAttribute("stroke-linecap","round");rect.setAttribute("stroke-linejoin","round");rect.setAttribute("pathLength","100");rect.setAttribute("stroke-dasharray","18 82");rect.style.filter="drop-shadow(0 0 4px "+color+")";var spin=document.createElementNS("http://www.w3.org/2000/svg","animate");spin.setAttribute("attributeName","stroke-dashoffset");spin.setAttribute("from","0");spin.setAttribute("to","-200");spin.setAttribute("dur","2.4s");spin.setAttribute("fill","freeze");rect.appendChild(spin);if(onEnd)wrap.addEventListener("animationend",onEnd);svg.appendChild(rect);wrap.appendChild(svg);el.appendChild(wrap)}
+function startRedirect(targetUrl,sourceEl){if(timerId)return;var jumped=false;var waitId=0;function go(){if(jumped)return;jumped=true;clearTimeout(waitId);timerId=null;if(sourceEl){sourceEl.classList.remove("gd-leave");sourceEl.removeAttribute("aria-busy");var mark=sourceEl.querySelector(".gd-leave-svg");if(mark)mark.remove()}onCancel=null;var pending=null;try{pending=window.open(targetUrl,"_blank")}catch(e){pending=null}if(!pending)window.location.href=targetUrl}if(sourceEl){onCancel=sourceEl;sourceEl.classList.add("gd-leave");sourceEl.setAttribute("aria-busy","true");paintLeave(sourceEl,go)}waitId=setTimeout(go,LEAVE_MS+80);timerId=waitId;}
+document.addEventListener("click",function(e){var anchor=e.target.closest("a");if(!anchor)return;var href=anchor.getAttribute("href");if(!href)return;var lower=href.trim().toLowerCase();if(lower.indexOf("javascript:")===0||lower.indexOf("data:")===0){e.preventDefault();return}if(href.charAt(0)==="#")return;if(href.indexOf("https://galnavi.top/nav/")===0||href.indexOf("/nav/")===0)return;if(!isSafeHttpUrl(href))return;if(anchor.closest(".gd-below-nav"))return;try{if(new URL(href,window.location.origin).hostname===window.location.hostname)return}catch(err){return}e.preventDefault();startRedirect(href,anchor);},true);
 })();
 </script>
 <div class="gd-orb" id="gdOrb">

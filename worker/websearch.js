@@ -633,10 +633,15 @@ html::-webkit-scrollbar-thumb {
     opacity var(--gd-motion-duration-short4) var(--gd-motion-easing-standard);
   overflow: hidden;
 }
+.gd-button:hover,
+.gd-button:focus-visible {
+  color: var(--gd-color-on-surface);
+}
 .gd-button::before {
   content: "";
   position: absolute;
   inset: 0;
+  border-radius: inherit;
   background: currentColor;
   opacity: 0;
   pointer-events: none;
@@ -669,7 +674,6 @@ html::-webkit-scrollbar-thumb {
 .gd-button--secondary:hover {
   background: rgba(var(--gd-color-white-rgb), 0.08);
   border-color: rgba(var(--gd-color-white-rgb), 0.2);
-  color: var(--gd-color-on-surface);
 }
 .gd-button--danger {
   background: linear-gradient(135deg, var(--gd-gradient-pink-a), var(--gd-gradient-pink-b));
@@ -738,7 +742,6 @@ html::-webkit-scrollbar-thumb {
 .gd-button--ghost:hover {
   background: rgba(var(--gd-color-accent-rgb), 0.25);
   border-color: rgba(var(--gd-color-accent-rgb), 0.45);
-  color: var(--gd-color-on-primary);
 }
 .gd-button--ghost.is-disabled,
 .gd-button--ghost:disabled {
@@ -793,14 +796,12 @@ html::-webkit-scrollbar-thumb {
   border-color: rgba(var(--gd-color-indigo-rgb), 0.45);
   background: var(--gd-color-surface);
   transform: translateX(-2px);
-  color: var(--gd-color-on-primary);
   filter: none;
 }
 /* 返回主站（殿堂橙边框变体） */
 .gd-button--back--orange:hover {
   border-color: rgba(var(--gd-color-gold-deep-rgb), 0.6);
   background: rgba(var(--gd-color-gold-deep-rgb), 0.12);
-  color: var(--gd-color-on-surface);
   filter: none;
 }
 .gd-button--back:focus-visible {
@@ -907,8 +908,8 @@ html::-webkit-scrollbar-thumb {
   z-index: 100;
   height: var(--gd-nav-height);
   background: var(--gd-chrome-bar-bg);
-  backdrop-filter: var(--gd-glass-nav-blur);
-  -webkit-backdrop-filter: var(--gd-glass-nav-blur);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   border-bottom: none;
   display: flex;
   align-items: center;
@@ -2037,6 +2038,10 @@ gd-search { display: contents; }
   color: var(--gd-color-on-primary);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
+.gd-card__btn:hover,
+.gd-card__btn:focus-visible {
+  color: var(--gd-color-on-primary);
+}
 .gd-card__btn--detail {
   background: linear-gradient(135deg, var(--gd-gradient-primary-a), var(--gd-gradient-primary-b));
   box-shadow: none;
@@ -2087,37 +2092,18 @@ gd-search { display: contents; }
   height: auto;
   padding: 14px 16px;
   border-radius: 14px;
-  background: rgba(var(--gd-color-white-rgb), 0.035);
+  background: var(--gd-glass-bg);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  border: 1px solid rgba(var(--gd-color-white-rgb), 0.08);
+  border: 1px solid var(--gd-glass-border);
   box-shadow: none;
   transform: none;
   min-width: 0;
   max-width: 100%;
   overflow: hidden;
-  isolation: isolate;
   transition:
     background 0.2s var(--gd-motion-easing-standard),
     border-color 0.2s var(--gd-motion-easing-standard);
-}
-.gd-card--item::before {
-  content: "";
-  position: absolute;
-  inset: -24px;
-  z-index: 0;
-  pointer-events: none;
-  background-image: url("https://assets.galnavi.top/%E7%BA%BF%E6%9D%A1%E5%9B%BE%E6%A1%88.png");
-  background-repeat: repeat;
-  background-position: 0 0;
-  background-size: auto;
-  opacity: 0.16;
-  mix-blend-mode: screen;
-  filter: blur(10.8px);
-}
-.gd-card--item > * {
-  position: relative;
-  z-index: 1;
 }
 .gd-card--item--demonic {
   --gd-comp-item-color: #ef4444;
@@ -2130,7 +2116,7 @@ gd-search { display: contents; }
   --gd-comp-item-color-rgb: 16, 185, 129;
 }
 .gd-card--item:hover {
-  background: rgba(var(--gd-color-white-rgb), 0.05);
+  background: var(--gd-glass-bg-hover);
   border-color: rgba(var(--gd-comp-item-color-rgb), 0.28);
   box-shadow: none;
   transform: none;
@@ -2756,40 +2742,6 @@ gd-search { display: contents; }
   flex-direction: row;
 }
 
-/* redirect variant */
-.gd-modal-overlay--redirect {
-  flex-direction: column;
-  background: var(--gd-color-overlay-strong);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  z-index: 9999;
-}
-.gd-redirect-ring {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  border: 3px solid rgba(var(--gd-color-primary-rgb), 0.15);
-  border-top-color: var(--gd-color-primary);
-  animation: gd-redirect-spin 0.8s linear infinite;
-  margin-bottom: 32px;
-}
-@keyframes gd-redirect-spin { to { transform: rotate(360deg); } }
-.gd-redirect-text {
-  font-size: var(--gd-type-title-xxl-size);
-  font-weight: var(--gd-weight-semibold);
-  color: var(--gd-color-on-surface);
-  margin-bottom: 12px;
-}
-.gd-redirect-countdown {
-  font-size: var(--gd-type-display-medium-size);
-  font-weight: var(--gd-weight-extrabold);
-  background: linear-gradient(135deg, var(--gd-gradient-title-a) 0%, var(--gd-gradient-title-b) 30%, var(--gd-gradient-title-c) 60%, var(--gd-gradient-title-d) 100%);
-  background-size: 200% auto;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: gd-brand-flow 3s ease-in-out infinite;
-}
 
 /* nap variant */
 .gd-modal-overlay--nap {
@@ -2844,10 +2796,6 @@ gd-search { display: contents; }
 }
 .gd-modal__close:focus-visible { outline: 2px solid var(--gd-color-primary); outline-offset: 2px; }
 
-@media (prefers-reduced-motion: reduce) {
-  .gd-redirect-ring,
-  .gd-redirect-countdown { animation: none; }
-}
 
 /* ===== src/feedback/skeleton/gd-skeleton.css ===== */
 /* gd-skeleton — 数据加载占位（骨架屏） */
@@ -3168,7 +3116,7 @@ gd-search { display: contents; }
 *{margin:0;padding:0;box-sizing:border-box}
 html{height:auto;min-height:100%;min-height:100vh;min-height:100dvh;min-height:var(--gd-vvh,100dvh);font-size:16px;-webkit-text-size-adjust:100%;text-size-adjust:100%;background:var(--gd-color-background);scroll-padding-top:calc(var(--gd-nav-height) + var(--gd-below-nav-h,80px) + 8px)}
 body{font-family:var(--gd-font-sans);color:var(--gd-color-on-surface);line-height:1.65;letter-spacing:0.01em;min-height:100vh;min-height:100dvh;min-height:var(--gd-vvh,100dvh);display:flex;flex-direction:column;overflow-x:hidden;overflow-x:clip;padding-top:calc(var(--gd-nav-height) + var(--gd-below-nav-h,80px));text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
-a{color:var(--gd-color-link);text-decoration:none}a:hover{color:var(--gd-color-link-hover)}
+a{color:var(--gd-color-link);text-decoration:none}a:hover:not(.gd-button):not(.gd-card__btn):not(.gd-explore-btn):not(.gd-contact-btn){color:var(--gd-color-link-hover)}
 ::selection{background:rgba(var(--gd-color-primary-rgb),0.38);color:#fff}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 
@@ -3303,6 +3251,13 @@ html{overflow-x:hidden;overflow-x:clip}
 }
 .card-grid:not(.is-active){display:none}
 .card-grid.is-active{display:grid}
+.gd-pager{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;margin:18px 0 4px}
+.gd-pager__btn{box-sizing:border-box;min-width:44px;min-height:44px;padding:0 14px;border-radius:12px;border:1px solid var(--gd-glass-border);background:var(--gd-glass-bg);color:var(--gd-color-on-surface);font-family:inherit;font-size:var(--gd-type-label-large-size);font-weight:var(--gd-weight-semibold);cursor:pointer}
+.gd-pager__btn:hover:not(:disabled){background:var(--gd-glass-bg-hover);border-color:var(--gd-color-border-hover);filter:brightness(1.05)}
+.gd-pager__btn:focus-visible{outline:2px solid var(--gd-color-primary);outline-offset:2px}
+.gd-pager__btn[aria-current="page"]{border-color:var(--gd-color-primary);color:var(--gd-color-link)}
+.gd-pager__btn:disabled{opacity:.35;cursor:not-allowed}
+.gd-pager__gap{min-width:24px;text-align:center;color:var(--gd-color-on-surface-variant)}
 
 /* 分类页视图 */
 .page-view{display:none}
@@ -3317,7 +3272,7 @@ html{overflow-x:hidden;overflow-x:clip}
 .tag-search-wrap{margin-bottom:20px;max-width:360px}
 
 /* navbar 固定 + 品牌；桌面整组居中，左右到屏幕边距相等 */
-.gd-navbar{position:fixed;top:0;left:0;right:0;z-index:100;justify-content:center;overflow:visible;background:var(--gd-chrome-bar-bg);backdrop-filter:var(--gd-glass-nav-blur);-webkit-backdrop-filter:var(--gd-glass-nav-blur);border-bottom:none}
+.gd-navbar{position:fixed;top:0;left:0;right:0;z-index:100;justify-content:center;overflow:visible;background:var(--gd-chrome-bar-bg);backdrop-filter:none;-webkit-backdrop-filter:none;border-bottom:none}
 .gd-navbar__inner{width:max-content;max-width:100%;padding:0 32px;display:flex;align-items:center;gap:8px;justify-content:center;flex:0 1 auto}
 .gd-navbar__logo{display:flex;align-items:center;gap:6px;text-decoration:none;flex-shrink:0;cursor:pointer}
 .gd-navbar__logo-img{height:28px;width:auto;display:block}
@@ -3396,15 +3351,12 @@ html{overflow-x:hidden;overflow-x:clip}
 .gd-navbar.is-drawer-open{z-index:230!important}
 .gd-navbar__hamburger[aria-expanded="true"]{z-index:240!important}
 
-/* redirect overlay */
-.redirect-overlay{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:var(--gd-color-overlay);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);opacity:0;pointer-events:none;transition:opacity var(--gd-motion-duration-medium1) var(--gd-motion-easing-standard)}
-.redirect-overlay.is-active{opacity:1;pointer-events:auto}
-.redirect-ring{width:64px;height:64px;border-radius:50%;border:3px solid rgba(var(--gd-color-primary-rgb),0.3);border-top-color:var(--gd-color-primary);animation:redirect-spin 1s linear infinite}
-@keyframes redirect-spin{to{transform:rotate(360deg)}}
-.redirect-text{color:var(--gd-color-on-surface-variant);font-size:var(--gd-type-label-large-size);font-weight:var(--gd-weight-semibold)}
-.redirect-countdown{color:var(--gd-color-primary);font-size:var(--gd-type-headline-small-size);font-weight:var(--gd-weight-extrabold);font-variant-numeric:tabular-nums}
-.redirect-cancel{background:transparent;border:1px solid rgba(var(--gd-color-white-rgb),0.2);color:var(--gd-color-on-surface-variant);padding:10px 24px;border-radius:var(--gd-shape-corner-full);font-size:var(--gd-type-label-large-size);font-weight:var(--gd-weight-semibold);cursor:pointer;transition:all var(--gd-motion-duration-short4) var(--gd-motion-easing-standard);font-family:var(--gd-font-sans)}
-.redirect-cancel:hover{border-color:rgba(var(--gd-color-white-rgb),0.4);color:var(--gd-color-on-surface)}
+
+.gd-leave{position:relative;z-index:3;overflow:visible}
+.gd-leave-svg{position:absolute;pointer-events:none;z-index:4;overflow:visible;animation:gd-leave-fade 2.4s linear both}
+.gd-leave-svg svg{display:block;width:100%;height:100%;overflow:visible}
+@keyframes gd-leave-fade{0%{opacity:0}18%{opacity:1}82%{opacity:1}100%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.gd-leave-svg{animation:none}}
 </style>
 </head>
 <body>
@@ -3697,13 +3649,6 @@ html{overflow-x:hidden;overflow-x:clip}
   </div>
 </div>
 
-<!-- ===== 跳转倒计时 ===== -->
-<div class="redirect-overlay" id="redirectOverlay" role="alert" aria-live="assertive" aria-hidden="true">
-  <div class="redirect-ring" aria-hidden="true"></div>
-  <div class="redirect-text">即将跳转</div>
-  <div class="redirect-countdown" id="redirectCountdown">3</div>
-  <button class="redirect-cancel" id="redirectCancel">取消跳转</button>
-</div>
 
 <script>
 var allData = ${dataJson};
@@ -3783,14 +3728,56 @@ function visibleData() {
   return allData.filter(function(it){ return !it.nsfw; });
 }
 
-function renderCards(containerId, items, keyword) {
+var PAGE_SIZE = 12;
+var listPages = {};
+function pagerWindow(page, pages) {
+  if (pages <= 7) {
+    var all = [];
+    for (var i = 1; i <= pages; i++) all.push(i);
+    return all;
+  }
+  var nums = [1];
+  var start = Math.max(2, page - 1);
+  var end = Math.min(pages - 1, page + 1);
+  if (start > 2) nums.push('…');
+  for (var n = start; n <= end; n++) nums.push(n);
+  if (end < pages - 1) nums.push('…');
+  nums.push(pages);
+  return nums;
+}
+function buildPagerHtml(gridId, page, pages) {
+  var html = '<nav class="gd-pager" data-grid="' + gridId + '" aria-label="翻页">';
+  html += '<button type="button" class="gd-pager__btn" data-page="' + (page - 1) + '"' + (page <= 1 ? ' disabled' : '') + '>上一页</button>';
+  pagerWindow(page, pages).forEach(function(n) {
+    if (n === '…') html += '<span class="gd-pager__gap" aria-hidden="true">…</span>';
+    else html += '<button type="button" class="gd-pager__btn" data-page="' + n + '"' + (n === page ? ' aria-current="page"' : '') + '>' + n + '</button>';
+  });
+  html += '<button type="button" class="gd-pager__btn" data-page="' + (page + 1) + '"' + (page >= pages ? ' disabled' : '') + '>下一页</button></nav>';
+  return html;
+}
+function renderCards(containerId, items, keyword, page, showPager) {
   var el = document.getElementById(containerId);
   if (!el) return;
+  var oldPager = el.nextElementSibling;
+  if (oldPager && oldPager.classList.contains('gd-pager')) oldPager.remove();
   if (!items.length) {
-    el.innerHTML = '<div class="gd-empty-state" role="status"><div class="gd-empty-state__icon" aria-hidden="true">🔍</div><p class="gd-empty-state__title">没有找到相关内容</p></div>';
+    delete listPages[containerId];
+    el.innerHTML = '<div class="gd-empty-state" role="status"><h3 class="gd-empty-state__title">暂无结果</h3><p class="gd-empty-state__desc">这个分类暂时没有内容。</p></div>';
     return;
   }
-  el.innerHTML = items.map(function(it){ return buildCard(it, keyword); }).join('');
+  if (showPager === false) {
+    delete listPages[containerId];
+    el.innerHTML = items.map(function(it){ return buildCard(it, keyword); }).join('');
+    return;
+  }
+  var pages = Math.ceil(items.length / PAGE_SIZE);
+  var p = page == null ? 1 : page;
+  if (p < 1) p = 1;
+  if (p > pages) p = pages;
+  listPages[containerId] = { items: items, keyword: keyword || '', page: p };
+  var slice = items.slice((p - 1) * PAGE_SIZE, p * PAGE_SIZE);
+  el.innerHTML = slice.map(function(it){ return buildCard(it, keyword); }).join('');
+  el.insertAdjacentHTML('afterend', buildPagerHtml(containerId, p, pages));
 }
 
 function getByCategory(cat) { return visibleData().filter(function(it){ return it.cat === cat; }); }
@@ -3925,8 +3912,8 @@ function renderHomePage() {
   var recent = pool.slice().sort(function(a,b){ return (Date.parse(b.updatedAt)||0) - (Date.parse(a.updatedAt)||0); }).slice(0,4);
   document.getElementById('featuredTitle').textContent = '站点推荐';
   document.getElementById('recentTitle').textContent = '最近更新';
-  renderCards('featuredGrid', featured);
-  renderCards('recentGrid', recent);
+  renderCards('featuredGrid', featured, '', null, false);
+  renderCards('recentGrid', recent, '', null, false);
 }
 
 var CAT_LABELS = {site:'站点',tool:'工具',simulator:'模拟器',company:'会社',hanhua:'汉化组'};
@@ -4037,23 +4024,25 @@ function doHomeSearch(kw) {
   if (!container) return;
 
   if (!filtered.length) {
-    container.innerHTML = '<div class="gd-empty-state" role="status"><div class="gd-empty-state__icon" aria-hidden="true">🔍</div><p class="gd-empty-state__title">没有找到相关内容</p><p class="gd-empty-state__desc">换个关键词试试吧</p></div>';
+    container.innerHTML = '<div class="gd-empty-state" role="status"><h3 class="gd-empty-state__title">暂无结果</h3><p class="gd-empty-state__desc">换个关键词试试，或清空筛选条件。</p></div>';
     container.classList.add('is-active');
     return;
   }
 
+  var groups = [];
   var html = '';
   CAT_ORDER.forEach(function(cat) {
     var items = filtered.filter(function(it){ return it.cat === cat; });
     if (!items.length) return;
+    var gridId = 'searchGrid-' + cat;
+    groups.push({ id: gridId, items: items });
     html += '<section class="gd-section" aria-label="' + escapeHtml(CAT_LABELS[cat] || cat) + '">'
       + '<h2 class="gd-section__title">' + escapeHtml(CAT_LABELS[cat] || cat) + '</h2>'
-      + '<div class="card-grid is-active">'
-      + items.map(function(it){ return buildCard(it, kw); }).join('')
-      + '</div></section>';
+      + '<div class="card-grid is-active" id="' + gridId + '"></div></section>';
   });
   container.innerHTML = html;
   container.classList.add('is-active');
+  groups.forEach(function(g) { renderCards(g.id, g.items, kw, 1); });
 }
 function showHomeDefault() {
   var container = document.getElementById('searchResultsContainer');
@@ -4382,39 +4371,112 @@ async function initHeroCarousel() {
   goTo(0); arm();
 }
 
-var redirectTimerId, redirectCancelHandler;
-function startRedirect(targetUrl) {
-  var overlay = document.getElementById('redirectOverlay');
-  var countdownEl = document.getElementById('redirectCountdown');
-  var cancelBtn = document.getElementById('redirectCancel');
-  if (!overlay || !countdownEl) { window.open(targetUrl,'_blank','noopener,noreferrer'); return; }
-  if (redirectTimerId) { clearInterval(redirectTimerId); redirectTimerId=null; }
-  if (redirectCancelHandler && cancelBtn) { cancelBtn.removeEventListener('click',redirectCancelHandler); redirectCancelHandler=null; }
-  var sec = 3;
-  overlay.classList.add('is-active');
-  overlay.setAttribute('aria-hidden','false');
-  countdownEl.textContent = sec;
-  function tick() {
-    sec--;
-    if (sec<=0) {
-      clearInterval(redirectTimerId); redirectTimerId=null;
-      window.open(targetUrl,'_blank','noopener,noreferrer');
-      overlay.classList.remove('is-active');
-      overlay.setAttribute('aria-hidden','true');
-      if (redirectCancelHandler && cancelBtn) { cancelBtn.removeEventListener('click',redirectCancelHandler); redirectCancelHandler=null; }
-      return;
-    }
-    countdownEl.textContent = sec;
+var leaveTimerId = null, leaveTarget = null;
+function leaveTone(el) {
+  var cs = getComputedStyle(el);
+  var buttonLike = el.matches('button, .gd-button, .gd-card__btn, .gd-card__action, .gd-section-card__link, input[type="button"], input[type="submit"]');
+  if (!buttonLike) {
+    var img = cs.backgroundImage && cs.backgroundImage !== 'none';
+    var bgm = (cs.backgroundColor || '').match(/rgba?\\(\\s*\\d+\\s*,\\s*\\d+\\s*,\\s*\\d+(?:\\s*,\\s*([\\d.]+))?\\)/);
+    var alpha = bgm ? (bgm[1] == null ? 1 : parseFloat(bgm[1])) : 0;
+    var filled = img || alpha > 0.25;
+    var inline = cs.display === 'inline' || (cs.display === 'inline-block' && (parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight) < 16));
+    buttonLike = filled && !inline;
   }
-  redirectTimerId = setInterval(tick, 1000);
-  redirectCancelHandler = function() {
-    clearInterval(redirectTimerId); redirectTimerId=null;
-    overlay.classList.remove('is-active');
-    overlay.setAttribute('aria-hidden','true');
-    if (cancelBtn) cancelBtn.removeEventListener('click',redirectCancelHandler);
-    redirectCancelHandler=null;
-  };
-  if (cancelBtn) cancelBtn.addEventListener('click', redirectCancelHandler);
+  if (!buttonLike) return '#ffffff';
+  var stops = (cs.backgroundImage || '').match(/rgba?\\(\\s*(\\d+)\\s*,\\s*(\\d+)\\s*,\\s*(\\d+)/);
+  var src = stops ? [+stops[1], +stops[2], +stops[3]] : null;
+  if (!src) {
+    var solid = (cs.backgroundColor || '').match(/rgba?\\(\\s*(\\d+)\\s*,\\s*(\\d+)\\s*,\\s*(\\d+)/);
+    if (solid) src = [+solid[1], +solid[2], +solid[3]];
+  }
+  if (!src) return '#ffffff';
+  return 'rgb(' + src.map(function(n) { return Math.round(n + (255 - n) * 0.42); }).join(',') + ')';
+}
+var LEAVE_MS = 2400;
+function paintLeave(el, onEnd) {
+  if (!el || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (onEnd) setTimeout(onEnd, LEAVE_MS);
+    return;
+  }
+  var prev = el.querySelector('.gd-leave-svg');
+  if (prev) prev.remove();
+  var color = leaveTone(el);
+  var text = color === '#ffffff';
+  
+  var w = el.offsetWidth, h = el.offsetHeight;
+  if (!w || !h) { if (onEnd) setTimeout(onEnd, LEAVE_MS); return; }
+  var radius = parseFloat(getComputedStyle(el).borderRadius) || 0;
+  var stroke = 3, half = stroke / 2;
+  var entry = el.classList.contains('gd-section-card__link');
+  var outside = text ? 6 : (entry ? half : 0);
+  var bw = w + outside * 2, bh = h + outside * 2;
+  var rx = text ? Math.min(bw, bh) / 2 : Math.max(0, Math.min(radius + outside, bw / 2, bh / 2));
+  var wrap = document.createElement('span');
+  wrap.className = 'gd-leave-svg';
+  wrap.setAttribute('aria-hidden', 'true');
+  wrap.style.left = (-(outside + half)) + 'px';
+  wrap.style.top = (-(outside + half)) + 'px';
+  wrap.style.right = 'auto';
+  wrap.style.bottom = 'auto';
+  wrap.style.width = (bw + stroke) + 'px';
+  wrap.style.height = (bh + stroke) + 'px';
+  var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('viewBox', '0 0 ' + (bw + stroke) + ' ' + (bh + stroke));
+  var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+  rect.setAttribute('x', String(half));
+  rect.setAttribute('y', String(half));
+  rect.setAttribute('width', String(bw));
+  rect.setAttribute('height', String(bh));
+  rect.setAttribute('rx', String(rx));
+  rect.setAttribute('fill', 'none');
+  rect.setAttribute('stroke', color);
+  rect.setAttribute('stroke-width', String(stroke));
+  rect.setAttribute('stroke-linecap', 'round');
+  rect.setAttribute('stroke-linejoin', 'round');
+  rect.setAttribute('pathLength', '100');
+  rect.setAttribute('stroke-dasharray', '18 82');
+  rect.style.filter = 'drop-shadow(0 0 4px ' + color + ')';
+  var spin = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+  spin.setAttribute('attributeName', 'stroke-dashoffset');
+  spin.setAttribute('from', '0');
+  spin.setAttribute('to', '-200');
+  spin.setAttribute('dur', '2.4s');
+  spin.setAttribute('fill', 'freeze');
+  rect.appendChild(spin);
+  if (onEnd) wrap.addEventListener('animationend', onEnd);
+  svg.appendChild(rect);
+  wrap.appendChild(svg);
+  el.appendChild(wrap);
+}
+function startRedirect(targetUrl, sourceEl) {
+  if (leaveTimerId) return;
+  var jumped = false;
+  var waitId = 0;
+  function go() {
+    if (jumped) return;
+    jumped = true;
+    clearTimeout(waitId);
+    leaveTimerId = null;
+    if (leaveTarget) {
+      leaveTarget.classList.remove('gd-leave');
+      leaveTarget.removeAttribute('aria-busy');
+      var mark = leaveTarget.querySelector('.gd-leave-svg');
+      if (mark) mark.remove();
+      leaveTarget = null;
+    }
+    var pending = null;
+    try { pending = window.open(targetUrl, '_blank'); } catch (e) { pending = null; }
+    if (!pending) window.location.href = targetUrl;
+  }
+  if (sourceEl) {
+    leaveTarget = sourceEl;
+    sourceEl.classList.add('gd-leave');
+    sourceEl.setAttribute('aria-busy', 'true');
+    paintLeave(sourceEl, go);
+  }
+  waitId = setTimeout(go, LEAVE_MS + 80);
+  leaveTimerId = waitId;
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -4524,12 +4586,12 @@ document.addEventListener('DOMContentLoaded', function() {
     if (href.startsWith('https://galnavi.top/nav/') || href.startsWith('/nav/')) return;
     if (href.startsWith('#')) return;
     if (href.startsWith('mailto:')) return;
-    if (anchor.closest('.gd-footer')) return;
+    if (anchor.closest('.gd-footer, .gd-below-nav')) return;
     if (!isSafeHttpUrl(href)) return;
     try { if (new URL(href).hostname === location.hostname) return; } catch(_) { return; }
     e.preventDefault(); e.stopPropagation();
-    startRedirect(href);
-  });
+    startRedirect(href, anchor);
+  }, true);
 
   setupDrawer();
   initGdNsfwToggle();
@@ -4711,6 +4773,18 @@ document.addEventListener('DOMContentLoaded', function() {
       if (lastCard) { try { lastCard.focus(); } catch(e) {} }
     }
     document.addEventListener('click', function(e) {
+      var pageBtn = e.target.closest && e.target.closest('.gd-pager__btn');
+      if (pageBtn && !pageBtn.disabled) {
+        var nav = pageBtn.closest('.gd-pager');
+        var gridId = nav && nav.getAttribute('data-grid');
+        var saved = gridId && listPages[gridId];
+        if (saved) {
+          renderCards(gridId, saved.items, saved.keyword, Number(pageBtn.getAttribute('data-page')));
+          var grid = document.getElementById(gridId);
+          if (grid && grid.scrollIntoView) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        return;
+      }
       var card = e.target.closest && e.target.closest('.card-grid .gd-card--general, .gd-card.gd-card--general[role="button"]');
       if (!card) return;
       if (e.target.closest('a, button')) return;

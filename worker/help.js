@@ -1057,10 +1057,15 @@ body.gd-overview {
     opacity var(--gd-motion-duration-short4) var(--gd-motion-easing-standard);
   overflow: hidden;
 }
+.gd-button:hover,
+.gd-button:focus-visible {
+  color: var(--gd-color-on-surface);
+}
 .gd-button::before {
   content: "";
   position: absolute;
   inset: 0;
+  border-radius: inherit;
   background: currentColor;
   opacity: 0;
   pointer-events: none;
@@ -1093,7 +1098,6 @@ body.gd-overview {
 .gd-button--secondary:hover {
   background: rgba(var(--gd-color-white-rgb), 0.08);
   border-color: rgba(var(--gd-color-white-rgb), 0.2);
-  color: var(--gd-color-on-surface);
 }
 .gd-button--danger {
   background: linear-gradient(135deg, var(--gd-gradient-pink-a), var(--gd-gradient-pink-b));
@@ -1162,7 +1166,6 @@ body.gd-overview {
 .gd-button--ghost:hover {
   background: rgba(var(--gd-color-accent-rgb), 0.25);
   border-color: rgba(var(--gd-color-accent-rgb), 0.45);
-  color: var(--gd-color-on-primary);
 }
 .gd-button--ghost.is-disabled,
 .gd-button--ghost:disabled {
@@ -1217,14 +1220,12 @@ body.gd-overview {
   border-color: rgba(var(--gd-color-indigo-rgb), 0.45);
   background: var(--gd-color-surface);
   transform: translateX(-2px);
-  color: var(--gd-color-on-primary);
   filter: none;
 }
 /* 返回主站（殿堂橙边框变体） */
 .gd-button--back--orange:hover {
   border-color: rgba(var(--gd-color-gold-deep-rgb), 0.6);
   background: rgba(var(--gd-color-gold-deep-rgb), 0.12);
-  color: var(--gd-color-on-surface);
   filter: none;
 }
 .gd-button--back:focus-visible {
@@ -1471,6 +1472,10 @@ body.gd-overview {
   color: var(--gd-color-on-primary);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
+.gd-card__btn:hover,
+.gd-card__btn:focus-visible {
+  color: var(--gd-color-on-primary);
+}
 .gd-card__btn--detail {
   background: linear-gradient(135deg, var(--gd-gradient-primary-a), var(--gd-gradient-primary-b));
   box-shadow: none;
@@ -1521,37 +1526,18 @@ body.gd-overview {
   height: auto;
   padding: 14px 16px;
   border-radius: 14px;
-  background: rgba(var(--gd-color-white-rgb), 0.035);
+  background: var(--gd-glass-bg);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  border: 1px solid rgba(var(--gd-color-white-rgb), 0.08);
+  border: 1px solid var(--gd-glass-border);
   box-shadow: none;
   transform: none;
   min-width: 0;
   max-width: 100%;
   overflow: hidden;
-  isolation: isolate;
   transition:
     background 0.2s var(--gd-motion-easing-standard),
     border-color 0.2s var(--gd-motion-easing-standard);
-}
-.gd-card--item::before {
-  content: "";
-  position: absolute;
-  inset: -24px;
-  z-index: 0;
-  pointer-events: none;
-  background-image: url("https://assets.galnavi.top/%E7%BA%BF%E6%9D%A1%E5%9B%BE%E6%A1%88.png");
-  background-repeat: repeat;
-  background-position: 0 0;
-  background-size: auto;
-  opacity: 0.16;
-  mix-blend-mode: screen;
-  filter: blur(10.8px);
-}
-.gd-card--item > * {
-  position: relative;
-  z-index: 1;
 }
 .gd-card--item--demonic {
   --gd-comp-item-color: #ef4444;
@@ -1564,7 +1550,7 @@ body.gd-overview {
   --gd-comp-item-color-rgb: 16, 185, 129;
 }
 .gd-card--item:hover {
-  background: rgba(var(--gd-color-white-rgb), 0.05);
+  background: var(--gd-glass-bg-hover);
   border-color: rgba(var(--gd-comp-item-color-rgb), 0.28);
   box-shadow: none;
   transform: none;

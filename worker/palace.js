@@ -287,10 +287,15 @@ function renderPage(data, fetchFailed) {
     opacity var(--gd-motion-duration-short4) var(--gd-motion-easing-standard);
   overflow: hidden;
 }
+.gd-button:hover,
+.gd-button:focus-visible {
+  color: var(--gd-color-on-surface);
+}
 .gd-button::before {
   content: "";
   position: absolute;
   inset: 0;
+  border-radius: inherit;
   background: currentColor;
   opacity: 0;
   pointer-events: none;
@@ -323,7 +328,6 @@ function renderPage(data, fetchFailed) {
 .gd-button--secondary:hover {
   background: rgba(var(--gd-color-white-rgb), 0.08);
   border-color: rgba(var(--gd-color-white-rgb), 0.2);
-  color: var(--gd-color-on-surface);
 }
 .gd-button--danger {
   background: linear-gradient(135deg, var(--gd-gradient-pink-a), var(--gd-gradient-pink-b));
@@ -392,7 +396,6 @@ function renderPage(data, fetchFailed) {
 .gd-button--ghost:hover {
   background: rgba(var(--gd-color-accent-rgb), 0.25);
   border-color: rgba(var(--gd-color-accent-rgb), 0.45);
-  color: var(--gd-color-on-primary);
 }
 .gd-button--ghost.is-disabled,
 .gd-button--ghost:disabled {
@@ -447,14 +450,12 @@ function renderPage(data, fetchFailed) {
   border-color: rgba(var(--gd-color-indigo-rgb), 0.45);
   background: var(--gd-color-surface);
   transform: translateX(-2px);
-  color: var(--gd-color-on-primary);
   filter: none;
 }
 /* 返回主站（殿堂橙边框变体） */
 .gd-button--back--orange:hover {
   border-color: rgba(var(--gd-color-gold-deep-rgb), 0.6);
   background: rgba(var(--gd-color-gold-deep-rgb), 0.12);
-  color: var(--gd-color-on-surface);
   filter: none;
 }
 .gd-button--back:focus-visible {
@@ -771,16 +772,12 @@ function renderPage(data, fetchFailed) {
   }
   footer { text-align: center; margin-top: 64px; padding-top: 28px; border-top: none; color: var(--muted); font-size: 13px; line-height: 2; }
   footer a { color: var(--muted); }
-  .redirect-overlay { position: fixed; inset: 0; z-index: 9999; background: rgba(8,10,20,.92); backdrop-filter: blur(16px); display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .35s ease; }
-  .redirect-overlay.active { opacity: 1; pointer-events: auto; }
-  .redirect-ring { width: 80px; height: 80px; border-radius: 50%; border: 3px solid rgba(251,191,36,.15); border-top-color: #fbbf24; animation: redirectSpin .8s linear infinite; margin-bottom: 32px; }
-  @keyframes redirectSpin { to { transform: rotate(360deg); } }
-  .redirect-text { font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 12px; }
-  .redirect-host { font-size: 13px; color: var(--subtle); margin-bottom: 8px; max-width: 80vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .redirect-countdown { font-size: 48px; font-weight: 800; color: #fbbf24; background: none; -webkit-text-fill-color: currentColor; animation: none; }
-  .redirect-cancel { margin-top: 28px; padding: 10px 28px; border-radius: 10px; border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.04); color: var(--muted); font: inherit; font-size: 14px; cursor: pointer; transition: all .25s ease; }
-  .redirect-cancel:hover { color: var(--text); background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.2); }
-  .redirect-cancel:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  .gd-leave { position: relative; z-index: 3; overflow: visible; }
+  .gd-leave-svg { position: absolute; pointer-events: none; z-index: 4; overflow: visible; animation: gd-leave-fade 2.4s linear both; }
+  .gd-leave-svg svg { display: block; width: 100%; height: 100%; overflow: visible; }
+  @keyframes gd-leave-fade { 0% { opacity: 0; } 18% { opacity: 1; } 82% { opacity: 1; } 100% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .gd-leave-svg { animation: none; } }
   .modal-overlay { position: fixed; inset: 0; z-index: 1000; display: none; align-items: center; justify-content: center; padding: max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px)); background: rgba(0,0,0,.72); backdrop-filter: blur(8px); }
   .modal-overlay.open { display: flex; animation: fadeIn .28s ease; }
   .modal-overlay.closing { animation: fadeOut .28s ease forwards; }
@@ -1226,6 +1223,10 @@ gd-search { display: contents; }
   color: var(--gd-color-on-primary);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
+.gd-card__btn:hover,
+.gd-card__btn:focus-visible {
+  color: var(--gd-color-on-primary);
+}
 .gd-card__btn--detail {
   background: linear-gradient(135deg, var(--gd-gradient-primary-a), var(--gd-gradient-primary-b));
   box-shadow: none;
@@ -1276,37 +1277,18 @@ gd-search { display: contents; }
   height: auto;
   padding: 14px 16px;
   border-radius: 14px;
-  background: rgba(var(--gd-color-white-rgb), 0.035);
+  background: var(--gd-glass-bg);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  border: 1px solid rgba(var(--gd-color-white-rgb), 0.08);
+  border: 1px solid var(--gd-glass-border);
   box-shadow: none;
   transform: none;
   min-width: 0;
   max-width: 100%;
   overflow: hidden;
-  isolation: isolate;
   transition:
     background 0.2s var(--gd-motion-easing-standard),
     border-color 0.2s var(--gd-motion-easing-standard);
-}
-.gd-card--item::before {
-  content: "";
-  position: absolute;
-  inset: -24px;
-  z-index: 0;
-  pointer-events: none;
-  background-image: url("https://assets.galnavi.top/%E7%BA%BF%E6%9D%A1%E5%9B%BE%E6%A1%88.png");
-  background-repeat: repeat;
-  background-position: 0 0;
-  background-size: auto;
-  opacity: 0.16;
-  mix-blend-mode: screen;
-  filter: blur(10.8px);
-}
-.gd-card--item > * {
-  position: relative;
-  z-index: 1;
 }
 .gd-card--item--demonic {
   --gd-comp-item-color: #ef4444;
@@ -1319,7 +1301,7 @@ gd-search { display: contents; }
   --gd-comp-item-color-rgb: 16, 185, 129;
 }
 .gd-card--item:hover {
-  background: rgba(var(--gd-color-white-rgb), 0.05);
+  background: var(--gd-glass-bg-hover);
   border-color: rgba(var(--gd-comp-item-color-rgb), 0.28);
   box-shadow: none;
   transform: none;
@@ -1946,13 +1928,6 @@ gd-search { display: contents; }
     </div>
   </div>
 
-  <div id="redirectOverlay" class="redirect-overlay" aria-live="polite" aria-atomic="true">
-    <div class="redirect-ring" aria-hidden="true"></div>
-    <div class="redirect-text">即将跳转</div>
-    <div class="redirect-host" id="redirectHost"></div>
-    <div id="redirectCountdown" class="redirect-countdown">3</div>
-    <button type="button" id="redirectCancel" class="redirect-cancel">取消跳转</button>
-  </div>
 
 <script type="application/json" id="boot-data">${bootJson}</script>
 <script>
@@ -2179,42 +2154,109 @@ readUrlState();
 })();
 
 let redirectTimerId=null, redirectCleanup=null;
-function startRedirect(targetUrl){
-  const overlay=document.getElementById("redirectOverlay");
-  const countdownEl=document.getElementById("redirectCountdown");
-  const cancelBtn=document.getElementById("redirectCancel");
-  const hostEl=document.getElementById("redirectHost");
-  if(!overlay||!countdownEl){ window.open(targetUrl,"_blank","noopener,noreferrer"); return; }
-  if(redirectCleanup) redirectCleanup();
-  let pendingWin=null;
-  try{ pendingWin=window.open("about:blank","_blank"); }catch(e){ pendingWin=null; }
-  let seconds=3;
-  overlay.classList.add("active");
-  countdownEl.textContent=seconds;
-  if(hostEl) hostEl.textContent=hostLabel(targetUrl);
-  function onRedirectKey(ev){ if(ev.key==="Escape") cleanupRedirect(true); }
-  function cleanupRedirect(closePending){
-    if(redirectTimerId){ clearInterval(redirectTimerId); redirectTimerId=null; }
-    overlay.classList.remove("active");
-    if(cancelBtn) cancelBtn.removeEventListener("click",onCancel);
-    document.removeEventListener("keydown",onRedirectKey);
-    if(closePending&&pendingWin&&!pendingWin.closed){ try{ pendingWin.close(); }catch(e){} }
-    pendingWin=null; redirectCleanup=null;
+function leaveTone(el){
+  const cs=getComputedStyle(el);
+  let buttonLike=el.matches("button, .gd-button, .gd-card__btn, .gd-card__action, .gd-section-card__link, input[type='button'], input[type='submit']");
+  if(!buttonLike){
+    const img=cs.backgroundImage && cs.backgroundImage!=="none";
+    const bgm=(cs.backgroundColor||"").match(/rgba?\\(\\s*\\d+\\s*,\\s*\\d+\\s*,\\s*\\d+(?:\\s*,\\s*([\\d.]+))?\\)/);
+    const alpha=bgm ? (bgm[1]==null ? 1 : parseFloat(bgm[1])) : 0;
+    const filled=img || alpha>0.25;
+    const inline=cs.display==="inline" || (cs.display==="inline-block" && (parseFloat(cs.paddingLeft)+parseFloat(cs.paddingRight)<16));
+    buttonLike=filled && !inline;
   }
-  function onCancel(){ cleanupRedirect(true); }
-  function tick(){
-    seconds--;
-    if(seconds<=0){
-      if(pendingWin&&!pendingWin.closed){ try{ pendingWin.location.href=targetUrl; }catch(e){ window.location.href=targetUrl; } }
-      else window.location.href=targetUrl;
-      cleanupRedirect(false); return;
+  if(!buttonLike) return "#ffffff";
+  const stops=(cs.backgroundImage||"").match(/rgba?\\(\\s*(\\d+)\\s*,\\s*(\\d+)\\s*,\\s*(\\d+)/);
+  let src=stops ? [+stops[1], +stops[2], +stops[3]] : null;
+  if(!src){
+    const solid=(cs.backgroundColor||"").match(/rgba?\\(\\s*(\\d+)\\s*,\\s*(\\d+)\\s*,\\s*(\\d+)/);
+    if(solid) src=[+solid[1], +solid[2], +solid[3]];
+  }
+  if(!src) return "#ffffff";
+  return "rgb("+src.map(function(n){ return Math.round(n+(255-n)*0.42); }).join(",")+")";
+}
+const LEAVE_MS=2400;
+function paintLeave(el, onEnd){
+  if(!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+    if(onEnd) setTimeout(onEnd, LEAVE_MS);
+    return;
+  }
+  const prev=el.querySelector(".gd-leave-svg");
+  if(prev) prev.remove();
+  const color=leaveTone(el);
+  const text=color==="#ffffff";
+  
+  const w=el.offsetWidth, h=el.offsetHeight;
+  if(!w || !h){ if(onEnd) setTimeout(onEnd, LEAVE_MS); return; }
+  const radius=parseFloat(getComputedStyle(el).borderRadius)||0;
+  const stroke=3, half=stroke/2;
+  const entry=el.classList.contains("gd-section-card__link");
+  const outside=text ? 6 : (entry ? half : 0);
+  const bw=w+outside*2, bh=h+outside*2;
+  const rx=text ? Math.min(bw, bh)/2 : Math.max(0, Math.min(radius+outside, bw/2, bh/2));
+  const wrap=document.createElement("span");
+  wrap.className="gd-leave-svg";
+  wrap.setAttribute("aria-hidden","true");
+  wrap.style.left=(-(outside+half))+"px";
+  wrap.style.top=(-(outside+half))+"px";
+  wrap.style.right="auto";
+  wrap.style.bottom="auto";
+  wrap.style.width=(bw+stroke)+"px";
+  wrap.style.height=(bh+stroke)+"px";
+  const svg=document.createElementNS("http://www.w3.org/2000/svg","svg");
+  svg.setAttribute("viewBox","0 0 "+(bw+stroke)+" "+(bh+stroke));
+  const rect=document.createElementNS("http://www.w3.org/2000/svg","rect");
+  rect.setAttribute("x",String(half));
+  rect.setAttribute("y",String(half));
+  rect.setAttribute("width",String(bw));
+  rect.setAttribute("height",String(bh));
+  rect.setAttribute("rx",String(rx));
+  rect.setAttribute("fill","none");
+  rect.setAttribute("stroke",color);
+  rect.setAttribute("stroke-width",String(stroke));
+  rect.setAttribute("stroke-linecap","round");
+  rect.setAttribute("stroke-linejoin","round");
+  rect.setAttribute("pathLength","100");
+  rect.setAttribute("stroke-dasharray","18 82");
+  rect.style.filter="drop-shadow(0 0 4px "+color+")";
+  const spin=document.createElementNS("http://www.w3.org/2000/svg","animate");
+  spin.setAttribute("attributeName","stroke-dashoffset");
+  spin.setAttribute("from","0");
+  spin.setAttribute("to","-200");
+  spin.setAttribute("dur","2.4s");
+  spin.setAttribute("fill","freeze");
+  rect.appendChild(spin);
+  if(onEnd) wrap.addEventListener("animationend", onEnd);
+  svg.appendChild(rect);
+  wrap.appendChild(svg);
+  el.appendChild(wrap);
+}
+function startRedirect(targetUrl, sourceEl){
+  if(redirectTimerId) return;
+  let jumped=false;
+  let waitId=0;
+  function go(){
+    if(jumped) return;
+    jumped=true;
+    clearTimeout(waitId);
+    redirectTimerId=null;
+    if(sourceEl){
+      sourceEl.classList.remove("gd-leave");
+      sourceEl.removeAttribute("aria-busy");
+      const mark=sourceEl.querySelector(".gd-leave-svg");
+      if(mark) mark.remove();
     }
-    countdownEl.textContent=seconds;
+    let pending=null;
+    try{ pending=window.open(targetUrl, "_blank"); }catch(e){ pending=null; }
+    if(!pending) window.location.href=targetUrl;
   }
-  redirectTimerId=setInterval(tick,1000);
-  redirectCleanup=()=>cleanupRedirect(true);
-  if(cancelBtn) cancelBtn.addEventListener("click",onCancel);
-  document.addEventListener("keydown",onRedirectKey);
+  if(sourceEl){
+    sourceEl.classList.add("gd-leave");
+    sourceEl.setAttribute("aria-busy","true");
+    paintLeave(sourceEl, go);
+  }
+  waitId=setTimeout(go, LEAVE_MS+80);
+  redirectTimerId=waitId;
 }
 document.addEventListener("click",function(e){
   const anchor=e.target.closest("a");
@@ -2225,9 +2267,10 @@ document.addEventListener("click",function(e){
   if(lower.startsWith("javascript:")||lower.startsWith("data:")){ e.preventDefault(); e.stopPropagation(); return; }
   if(href.startsWith("https://galnavi.top/nav/")||href.startsWith("/nav/")||href.startsWith("#")) return;
   if(!isSafeHttpUrl(href)) return;
+  if(anchor.closest(".gd-below-nav")) return;
   try{ if(new URL(href).hostname===window.location.hostname) return; }catch(_){ return; }
-  e.preventDefault(); e.stopPropagation(); startRedirect(href);
-});
+  e.preventDefault(); e.stopPropagation(); startRedirect(href, anchor);
+}, true);
 try{ if(!localStorage.getItem(LEGEND_KEY)) openModal(); }catch(e){ openModal(); }
 
 </script>
