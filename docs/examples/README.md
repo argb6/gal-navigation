@@ -12,3 +12,4 @@
 | [toast.md](./toast.md) | gd-toast |
 | [filter-bar.md](./filter-bar.md) | gd-orb（右下扩展按钮） |
 | [groundback.md](./groundback.md) | gd-groundback |
+| [footer.md](./footer.md) | gd-footer（页脚五项） |

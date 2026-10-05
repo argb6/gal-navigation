@@ -144,7 +144,7 @@
 | `gd-empty-state` | `display/empty-state/` | 空状态 | 纯 CSS |
 | `gd-table` | `display/table/` | 表格 | 纯 CSS |
 | `gd-brand` | `foundation/brand/` | 品牌标题 | 纯 CSS |
-| `gd-footer` | `foundation/layout/` | 页脚（短页贴底） | `initGdStickyViewport` |
+| `gd-footer` | `foundation/layout/` | 页脚（短页贴底）；五项：主站首页/帮助文档/关于本站/友情链接/联系站长，见 `examples/footer.md` | `initGdStickyViewport` |
 | `gd-groundback` | `foundation/layout/` | 页面背景层 | `--websearch` 主站默认（线条模糊）；`--gold` 殿堂；`--blue` 点阵（预览对比）；`--bleed` 铺满 |
 | `gd-page` / `gd-page-shell` | `foundation/layout/` + `extend/websearch/` | 页面壳 / 主站限宽 | 纯 CSS + `initGdStickyViewport` |
 | `gd-glass` | `foundation/tokens/` | 玻璃工具类 | 纯 CSS |

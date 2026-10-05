@@ -4,6 +4,10 @@
 
 ### 调整
 
+- 页脚新增「友情链接」→ `https://galnavi.top/nav/about/#friend`（位于关于本站与联系站长之间）；7 个 worker/new 页、sandbox、`src/preview` 已同步；组件库新增 `docs/examples/footer.md` 规范五项，`components.md` 页脚行同步
+
+- 删除 `worker/new/friend.js` 与 `worker/new/donate.js`（无对应 sandbox 目录）；关于页友链列表改读 `env.FRIEND_DB` 的 `sites`，不占用导航库 `env.DB`；各页页脚去掉「申请友链」
+
 - **status 已从前端彻底移除**：删除 `worker/new/status.js` 与 `sandbox/status-sandbox/`；INFOFLOW / README / open-source-prep 改为「已删除」口径（不再「非开源本地保留」）
 
 - 帮助页「卡片预览」对齐现网 `gd-card--general`：卡面无标签/双按钮；点击打开示范 `gd-modal--site-card`；标签说明/卡片说明文案同步（点卡弹窗、标签在弹窗内）；同步 sandbox help
