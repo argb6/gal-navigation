@@ -112,4 +112,4 @@ GALNAVI 是面向 ACG 的导航与信息聚合站（[galnavi.top](https://galnav
 
 ## License
 
-见 [LICENSE](LICENSE)。贡献约定见 [CONTRIBUTING.md](CONTRIBUTING.md)。
+本仓库采用 [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) 许可，全文见 [LICENSE](LICENSE)。转载或改编请署名 galnavi.top，并以相同许可发布。贡献约定见 [CONTRIBUTING.md](CONTRIBUTING.md)。
