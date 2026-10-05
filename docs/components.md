@@ -10,8 +10,10 @@
 - **用途**：按钮（主要/次要/危险/胶囊/返回/NSFW 开关）
 - **依赖**：`tokens.css`（色值/圆角/动效）
 - **API**：纯 CSS class；NSFW 开关的「已开启/已关闭」闪示由 `initGdNsfwToggle` 驱动
-- **class**：`gd-button`、`gd-button--primary`、`gd-button--secondary`、`gd-button--danger`、`gd-button--pill`、`gd-button--back`、`gd-button--nsfw`
+- **class**：`gd-button`、`gd-button--primary`、`gd-button--secondary`、`gd-button--danger`、`gd-button--pill`、`gd-button--back`（返回主站 / 返回专题）、`gd-button--back--orange`、`gd-button--nsfw`
 - **事件**：浏览器原生（click/hover/focus/active）
+- **高亮**：hover / focus 可以改背景、边框和亮度，文字颜色保持按钮自身的颜色。全局 `a:hover` 不得盖过 `.gd-button`、`.gd-card__btn`
+- **状态层**：`::before` 使用 `border-radius: inherit`，圆角跟按钮走。轮廓光放开裁切时，直角不会露在按钮外面
 - **禁止**：`<div>` 模拟按钮；硬编码颜色；使用 `gd-control` 旧名
 - **示例**：`<button type="button" class="gd-button gd-button--primary">确认</button>`
 
@@ -32,9 +34,9 @@
 - **用途**：主站卡片 / 友链卡 / 条目卡（殿堂）
 - **依赖**：`tokens.css`（glass 系列）、`gd-tag.css`（标签）、主站卡详情弹窗用 `gd-modal`
 - **API**：纯 CSS；变体 `gd-card--general`、`gd-card--link`、`gd-card--friend`、`gd-card--item`、`gd-card--item--divine/demonic/immortal`
-- **尺寸**：主站卡（`.gd-card--general`）多列宽 `390px`、高 `100px`；仅一列（≤919px，与 websearch 现网一致）宽 `100%`；基类宽 `min(390px, 100%)`；网格见 `gd-card-grid`（`repeat(auto-fill, var(--gd-card-w))`，每行最多 6 张）
+- **尺寸**：主站卡（`.gd-card--general`）多列宽 `390px`、高 `100px`；仅一列（≤919px，与 websearch 现网一致）宽 `100%`；基类宽 `min(390px, 100%)`；网格见 `gd-card-grid`（`repeat(auto-fill, var(--gd-card-w))`，每行最多 6 张）。友链卡（`.gd-card--friend`）宽 `320px`、高 `100px`，窄屏同样固定；描述单行，悬停 `.gd-friend-tip` 显示全文
 - **主站卡**：卡面仅图标 / 标题 / 简介；标签与「介绍详情 / 链接直达」放在点击后的 `gd-modal`（`gd-modal--site-card`）内
-- **条目卡**：必须覆盖 `width: auto; height: auto`（不要继承主站卡固定高，否则游戏名会被按钮挤没）。表面 `::before` 铺与页面同款线条（`screen` + `blur(10.8px)`，不用 `backdrop-filter`）
+- **条目卡**：必须覆盖 `width: auto; height: auto`（不要继承主站卡固定高，否则游戏名会被按钮挤没）。背景与其他卡片相同，用 `--gd-glass-bg`，不铺线条图
 - **class**：`gd-card`、`gd-card--general`、`gd-card__header/icon/title-wrap/title/subtitle/tags/actions/btn`、`gd-card__item-main/body/name/num`、`gd-card__action--site/detail/ext`
 - **事件**：主站卡预览用 `openGdModal`（整卡 click / Enter / Space）；禁止 `div onclick`
 - **禁止**：卡片使用 `backdrop-filter`/`box-shadow`（玻璃约定）；标签不要居中（须 `justify-content: flex-start`）
@@ -43,14 +45,24 @@
 ## gd-modal
 
 - **路径**：`src/feedback/modal/gd-modal.css` + `gd-modal.js` + `gd-publish-card.css`
-- **用途**：通用弹窗系统（彩蛋/倒计时）；发布卡片弹窗已独立为 `gd-publish-card`
+- **用途**：通用弹窗系统（彩蛋）。外链轮廓光见 `gd-leave`。发布卡片弹窗已独立为 `gd-publish-card`
 - **依赖**：`tokens.css`、`gd-button.css`
-- **API**：`bindGdModal(overlay, trigger)`、`openGdModal`、`closeGdModal`、`startGdRedirectCountdown`
-- **class**：`gd-modal-overlay`（+`--nap/--redirect`）、`gd-modal`、`gd-modal__title/body/actions/close`；发布卡片：`gd-publish-card-overlay` + `gd-publish-card`
+- **API**：`bindGdModal(overlay, trigger)`、`openGdModal`、`closeGdModal`
+- **class**：`gd-modal-overlay`（+`--nap`）、`gd-modal`、`gd-modal__title/body/actions/close`；发布卡片：`gd-publish-card-overlay` + `gd-publish-card`
 - **事件**：Esc 关闭、`data-gd-close`、`data-close-on-backdrop`（遮罩点击）、`data-gd-autofocus`
 - **required**：`role="dialog"` + `aria-modal="true"` + `aria-labelledby`
 - **禁止**：直接绑定业务数据到组件；无 `aria-hidden` 初始态
 - **示例**：见 `docs/examples/modal.md`
+
+## gd-leave
+
+- **路径**：`src/feedback/leave/gd-leave.css`。描边由页面脚本画在被点的控件上
+- **用途**：外链离开时的轮廓光。链接直达、文字链接、详情页条目、殿堂卡片按钮。通知条不用
+- **过程**：光从 0 慢慢亮起，沿外轮廓转两圈，结束时慢慢回到 0。转完才打开目标（约 2.4 秒）。减少动效时不画光，仍等同样时长
+- **文字链接**：白色轮廓，转角是圆角（胶囊）。字本身不发光
+- **详情条目**：光贴在 `.gd-section-card__link` 的外轮廓，不画在条目里面
+- **class**：`gd-leave`、`gd-leave-svg`
+- **禁止**：通知条（`.gd-below-nav`）和页脚不要加这套光
 
 ## gd-publish-card
 
@@ -71,8 +83,16 @@
 - **API**：`initGdNavLinks`（频道切换）、`initGdNavCounts`（计数）、`initGdCatNav`（分类 tab）、`initGdNsfwToggle`（桌面盾牌 + 抽屉 NSFW）
 - **class**：`gd-navbar`、`gd-navbar__inner/logo/links/link/search/hamburger/right/nsfw`、`gd-navbar-drawer`、`gd-navbar-drawer__footer/nsfw`（叠加 `gd-button gd-button--pill gd-button--nsfw`）、`gd-cat-*`
 - **事件**：抽屉（汉堡点击/Esc/遮罩/链接点击）、频道点击切换 `is-active`
+- **顶栏**：底色 `--gd-chrome-bar-bg`，不用 `backdrop-filter`。通知条仍用 `--gd-glass-nav-blur`
 - **禁止**：`aria-expanded` 不更新；徽章另写样式（须复用 `gd-badge`）
 - **示例**：见 `docs/examples/navbar.md`
+
+## gd-pager
+
+- **路径**：`src/navigation/pager/gd-pager.css`
+- **用途**：列表翻页。栏目页和首页搜索每一组最多 12 张卡，有卡片就显示页码。首页的站点推荐和最近更新不显示页码
+- **API**：纯 CSS + 页面拼的按钮。`nav.gd-pager[data-grid]`，按钮 `.gd-pager__btn[data-page]`，当前页 `aria-current="page"`，省略号 `.gd-pager__gap`
+- **禁止**：按钮用 `div`；翻页不要带动画位移
 
 ## gd-search
 
@@ -134,6 +154,15 @@
 - **加载**：首屏不要 `hidden` 整段；用 `.gd-hero.is-loading` 盖骨架，图预加载完再去掉骨架与 `is-loading`
 - **禁止**：slide 放 `<img>`（须 background-image）
 - **示例**：见 `docs/examples/carousel.md`
+
+## gd-empty-state
+
+- **路径**：`src/display/empty-state/gd-empty-state.css`
+- **用途**：列表或搜索没有结果时的空状态
+- **依赖**：`tokens.css`
+- **class**：`gd-empty-state`、`gd-empty-state__title`、`gd-empty-state__desc`、`gd-empty-state__actions`（可选 `gd-empty-state__icon`）
+- **主站**：分类空列表标题「暂无结果」，说明「这个分类暂时没有内容。」；搜索无结果说明「换个关键词试试，或清空筛选条件。」不放放大镜图标
+- **示例**：见 `docs/examples/empty-state.md`
 
 ## 其它组件速览
 

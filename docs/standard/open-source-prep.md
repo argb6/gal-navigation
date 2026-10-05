@@ -76,7 +76,7 @@ gal-navigation/
 下列针对旧「单仓含 backup/sandbox-freeze/根 worker 旧文件」的整改表，**在 grokbot 拆分后不再适用**，仅作历史说明：
 
 - ~~删除 `backup/`、各 `sandbox/*-freeze/`、根目录旧 `worker/*.js`~~（路径不在部署区）
-- ~~把 toml 从旧 `worker/help.js` 等改到 `worker/new`~~（**已完成**：现网 `wrangler/*.toml` 的 `main` 均已是 `../worker/new/<页>.js`，且已有 `friend.toml`）
+- ~~把 toml 从旧 `worker/help.js` 等改到 `worker/new`~~（**已完成**：现网 `wrangler/*.toml` 的 `main` 均已是 `../worker/new/<页>.js`。`friend.toml`、`donate.toml` 已随对应页面删除）
 - ~~在单体仓根目录拼一整份开源树~~（改为维护 `gal-navigation/` + 前端交付）
 
 若在旧笔记里再看到上述待办，以本文第二节为准。

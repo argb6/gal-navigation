@@ -26,10 +26,10 @@ related:
 
 | class | 用途 | 现网页面 |
 |---|---|---|
-| `gd-groundback--websearch` | 蓝底 + R2 线条（`screen` + `filter: blur(10.8px)`，`::before`） | index / websearch / detail / about / help / friend / donate / status / error |
+| `gd-groundback--websearch` | 蓝底 + R2 线条（`screen` + `filter: blur(10.8px)`，`::before`） | index / websearch / detail / about / help / friend / donate / error |
 | `gd-groundback--gold` | 金晕在 `::before`；同款线条在 `::after` | 仅 palace |
 | `gd-groundback--blue` | 点阵网格 | 预览对比；现网页不用作底 |
-| `gd-groundback--bleed` | 铺满视口 | 需要时再加；预览盒内不要加 |
+| `gd-groundback--bleed` | 铺满视口（`inset: 0`，禁止 `100vw`） | 需要时再加；预览盒内不要加 |
 
 图案：`https://assets.galnavi.top/线条图案.png`。模糊 **10.8px**（12 × 0.9），透明度 `0.16`。
 
@@ -39,6 +39,9 @@ related:
 
 > [!warning] 不要盖住
 > `body` 必须透明，线条才露得出。详情页曾经把层设成 `-1` 又给 body 上实色，线条画在底色后面。预览页不要把 `--blue` 点阵当成现网默认。
+
+> [!warning] 不要 100vw
+> `position: fixed` 铺满用 `inset: 0`。`width: 100vw` 含滚动条宽度，全屏刷新会把右下 [[gd-orb]] 裁掉。
 
 > [!tip] 与卡片红线
 > 线条模糊是装饰层 `filter`，不是卡片禁止的 `backdrop-filter`。见 [[玻璃表面系统]]。
@@ -50,6 +53,6 @@ related:
 ## Related
 
 - [[玻璃表面系统]] — `filter` 与 `backdrop-filter`
-- [[gd-card]] — 条目卡表面同款线条
+- [[gd-card]] — 条目卡不用这张线条图
 - [[gd-footer]] — 总览页必须压过 `z-index: 0`
 - [[ChangeLog-线条背景与快捷栏]] — 全站铺开

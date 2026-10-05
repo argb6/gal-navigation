@@ -111,6 +111,10 @@
   color: var(--gd-color-on-primary);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
+.gd-card__btn:hover,
+.gd-card__btn:focus-visible {
+  color: var(--gd-color-on-primary);
+}
 .gd-card__btn--detail {
   background: linear-gradient(135deg, var(--gd-gradient-primary-a), var(--gd-gradient-primary-b));
   box-shadow: none;
@@ -140,13 +144,55 @@
   box-shadow: none;
 }
 
-/* 友链 */
-.gd-card--friend { width: auto; height: auto; max-width: 320px; }
+/* 友链：320×100；描述单行，悬停 .gd-friend-tip 显示全文 */
+.gd-card--friend {
+  width: 320px;
+  height: 100px;
+  max-width: 320px;
+  overflow: visible;
+  justify-content: center;
+}
 .gd-card--friend .gd-card__icon { width: 50px; height: 50px; }
-.gd-card--friend .gd-card__subtitle { min-height: 0; }
+.gd-card--friend .gd-card__subtitle {
+  min-height: 0;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.gd-card--friend .gd-friend-tip {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  z-index: 20;
+  width: max-content;
+  max-width: 280px;
+  padding: 8px 12px;
+  border-radius: var(--gd-shape-corner-extra-small);
+  background: var(--gd-color-overlay-float);
+  border: 1px solid rgba(var(--gd-color-white-rgb), 0.12);
+  color: var(--gd-color-on-surface);
+  font-size: var(--gd-type-body-small-size);
+  line-height: 1.4;
+  white-space: normal;
+  text-align: left;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(4px);
+  transition:
+    opacity var(--gd-motion-duration-short4) var(--gd-motion-easing-standard),
+    transform var(--gd-motion-duration-short4) var(--gd-motion-easing-standard);
+}
+.gd-card--friend:hover,
+.gd-card--friend:focus-visible { z-index: 5; }
+.gd-card--friend:hover .gd-friend-tip,
+.gd-card--friend:focus-visible .gd-friend-tip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
 .gd-friend-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 320px));
+  grid-template-columns: repeat(auto-fill, 320px);
   gap: 18px;
   justify-content: start;
 }
@@ -161,37 +207,18 @@
   height: auto;
   padding: 14px 16px;
   border-radius: 14px;
-  background: rgba(var(--gd-color-white-rgb), 0.035);
+  background: var(--gd-glass-bg);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  border: 1px solid rgba(var(--gd-color-white-rgb), 0.08);
+  border: 1px solid var(--gd-glass-border);
   box-shadow: none;
   transform: none;
   min-width: 0;
   max-width: 100%;
   overflow: hidden;
-  isolation: isolate;
   transition:
     background 0.2s var(--gd-motion-easing-standard),
     border-color 0.2s var(--gd-motion-easing-standard);
-}
-.gd-card--item::before {
-  content: "";
-  position: absolute;
-  inset: -24px;
-  z-index: 0;
-  pointer-events: none;
-  background-image: url("https://assets.galnavi.top/%E7%BA%BF%E6%9D%A1%E5%9B%BE%E6%A1%88.png");
-  background-repeat: repeat;
-  background-position: 0 0;
-  background-size: auto;
-  opacity: 0.16;
-  mix-blend-mode: screen;
-  filter: blur(10.8px);
-}
-.gd-card--item > * {
-  position: relative;
-  z-index: 1;
 }
 .gd-card--item--demonic {
   --gd-comp-item-color: #ef4444;
@@ -204,7 +231,7 @@
   --gd-comp-item-color-rgb: 16, 185, 129;
 }
 .gd-card--item:hover {
-  background: rgba(var(--gd-color-white-rgb), 0.05);
+  background: var(--gd-glass-bg-hover);
   border-color: rgba(var(--gd-comp-item-color-rgb), 0.28);
   box-shadow: none;
   transform: none;
@@ -361,9 +388,10 @@
   .gd-card__action { min-height: 32px; padding: 0 9px; }
 }
 
-/* 非主站卡：窄屏铺满（friend/item 自带 width:auto，不受影响） */
+/* 非主站卡：窄屏铺满。友链卡在后面改回 320×100 */
 @media (max-width: 640px) {
   .gd-card { width: 100%; }
+  .gd-card--friend { width: 320px; height: 100px; max-width: 320px; }
 }
 .gd-item-list {
   display: grid;

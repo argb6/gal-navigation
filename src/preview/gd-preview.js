@@ -98,31 +98,6 @@
     }
     trapFocus(top.el, e);
   });
-  function startGdRedirectCountdown(overlay, seconds = 3, onDone) {
-    const el = typeof overlay === "string" ? document.querySelector(overlay) : overlay;
-    if (!el) return () => {
-    };
-    openGdModal(el);
-    const countEl = el.querySelector("[data-gd-countdown]");
-    let left = seconds;
-    if (countEl) countEl.textContent = String(left);
-    const id = setInterval(() => {
-      left -= 1;
-      if (countEl) countEl.textContent = String(Math.max(left, 0));
-      if (left <= 0) {
-        clearInterval(id);
-        closeGdModal(el);
-        onDone == null ? void 0 : onDone();
-      }
-    }, 1e3);
-    const cancel = el.querySelector("[data-gd-close]");
-    const onCancel = () => {
-      clearInterval(id);
-      closeGdModal(el);
-    };
-    cancel == null ? void 0 : cancel.addEventListener("click", onCancel, { once: true });
-    return () => clearInterval(id);
-  }
   var GdModal = class extends HTMLElement {
     connectedCallback() {
       bindModalControls(this);
@@ -1097,13 +1072,73 @@ var DEFAULT_HELP =
       e.stopPropagation();
     });
   });
-  var btnRedirect = document.getElementById("btnRedirect");
-  if (btnRedirect) {
-    btnRedirect.addEventListener("click", function(e) {
-      startGdRedirectCountdown("#redirectModal", 3);
-      e.currentTarget.blur();
+  document.querySelectorAll("[data-gd-leave-demo]").forEach(function(el) {
+    el.addEventListener("click", function(e) {
+      e.preventDefault();
+      var prev = el.querySelector(".gd-leave-svg");
+      if (prev) prev.remove();
+      el.classList.add("gd-leave");
+      var cs = getComputedStyle(el);
+      var buttonLike = el.matches("button, .gd-button, .gd-card__btn, .gd-card__action, .gd-section-card__link");
+      var color = "#ffffff";
+      if (buttonLike) {
+        var stops = (cs.backgroundImage || "").match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+        var src = stops ? [+stops[1], +stops[2], +stops[3]] : null;
+        if (!src) {
+          var solid = (cs.backgroundColor || "").match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+          if (solid) src = [+solid[1], +solid[2], +solid[3]];
+        }
+        if (src) color = "rgb(" + src.map(function(n) { return Math.round(n + (255 - n) * 0.42); }).join(",") + ")";
+      }
+      var text = color === "#ffffff";
+      var w = el.offsetWidth, h = el.offsetHeight;
+      var radius = parseFloat(cs.borderRadius) || 0;
+      var stroke = 3, half = stroke / 2;
+      var entry = el.classList.contains("gd-section-card__link");
+      var outside = text ? 6 : (entry ? half : 0);
+      var bw = w + outside * 2, bh = h + outside * 2;
+      var rx = text ? Math.min(bw, bh) / 2 : Math.max(0, Math.min(radius + outside, bw / 2, bh / 2));
+      var wrap = document.createElement("span");
+      wrap.className = "gd-leave-svg";
+      wrap.setAttribute("aria-hidden", "true");
+      wrap.style.left = (-(outside + half)) + "px";
+      wrap.style.top = (-(outside + half)) + "px";
+      wrap.style.right = "auto";
+      wrap.style.bottom = "auto";
+      wrap.style.width = (bw + stroke) + "px";
+      wrap.style.height = (bh + stroke) + "px";
+      var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svg.setAttribute("viewBox", "0 0 " + (bw + stroke) + " " + (bh + stroke));
+      var rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+      rect.setAttribute("x", String(half));
+      rect.setAttribute("y", String(half));
+      rect.setAttribute("width", String(bw));
+      rect.setAttribute("height", String(bh));
+      rect.setAttribute("rx", String(rx));
+      rect.setAttribute("fill", "none");
+      rect.setAttribute("stroke", color);
+      rect.setAttribute("stroke-width", String(stroke));
+      rect.setAttribute("stroke-linecap", "round");
+      rect.setAttribute("stroke-linejoin", "round");
+      rect.setAttribute("pathLength", "100");
+      rect.setAttribute("stroke-dasharray", "18 82");
+      rect.style.filter = "drop-shadow(0 0 4px " + color + ")";
+      var spin = document.createElementNS("http://www.w3.org/2000/svg", "animate");
+      spin.setAttribute("attributeName", "stroke-dashoffset");
+      spin.setAttribute("from", "0");
+      spin.setAttribute("to", "-200");
+      spin.setAttribute("dur", "2.4s");
+      spin.setAttribute("fill", "freeze");
+      rect.appendChild(spin);
+      svg.appendChild(rect);
+      wrap.appendChild(svg);
+      el.appendChild(wrap);
+      setTimeout(function() {
+        el.classList.remove("gd-leave");
+        if (wrap.parentNode) wrap.remove();
+      }, 2400);
     });
-  }
+  });
   var btnSkeleton = document.getElementById("btnSkeleton");
   if (btnSkeleton) {
     btnSkeleton.addEventListener("click", function() {

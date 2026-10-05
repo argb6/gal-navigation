@@ -1,5 +1,7 @@
 ﻿# GalNavi gd 组件库 · 总说明
 
+当前版本 **v0.2.1**（2026-10-05）。版本号在 [`gd.config.json`](./gd.config.json)，变更在 [`CHANGELOG.md`](./CHANGELOG.md)。
+
 > **维护方：前端。** 与 `src/` 组件库同仓维护；改组件时同步改 docs。失效案例写入 `docs/standard/失效断链清单.md` 与 `kb/.../Problem/`。
 
 

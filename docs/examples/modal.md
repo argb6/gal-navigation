@@ -39,7 +39,7 @@ bindGdModal("#myModal", "#openBtn");
 - **背景 inert**：打开时背景不可交互、读屏不可达
 - **焦点返回**：关闭后焦点回到触发按钮
 - **遮罩点击**：加 `data-close-on-backdrop` 属性
-- **倒计时**：`startGdRedirectCountdown("#overlay", 3)`
+- **外链离开**：见 `gd-leave`。光转完才跳转。弹窗本身不负责这套光。
 
 ## 变体
 
@@ -48,7 +48,7 @@ bindGdModal("#myModal", "#openBtn");
 | 普通弹窗 | `gd-modal` |
 | 纳普彩蛋 | `gd-modal gd-modal--nap` |
 | 发布卡片 | `gd-publish-card` |
-| 跳转倒计时 | `gd-redirect-ring/text/countdown` |
+| 外链离开 | 独立组件 `gd-leave`，不挂在弹窗上 |
 | 欢迎弹窗（主站） | `#welcomeModal`：`gd-modal-overlay` + `gd-modal`；「弹窗」按钮可再次打开 |
 
 欢迎窗文案：介绍句下一行居中加粗「✨ 详情：新手优先看卡片详情✨」；帮助/关于链接居中。首访用 `localStorage` 键 `galnavi-welcome-seen`。

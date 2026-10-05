@@ -29,7 +29,7 @@
 |------|-------|------|------|
 | 卡片 | `.gd-glass` | 无 | 内容表面（禁止 backdrop-filter） |
 | 浮层 | `.gd-glass--blur` | blur(18px) | 弹窗、遮罩 |
-| 顶栏 | `.gd-glass--strong` | blur(20px) | 导航栏 |
+| 顶栏 | `--gd-chrome-bar-bg` | 无 | 导航栏不用高斯模糊 |
 
 ## 冻结数值
 
@@ -45,8 +45,8 @@
 ## 影响
 
 - 卡片类**禁止** `backdrop-filter` / `box-shadow`
-- 只有浮层/弹窗/导航栏可用 `backdrop-filter` 类 blur
-- 页面/条目卡线条图案用装饰层 `filter: blur(10.8px)`（模糊图案本身，不是背后内容），与上条不冲突
+- 只有浮层/弹窗可用 `backdrop-filter` 类 blur。导航栏不用
+- 页面背景线条图案用装饰层 `filter: blur(10.8px)`（模糊图案本身，不是背后内容），与上条不冲突。条目卡不铺线条图
 - 新增组件必须使用 `--gd-glass-bg` + `--gd-glass-border`
 - `--gd-glass-*` 变量不可修改
 

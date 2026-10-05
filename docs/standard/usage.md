@@ -29,11 +29,13 @@
 ### 玻璃
 
 - 卡片类**不用** `backdrop-filter` / `box-shadow`；遮罩/浮层按现网数值使用（完整约定见 [`tokens.md`](./tokens.md)）
-- 页面/条目卡上的线条图案用装饰层 `filter: blur(10.8px)`（不是 `backdrop-filter`）
+- 页面背景的线条图案用装饰层 `filter: blur(10.8px)`（不是 `backdrop-filter`）。殿堂条目卡不铺这张图，背景与其他卡片同为 `--gd-glass-bg`
 
 ### 交互
 
 - 必须真实 `<button>` 或 `<a href>`，禁止 `div onclick`
+- 按钮高亮不改文字颜色。背景、边框、亮度可以变
+- 没有结果时用 `gd-empty-state`：标题「暂无结果」加一句说明，不放放大镜图标
 - 预览页按钮一律 `<button type="button">`，不绑链接
 
 ## 新组件判断标准
@@ -55,7 +57,7 @@
 
 ## 返回主站按钮（gd-button--back）
 
-返回类按钮用 `<a>` + 组件类：`gd-button gd-button--back`（普通），殿堂橙变体 `gd-button gd-button--back gd-button--back--orange`；固定视口左上角时追加 `gd-back-fab`（页面级定位类）。
+返回类按钮用 `<a>` 或 `<button>` + 组件类：`gd-button gd-button--back`。文案可以是「返回主站」或「返回专题」，样式同一套。殿堂橙变体 `gd-button gd-button--back gd-button--back--orange`。固定视口左上角时追加 `gd-back-fab`（页面级定位类）。
 
 - **显示**：电脑端与手机端**均显示**，禁止媒体查询隐藏（旧 `.gd-back-fab { display: none }` 已废除）
 - **大小**：桌面高 `40px`；移动端（≤640px）高 `44px`（触控目标 ≥44px 推荐）

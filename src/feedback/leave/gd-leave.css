@@ -1,0 +1,29 @@
+/* gd-leave — 外链离开时，轮廓光沿边跑两圈。先从 0 亮起，结束时回到 0，转完才跳转。 */
+
+.gd-leave {
+  position: relative;
+  z-index: 3;
+  overflow: visible;
+}
+.gd-leave-svg {
+  position: absolute;
+  pointer-events: none;
+  z-index: 4;
+  overflow: visible;
+  animation: gd-leave-fade 2.4s linear both;
+}
+.gd-leave-svg svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+@keyframes gd-leave-fade {
+  0% { opacity: 0; }
+  18% { opacity: 1; }
+  82% { opacity: 1; }
+  100% { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gd-leave-svg { animation: none; }
+}

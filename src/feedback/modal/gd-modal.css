@@ -89,41 +89,6 @@
   flex-direction: row;
 }
 
-/* redirect variant */
-.gd-modal-overlay--redirect {
-  flex-direction: column;
-  background: var(--gd-color-overlay-strong);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  z-index: 9999;
-}
-.gd-redirect-ring {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  border: 3px solid rgba(var(--gd-color-primary-rgb), 0.15);
-  border-top-color: var(--gd-color-primary);
-  animation: gd-redirect-spin 0.8s linear infinite;
-  margin-bottom: 32px;
-}
-@keyframes gd-redirect-spin { to { transform: rotate(360deg); } }
-.gd-redirect-text {
-  font-size: var(--gd-type-title-xxl-size);
-  font-weight: var(--gd-weight-semibold);
-  color: var(--gd-color-on-surface);
-  margin-bottom: 12px;
-}
-.gd-redirect-countdown {
-  font-size: var(--gd-type-display-medium-size);
-  font-weight: var(--gd-weight-extrabold);
-  background: linear-gradient(135deg, var(--gd-gradient-title-a) 0%, var(--gd-gradient-title-b) 30%, var(--gd-gradient-title-c) 60%, var(--gd-gradient-title-d) 100%);
-  background-size: 200% auto;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: gd-brand-flow 3s ease-in-out infinite;
-}
-
 /* nap variant */
 .gd-modal-overlay--nap {
   background: var(--gd-color-overlay);
@@ -176,8 +141,3 @@
   color: var(--gd-color-on-surface);
 }
 .gd-modal__close:focus-visible { outline: 2px solid var(--gd-color-primary); outline-offset: 2px; }
-
-@media (prefers-reduced-motion: reduce) {
-  .gd-redirect-ring,
-  .gd-redirect-countdown { animation: none; }
-}

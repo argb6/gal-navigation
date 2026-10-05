@@ -1,0 +1,50 @@
+/* gd-pager — 列表翻页。一页最多由页面决定（主站 12） */
+
+.gd-pager {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 18px 0 4px;
+}
+.gd-pager__btn {
+  box-sizing: border-box;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 1px solid var(--gd-glass-border);
+  background: var(--gd-glass-bg);
+  color: var(--gd-color-on-surface);
+  font-family: inherit;
+  font-size: var(--gd-type-label-large-size);
+  font-weight: var(--gd-weight-semibold);
+  cursor: pointer;
+}
+.gd-pager__btn:hover:not(:disabled) {
+  background: var(--gd-glass-bg-hover);
+  border-color: var(--gd-color-border-hover);
+  filter: brightness(1.05);
+}
+.gd-pager__btn:focus-visible {
+  outline: 2px solid var(--gd-color-primary);
+  outline-offset: 2px;
+}
+.gd-pager__btn[aria-current="page"] {
+  border-color: var(--gd-color-primary);
+  color: var(--gd-color-link);
+}
+.gd-pager__btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.gd-pager__gap {
+  min-width: 24px;
+  text-align: center;
+  color: var(--gd-color-on-surface-variant);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gd-pager__btn { transition: none; }
+}

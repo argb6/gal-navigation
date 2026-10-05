@@ -91,8 +91,12 @@
   }
 }
 
-/* 主站顶栏与通知/推荐条同一层毛玻璃（页面可给 .gd-navbar 加 .gd-navbar--led） */
-.gd-navbar--led,
+/* 顶栏不模糊。通知/推荐条仍用毛玻璃 */
+.gd-navbar--led {
+  background: var(--gd-chrome-bar-bg);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
 .gd-below-nav {
   background: var(--gd-chrome-bar-bg);
   backdrop-filter: var(--gd-glass-nav-blur);

@@ -107,7 +107,7 @@
 | `--gd-glass-border` | rgba(255,255,255,.14) | 卡片边框 |
 | `--gd-glass-blur` | blur(18px) saturate(165%) | 浮层模糊 |
 | `--gd-glass-nav-bg` | rgba(8,12,24,.75) | 强玻璃工具类底（`.gd-glass--strong`） |
-| `--gd-glass-nav-blur` | blur(20px) saturate(180%) | 顶栏/强玻璃模糊 |
+| `--gd-glass-nav-blur` | blur(20px) saturate(180%) | 强玻璃工具类。顶栏不用 |
 | `--gd-chrome-bar-bg` | rgba(18,22,40,.92) | 现网顶栏 + 通知条底 |
 
 ## 链接 / 标签 / 徽标
@@ -141,4 +141,4 @@
 - 卡片类（card / detail / badge）：**只用** `--gd-glass-bg/border`，**不用** `backdrop-filter` 和阴影
 - 遮罩/浮层（modal / toast）：可用 `--gd-glass-blur` / nav 系列
 - 工具类：`gd-glass`（无模糊）、`gd-glass--blur`（浮层）、`gd-glass--strong`（强玻璃）。现网顶栏底用 `--gd-chrome-bar-bg`，不是只套 `.gd-glass--strong`
-- 线条图案（页面背景 / 条目卡表面）不是玻璃 token：R2 URL `https://assets.galnavi.top/线条图案.png`，装饰层 `filter: blur(10.8px)` + `mix-blend-mode: screen`。这不是 `backdrop-filter`，卡片红线仍然成立
+- 线条图案只铺在页面背景上，不是玻璃 token：R2 URL `https://assets.galnavi.top/线条图案.png`，装饰层 `filter: blur(10.8px)` + `mix-blend-mode: screen`。殿堂条目卡不铺这张图，背景用 `--gd-glass-bg`。这不是 `backdrop-filter`，卡片红线仍然成立

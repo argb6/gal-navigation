@@ -147,32 +147,6 @@ document.addEventListener("keydown", (e) => {
   trapFocus(top.el, e);
 });
 
-/** redirect countdown display only — jump is host's job */
-export function startGdRedirectCountdown(overlay, seconds = 3, onDone) {
-  const el = typeof overlay === "string" ? document.querySelector(overlay) : overlay;
-  if (!el) return () => {};
-  openGdModal(el);
-  const countEl = el.querySelector("[data-gd-countdown]");
-  let left = seconds;
-  if (countEl) countEl.textContent = String(left);
-  const id = setInterval(() => {
-    left -= 1;
-    if (countEl) countEl.textContent = String(Math.max(left, 0));
-    if (left <= 0) {
-      clearInterval(id);
-      closeGdModal(el);
-      onDone?.();
-    }
-  }, 1000);
-  const cancel = el.querySelector("[data-gd-close]");
-  const onCancel = () => {
-    clearInterval(id);
-    closeGdModal(el);
-  };
-  cancel?.addEventListener("click", onCancel, { once: true });
-  return () => clearInterval(id);
-}
-
 class GdModal extends HTMLElement {
   connectedCallback() {
     bindModalControls(this);

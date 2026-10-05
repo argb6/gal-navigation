@@ -5,8 +5,8 @@
   z-index: 100;
   height: var(--gd-nav-height);
   background: var(--gd-chrome-bar-bg);
-  backdrop-filter: var(--gd-glass-nav-blur);
-  -webkit-backdrop-filter: var(--gd-glass-nav-blur);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   border-bottom: none;
   display: flex;
   align-items: center;

@@ -9,7 +9,7 @@ tags:
   - component-library
   - moc
 date: 2026-08-14
-updated: 2026-09-01
+updated: 2026-10-05
 type: component
 category: Component
 status: active
@@ -26,7 +26,7 @@ related:
 # GD 组件库
 
 > [!abstract] Summary
-> GalNavi Design（gd）入口。本篇只讲结构和红线。变量 / 玻璃 / 状态层 / 自定义元素在 `体系/`；一篇一组件在 `组件/`。当前 v1.5.2。
+> GalNavi Design（gd）入口。本篇只讲结构和红线。变量 / 玻璃 / 状态层 / 自定义元素在 `体系/`；一篇一组件在 `组件/`。当前 v0.2.1。
 
 ## 怎么读
 
@@ -36,9 +36,9 @@ related:
 |--------|--------|------|
 | 本篇 | 七组结构、命名、禁止项 | [[GD 组件库]] |
 | `体系/` | 全库共用的规则，不是某个 class | [[Design Token]] · [[玻璃表面系统]] · [[状态层模式]] · [[Web Component]] |
-| `组件/` | 现网还在用的 `gd-*`，一篇一事 | [[gd-navbar]] [[gd-search]] [[gd-button]] [[gd-card]] [[gd-modal]] [[gd-footer]] [[gd-groundback]] [[gd-hero]] [[gd-orb]] |
+| `组件/` | 现网还在用的 `gd-*`，一篇一事 | [[gd-navbar]] [[gd-search]] [[gd-pager]] [[gd-button]] [[gd-card]] [[gd-empty-state]] [[gd-modal]] [[gd-leave]] [[gd-footer]] [[gd-groundback]] [[gd-hero]] [[gd-orb]] |
 
-活示例：`src/preview/index.html`（2026年9月1日 · v1.5.2）。文档：`docs/README.md`。
+活示例：`src/preview/index.html`（2026年10月5日 · v0.2.1）。文档：`docs/README.md`。
 
 ## Definition
 
@@ -53,13 +53,13 @@ related:
 |------|------|----------|
 | foundation | `src/foundation/` | [[Design Token]] [[玻璃表面系统]] [[gd-button]] [[gd-footer]] [[gd-groundback]] |
 | navigation | `src/navigation/` | [[gd-navbar]] [[gd-search]] |
-| display | `src/display/` | [[gd-card]] [[gd-hero]] |
-| feedback | `src/feedback/` | [[gd-modal]] |
+| display | `src/display/` | [[gd-card]] [[gd-empty-state]] [[gd-hero]] |
+| feedback | `src/feedback/` | [[gd-modal]] [[gd-leave]] |
 | extend | `src/extend/` | [[gd-orb]]（源文件在 websearch，有页脚的页面都用）；detail 反向缩放、palace 条目卡无独立笔记 |
 | runtime | `src/runtime/` | [[Web Component]] |
 | preview | `src/preview/` | 组件总览页 |
 
-另：主站通知跑马灯 `.gd-notice-led`，挂在 `.gd-below-nav` / `.gd-navbar--led`。
+另：主站通知跑马灯 `.gd-notice-led`，挂在 `.gd-below-nav` / `.gd-navbar--led`。文案链到闲聊群、帮助文档、更多标签、了解本站。`initGdNoticeLed` 先铺满再复制整段，用 `--gd-notice-led-shift` 平移，一轮结束不闪。通知下不再排推荐标签。
 
 ## 组件（现网）
 
@@ -67,9 +67,12 @@ related:
 |------|--------|
 | [[gd-navbar]] | 顶栏 / 汉堡 / 抽屉 / NSFW 红绿 |
 | [[gd-search]] | 顶栏固定 300px；只有 `expandable` 才变宽 |
+| [[gd-pager]] | 主站一页 12 张卡；不足一页也显示上一页 / 页码 / 下一页 |
+| [[gd-empty-state]] | 空列表：暂无结果 + 一句说明，不放放大镜 |
 | [[gd-button]] | primary / pill / detail / link / nsfw |
-| [[gd-card]] | 主站 420×212；条目卡必须 `auto` |
+| [[gd-card]] | 主站卡多列 390×100、仅一列宽 100%（基类 min(390px,100%)）；条目卡必须 `auto` |
 | [[gd-modal]] | 欢迎窗由 [[gd-orb]]「弹窗」打开 |
+| [[gd-leave]] | 外链轮廓光。转完才跳转。通知条不用 |
 | [[gd-footer]] | `z-index: 1` + `margin-top: auto`，压过背景 |
 | [[gd-groundback]] | `--websearch` 全站默认；`--gold` 仅殿堂 |
 | [[gd-hero]] | 首屏骨架，不要整段 `hidden` |
@@ -100,3 +103,4 @@ related:
 - [[Decision-MD3 对齐口径]] — 对齐语义不换皮
 - [[Decision-玻璃拟态保留]] — 玻璃数值冻结
 - [[记录索引]] — ADR / 示例 / CHANGELOG 路径
+- [[ChangeLog-gd v0.2.1]] — 当前组件库版本

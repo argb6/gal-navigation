@@ -44,7 +44,6 @@ related:
 
 - `openGdModal(overlay)` / `closeGdModal(overlay)`
 - `bindGdModal(selector, triggerSelector)`
-- `startGdRedirectCountdown(overlay, seconds, onDone)`
 
 ## gd-navbar API
 

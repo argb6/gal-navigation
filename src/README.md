@@ -23,21 +23,6 @@ gd 保留 GALNAVI 现有的玻璃风格。半透明表面、背景光晕、边�
 
 为避免样式互相污染，组件 class 统一使用 `gd-` 前缀，设计变量统一使用 `--gd-` 前缀。组件内部也避免使用 `.title`、`.active` 这类过宽的选择器。玻璃边界与动效约定见 `docs/standard/tokens.md`、`docs/standard/usage.md`。
 
-## 与 Google Material Design 3 的关系
-
-gd 的部分设计要素参考并对齐 Google Material Design 3（MD3），对齐的是原则、语义和交互要求，不是把 GALNAVI 换成 Material 默认主题，也不是引入 MDC Web 组件库。
-
-目前参考的内容包括：
-
-- 颜色角色：`primary`、`on-primary`、`surface`、`on-surface`、`outline`、`error`；
-- 形状语义：`none`、`extra-small`、`small`、`medium`、`large`、`full`；
-- 状态层：hover、focus、pressed、disabled；
-- 动效语义：短时、中时、标准和强调缓动；
-- 自适应思路：根据屏幕宽度调整顶栏、抽屉和内容布局；
-- 无障碍底线：真实按钮或链接、可见焦点、键盘操作、ARIA 状态和足够的触控热区。
-
-对应的 CSS 变量位于 [`foundation/tokens/tokens.css`](./foundation/tokens/tokens.css)。变量名称参考 MD3 的角色语义，具体色值和玻璃参数仍然属于 GALNAVI 自己的设计。
-
 ## 目录结构
 
 组件按用途分为五个分组（参考 Ant Design 分类法）：**foundation**（基础）、**navigation**（导航）、**display**（展示）、**feedback**（反馈）、**extend**（页面扩展）；另有 **runtime**（组件注册入口）与 **preview**（预览页）。维护文档在项目根 `docs/`，版本信息在项目根 `docs/gd.config.json`。
@@ -61,13 +46,14 @@ gd 的部分设计要素参考并对齐 Google Material Design 3（MD3），对�
 │  │
 │  ├─ navigation/ 导航
 │  │  ├─ navbar/               gd-navbar.css/js
-│  │  └─ search/               gd-search.css/js
+│  │  ├─ search/               gd-search.css/js
+│  │  └─ pager/                gd-pager.css
 │  │
 │  ├─ display/ 展示
 │  │  ├─ card/  tag/  badge/  table/  empty-state/  hero-carousel/
 │  │
 │  ├─ feedback/ 反馈
-│  │  ├─ modal/  toast/  tooltip/  skeleton/
+│  │  ├─ modal/  toast/  tooltip/  skeleton/  leave/
 │  │
 │  ├─ extend/ 页面扩展（按来源 Worker 页面归类）
 │  │  ├─ overview/   总览页壳层（虚线分割、索引）✓
@@ -106,6 +92,7 @@ gd 的部分设计要素参考并对齐 Google Material Design 3（MD3），对�
 <article class="gd-card gd-card--friend">
   <h2 class="gd-card__title">示例友链</h2>
   <p class="gd-card__subtitle">友链说明</p>
+  <span class="gd-friend-tip" role="tooltip">友链说明</span>
 </article>
 
 <button type="button" class="gd-button gd-button--primary">
@@ -134,7 +121,7 @@ gd 的部分设计要素参考并对齐 Google Material Design 3（MD3），对�
 
 自定义元素只处理通用行为：
 
-- `gd-modal` 处理开闭、Esc、焦点、遮罩和倒计时展示；
+- `gd-modal` 处理开闭、Esc、焦点和遮罩；外链离开的轮廓光在 `feedback/leave/`；
 - `gd-navbar` 处理抽屉、键盘和焦点；
 - `gd-search` 处理输入、清除和事件挂载。
 

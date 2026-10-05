@@ -4,6 +4,48 @@
 
 ### 调整
 
+- 文字链接离开时不再给字体加光。外轮廓的白光还在，转角仍是圆角
+
+- 首页的站点推荐和最近更新不显示页码。栏目页、首页搜索仍按 12 张一页显示页码
+
+## v0.2.1（当前）
+
+2026-10-05。由 v0.2.0 加 0.01。
+
+### 调整
+
+- 按钮组件补上「返回专题」，样式与「返回主站」相同（`gd-button--back`）
+
+- 外链轮廓光：从暗亮起，转完两圈再慢慢暗回去，然后才跳转。文字链接用圆角。详情条目光贴在外轮廓。组件库单独一栏。通知条不使用
+
+- 去掉倒计时跳转页（即将跳转 / 取消跳转），组件库里的 `gd-modal-overlay--redirect` 与 `startGdRedirectCountdown` 一并删除。外链仍用轮廓光
+
+- 卡片不足 12 张时也显示页码（上一页和下一页禁用）。没有卡片时仍不显示
+
+- 导航栏去掉高斯模糊（`backdrop-filter: none`）。通知条仍用 `--gd-glass-nav-blur`
+
+- 殿堂条目卡去掉线条图，背景改为与其他卡片相同的 `--gd-glass-bg`
+
+### 修复
+
+- 链接直达点击后，按钮状态层的直角会露在圆角外面。状态层改为跟随按钮圆角（`border-radius: inherit`）
+
+## v0.2.0
+
+2026-10-05。
+
+### 调整
+
+- 外链不再弹出跳转等待。点中的控件轮廓跑两圈光（约 2 秒）后打开目标；按钮光跟按钮颜色相近，普通文字链接用白色光
+
+- 按钮高亮时文字颜色保持不变（不再被链接悬停色或按钮悬停色改掉）；已同步各页与沙盒
+
+- 主站空列表改用组件库 `gd-empty-state`：标题「暂无结果」加说明，去掉放大镜图标
+
+- 主站列表一页最多 12 张卡，超出后用 `gd-pager` 翻页（栏目页和首页搜索的每一组都分页）
+
+- 友链卡改为 320×100：描述单行省略，悬停 `.gd-friend-tip` 显示全文；窄屏不拉满。已写入 `gd-card.css`、预览 `#friend`、关于页内联副本
+
 - 页脚新增「友情链接」→ `https://galnavi.top/nav/about/#friend`（位于关于本站与联系站长之间）；7 个 worker/new 页、sandbox、`src/preview` 已同步；组件库新增 `docs/examples/footer.md` 规范五项，`components.md` 页脚行同步
 
 - 删除 `worker/new/friend.js` 与 `worker/new/donate.js`（无对应 sandbox 目录）；关于页友链列表改读 `env.FRIEND_DB` 的 `sites`，不占用导航库 `env.DB`；各页页脚去掉「申请友链」
@@ -35,7 +77,7 @@
 - 列数自适应卡宽：多列固定 390；仅一列（`@media (max-width: 919px)`，与 websearch 现网断点一致）时 `.gd-card--general` / `gd-skeleton--card` 宽跟容器；网格 `repeat(auto-fill, var(--gd-card-w))`（src `gd-websearch` / worker `.card-grid`）
 
 
-## v0.1.7（当前）
+## v0.1.7
 
 2026-09-28。
 

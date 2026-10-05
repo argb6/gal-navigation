@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="../foundation/accessibility/gd-a11y.css">
   <link rel="stylesheet" href="../extend/overview/gd-overview.css">
   <link rel="stylesheet" href="../foundation/actions/gd-button.css">
+  <link rel="stylesheet" href="../feedback/leave/gd-leave.css">
   <link rel="stylesheet" href="../foundation/actions/gd-link.css">
   <link rel="stylesheet" href="../display/card/gd-card.css">
   <link rel="stylesheet" href="../display/tag/gd-tag.css">
@@ -26,6 +27,7 @@
   <link rel="stylesheet" href="../feedback/tooltip/gd-tooltip.css">
   <link rel="stylesheet" href="../display/hero-carousel/gd-hero-carousel.css">
   <link rel="stylesheet" href="../navigation/search/gd-search.css">
+  <link rel="stylesheet" href="../navigation/pager/gd-pager.css">
   <link rel="stylesheet" href="../navigation/navbar/gd-navbar.css">
   <link rel="stylesheet" href="../feedback/modal/gd-modal.css">
   <link rel="stylesheet" href="../feedback/modal/gd-publish-card.css">
@@ -57,6 +59,7 @@
         <a class="gd-overview-mobile-list__link" href="#publish-card">card · 发布卡</a>
         <a class="gd-overview-mobile-list__link" href="#item">card · item 殿堂卡</a>
         <a class="gd-overview-mobile-list__link" href="#friend">card · friend 友链</a>
+        <a class="gd-overview-mobile-list__link" href="#pager">pager 翻页</a>
         <a class="gd-overview-mobile-list__link" href="#tag">tag 标签</a>
         <a class="gd-overview-mobile-list__link" href="#badge">badge 徽标</a>
         <a class="gd-overview-mobile-list__link" href="#skeleton">skeleton 骨架屏</a>
@@ -68,6 +71,7 @@
         <a class="gd-overview-mobile-list__link" href="#tooltip">tooltip 提示</a>
         <a class="gd-overview-mobile-list__link" href="#toast">toast 吐司</a>
         <a class="gd-overview-mobile-list__link" href="#modal">modal 弹窗</a>
+        <a class="gd-overview-mobile-list__link" href="#leave">leave 外链轮廓光</a>
         <a class="gd-overview-mobile-list__link" href="#donate">donate 页面示例</a>
         <a class="gd-overview-mobile-list__link" href="#detail">detail 详情页示例</a>
         <a class="gd-overview-mobile-list__link" href="#footer">footer 页脚</a>
@@ -81,7 +85,7 @@
     <article class="gd-overview__layout">
       <div class="gd-overview__content">
         <header>
-          <time class="gd-overview__date" datetime="2026-09-28">2026年9月28日 · v0.1.7</time>
+          <time class="gd-overview__date" datetime="2026-10-05">2026年10月5日 · v0.2.1</time>
           <h1 class="gd-overview__title" id="brand">gd 组件库</h1>
           <p class="gd-overview__lede">
             对照 galnavi 现有样式抽取；MD3 只对齐字号 / 圆角语义 / 状态透明度 / 动效时长。保留玻璃配色与层级，导航、抽屉和卡片不使用高斯模糊或阴影。短页页脚贴底；详情卡片在浏览器缩放时反向缩放。
@@ -260,6 +264,10 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
             返回主站
           </button>
+          <button type="button" class="gd-button gd-button--back">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            返回专题
+          </button>
         </div>
         <p class="demo-note demo-note--top">桌面盾牌与抽屉 NSFW 均为红底隐藏 / 绿底显示。点一下闪「开 / 已开启」，再点闪「关 / 已关闭」，随后回到盾牌。</p>
         <div class="demo-row">
@@ -388,22 +396,60 @@
               <div class="gd-card__icon">友</div>
               <div class="gd-card__title-wrap">
                 <div class="gd-card__title">示例友链</div>
-                <div class="gd-card__subtitle">整卡可点；无底部双按钮。</div>
+                <div class="gd-card__subtitle">整卡可点；描述只留一行。</div>
               </div>
             </div>
+            <span class="gd-friend-tip" role="tooltip">整卡可点；描述只留一行。</span>
           </article>
           <article class="gd-card gd-card--link gd-card--friend">
             <div class="gd-card__header">
               <div class="gd-card__icon">N</div>
               <div class="gd-card__title-wrap">
                 <div class="gd-card__title">另一条友链</div>
-                  <div class="gd-card__subtitle">背景与边框保持一致；不使用 backdrop-filter 或 box-shadow。</div>
+                <div class="gd-card__subtitle">背景与边框保持一致；不使用 backdrop-filter 或 box-shadow。</div>
               </div>
             </div>
+            <span class="gd-friend-tip" role="tooltip">背景与边框保持一致；不使用 backdrop-filter 或 box-shadow。</span>
           </article>
         </div>
       </div>
     </section>
+
+    <section class="gd-section" id="pager">
+      <h2 class="gd-section__title">pager 翻页</h2>
+      <p class="demo-note">主站每个栏目、每组搜索结果一页 12 张。不满一页不显示。下面用 4 页看按钮状态。</p>
+      <div class="demo-preview">
+        <p class="demo-note" id="pagerDemoStatus">第 1 页，共 4 页</p>
+        <nav class="gd-pager" id="pagerDemo" aria-label="翻页"></nav>
+      </div>
+    </section>
+    <script>
+      (function () {
+        var nav = document.getElementById("pagerDemo");
+        var status = document.getElementById("pagerDemoStatus");
+        if (!nav || !status) return;
+        var pages = 4;
+        var page = 1;
+        function draw() {
+          var html = '<button type="button" class="gd-pager__btn" data-page="' + (page - 1) + '"' + (page <= 1 ? " disabled" : "") + ">上一页</button>";
+          for (var n = 1; n <= pages; n++) {
+            html += '<button type="button" class="gd-pager__btn" data-page="' + n + '"' + (n === page ? ' aria-current="page"' : "") + ">" + n + "</button>";
+          }
+          html += '<button type="button" class="gd-pager__btn" data-page="' + (page + 1) + '"' + (page >= pages ? " disabled" : "") + ">下一页</button>";
+          nav.innerHTML = html;
+          status.textContent = "第 " + page + " 页，共 " + pages + " 页";
+        }
+        nav.addEventListener("click", function (e) {
+          var btn = e.target.closest && e.target.closest(".gd-pager__btn");
+          if (!btn || btn.disabled) return;
+          var next = Number(btn.getAttribute("data-page"));
+          if (next < 1 || next > pages) return;
+          page = next;
+          draw();
+        });
+        draw();
+      })();
+    </script>
 
     <section class="gd-section" id="tag">
       <h2 class="gd-section__title">tag 标签</h2>
@@ -679,16 +725,23 @@
         </div>
       </div>
 
+    </section>
+
+    <section class="gd-section" id="leave">
+      <h2 class="gd-section__title">leave 外链轮廓光</h2>
+      <p class="demo-note">点一下，光从暗慢慢亮起，沿外轮廓转两圈，结束时再慢慢暗回去。转完才跳转。这里只演示光效，不跳转。文字链接只跑外轮廓，字不发光，转角是圆角。详情条目的光贴在条目外圈。通知条不用。</p>
       <div class="demo-preview">
-        <div class="demo-preview__bar">
-          <span class="demo-preview__label">跳转倒计时遮罩</span>
-          <button type="button" class="gd-button gd-button--primary" id="btnRedirect">打开跳转倒计时</button>
+        <div class="demo-row demo-row--no-margin">
+          <button type="button" class="gd-button gd-button--link" data-gd-leave-demo>链接直达</button>
+          <a class="gd-link" href="#leave" data-gd-leave-demo>文字链接</a>
+          <span style="--gd-comp-item-color:#fbbf24;--gd-comp-item-color-light:#fcd34d;--gd-comp-item-color-rgb:251,191,36">
+            <button type="button" class="gd-card__action gd-card__action--ext" data-gd-leave-demo>外链1</button>
+          </span>
         </div>
-        <div style="text-align:center;padding:16px 0 8px">
-          <div class="gd-redirect-ring" aria-hidden="true" style="margin:0 auto 16px"></div>
-          <div class="gd-redirect-text">即将跳转（预览）</div>
-          <div class="gd-redirect-countdown">3</div>
-        </div>
+        <a class="gd-section-card__link" href="#leave" data-gd-leave-demo style="margin-top:12px">
+          <span class="gd-section-card__label">官网</span>
+          <span class="gd-section-card__url" style="opacity:1">example.com</span>
+        </a>
       </div>
     </section>
 
@@ -958,6 +1011,7 @@
             <a class="gd-otp__link" href="#publish-card">card · 发布卡</a>
             <a class="gd-otp__link" href="#item">card · item 殿堂卡</a>
             <a class="gd-otp__link" href="#friend">card · friend 友链</a>
+            <a class="gd-otp__link" href="#pager">pager 翻页</a>
             <a class="gd-otp__link" href="#tag">tag 标签</a>
             <a class="gd-otp__link" href="#badge">badge 徽标</a>
             <a class="gd-otp__link" href="#skeleton">skeleton 骨架屏</a>
@@ -969,6 +1023,7 @@
             <a class="gd-otp__link" href="#tooltip">tooltip 提示</a>
             <a class="gd-otp__link" href="#toast">toast 吐司</a>
             <a class="gd-otp__link" href="#modal">modal 弹窗</a>
+            <a class="gd-otp__link" href="#leave">leave 外链轮廓光</a>
             <a class="gd-otp__link" href="#donate">donate 页面示例</a>
             <a class="gd-otp__link" href="#detail">detail 详情页示例</a>
             <a class="gd-otp__link" href="#footer">footer 页脚</a>
@@ -1001,12 +1056,6 @@
         <a class="gd-card__btn gd-card__btn--link" href="https://galnavi.top/" target="_blank" rel="noopener noreferrer">链接直达</a>
       </div>
     </div>
-  </gd-modal>
-  <gd-modal class="gd-modal-overlay gd-modal-overlay--redirect" id="redirectModal" role="dialog" aria-modal="true" aria-labelledby="redirectModalTitle" aria-hidden="true">
-    <div class="gd-redirect-ring" aria-hidden="true"></div>
-    <div class="gd-redirect-text" id="redirectModalTitle">即将跳转</div>
-    <div class="gd-redirect-countdown" data-gd-countdown>3</div>
-    <button type="button" class="gd-button gd-button--secondary gd-button--pill" data-gd-close style="margin-top:28px">取消跳转</button>
   </gd-modal>
 
   <div class="gd-publish-card-overlay" id="releaseModal" role="dialog" aria-modal="true" aria-labelledby="releaseTitle" aria-hidden="true" data-close-on-backdrop>

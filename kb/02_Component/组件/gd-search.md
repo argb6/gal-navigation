@@ -7,7 +7,7 @@ tags:
   - filter
   - toolbar
 date: 2026-08-14
-updated: 2026-09-01
+updated: 2026-09-25
 type: component
 category: Component
 status: active
@@ -16,6 +16,7 @@ related:
   - "[[Web Component]]"
   - "[[gd-navbar]]"
   - "[[ChangeLog-gd v1.5.0]]"
+  - "[[ChangeLog-gd v1.6.0]]"
 ---
 
 # gd-search
@@ -41,15 +42,9 @@ related:
 
 ## 帮助问号
 
-自定义元素加 `help`。默认文案（空格必须写成 `[空格]`）：
+问号贴在输入框右缘。`.gd-search__help-wrap` 绝对定位，宽高 24px。说明气泡 `.gd-search__help-tip` 也绝对定位，不占文档流，避免把问号挤到中间。手机端（≤768px）和 `.gd-navbar-stage--mobile` 用 `translateY(-50%)` 垂直居中。
 
-```
-ACG[空格]小说 包含ACG或小说的卡片
-ACG[空格]+小说，同时包含ACG和小说的卡片
-ACG[空格]-小说，包含ACG但不能有小说的卡片
-```
-
-`help-text` 可改文案。悬停 / 焦点出 `.gd-search__help-tip`。
+自定义元素加 `help`。默认是「搜索规则」列表：空格 = 包含其一，`+` = 同时包含，`-` = 排除。`help-text` 可改文案。悬停、焦点或 `.is-open` 时显示气泡。
 
 ## Group 变体（殿堂）
 
@@ -67,3 +62,4 @@ ACG[空格]-小说，包含ACG但不能有小说的卡片
 - [[Web Component]] — 自定义元素
 - [[gd-navbar]] — 顶栏搜索不要 expandable
 - [[ChangeLog-gd v1.5.0]] — 空格为或
+- [[ChangeLog-gd v1.6.0]] — 问号钉在右侧

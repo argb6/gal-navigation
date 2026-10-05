@@ -10,7 +10,7 @@ tags:
   - motion
   - glass
 date: 2026-08-14
-updated: 2026-09-01
+updated: 2026-09-25
 type: component
 category: Component
 status: active
@@ -20,12 +20,13 @@ related:
   - "[[状态层模式]]"
   - "[[Decision-MD3 对齐口径]]"
   - "[[ChangeLog-gd v1.5.1]]"
+  - "[[ChangeLog-gd v1.6.0]]"
 ---
 
 # Design Token
 
 > [!abstract] Summary
-> 换肤入口只有 `src/foundation/tokens/tokens.css`。`:root` 里 **139** 个 `--gd-*` 声明（2026-09-01 对照页面 Worker 删掉未引用项后计数）。角色名对齐 MD3，色值是 GALNAVI 自己的。
+> 换肤入口只有 `src/foundation/tokens/tokens.css`。`:root` 里 **139** 个 `--gd-*` 声明（2026-09-01 对照 `worker/new` 删掉未引用项后计数）。角色名对齐 MD3，色值是 GALNAVI 自己的。
 
 > [!warning] 不要口头估
 > 注释里的 `--gd-x-rgb`、以及 `var(--gd-…)` 嵌套引用，都不算新变量。
@@ -170,7 +171,7 @@ related:
 | `--gd-glass-nav-blur` | `blur(20px) saturate(180%)` |
 | `--gd-chrome-bar-bg` | `rgba(18, 22, 40, 0.92)` |
 
-现网顶栏底用 `--gd-chrome-bar-bg` + `--gd-glass-nav-blur`。见 [[玻璃表面系统]]。
+现网顶栏底只用 `--gd-chrome-bar-bg`，不用高斯模糊。`--gd-glass-nav-blur` 留给强玻璃工具类。见 [[玻璃表面系统]]。
 
 没有 `--gd-elevation-*`（层级别名从未被规则引用）。
 
@@ -183,6 +184,7 @@ related:
 | `--gd-vvh` | `initGdStickyViewport` | 可视高度，页脚贴底 |
 | `--gd-inv-zoom` | `initGdInverseZoom` | 详情反向缩放 |
 | `--gd-notice-led-duration` | `initGdNoticeLed` | 跑马灯一轮时长 |
+| `--gd-notice-led-shift` | `initGdNoticeLed` | 跑马灯每轮平移像素，负值 |
 
 殿堂分类页签的 `--gd-comp-cat-color*` 写在 `gd-navbar.css` 变体上，不是全局 token。
 
@@ -197,4 +199,5 @@ related:
 - [[玻璃表面系统]] — `--gd-glass-*` 与 `--gd-chrome-bar-bg`
 - [[状态层模式]] — `--gd-state-*`
 - [[ChangeLog-gd v1.5.1]] — 删未引用 token
+- [[ChangeLog-gd v1.6.0]] — `--gd-notice-led-shift`
 - [[Decision-MD3 对齐口径]] — 对齐原则

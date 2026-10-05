@@ -7,7 +7,7 @@ tags:
   - hamburger
   - navigation
 date: 2026-08-14
-updated: 2026-09-01
+updated: 2026-10-05
 type: component
 category: Component
 status: active
@@ -18,6 +18,7 @@ related:
   - "[[gd-search]]"
   - "[[gd-button]]"
   - "[[ChangeLog-gd v1.5.0]]"
+  - "[[ChangeLog-gd v1.6.0]]"
 ---
 
 # gd-navbar
@@ -29,7 +30,7 @@ related:
 
 | 部件 | class | 说明 |
 |------|-------|------|
-| 顶栏 | `gd-navbar` | 高度 `--gd-nav-height`；底 `--gd-chrome-bar-bg` + `--gd-glass-nav-blur` |
+| 顶栏 | `gd-navbar` | 高度 `--gd-nav-height`；底 `--gd-chrome-bar-bg`，不用高斯模糊 |
 | Logo | `gd-navbar__logo` | 图 28px + 渐变字 |
 | 链接 | `gd-navbar__links` | 桌面频道 |
 | 搜索 | `gd-navbar__search` | 桌面固定 300px；**不要** `expandable` |
@@ -54,7 +55,7 @@ related:
 ## 移动端（≤768px）
 
 - 链接隐藏，显示汉堡按钮
-- 搜索框 flex 自适应宽度
+- 搜索框 flex 自适应宽度；帮助问号仍贴在输入框右缘
 - 抽屉覆盖全屏高度
 
 ## 文件位置

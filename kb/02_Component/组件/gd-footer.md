@@ -5,7 +5,7 @@ tags:
   - footer
   - layout
 date: 2026-09-01
-updated: 2026-09-01
+updated: 2026-10-05
 type: component
 category: Component
 status: active
@@ -25,7 +25,7 @@ related:
 |-------|------|
 | `.gd-footer` | 居中链接 + 版权行；`z-index: 1`；`margin-top: auto` |
 | `.gd-footer--page` | 总览页变体（about / help / donate / friend） |
-| `.gd-footer__nav` | 主站首页、帮助文档、关于本站、联系站长、申请友链 |
+| `.gd-footer__nav` | 主站首页、帮助文档、关于本站、友情链接、联系站长 |
 | `.gd-footer__sep` | `\|` 分隔 |
 | `.gd-footer__copy` | `© 2026 GALNAVI · 愿每一次探索都有新的收获` |
 

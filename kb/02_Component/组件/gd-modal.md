@@ -7,7 +7,7 @@ tags:
   - overlay
   - focus-trap
 date: 2026-08-14
-updated: 2026-09-01
+updated: 2026-10-05
 type: component
 category: Component
 status: active
@@ -18,6 +18,7 @@ related:
   - "[[Decision-Light DOM]]"
   - "[[Decision-沙盒去 Cookie 与年龄门]]"
   - "[[gd-orb]]"
+  - "[[gd-leave]]"
 ---
 
 # gd-modal
@@ -30,9 +31,10 @@ related:
 | 变体 | 用途 |
 |------|------|
 | 彩蛋 | 弹窗（`initGdNap`） |
-| 重定向 | 倒计时跳转（`startGdRedirectCountdown`） |
+| 外链离开 | 见 [[gd-leave]]。不画在弹窗上 |
 | 发布卡 | 发布页卡片（`gd-publish-card`） |
 | 欢迎窗 | `#welcomeModal`（主站首访 + [[gd-orb]]「弹窗」） |
+| 主站卡 | `gd-modal--site-card`：简介、标签、「介绍详情」「链接直达」；关闭钮 36px 圆形玻璃 |
 
 ## Implementation
 
@@ -58,7 +60,7 @@ related:
 openGdModal(overlay)           // 打开弹窗
 closeGdModal(overlay)          // 关闭弹窗
 bindGdModal(selector, trigger) // 绑定触发器
-startGdRedirectCountdown(overlay, seconds, onDone) // 倒计时跳转
+// 外链离开见 gd-leave。弹窗不再弹出倒计时遮罩。
 ```
 
 ## 文件位置
@@ -73,3 +75,5 @@ startGdRedirectCountdown(overlay, seconds, onDone) // 倒计时跳转
 - [[状态层模式]] — 焦点/遮罩
 - [[Decision-沙盒去 Cookie 与年龄门]] — 年龄门已卸掉
 - [[gd-orb]] — 「弹窗」打开欢迎窗
+- [[gd-card]] — 主站卡详情弹窗
+- [[ChangeLog-gd v1.6.0]] — 圆形关闭钮

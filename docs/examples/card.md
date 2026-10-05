@@ -67,7 +67,7 @@
 | 场景 | class |
 |---|---|
 | 主站卡片 | `gd-card gd-card--general`（可点加 `gd-card--link`）；多列宽 390px、高 100px；仅一列（≤919）宽 100%；基类 min(390px,100%) |
-| 友链整卡 | `gd-card gd-card--link gd-card--friend` |
+| 友链整卡 | `gd-card gd-card--link gd-card--friend`；宽 320px、高 100px；`.gd-card__subtitle` 单行省略，同文放进 `.gd-friend-tip`，悬停或聚焦时显示 |
 | 条目卡（殿堂） | `gd-card gd-card--item`（+ `gd-card--item--demonic/immortal`；默认金色 divine） |
 
 ## 殿堂条目卡
@@ -96,4 +96,4 @@
 </article>
 ```
 
-表面线条用 `::before` 的 `filter: blur(10.8px)`（与页面背景同款），**不是** `backdrop-filter`。
+背景与其他卡片相同，用 `--gd-glass-bg`，不铺线条图，不用 `backdrop-filter`。
