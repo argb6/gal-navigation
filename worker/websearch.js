@@ -3914,6 +3914,11 @@ function renderHomePage() {
   document.getElementById('recentTitle').textContent = '最近更新';
   renderCards('featuredGrid', featured, '', null, false);
   renderCards('recentGrid', recent, '', null, false);
+  var featuredEl = document.getElementById('featuredGrid');
+  if (featuredEl) {
+    if (featuredEl.querySelector('.gd-empty-state')) featuredEl.innerHTML = '';
+    featuredEl.insertAdjacentHTML('afterbegin', '<a class="gd-card gd-card--general gd-card--link" href="https://galnavi.top/nav/about/#statements"><div class="gd-card__header"><div class="gd-card__icon" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4.5 6.5v5.2c0 4.4 3.1 7.4 7.5 8.8 4.4-1.4 7.5-4.4 7.5-8.8V6.5L12 3z"/><path d="M12 8v4"/><path d="M12 15h.01"/></svg></div><div class="gd-card__title-wrap"><div class="gd-card__title">免责声明</div><div class="gd-card__subtitle">本站只做导航整理，第三方内容由原站负责。</div></div></div></a>');
+  }
 }
 
 var CAT_LABELS = {site:'站点',tool:'工具',simulator:'模拟器',company:'会社',hanhua:'汉化组'};
