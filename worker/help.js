@@ -2058,13 +2058,8 @@ body.gd-overview {
 .gd-help-hub[hidden],
 .gd-help-detail[hidden] { display: none !important; }
 @container (max-width: 619px) {
-  .gd-help-topics { grid-template-columns: 1fr; }
-  .gd-help-topic { width: 100%; height: auto; overflow: visible; align-items: center; }
-  .gd-help-topic__media,
-  .gd-help-topic__no,
-  .gd-help-topic__title,
-  .gd-help-topic__sum { width: 256px; }
-  .gd-help-topic__media { height: 256px; }
+  .gd-help-topics { grid-template-columns: 300px; justify-content: center; }
+  .gd-help-topic { width: 300px; }
 }
 /* gd-card 手机端仅宽度自适应，其余尺寸由组件库 gd-card.css 控制 */
 @media (max-width: 640px) {
@@ -2194,7 +2189,7 @@ body.gd-overview {
   </div>
 </div>
 <div class="gd-modal-overlay" id="helpSiteCardModal" role="dialog" aria-modal="true" aria-labelledby="helpSiteCardModalTitle" aria-hidden="true" data-close-on-backdrop><div class="gd-modal gd-modal--site-card"><button type="button" class="gd-modal__close" data-gd-close aria-label="关闭"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button><div class="gd-modal--site-card__head"><div class="gd-card__icon" aria-hidden="true">站</div><h2 class="gd-modal__title" id="helpSiteCardModalTitle">示例站名</h2></div><p class="gd-modal__body">这是示范弹窗：完整简介、全部标签以及「介绍详情 / 链接直达」都在这里展示（卡面不放标签与按钮）。</p><div class="gd-card__tags gd-modal--site-card__tags"><span class="gd-tag">帮助文档</span><span class="gd-tag gd-tag--blue">开源</span><span class="gd-tag gd-tag--pink">国内云盘</span><span class="gd-tag">干货站</span></div><div class="gd-modal__actions gd-modal__actions--row"><a class="gd-card__btn gd-card__btn--detail" href="https://galnavi.top/nav/detail/" target="_blank" rel="noopener noreferrer">介绍详情</a><a class="gd-card__btn gd-card__btn--link" href="https://galnavi.top/nav/" target="_blank" rel="noopener noreferrer">链接直达</a></div></div></div>
-<footer class="gd-footer gd-footer--page"><nav class="gd-footer__nav" aria-label="页脚链接"><a href="https://galnavi.top/nav/">主站首页</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/help/">帮助文档</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/about/">关于本站</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/about/#feedback">联系站长</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/friend/">申请友链</a></nav><p class="gd-footer__copy">© 2026 GALNAVI · 愿每一次探索都有新的收获</p></footer>
+<footer class="gd-footer gd-footer--page"><nav class="gd-footer__nav" aria-label="页脚链接"><a href="https://galnavi.top/nav/">主站首页</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/help/">帮助文档</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/about/">关于本站</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/about/#feedback">联系站长</a></nav><p class="gd-footer__copy">© 2026 GALNAVI · 愿每一次探索都有新的收获</p></footer>
 <script>
 (function(){function a(){var h=(window.visualViewport&&window.visualViewport.height)||window.innerHeight;document.documentElement.style.setProperty("--gd-vvh",h+"px");}a();window.addEventListener("resize",a);if(window.visualViewport)window.visualViewport.addEventListener("resize",a);})();
 (function() {

@@ -1921,8 +1921,6 @@ gd-search { display: contents; }
         <a href="https://galnavi.top/nav/about/">关于本站</a>
         <span class="gd-footer__sep" aria-hidden="true">|</span>
         <a href="https://galnavi.top/nav/about/#feedback">联系站长</a>
-        <span class="gd-footer__sep" aria-hidden="true">|</span>
-        <a href="https://galnavi.top/nav/friend/">申请友链</a>
 
       </nav>
       <p class="gd-footer__copy">© 2026 GALNAVI · 愿每一次探索都有新的收获</p>

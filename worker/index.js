@@ -1023,8 +1023,6 @@ body.modal-open{overflow:hidden}
 <a href="https://galnavi.top/nav/about/">关于本站</a>
 <span class="gd-footer__sep" aria-hidden="true">|</span>
 <a href="https://galnavi.top/nav/about/#feedback">联系站长</a>
-<span class="gd-footer__sep" aria-hidden="true">|</span>
-<a href="https://galnavi.top/nav/friend/">申请友链</a>
 
 </nav>
 <p class="gd-footer__copy">© 2026 GALNAVI · 愿每一次探索都有新的收获</p>
@@ -1243,14 +1241,6 @@ const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
   </url>
   <url>
     <loc>https://galnavi.top/nav/palace/</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://galnavi.top/nav/donate/</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://galnavi.top/nav/friend/</loc>
     <priority>0.8</priority>
   </url>
 </urlset>

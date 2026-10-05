@@ -21,7 +21,8 @@ const DATE_MAX = 32;
 export default {
   async fetch(request, env) {
     const donors = await loadDonors(env);
-    return new Response(renderPage(donors), { headers: SECURITY_HEADERS });
+    const linksHtml = await renderFriendLinks(env);
+    return new Response(renderPage(donors, linksHtml), { headers: SECURITY_HEADERS });
   },
 };
 
@@ -92,7 +93,42 @@ function renderDonorTable(donors) {
   return '<h3>捐款名单' + count + '</h3><div class="gd-donate-table-wrap"><table class="gd-donate-table" aria-label="捐款名单"><thead><tr><th scope="col">昵称</th><th scope="col">金额</th><th scope="col">备注</th><th scope="col">日期</th></tr></thead><tbody>' + rows + "</tbody></table></div>";
 }
 
-function renderPage(donors) {
+async function renderFriendLinks(env) {
+  try {
+    if (!env?.FRIEND_DB) return "<p>友链数据暂时不可用。</p>";
+    const { results } = await env.FRIEND_DB.prepare("SELECT id, name, url, des, favicon_url, catalog FROM sites").all();
+    const sortedSites = (results || []).filter((f) => isSafeHttpUrl(f.url)).sort((a, b) => a.id - b.id);
+    if (sortedSites.length === 0) return "<p>暂无友链，欢迎申请。</p>";
+    const groups = {};
+    sortedSites.forEach((f) => {
+      const cat = f.catalog || "其他";
+      if (!groups[cat]) groups[cat] = [];
+      groups[cat].push(f);
+    });
+    const sortedCats = Object.keys(groups).sort((a, b) => {
+      const minId = (cat) => groups[cat].reduce((min, f) => Math.min(min, f.id), Infinity);
+      return minId(a) - minId(b);
+    });
+    return sortedCats.map((cat) => {
+      const cards = groups[cat].sort((a, b) => a.id - b.id).map(renderFriendCard).join("");
+      return '<h3 id="cat-' + escapeAttr(cat) + '">' + escapeHtml(cat) + '</h3><div class="gd-friend-grid">' + cards + "</div>";
+    }).join("");
+  } catch {
+    return "<p>友链数据暂时不可用。</p>";
+  }
+}
+
+function renderFriendCard(f) {
+  const name = escapeHtml(f.name || "未命名");
+  const desc = escapeHtml(f.des || "");
+  const url = escapeAttr(f.url);
+  const icon = f.favicon_url && isSafeHttpUrl(f.favicon_url)
+    ? '<img src="' + escapeAttr(f.favicon_url) + '" alt="" loading="lazy" width="22" height="22">'
+    : '<span aria-hidden="true">' + name.charAt(0) + "</span>";
+  return '<a class="gd-card gd-card--friend gd-card--link" href="' + url + '" target="_blank" rel="noopener noreferrer"><div class="gd-card__header"><div class="gd-card__icon">' + icon + '</div><div class="gd-card__title-wrap"><div class="gd-card__title">' + name + '</div><div class="gd-card__subtitle">' + desc + "</div></div></div></a>";
+}
+
+function renderPage(donors, linksHtml) {
   return `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -2029,13 +2065,8 @@ body.gd-overview {
 .gd-section__count { margin-left: 8px; font-size: var(--gd-type-note-size); font-weight: var(--gd-weight-semibold); color: var(--gd-color-on-surface-subtle); }
 .gd-help-detail h3 { margin: 22px 0 8px; font-size: 18px; color: var(--gd-color-on-surface); scroll-margin-top: 90px; }
 @container (max-width: 619px) {
-  .gd-help-topics { grid-template-columns: 1fr; }
-  .gd-help-topic { width: 100%; height: auto; overflow: visible; align-items: center; }
-  .gd-help-topic__media,
-  .gd-help-topic__no,
-  .gd-help-topic__title,
-  .gd-help-topic__sum { width: 256px; }
-  .gd-help-topic__media { height: 256px; }
+  .gd-help-topics { grid-template-columns: 300px; justify-content: center; }
+  .gd-help-topic { width: 300px; }
 }
 /* 手机端友链网格改单列，其余 gd-card 尺寸由组件库控制 */
 @media (max-width: 640px) {
@@ -2109,7 +2140,7 @@ body.gd-overview {
     <div class="gd-overview__content">
       <div id="helpHub" class="gd-help-hub">
       <h1 class="gd-brand__title gd-brand__title--shift gd-brand__title--demo">关于</h1>
-      <p class="gd-overview__lede">每个专题是一张卡片。点开后再看这一节，捐献也在这里。</p>
+      <p class="gd-overview__lede">每个专题是一张卡片。点开后再看这一节，友链和捐献也在这里。</p>
       <div class="gd-help-topics">
         <button type="button" class="gd-help-topic" data-help-topic="origin"><span class="gd-help-topic__media" aria-hidden="true"><img src="https://assets.galnavi.top/about/%E7%81%AF%E5%A1%94.png" alt="" width="256" height="256"></span><span class="gd-help-topic__no">01</span><span class="gd-help-topic__title">起源与发展</span><span class="gd-help-topic__sum">猫耳娘纳普点亮灯塔的故事，以及从立项到网页焕新的时间线。</span></button>
         <button type="button" class="gd-help-topic" data-help-topic="components"><span class="gd-help-topic__media" aria-hidden="true"><img src="https://assets.galnavi.top/about/%E6%8A%80%E6%9C%AF.png" alt="" width="256" height="256"></span><span class="gd-help-topic__no">02</span><span class="gd-help-topic__title">组件与技术</span><span class="gd-help-topic__sum">自研 gd 组件，加上 Cloudflare Workers、D1、KV 和 R2。</span></button>
@@ -2117,6 +2148,7 @@ body.gd-overview {
         <button type="button" class="gd-help-topic" data-help-topic="community"><span class="gd-help-topic__media" aria-hidden="true"><img src="https://assets.galnavi.top/about/%E7%A4%BE%E7%BE%A4.png" alt="" width="256" height="256"></span><span class="gd-help-topic__no">04</span><span class="gd-help-topic__title">本站社群</span><span class="gd-help-topic__sum">闲聊群和 B 站账号。</span></button>
         <button type="button" class="gd-help-topic" data-help-topic="feedback"><span class="gd-help-topic__media" aria-hidden="true"><img src="https://assets.galnavi.top/about/%E5%8F%8D%E9%A6%88.png" alt="" width="256" height="256"></span><span class="gd-help-topic__no">05</span><span class="gd-help-topic__title">站点反馈</span><span class="gd-help-topic__sum">页面问题、收录建议和功能建议怎么提。</span></button>
         <button type="button" class="gd-help-topic" data-help-topic="donate"><span class="gd-help-topic__media" aria-hidden="true"><img src="https://assets.galnavi.top/about/%E6%8D%90%E7%8C%AE.png" alt="" width="256" height="256"></span><span class="gd-help-topic__no">06</span><span class="gd-help-topic__title">捐献</span><span class="gd-help-topic__sum">自愿支持站点维护。扫码、其他方式和捐款名单都在这里。</span></button>
+        <button type="button" class="gd-help-topic" data-help-topic="friend"><span class="gd-help-topic__media" aria-hidden="true"></span><span class="gd-help-topic__no">07</span><span class="gd-help-topic__title">友链</span><span class="gd-help-topic__sum">怎么申请友链，以及已经合作的站点。</span></button>
       </div>
       </div>
       <div id="helpDetail" class="gd-help-detail" hidden>
@@ -2195,7 +2227,7 @@ body.gd-overview {
     <p class="gd-donate-note">相关信息请在付款界面备注</p>
     <h3>其他方式</h3>
     <ul>
-      <li><a class="gd-link" href="#feedback">站点反馈</a> — 捐献相关问题，或想确认收款信息</li>
+      <li>捐献相关问题可通过 <a class="gd-link" href="${GITHUB_URL}" target="_blank" rel="noopener noreferrer">GitHub Issue</a> 说明</li>
       <li><a class="gd-link" href="${GITHUB_URL}" target="_blank" rel="noopener noreferrer">GitHub</a> — 给一颗 Star 支持一下</li>
     </ul>
     ${renderDonorTable(donors)}
@@ -2203,11 +2235,26 @@ body.gd-overview {
     <p>请确认你正在官方域名 galnavi.top 上操作。本页不会通过弹窗、私信或不明链接索要转账。未成年人请在监护人同意下再考虑支持。感谢每一位愿意支持 GALNAVI 的朋友。</p>
   </div>
 </section>
+<section class="gd-section" id="friend">
+  <h2 class="gd-section__title">友链</h2>
+  <div class="card">
+    <h3 id="apply">申请友链</h3>
+    <ul>
+      <li>本站名称：GALNAVI</li>
+      <li>本站描述：ACG 二次元资源导航网站</li>
+      <li>本站链接：<a class="gd-link" href="https://galnavi.top/">https://galnavi.top/</a></li>
+      <li>本站图标：<a class="gd-link" href="https://assets.galnavi.top/icon.png">https://assets.galnavi.top/icon.png</a></li>
+      <li>联系方式：见本页 <a class="gd-link" href="#feedback">反馈</a></li>
+    </ul>
+    <h3 id="links">友情链接</h3>
+    ${linksHtml}
+  </div>
+</section>
       </div>
     </div>
   </div>
 </div>
-<footer class="gd-footer gd-footer--page"><nav class="gd-footer__nav" aria-label="页脚链接"><a href="https://galnavi.top/nav/">主站首页</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/help/">帮助文档</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/about/">关于本站</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/about/#feedback">联系站长</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/friend/">申请友链</a></nav><p class="gd-footer__copy">© 2026 GALNAVI · 愿每一次探索都有新的收获</p></footer>
+<footer class="gd-footer gd-footer--page"><nav class="gd-footer__nav" aria-label="页脚链接"><a href="https://galnavi.top/nav/">主站首页</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/help/">帮助文档</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="https://galnavi.top/nav/about/">关于本站</a><span class="gd-footer__sep" aria-hidden="true">|</span><a href="#feedback">联系站长</a></nav><p class="gd-footer__copy">© 2026 GALNAVI · 愿每一次探索都有新的收获</p></footer>
 <div id="redirectOverlay" class="gd-overview__redirect-overlay" aria-live="polite" aria-atomic="true"><div class="gd-overview__redirect-ring" aria-hidden="true"></div><div class="gd-overview__redirect-text">即将跳转</div><div id="redirectCountdown" class="gd-overview__redirect-countdown">3</div><button type="button" id="redirectCancel" class="gd-overview__redirect-cancel">取消跳转</button></div>
 <script>
 (function(){function a(){var h=(window.visualViewport&&window.visualViewport.height)||window.innerHeight;document.documentElement.style.setProperty("--gd-vvh",h+"px");}a();window.addEventListener("resize",a);if(window.visualViewport)window.visualViewport.addEventListener("resize",a);})();
@@ -2217,7 +2264,7 @@ body.gd-overview {
   var back = document.getElementById('helpBackTopics');
   if (!hub || !detail) return;
   var sections = Array.prototype.slice.call(detail.querySelectorAll('.gd-section[id]'));
-  var alias = { legend: 'origin', history: 'origin', nap: 'statements', copyright: 'statements', disclaimer: 'statements', tech: 'components' };
+  var alias = { legend: 'origin', history: 'origin', nap: 'statements', copyright: 'statements', disclaimer: 'statements', tech: 'components', apply: 'friend', links: 'friend' };
   function showTopic(id) {
     var target = alias[id] || id;
     var found = false;
